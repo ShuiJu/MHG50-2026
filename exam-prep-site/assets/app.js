@@ -665,7 +665,7 @@
       ],
       terms: [
         q("2023 Summer Q1(a) maxv 小题：exhaustive testing 不可行要同时提哪两种时间？", "Test design time 和 test execution time；Java array 最大长度让输入组合巨大。"),
-        q("2025 Summer Q1(c) Climate.determine 小题：TCI 和 Test Case 为什么不能混？", "TCI 是覆盖目标，如 temp boundary；Test Case 是具体调用和 expected output。"),
+        q("2025 Summer Q1(c) Climate.determine 小题：TCI 和 Test Case 为什么不能混？", "TCI 是覆盖目标，例如 <code>temp just below 16</code>；Test Case 是具体调用，例如 <code>determine(15, 50)</code> expected HEAT_ONLY。"),
         q("2025 Summer Q4 PV.exportPower 小题：random testing 的 oracle 是什么？", "根据 Decision Table 判断 enabled/nettPower 对应 true/false，而不是随机猜结果。")
       ],
       coverage: [
@@ -674,7 +674,7 @@
         q("2025 Summer Q2 decideWrite 小题：黄色 diamond 的 TCI 应怎样写？", "写成具体未走分支，例如 line 28 true/false branch 或 null else branch，而不是只写“yellow line”。")
       ],
       "black-box": [
-        q("2025 Summer Q1(c) Climate.determine 小题：为什么题目说 Do not include error values？", "BVA tests 只覆盖非错误边界附近的有效行为，error partition 已在 part (b) 输入/输出 partition 里处理。"),
+        q("2025 Summer Q1(c) Climate.determine 小题：为什么题目说 Do not include error values？", "BVA 表里围绕有效阈值写 <code>temp=15/16/17</code>、<code>humidity=59/60/61</code>；超出规格范围的 ERROR 已在 part (b) partitions 处理。"),
         q("2023 Summer Q1(b) boilerSetting 小题：温度 <code>t</code> 的 value line 至少有哪些区间？", "非常低、<code>t&lt;1</code>、<code>1≤t&lt;25</code>、<code>t≥25</code>，并结合 <code>isOn</code> 形成 causes。"),
         q("2023 Summer Q1(c) boilerSetting 小题：为什么要 cross out infeasible combinations？", "Decision Table 可能包含互斥条件组合，例如同一 <code>t</code> 不可能同时在两个温度区间。")
       ],
@@ -684,7 +684,7 @@
         q("2025 Summer Q1(c) Climate.determine 小题：如何避免 duplicate coverage？", "每个 test case 要覆盖新的 TCI 或 expected output TCI；已经覆盖的边界不要重复用另一个等价 test case。")
       ],
       "white-box": [
-        q("2025 Summer Q2(a) decideWrite 小题：lines 28 和 32 黄色、line 33 红色，第一步写什么？", "明确未走分支和未执行语句，包括 null else，再给触发条件。"),
+        q("2025 Summer Q2(a) decideWrite 小题：lines 28 和 32 黄色、line 33 红色，第一步写什么？", "先把黄色写成缺失 branch，把红色写成缺失 statement；例如 line 33 red 就要给能走到该 else/return 的具体输入和 expected result。"),
         q("2025 Summer Q2(b) optimized decideWrite 小题：line 51 的 '1 of 4 branches missed' 为什么是 4？", "复合条件经过 short-circuit bytecode 分成多个 branch，不只是源代码层面一个 if 的 true/false。"),
         q("2023 Summer Q2 Wind.categorise 小题：full SC 和 full BC 要求有什么不同？", "SC 只要求红色语句执行；BC 还要求每个 decision 的 true/false 分支都走到。")
       ],
@@ -704,7 +704,7 @@
         q("2023 Summer Q3(b) Lighting.decide 小题：Test Cases 必须显示什么？", "必须显示精确 method call sequence 和 expected return/getter values。")
       ],
       automation: [
-        q("2025 Summer Q4(b) PV.exportPower 小题：自动化 random test outline 必须包含什么？", "循环/重复结构、随机生成范围、调用 method、assert expected、覆盖每条 DT rule。"),
+        q("2025 Summer Q4(b) PV.exportPower 小题：自动化 random test outline 必须包含什么？", "例如循环生成每条 DT rule 的数据：enabled=true 且 nettPower>0 期望 true；enabled=false 或 nettPower<=0 期望 false，然后调用 method 并 assert。"),
         q("2025 Summer Q4(b) 小题：安全生成两个 integer limits 之间的 random int 要注意什么？", "要控制 inclusive/exclusive 边界，避免 overflow，并确保生成范围匹配 TCI。"),
         q("2025 Autumn Q2 TestNG pseudo-code 小题：参数化测试表里至少要有什么？", "输入、expected result、TCI id，并让测试方法逐行取数据执行 assert。")
       ],
@@ -714,8 +714,8 @@
         q("2023 Summer Q4(b) whatSpeed 小题：ERROR partitions 对应哪些 random ranges？", "例如 temp below valid range 或 above valid range，对应 EP1*/EP5*，expected ERROR。")
       ],
       q4: [
-        q("2025 Summer Q4 PV.exportPower 小题：Decision Table 四条 rules 如何变成 random test cases？", "每条 rule 固定 boolean cause，再为 nettPower 的 true/false 条件生成随机范围值。"),
-        q("2023 Summer Q4 isSquare 小题：test completion problem 可以用什么停止条件？", "固定随机次数、覆盖所有 partitions、达到时间预算，或失败率稳定后停止。"),
+        q("2025 Summer Q4 PV.exportPower 小题：Decision Table 四条 rules 如何变成 random test cases？", "每条 rule 固定 boolean cause；例如 rule enabled=true/nettPower>0 时随机取 1..max，expected true；nettPower<=0 时随机取负数或 0，expected false。"),
+        q("2023 Summer Q4 isSquare 小题：test completion problem 可以用什么停止条件？", "例如为 square partition 和 non-square partition 各生成 1000 个随机数，或直到所有 EP/边界都覆盖；不要写“run randomly until enough”。"),
         q("2023 Summer Q4 whatSpeed 小题：Random EP Test Cases Table 里 <code>rand(0,50)</code> 覆盖什么？", "覆盖 temp 的 0..50 partition，同时结合其他 boolean/input EP 和 expected OFF。")
       ],
       "exam-map": [
@@ -741,7 +741,7 @@
       judge: [
         q("2025 Climate.determine 小题：为什么这是 BVA 而不是 DT 主题？", "核心是 temp=16、humidity=60 这类数值边界附近的错误风险。"),
         q("2023 boilerSetting 小题：为什么这是 Decision Table？", "它有温度区间和 <code>isOn</code> 多个 causes 组合，对应 LOW/HIGH/NONE effects。"),
-        q("2025 PV.exportPower 小题：为什么 random tests 基于 Decision Table？", "题目直接给 DT rules，随机数据只是在每条 rule 的条件范围内生成具体值。")
+        q("2025 PV.exportPower 小题：为什么 random tests 基于 Decision Table？", "题目直接给 enabled/nettPower 的 DT rules；随机只负责在每条 rule 内取具体值，例如 true rule 取 nettPower=37，false rule 取 nettPower=0。")
       ],
       "exam-patterns": [
         q("2023 Q1 与 2025 Q1 的差异是什么？", "2023 偏 exhaustive + boilerSetting DT；2025 偏 exhaustive/input-output partitions + Climate.determine BVA。"),
@@ -769,11 +769,11 @@
       properties: [
         q("2025 Summer Q1(d) Find 小题：<code>ensures forall i :: min <= a[i]</code> 表达什么性质？", "返回的 <code>min</code> 不大于数组中任何元素，是 Find 方法 partial correctness 的核心 postcondition。"),
         q("2025 Summer Q2(c) BankAccount 小题：<code>Balance == deposits.total - withdrawals.total</code> 是什么性质？", "这是 class invariant/ghost predicate <code>Valid()</code> 中的账户一致性性质。"),
-        q("2025 Summer Q4(a) Spin 小题：safety property 在 model checking 里通常表达什么？", "表达坏事永不发生，例如某个 error state 不可达或 mutual exclusion 不被破坏。")
+        q("2025 Summer Q4(a) Spin 小题：safety property 在 model checking 里怎样用例子表达？", "写成坏状态不可达，例如 <code>G !error</code>；若是 mutual exclusion，就写永远不会两个 process 同时在 critical section。")
       ],
       foundation: [
         q("2025 Summer Q1(d) Find 小题：partial correctness 要证明什么？", "如果程序终止，则返回 <code>min</code> 满足 postcondition，例如不大于数组每个元素。"),
-        q("2025 Summer Q1(e) 小题：total correctness 比 partial 多证明什么？", "多证明 termination，通常需要 variant/ranking function。"),
+        q("2025 Summer Q1(e) 小题：total correctness 比 partial 多证明什么？", "多证明 termination；在 Find loop 里可用 <code>a.Length - i</code> 作 variant，每次 <code>i := i+1</code> 后严格变小。"),
         q("2025 Summer Q4(c) 小题：state explosion problem 是哪类验证的痛点？", "Model checking，因为它要探索大量系统状态和路径。")
       ],
       logic: [
@@ -798,8 +798,8 @@
       ],
       requirements: [
         q("2025 Summer Q3(c) FRET 小题：FRET 如何支持 model checking temporal formulae？", "把结构化自然语言需求生成 temporal formulae，并进入相应 tool chain 做模型检查。"),
-        q("2025 Summer Q3(b) Data Refinement 小题：coded example 要体现什么？", "要体现抽象数据表示和具体数据表示之间的 relation，并证明操作保持抽象行为。"),
-        q("2024/2025 FMAS 小题：under-specification 在需求里通常表现为什么？", "时间、触发条件、异常情况或术语范围没说清，导致实现可钻空子。")
+        q("2025 Summer Q3(b) Data Refinement 小题：coded example 要体现什么？", "例如 abstract state 只存 balance，concrete state 存 deposits list 和 withdrawals list；relation 写成 balance = sum(deposits)-sum(withdrawals)。"),
+        q("2024/2025 FMAS 小题：under-specification 在需求里通常表现为什么？", "例如需求写 quickly respond，却没说 2 seconds 还是 30 seconds；要补触发条件、时间界限和异常路径。")
       ],
       "model-checking": [
         q("2025 Summer Q4(a) Spin 小题：答案要说明系统模型怎样表示？", "说明用状态/transition 或 Promela-like model 表示系统行为，并用 temporal formula 表示要检查的性质。"),

@@ -333,6 +333,15 @@
   - `exam-prep-site/cs615-linear.html` 的数据库“判断台阶”改为“先画题目数据 -> 用收据例子证明 SQL -> 用点击流反例说明 NoSQL -> 写 trade-off”。
   - `exam-prep-site/cs615.html` 增加“用两个场景直接做选择”对照表：收据系统选 SQL，点击流系统选 NoSQL。
 
+### 2026-05-08 20:33
+
+- 用户追问其他科目是否也已按“例子驱动”标准改好。
+- 已继续改 CS605、CS608、CS603：
+  - `exam-prep-site/cs605-linear.html` 增加 Sample A/B 对照表，把 language、HALT reductions、NP certificate/verifier 都落到具体题面：L1A blocks、Java `a+b=c`、CARA clique、exception 21、line never executed、phone vertex cover 等。
+  - `exam-prep-site/cs608-linear.html` 增加 past paper 方法选择表：Climate.determine 走 BVA，boilerSetting 走 DT，decideWrite 从 JaCoCo 缺口反推 additional tests，Numbers/Lighting 写 class context 调用序列，PV.exportPower/isSquare/whatSpeed 写 random data/oracle/completion。
+  - `exam-prep-site/cs603-linear.html` 增加 2025 题面例子表：John/right 谓词逻辑、Find Hoare invariant、Ack decreases、method M invariant/variant、BankAccount `Valid()`、Spin/LTL safety。
+  - `exam-prep-site/assets/app.js` 同步压实 CS608/CS603 QA 中偏抽象的答案，让卡片答案也带具体值、调用、公式或题面对象。
+
 ## 制作记录
 
 ### 2026-05-05

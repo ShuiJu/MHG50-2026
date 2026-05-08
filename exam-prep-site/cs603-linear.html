@@ -101,6 +101,19 @@
               <li><strong>再找性质。</strong>例如 <code>a[i] ≥ 0</code>。</li>
               <li><strong>最后组合。</strong>用 implication 表达条件，用 conjunction 表达多个要求。</li>
             </ol>
+            <h3>用 2025 题把英语改成公式</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题面句子</th><th>先选哪些 predicate</th><th>公式骨架</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>If John is right, somebody took his pen</td><td><code>Right(John)</code>, <code>Took(x, PenOfJohn)</code></td><td><code>Right(John) => ∃x Took(x, PenOfJohn)</code></td></tr>
+                  <tr><td>Every person is walking and talking</td><td><code>Person(x)</code>, <code>Walking(x)</code>, <code>Talking(x)</code></td><td><code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code></td></tr>
+                  <tr><td>unsatisfiable example</td><td>一个命题变量 <code>P</code></td><td><code>P ∧ ¬P</code> 没有任何赋值能为 true。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <p>对应材料：<code>1_logic_603.pdf</code>、<code>labZ3_PropLogic.pdf</code>、<code>Z3Exercises.pdf</code>。</p>
           </section>
 
@@ -156,6 +169,20 @@
             <div class="answer-box">
               <p><strong>Loop proof 模板：</strong>State the invariant. Prove it holds before the loop. Prove one arbitrary iteration preserves it. At loop exit, combine invariant with the negation of the guard to derive the postcondition. For total correctness, give a non-negative variant that decreases on every iteration.</p>
             </div>
+            <h3>把 2025 Find 题写成 invariant</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题目元素</th><th>不要只写</th><th>可交卷写法</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>requires a.Length > 0</code></td><td>不要只说“array valid”。</td><td>因为程序会先读 <code>a[0]</code>，precondition 排除空数组越界。</td></tr>
+                  <tr><td><code>ensures forall i :: min <= a[i]</code></td><td>不要只说“find minimum”。</td><td>写：返回的 <code>min</code> 不大于数组中任意元素，这是 partial correctness 的 postcondition。</td></tr>
+                  <tr><td>while loop</td><td>不要只写 <code>min</code> is minimum。</td><td>写 invariant：在已扫描区间 <code>a[0..i)</code> 内，<code>min</code> 不大于每个已扫描元素，且 <code>1 <= i <= a.Length</code>。</td></tr>
+                  <tr><td>total correctness</td><td>不要只重复 partial proof。</td><td>补 variant <code>a.Length - i</code>，每次循环递减且非负。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <p>对应材料：<code>2_hoarelogic_RM.pdf</code>、<code>Hoare Logic Summary Sheet.pdf</code>、<code>Exercises from Lecture Hoare Logic if and assign.pdf</code>、<code>Exercises from Lecture_ Hoare Logic Loop.pdf</code>、<code>Hoare Logic Lab B.pdf</code>、<code>Hoare_LabA-1.pdf</code>。</p>
           </section>
 
@@ -202,6 +229,19 @@
             </div>
             <div class="answer-box">
               <p><strong>Dafny 解题顺序：</strong>先读 requires/ensures，确定要证明什么；再找循环或递归；写范围 invariant；写已处理部分 invariant；必要时加 assert 帮 verifier 看到中间事实；最后检查 termination。</p>
+            </div>
+            <h3>用 2025 Dafny 题把 annotation 写具体</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题目素材</th><th>要补什么</th><th>例子化写法</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Ackermann recursion</td><td><code>decreases</code></td><td>用 tuple metric，例如 <code>decreases m, n</code>，按词典序说明递归调用整体变小。</td></tr>
+                  <tr><td>method <code>M(x,y)</code> loop</td><td>invariant + variant</td><td>invariant 写循环中结果和 <code>x,y</code> 的关系；variant 写剩余迭代次数，证明会停。</td></tr>
+                  <tr><td><code>BankAccount</code></td><td>ghost state + <code>Valid()</code></td><td><code>Valid()</code> 集中表达 <code>Balance == deposits.total - withdrawals.total</code>，constructor、deposit、withdraw 后都要保持。</td></tr>
+                </tbody>
+              </table>
             </div>
             <p>对应材料：<code>1.Dafny_Intro.pdf</code>、<code>2.Dafny.pdf</code>、<code>3.RecursionandTermination.pdf</code>、<code>4.DafnyLoops.pdf</code>、<code>5.Iterative.pdf</code>、<code>Arrays I.pdf</code>、<code>7.ArraysII_short.pdf</code>、<code>LinearSearch.pdf</code>、<code>8.ObjectI2023.pdf</code>。</p>
           </section>
@@ -279,6 +319,19 @@
             <p>Spin 常和 Promela、LTL、并发协议验证联系在一起；NuSMV 常用于符号模型检测和 CTL/LTL 性质。考试里重点不是工具命令细节，而是知道模型、性质、验证结果和 counterexample 的关系。</p>
             <div class="answer-box">
               <p><strong>Model checking 答题顺序：</strong>说明系统状态是什么，transition 是什么，label 表示什么；把需求写成 LTL 或 CTL；说明 model checker 会探索状态空间；若性质不成立，counterexample 是一条违反性质的路径。</p>
+            </div>
+            <h3>用 2025 model checking 题把公式落地</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题面问法</th><th>不要只答</th><th>具体例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Spin verifies temporal properties</td><td>不要只写“checks LTL”。</td><td>举例：<code>G(request -> F response)</code> 表示每次 request 最终被 response。</td></tr>
+                  <tr><td>Safety property</td><td>不要只写“bad thing never happens”。</td><td>例如 <code>G !error</code>，或 mutual exclusion 中永远不会两个 process 同时在 critical section。</td></tr>
+                  <tr><td>NuSMV vs Spin</td><td>不要只列工具名。</td><td>Spin 常配 Promela/exlicit-state/LTL 并发协议；NuSMV 常配 symbolic model checking，可讨论 CTL/LTL。</td></tr>
+                </tbody>
+              </table>
             </div>
             <p>对应材料：<code>MCLecture1CS603.pdf</code>、<code>MCLecture2CS603.pdf</code>、<code>MCLecture3CS603.pdf</code>、<code>MCLecture4CS603.pdf</code>、<code>21-ltl_rm.pdf</code>、<code>22-ctl_rm.pdf</code>、<code>temporal-examples_2023.pdf</code>、<code>MCL41VerifyingWithSPIN_cs603.pdf</code>、<code>Verifying with Spin (TL).pdf</code>、<code>SpinTutorial_fromSpinroot.pdf</code>。</p>
           </section>

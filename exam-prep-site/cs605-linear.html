@@ -65,6 +65,19 @@
             <div class="micro-check">
               <p><strong>过关小题：</strong>看到 <code>L={&lt;G,k&gt; : G has a clique of size at least k}</code>，先不要写 NP。先说输入是图 <code>G</code> 和数字 <code>k</code> 的编码，yes 条件是图里存在至少 <code>k</code> 个两两相连的点。</p>
             </div>
+            <h3>用 sample 题把 language 落地</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题目材料</th><th>输入是什么</th><th>yes 条件怎么说成人话</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Sample B Q1(a) <code>w1#w2#...#w2n</code></td><td>偶数个由 <code>a</code> 组成的 blocks，中间用 <code>#</code> 分开。</td><td>存在某个奇数位置 <code>i</code>，使第 <code>i</code> 块和第 <code>i+1</code> 块长度相等。</td></tr>
+                  <tr><td>Sample A Q2(b) Java 程序让 <code>a+b=c</code></td><td>Java program <code>J</code> 和变量 <code>a,b,c</code> 的编码。</td><td>运行 <code>J</code> 的某个时刻，变量值满足 <code>a+b=c</code>。</td></tr>
+                  <tr><td>Sample B Q6A CARA clique</td><td>社交图 <code>G=(V,E)</code> 和数字 <code>k</code>。</td><td>存在 <code>k</code> 个学生组成的集合，里面任意两人都有 friend edge。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <h3>对应材料</h3>
             <p><code>2026-02-03-Notes-Mathematical_preliminaries_annotated.pdf</code> 和 <code>CS605 - Mathematical preliminaries.pdf</code> 负责集合、函数、量词、证明结构；<code>A - Historical Foundations.pdf</code> 和 <code>CS605 Overview.pdf</code> 负责建立“什么能被计算”的课程问题。</p>
           </section>
@@ -255,6 +268,19 @@
                 </tbody>
               </table>
             </div>
+            <h3>用 Sample A/B 题写归约，不写空模板</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>past/sample 题面</th><th>构造时把 HALT 放在哪里</th><th>交卷时必须写出的 iff</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Sample A Q3：Java program 不抛 exception 21</td><td>构造 <code>N</code> 先模拟 <code>M(w)</code>；根据是否停机决定是否触发 exception 21。</td><td><code>M(w)</code> halts iff 构造程序落入题目要求的 exception 行为。</td></tr>
+                  <tr><td>Sample A Q5：line number <code>n</code> never executed</td><td>把目标 line 放在模拟 <code>M(w)</code> 之后，只有模拟停机才会到达。</td><td>目标 line 是否执行，精确反映 <code>M(w)</code> 是否 halts。</td></tr>
+                  <tr><td>Sample B Q5：运行过程中 <code>b &lt; mean(c)</code></td><td>让程序在模拟前保持该不变量；模拟停机后故意改变量破坏它。</td><td>property throughout execution 是否成立，要和 HALT 的 yes/no 对齐。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <h3>TR / co-TR 的连接</h3>
             <p>一个重要事实：如果 <code>L</code> 和 <code>L̄</code> 都 Turing-recognisable，那么 <code>L</code> decidable。方法是并行运行两个 recogniser，哪个先 accept 就给答案。所以如果你已经证明 <code>L</code> undecidable，而又证明 <code>L</code> 是 T-r，那么 <code>L̄</code> 就不能也是 T-r。</p>
             <p>对应材料：<code>2026-02-25-Notes-Non-T-r-languages_annotated.pdf</code>、<code>2026-03-04-Notes-Reductions_annotated.pdf</code>、<code>2026-03-11 Reductions with non-T-r languages_annotated.pdf</code>、<code>C - Computability II.pdf</code>、reduction videos。</p>
@@ -301,6 +327,19 @@
             </ol>
             <div class="answer-box">
               <p><strong>in NP 模板：</strong>We construct a polynomial-time verifier <code>V</code>. The certificate is the proposed solution. <code>V</code> checks that the certificate has the right form and size, then checks the condition in the language definition. These checks require only polynomially many steps in the input size, so <code>L∈NP</code>.</p>
+            </div>
+            <h3>Sample 题里的 certificate 具体长什么样</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题目</th><th>certificate</th><th>verifier 怎么检查</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Sample B Q6A CARA clique</td><td><code>k</code> 个学生的集合 <code>S</code>。</td><td>检查 <code>|S|=k</code>，再检查 <code>S</code> 中每一对学生之间都有 edge。</td></tr>
+                  <tr><td>Sample B Q6B phone vertex cover</td><td><code>k</code> 部 phone 的集合 <code>S</code>。</td><td>遍历每条 communication edge，检查至少一个端点在 <code>S</code> 中。</td></tr>
+                  <tr><td>Sample A Q6A 两个 proper subsets 覆盖 <code>A</code> 且 sums equal</td><td>两个子集 <code>Y,Z</code>。</td><td>检查它们 proper、覆盖 <code>A</code>，并计算两边 sum 是否相等。</td></tr>
+                </tbody>
+              </table>
             </div>
             <p>对应材料：<code>2026-03-25-Notes-CCT-intro_annotated.pdf</code>、<code>2026-03-25-Notes-CCT_asymptotic_analysis_annotated.pdf</code>、<code>2026-03-25-Notes-CCT_PTIME_annotated.pdf</code>、<code>2026-04-01-Notes-CCT_NP_annotated.pdf</code>、<code>Growth rates.pdf</code>。</p>
           </section>

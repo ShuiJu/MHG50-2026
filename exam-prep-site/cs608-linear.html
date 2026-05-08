@@ -135,6 +135,19 @@
             <div class="micro-check">
               <p><strong>题型判断：</strong>题面是数值范围，优先 BVA；题面是多个布尔条件和动作，优先 DT；题面是类别划分但没有明显边界，优先 EP。Q1 样章见 <a href="cs608-q1-sample.html">BVA / DT 黑盒完整拆解</a>。</p>
             </div>
+            <h3>用 past paper 例子选方法</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题面素材</th><th>为什么选这个方法</th><th>具体 test data 怎么落地</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>2025 Q1 <code>Climate.determine(temp, humidity)</code></td><td>题目有 <code>temp&lt;16</code> 和 <code>humidity&gt;60</code> 两个数值阈值，所以用 BVA。</td><td>围绕 16 取 15/16/17，围绕 60 取 59/60/61，再写 NONE/HEAT_ONLY/AC_ONLY/HEAT_AND_AC。</td></tr>
+                  <tr><td>2023 Q1 <code>boilerSetting(t, isOn)</code></td><td>温度区间和开关状态组合决定 LOW/HIGH/NONE，所以用 Decision Table。</td><td>用 <code>t=-50</code>、<code>t=+50</code> 等代表值配合 <code>isOn=true/false</code> 覆盖可行 rules。</td></tr>
+                  <tr><td>2025 Q4 <code>PV.exportPower()</code></td><td>题目直接给 enabled 和 nettPower 的 DT rules，random tests 要从 rule 里生成。</td><td>例如 enabled=true 且 nettPower&gt;0 随机生成正值，expected true；其他 rules 生成 false。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <p>对应材料：<code>03-ep.pdf</code>、<code>05-ep-more-detail.pdf</code>、<code>06-bva.pdf</code>、<code>07-bva-more-detail.pdf</code>、<code>08-dt.pdf</code>、<code>09-dt-more-detail.pdf</code>。</p>
           </section>
 
@@ -167,6 +180,19 @@
             <div class="answer-box">
               <p><strong>白盒题写法：</strong>指出当前测试缺了哪条 statement 或 branch；给一个 additional test input；说明执行路径怎样经过该代码；写 expected result；最后说 coverage 从哪里补上。</p>
             </div>
+            <h3>用 JaCoCo 题把 additional test 写具体</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>past paper 信号</th><th>不要只写什么</th><th>要写成什么</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>2025 Q2 <code>decideWrite</code> line 33 red</td><td>不要只给一个输入值。</td><td>说明这个输入会让控制流到达 line 33，并写 expected result，证明补了 statement coverage。</td></tr>
+                  <tr><td>2025 Q2 lines 28/32 yellow</td><td>不要只说“more branch tests”。</td><td>指出缺的是 true 还是 false branch，再给触发该 branch 的 concrete values。</td></tr>
+                  <tr><td>2025 Q2 optimized line 51: 1 of 4 branches missed</td><td>不要按源代码一个 if 当成 2 branches。</td><td>解释 short-circuit 让 bytecode 产生 4 个 branch，并给能 evaluation 到缺失子条件的测试。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <p>对应材料：<code>10-sc-bc.pdf</code>、<code>11-sc-bc-more-detail.pdf</code>。</p>
           </section>
 
@@ -192,6 +218,19 @@
             </ol>
             <div class="answer-box">
               <p><strong>class context 模板：</strong>Create an object in a known initial state. Use public methods to place it in the required state. Call the method under test. Use an accessor or return value to observe the result. Assert the expected value derived from the specification.</p>
+            </div>
+            <h3>把 Q3 class context 变成调用序列</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题面素材</th><th>测试不是只给什么</th><th>具体调用序列</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>2025 Q3 <code>Numbers.isNeg(x)</code></td><td>不是对象状态题。</td><td>直接调用 static method：<code>Numbers.isNeg(-1)</code>，expected true。</td></tr>
+                  <tr><td>2025 Q3 instance method</td><td>不能只写输入 <code>x</code>。</td><td>创建 object，调用 <code>setValue(x)</code>，再调用 <code>isNegative()</code>，最后用 <code>getResult()</code> assert。</td></tr>
+                  <tr><td>2023 Q3 <code>Lighting.decide</code></td><td>不能直接改 private brightness。</td><td>用 public setter 或 constructor 设置 brightness/override，再调用 <code>decide()</code>，用 getter 检查 power state。</td></tr>
+                </tbody>
+              </table>
             </div>
             <h3>为什么不能直接改 private field</h3>
             <p>Private field 是对象内部实现细节。测试应尽量通过 public API 进入和观察对象，否则测试会绑死在内部实现上。一旦实现改了，行为没错，测试也可能无意义地坏掉。</p>
@@ -244,6 +283,19 @@
             <p>Floating point 不是实数。小数在二进制里可能无法精确表示，所以比较数值结果时不能总用完全相等。数值测试常用 tolerance，例如实际结果和期望结果相差小于某个阈值就接受。</p>
             <h3>AI 辅助测试的安全写法</h3>
             <p>AI 可以帮你生成测试想法、边界值、断言草稿、自动化代码，但它不应该替你决定 oracle。好答案要强调 human review：检查生成的测试是否符合 specification，是否覆盖关键风险，是否引入错误断言。</p>
+            <h3>用 Q4 random testing 题写具体</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题面素材</th><th>data problem</th><th>oracle / completion 怎么写</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>2025 Q4 <code>PV.exportPower()</code></td><td>按 DT rule 生成：enabled true/false，nettPower 正/零/负范围内随机。</td><td>oracle 来自 DT expected action；completion 可写每条 rule 至少生成 N 次。</td></tr>
+                  <tr><td>2023 Q4 <code>isSquare(x)</code></td><td>随机生成平方数和非平方数两个 partition。</td><td>oracle 可用整数平方根反算验证；不能用被测方法自己的输出当 expected。</td></tr>
+                  <tr><td>2023 Q4 <code>whatSpeed</code></td><td>按 EP ranges 生成，例如 <code>rand(0,50)</code> 覆盖指定温度区间。</td><td>expected result 从 EP/DT 表推出，completion 用覆盖全部 partitions 或固定次数。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <h3>Software process 和测试的关系</h3>
             <p>过程不是空话。需求变更、代码审查、CI、缺陷跟踪、回归测试都会影响测试是否可靠。一个项目如果没有可重复测试和清楚的 defect 流程，bug 会在修复后重新出现。</p>
             <p>对应材料：<code>21-bandw-full.pdf</code>、<code>22-rand.pdf</code>、<code>23-NumericalComputing.pdf</code>、<code>What every computer scientist should know about floating point.pdf</code>、<code>24-using-ai.pdf</code>、<code>25-process.pdf</code>、<code>26-wrapup.pdf</code>。</p>
