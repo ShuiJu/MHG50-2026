@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-08 17:32
+更新时间：2026-05-08 18:08
 
 ## 项目目标
 
@@ -283,6 +283,34 @@
   - 新增 `把教材一路接到考试题`，把教材组映射到历年题型页练习入口。
 - 已更新 `exam-prep-site/cs615.html`：
   - 顶部导航和 hero tag 增加 `教材线性页` 入口，方便在题型页和线性页之间切换。
+
+### 2026-05-08 17:58
+
+- 用户要求：所有“过关小题”改成鼠标悬停才显示答案；每个区块至少 3-5 道问答；这个方式应用到所有页面、所有科目。
+- 已更新 `exam-prep-site/assets/styles.css`：
+  - 新增 `.qa-set`、`.qa-card`、`.qa-question`、`.qa-answer` 样式。
+  - 问题默认显示，答案默认隐藏。
+  - 鼠标 hover、键盘 focus 或移动端点击时显示答案。
+  - 旧 `.micro-check` 设为隐藏，避免答案直接暴露。
+- 已更新 `exam-prep-site/assets/app.js`：
+  - 保留关键词搜索和复制模板功能。
+  - 新增全站问答注入逻辑：对每个 `main section[id]` 自动追加过关问答。
+  - 为 `index.html`、四门课线性页、四门课题型页、`cs608-q1-sample.html` 建立专门题库。
+  - 每个区块至少注入 3 道问答，最多展示 5 道。
+  - 如果未来新增 section 但还没有专门题库，会自动生成 3 道保底问答，避免新区块没有自测。
+  - CS608 Q1 样章的 `worked-bva`、`worked-dt` 也加入专门问答。
+
+### 2026-05-08 18:08
+
+- 用户要求：每个 QA 环节再新增 3 个小问题，并且要明显和考试题目挂钩。
+- 已更新 `exam-prep-site/assets/app.js`：
+  - 新增 `examFollowups(section)`，每个 `section[id]` 的 QA 都会自动追加 3 道“考试追问”。
+  - CS615 页面追问偏向：题面识别、definition/example/trade-off/recommendation、工程职责边界。
+  - CS605 页面追问偏向：证明工具选择、证明硬结构、pumping/decider/reduction/NP 常见扣分点。
+  - CS608 页面追问偏向：测试表格或产物、expected result/oracle 来源、coverage explanation。
+  - CS603 页面追问偏向：形式化 property、交卷证据、invariant/Dafny/model checking 常见扣分点。
+  - 首页追问偏向：如何把网站路线转成每日复习动作、关键词补洞、考场自测。
+  - QA 展示上限从 5 道提高到 8 道，保证原有 3 道基础问答后能追加 3 道考试追问。
 
 ## 制作记录
 
