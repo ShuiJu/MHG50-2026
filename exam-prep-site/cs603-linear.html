@@ -1,40 +1,375 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CS603 线性教材学习路线</title><link rel="stylesheet" href="assets/styles.css"></head>
-  <body><a class="skip-link" href="#main">跳到正文</a><header class="site-header"><div class="topbar"><a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS603 Linear</small></a><nav class="topnav"><a href="index.html">总入口</a><a href="cs603.html">CS603 题型页</a><a href="#path">学习路线</a></nav></div></header>
-  <main id="main"><section class="hero"><p class="eyebrow">CS603 linear course path</p><h1>CS603 全教材线性学习：从逻辑到 Dafny、模型检测和 SMT</h1><p class="lead">这页按课程知识依赖顺序学习。先学逻辑和 Hoare triples，再学 Dafny 如何把证明写进程序，最后学模型检测、LTL/CTL、SAT/SMT 和需求形式化。</p></section>
-  <div class="layout"><article class="content">
-    <section id="path" class="section"><h2>1. 课程全景：为什么要形式化验证</h2><p>测试只能覆盖有限例子；形式化验证试图证明一类输入或一类行为全部满足性质。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
-      <tr><td>1.1</td><td>Module overview / failures</td><td><code>1. ModuleOverview.pdf</code>, <code>Software-Fails-Watch.pdf</code>, <code>FormalMethodsinIndustry.pdf</code></td><td>知道形式化方法解决什么问题。</td></tr>
-      <tr><td>1.2</td><td>Design / Programming by Contract</td><td><code>Design by Contract.pdf</code>, <code>Programming by Contract.pdf</code></td><td>能解释 precondition、postcondition、invariant。</td></tr>
-    </tbody></table></div></section>
-    <section class="section"><h2>2. Logic 和 Hoare Logic</h2><p>先学如何把句子变成逻辑公式，再学如何把程序片段夹在前后条件之间证明。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
-      <tr><td>2.1</td><td>Predicate / propositional logic</td><td><code>1_logic_603.pdf</code>, <code>labZ3_PropLogic.pdf</code></td><td>能解释 predicate、tautology、satisfiable、unsatisfiable。</td></tr>
-      <tr><td>2.2</td><td>Hoare logic</td><td><code>2_hoarelogic_RM.pdf</code>, <code>Hoare Logic Summary Sheet.pdf</code>, labs/exercises</td><td>能写 partial correctness proof。</td></tr>
-      <tr><td>2.3</td><td>Loops</td><td><code>Exercises from Lecture_ Hoare Logic Loop.pdf</code></td><td>能说明 invariant establishment/preservation/exit。</td></tr>
-    </tbody></table></div></section>
-    <section class="section"><h2>3. Dafny：程序和证明合在一起</h2><p>Dafny 用 requires/ensures/invariant/decreases 告诉 verifier 该证明什么。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
-      <tr><td>3.1</td><td>Dafny intro</td><td><code>1.Dafny_Intro.pdf</code>, <code>2.Dafny.pdf</code></td><td>能解释 requires、ensures、assert、ghost。</td></tr>
-      <tr><td>3.2</td><td>Recursion and termination</td><td><code>3.RecursionandTermination.pdf</code>, <code>Termination Exercise Sheet 2.pdf</code></td><td>能解释 decreases 为什么证明终止。</td></tr>
-      <tr><td>3.3</td><td>Loops and iterative programs</td><td><code>4.DafnyLoops.pdf</code>, <code>5.Iterative.pdf</code></td><td>能找 invariant 和 variant。</td></tr>
-      <tr><td>3.4</td><td>Arrays</td><td><code>Arrays I.pdf</code>, <code>7.ArraysII_short.pdf</code>, <code>LinearSearch.pdf</code></td><td>能写数组范围和 forall invariant。</td></tr>
-      <tr><td>3.5</td><td>Objects/classes</td><td><code>8.ObjectI2023.pdf</code></td><td>能解释 class invariant、constructor contract、ghost predicate。</td></tr>
-    </tbody></table></div></section>
-    <section class="section"><h2>4. Requirements、Refinement 和 Event-B</h2><p>在写代码前，需求本身也可能含糊。Formalising requirements 和 data refinement 讨论如何从自然语言需求走向更精确模型。</p><div class="table-wrap"><table><thead><tr><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
-      <tr><td>Formalising requirements / FRET</td><td><code>FormalisingRequirements.pdf</code>, <code>2026_Slides_Formalise.pdf</code></td><td>能解释 FRET 如何减少自然语言歧义。</td></tr>
-      <tr><td>Event-B / data refinement</td><td><code>EventB-Summary-refcard.pdf</code>, <code>2024_Slides_FMAS.pdf</code></td><td>能解释 abstract model 到 concrete implementation。</td></tr>
-    </tbody></table></div></section>
-    <section class="section"><h2>5. Model Checking 和 Temporal Logic</h2><p>Hoare/Dafny 适合程序前后条件；model checking 适合状态系统和时间性质。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
-      <tr><td>5.1</td><td>Kripke structures</td><td><code>MCLecture1CS603.pdf</code>, <code>MCLecture2CS603.pdf</code></td><td>能解释 state、transition、label、path。</td></tr>
-      <tr><td>5.2</td><td>LTL</td><td><code>21-ltl_rm.pdf</code>, <code>ltl_vissoft.pdf</code>, <code>temporal-examples_2023.pdf</code></td><td>能用 G/F/X/U 写性质。</td></tr>
-      <tr><td>5.3</td><td>CTL</td><td><code>22-ctl_rm.pdf</code>, <code>CTL_Exercises.pdf</code></td><td>能区分 A/E 路径量词。</td></tr>
-      <tr><td>5.4</td><td>Spin / NuSMV</td><td><code>MCL41VerifyingWithSPIN_cs603.pdf</code>, <code>Verifying with Spin (TL).pdf</code>, <code>SpinTutorial_fromSpinroot.pdf</code></td><td>能比较 Spin 和 NuSMV。</td></tr>
-    </tbody></table></div></section>
-    <section class="section"><h2>6. SAT、SMT、Z3 和 AI4SE</h2><p>最后学自动推理工具。SAT 只处理布尔真假；SMT 还懂整数、数组等理论；Z3 是 SMT solver。</p><div class="table-wrap"><table><thead><tr><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
-      <tr><td>SAT / DPLL / CDCL / CNF</td><td><code>sld_mth1.pdf</code>, <code>labZ3_PropLogic.pdf</code></td><td>能解释 sat/unsat/model 和 DPLL 基本思路。</td></tr>
-      <tr><td>SMT / Z3</td><td><code>Z3Exercises.pdf</code>, <code>labZ3_PropLogic.pdf</code></td><td>知道 Z3 如何用 check-sat/get-model。</td></tr>
-      <tr><td>AI4SE / neural network verification</td><td><code>AI4SE_Monahan1.pdf</code>, <code>CS603_FormalVerification_NeuralNetworks.pdf</code></td><td>知道形式化方法也可用于 AI/software engineering。</td></tr>
-    </tbody></table></div></section>
-    <section class="section"><h2>7. 最后接到考试</h2><p>读完线性页后，回到 <a href="cs603.html">CS603 题型页</a> 按 Q1-Q4 练：logic/Hoare、Dafny、FMAS/SAT、model checking。</p></section>
-  </article><aside class="toc"><h2>CS603 线性目录</h2><ol><li><a href="#path">课程全景</a></li><li><a href="cs603.html">题型页</a></li></ol></aside></div></main>
-  <footer class="footer"><p>线性页按知识依赖和本地讲义整理。</p></footer><script src="assets/app.js"></script></body></html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS603 线性教材精讲</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS603 Linear</small></a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="cs603.html">CS603 题型页</a>
+          <a href="#logic">Logic</a>
+          <a href="#hoare">Hoare</a>
+          <a href="#dafny">Dafny</a>
+          <a href="#model-checking">Model Checking</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS603 linear course</p>
+        <h1>CS603 教材线性精讲：从逻辑句子学到 Dafny 和模型检测</h1>
+        <p class="lead">CS603 的核心是把“程序应该正确”变成可以检查的数学句子。先学怎样写性质，再学怎样证明程序片段满足性质，再学 Dafny 怎样让工具帮你证明，最后学状态系统、时间性质和 SAT/SMT 自动求解。</p>
+        <div class="tag-list">
+          <a class="tag" href="#properties">性质</a>
+          <a class="tag" href="#logic">Logic</a>
+          <a class="tag" href="#hoare">Hoare</a>
+          <a class="tag" href="#dafny">Dafny</a>
+          <a class="tag" href="#model-checking">LTL / CTL</a>
+          <a class="tag" href="#sat-smt">SAT / SMT / Z3</a>
+          <a class="tag" href="#exam-ladder">考试台阶</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+          <section id="properties" class="section">
+            <h2>0. 形式化验证到底在证明什么</h2>
+            <p>Testing 用有限例子找 bug；formal verification 试图证明一类输入或一类行为都满足某个性质。这里的“性质”就是系统必须一直保持或最终达到的规则。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>普通说法</th><th>形式化说法</th><th>为什么要形式化</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>余额不能变成负数。</td><td><code>balance ≥ 0</code></td><td>可以让工具或证明检查每条路径是否保持。</td></tr>
+                  <tr><td>排序后数组仍包含原来的元素。</td><td>输出是输入的 permutation。</td><td>只检查“有序”不够，还要检查没丢元素。</td></tr>
+                  <tr><td>请求最终会得到回应。</td><td>temporal property: eventually response。</td><td>这种性质关心时间和路径，不只是程序结束时的值。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>四类正确性问题</h3>
+            <ol class="rung-list">
+              <li><strong>前后条件。</strong>如果开始时满足 precondition，程序结束后是否满足 postcondition。</li>
+              <li><strong>循环性质。</strong>循环每次迭代后是否保持 invariant，循环是否最终终止。</li>
+              <li><strong>状态系统性质。</strong>系统在多个状态之间跳转时，是否会到达坏状态，是否最终到达好状态。</li>
+              <li><strong>逻辑可满足性。</strong>一组约束是否存在某种赋值让它们同时成立。</li>
+            </ol>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>“程序不会崩溃”太模糊。更可证明的写法是：对所有满足 <code>0 ≤ i &lt; a.Length</code> 的输入，访问 <code>a[i]</code> 不越界；或者方法返回时 <code>result ≥ 0</code>。</p>
+            </div>
+            <p>对应材料：<code>1. ModuleOverview.pdf</code>、<code>Software-Fails-Watch.pdf</code>、<code>FormalMethodsinIndustry.pdf</code>、<code>Design by Contract.pdf</code>、<code>Programming by Contract.pdf</code>。</p>
+          </section>
+
+          <section id="logic" class="section">
+            <h2>1. Logic：把自然语言改写成可检查的句子</h2>
+            <p>Logic 是 CS603 的语法地基。它让我们把“如果输入有效，那么输出非负”这类话，写成能推理、能检查的公式。</p>
+            <h3>命题逻辑和谓词逻辑</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>概念</th><th>白话解释</th><th>例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Proposition</td><td>有真假值的完整句子。</td><td><code>x &gt; 0</code> 在给定 <code>x</code> 后有真假。</td></tr>
+                  <tr><td>Connective</td><td>连接真假句子的符号。</td><td><code>∧</code> and、<code>∨</code> or、<code>¬</code> not、<code>⇒</code> implies。</td></tr>
+                  <tr><td>Predicate</td><td>带变量的性质。</td><td><code>Even(n)</code> 表示 <code>n</code> 是偶数。</td></tr>
+                  <tr><td>Quantifier</td><td>说明变量范围。</td><td><code>∀</code> for all，<code>∃</code> exists。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>几个考试常见词</h3>
+            <div class="term-grid">
+              <div class="term"><strong>Satisfiable</strong>存在某种赋值让公式为 true。例如 <code>x&gt;0 ∧ x&lt;3</code> 可满足。</div>
+              <div class="term"><strong>Unsatisfiable</strong>没有任何赋值能让公式为 true。例如 <code>x&gt;0 ∧ x&lt;0</code> 不可满足。</div>
+              <div class="term"><strong>Tautology</strong>无论变量怎样取值都为 true。例如 <code>P ∨ ¬P</code>。</div>
+              <div class="term"><strong>Model</strong>让公式成立的一组赋值。SAT/SMT solver 返回的 model 就是一份可行赋值。</div>
+            </div>
+            <h3>Implication 最容易误读</h3>
+            <p><code>P ⇒ Q</code> 的意思是：只要 <code>P</code> 成立，<code>Q</code> 必须成立。如果 <code>P</code> 本来不成立，整句话不会被违反。程序证明里经常写“如果 precondition 成立，那么 postcondition 成立”。</p>
+            <h3>从英语到逻辑的台阶</h3>
+            <ol class="rung-list">
+              <li><strong>先找对象。</strong>例如数组、下标、余额、状态。</li>
+              <li><strong>再找范围。</strong>“所有合法下标”对应 <code>∀ i :: 0 ≤ i &lt; a.Length</code>。</li>
+              <li><strong>再找性质。</strong>例如 <code>a[i] ≥ 0</code>。</li>
+              <li><strong>最后组合。</strong>用 implication 表达条件，用 conjunction 表达多个要求。</li>
+            </ol>
+            <p>对应材料：<code>1_logic_603.pdf</code>、<code>labZ3_PropLogic.pdf</code>、<code>Z3Exercises.pdf</code>。</p>
+          </section>
+
+          <section id="contracts" class="section">
+            <h2>2. Design by Contract：把方法当成一份协议</h2>
+            <p>Contract 是调用者和方法之间的协议。调用者保证 precondition，方法保证 postcondition。Invariant 是对象或循环过程中必须保持的性质。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>词</th><th>白话解释</th><th>小例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Precondition</td><td>调用前必须满足的条件。</td><td>除法方法要求 denominator 不为 0。</td></tr>
+                  <tr><td>Postcondition</td><td>方法结束后承诺满足的条件。</td><td>返回值等于输入数组中的最大值。</td></tr>
+                  <tr><td>Invariant</td><td>在某段过程前后一直保持的条件。</td><td>银行账户余额始终非负。</td></tr>
+                  <tr><td>Partial correctness</td><td>如果程序终止，结果是对的。</td><td>不证明一定停机。</td></tr>
+                  <tr><td>Total correctness</td><td>程序会终止，而且结果正确。</td><td>需要额外证明 termination。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>责任边界</h3>
+            <p>如果调用者没有满足 precondition，方法不需要保证 postcondition。比如 <code>sqrt(x)</code> 规定 <code>x≥0</code>，调用者传 <code>-1</code>，那是调用者破坏协议。考试里要分清“方法应该防御所有坏输入”还是“contract 已经排除了坏输入”。</p>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>方法 <code>max(a)</code> 的 precondition 可以是 <code>a.Length &gt; 0</code>，postcondition 至少要说 result 是数组中某个元素，并且 result 大于等于每个元素。</p>
+            </div>
+          </section>
+
+          <section id="hoare" class="section">
+            <h2>3. Hoare Logic：用前后条件证明程序片段</h2>
+            <p>Hoare triple 写作 <code>{P} C {Q}</code>。意思是：如果执行程序片段 <code>C</code> 前 <code>P</code> 成立，并且 <code>C</code> 终止，那么执行后 <code>Q</code> 成立。</p>
+            <h3>基本规则从最小块开始</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>结构</th><th>证明怎么想</th><th>小例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Assignment</td><td>倒着看 postcondition，需要赋值前什么条件。</td><td>执行 <code>x := x + 1</code> 后要 <code>x&gt;0</code>，执行前需要 <code>x+1&gt;0</code>。</td></tr>
+                  <tr><td>Sequence</td><td>中间找一个 assertion 把两段接起来。</td><td><code>C1; C2</code> 先证明 <code>{P}C1{R}</code>，再证明 <code>{R}C2{Q}</code>。</td></tr>
+                  <tr><td>If</td><td>then 和 else 两条路都要证明。</td><td>条件 true 时证明一边，false 时证明另一边。</td></tr>
+                  <tr><td>While</td><td>找 invariant。</td><td>进入循环前成立，每次迭代后仍成立，退出时加上循环条件为 false 推出 postcondition。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Loop invariant 的三件事</h3>
+            <ol class="rung-list">
+              <li><strong>Establishment。</strong>循环第一次开始前，invariant 已经成立。</li>
+              <li><strong>Preservation。</strong>假设某次迭代前 invariant 成立，执行循环体后它仍成立。</li>
+              <li><strong>Exit use。</strong>循环结束时，invariant 加上循环条件为 false，能推出 postcondition。</li>
+            </ol>
+            <h3>Variant / ranking function 证明终止</h3>
+            <p>Total correctness 还要证明循环不会永远跑。Variant 是一个非负整数表达式，每次循环都严格变小。比如 <code>n - i</code> 每次迭代减少 1，且不能小于 0，就能证明循环终止。</p>
+            <div class="answer-box">
+              <p><strong>Loop proof 模板：</strong>State the invariant. Prove it holds before the loop. Prove one arbitrary iteration preserves it. At loop exit, combine invariant with the negation of the guard to derive the postcondition. For total correctness, give a non-negative variant that decreases on every iteration.</p>
+            </div>
+            <p>对应材料：<code>2_hoarelogic_RM.pdf</code>、<code>Hoare Logic Summary Sheet.pdf</code>、<code>Exercises from Lecture Hoare Logic if and assign.pdf</code>、<code>Exercises from Lecture_ Hoare Logic Loop.pdf</code>、<code>Hoare Logic Lab B.pdf</code>、<code>Hoare_LabA-1.pdf</code>。</p>
+          </section>
+
+          <section id="dafny" class="section">
+            <h2>4. Dafny：把证明写进程序，让 verifier 检查</h2>
+            <p>Dafny 是一种带验证器的语言。你不仅写程序，还写 contract、assertion、invariant 和 termination 信息。Verifier 会尝试证明这些性质，而不是只运行几个测试例子。</p>
+            <h3>Dafny 关键词</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>关键词</th><th>白话解释</th><th>考试里怎么用</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>requires</code></td><td>precondition，调用前要满足。</td><td>写输入范围、非空数组、非负数。</td></tr>
+                  <tr><td><code>ensures</code></td><td>postcondition，方法结束后要满足。</td><td>写返回值和输入之间的关系。</td></tr>
+                  <tr><td><code>assert</code></td><td>要求 verifier 在此处证明某句为 true。</td><td>帮助检查中间推理，也帮助定位证明断点。</td></tr>
+                  <tr><td><code>invariant</code></td><td>循环每次开始时都成立的性质。</td><td>数组循环要写范围和已处理部分的性质。</td></tr>
+                  <tr><td><code>decreases</code></td><td>证明递归或循环会终止的下降量。</td><td>递归参数变小，或循环剩余长度变小。</td></tr>
+                  <tr><td><code>ghost</code></td><td>只为证明存在，运行时不需要的变量或方法。</td><td>记录数学信息，帮助 verifier，不影响程序输出。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>写 Dafny 循环 invariant 的台阶</h3>
+            <ol class="rung-list">
+              <li><strong>范围 invariant。</strong>先写 <code>0 ≤ i ≤ a.Length</code> 这种最基本边界，否则数组访问很容易证明不了。</li>
+              <li><strong>已处理部分 invariant。</strong>说明 <code>0..i</code> 这段已经满足什么性质。</li>
+              <li><strong>结果变量 invariant。</strong>如果有 <code>max</code>、<code>sum</code>、<code>found</code>，说明它和已处理元素的关系。</li>
+              <li><strong>退出时能推出 ensures。</strong>当 <code>i == a.Length</code>，已处理部分就是整个数组。</li>
+              <li><strong>补 decreases。</strong>如果 verifier 看不出终止，写 <code>decreases a.Length - i</code>。</li>
+            </ol>
+            <h3>Arrays、recursion、classes 分别难在哪里</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>主题</th><th>难点</th><th>小台阶</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Recursion</td><td>要证明每次调用更接近 base case。</td><td>写清 base case，递归调用参数变小，用 <code>decreases</code>。</td></tr>
+                  <tr><td>Loops</td><td>Verifier 不会自动知道循环做了什么。</td><td>用 invariant 描述“已经完成的部分”。</td></tr>
+                  <tr><td>Arrays</td><td>要同时证明下标合法和元素性质。</td><td>范围 invariant + <code>forall</code> 描述已处理区域。</td></tr>
+                  <tr><td>Objects</td><td>对象状态要长期保持一致。</td><td>写 class invariant 或 ghost predicate，constructor 和 mutator 都要维护它。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="answer-box">
+              <p><strong>Dafny 解题顺序：</strong>先读 requires/ensures，确定要证明什么；再找循环或递归；写范围 invariant；写已处理部分 invariant；必要时加 assert 帮 verifier 看到中间事实；最后检查 termination。</p>
+            </div>
+            <p>对应材料：<code>1.Dafny_Intro.pdf</code>、<code>2.Dafny.pdf</code>、<code>3.RecursionandTermination.pdf</code>、<code>4.DafnyLoops.pdf</code>、<code>5.Iterative.pdf</code>、<code>Arrays I.pdf</code>、<code>7.ArraysII_short.pdf</code>、<code>LinearSearch.pdf</code>、<code>8.ObjectI2023.pdf</code>。</p>
+          </section>
+
+          <section id="requirements" class="section">
+            <h2>5. Requirements、Refinement 和 Event-B：代码前的形式化</h2>
+            <p>很多错误不是代码写错，而是需求本身含糊。Formalising requirements 的目标是把自然语言需求改成更精确、可检查、少歧义的描述。</p>
+            <h3>FRET 的思路</h3>
+            <p>FRET 关注需求句子的结构，比如在什么条件下、系统必须做什么、何时做、持续多久。它不只是翻译英文，而是逼你补齐触发条件、响应、时间范围和例外情况。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>需求弱点</th><th>为什么危险</th><th>形式化时补什么</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>“quickly”</td><td>没人知道多快算快。</td><td>具体时间界限，例如 within 2 seconds。</td></tr>
+                  <tr><td>“valid input”</td><td>valid 的范围不清楚。</td><td>输入类型、范围、格式。</td></tr>
+                  <tr><td>“normally”</td><td>例外情况没列。</td><td>条件、触发、异常路径。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Refinement 是逐步降低抽象层次</h3>
+            <p>Abstract model 描述“系统应该满足什么”，concrete implementation 描述“系统具体怎么做”。Data refinement 要证明具体数据结构的行为保持抽象模型的性质。换句话说，实现可以更具体，但不能违背抽象承诺。</p>
+            <p>对应材料：<code>FormalisingRequirements.pdf</code>、<code>2026_Slides_Formalise.pdf</code>、<code>EventB-Summary-refcard.pdf</code>、<code>2024_Slides_FMAS.pdf</code>。</p>
+          </section>
+
+          <section id="model-checking" class="section">
+            <h2>6. Model Checking：把系统看成状态图</h2>
+            <p>Hoare/Dafny 更像证明程序片段的前后条件；model checking 更适合并发、协议、控制系统这类会在状态之间不断跳转的系统。它把系统建成状态图，再检查时间性质是否在所有或某些路径上成立。</p>
+            <h3>Kripke structure 的部件</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>部件</th><th>白话解释</th><th>小例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>State</td><td>系统某一刻的情况。</td><td>door=open、door=closed。</td></tr>
+                  <tr><td>Initial state</td><td>系统开始状态。</td><td>电梯一开始在 ground floor。</td></tr>
+                  <tr><td>Transition</td><td>一个状态能跳到另一个状态。</td><td>按按钮后从 idle 到 moving。</td></tr>
+                  <tr><td>Label</td><td>某个状态下为真的命题。</td><td><code>alarm</code>、<code>request</code>、<code>grant</code>。</td></tr>
+                  <tr><td>Path</td><td>沿 transition 走出来的一条状态序列。</td><td>系统未来可能发生的一条路线。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>LTL：沿一条路径看时间</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>符号</th><th>意思</th><th>例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>X p</code></td><td>next：下一步 <code>p</code> 成立。</td><td>按下按钮后下一状态灯亮。</td></tr>
+                  <tr><td><code>F p</code></td><td>eventually：将来某时 <code>p</code> 成立。</td><td>请求最终被服务。</td></tr>
+                  <tr><td><code>G p</code></td><td>globally：从现在起一直 <code>p</code> 成立。</td><td>永远不会同时开两扇互斥门。</td></tr>
+                  <tr><td><code>p U q</code></td><td>until：<code>p</code> 一直成立直到 <code>q</code> 发生。</td><td>等待状态持续到 grant 发生。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>CTL：把路径量词写进公式</h3>
+            <p>CTL 把路径量词和时间操作符配对。<code>A</code> 表示所有路径，<code>E</code> 表示存在一条路径。比如 <code>AG safe</code> 表示所有路径上一直 safe；<code>EF error</code> 表示存在一条路径最终到达 error。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>公式</th><th>人话</th><th>常见用途</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>AG p</code></td><td>所有路径上，永远 <code>p</code>。</td><td>Safety：坏事永不发生。</td></tr>
+                  <tr><td><code>EF p</code></td><td>存在一条路径，最终 <code>p</code>。</td><td>Reachability：某状态是否可达。</td></tr>
+                  <tr><td><code>AF p</code></td><td>所有路径上，最终 <code>p</code>。</td><td>Liveness：好事一定会发生。</td></tr>
+                  <tr><td><code>EG p</code></td><td>存在一条路径，可以一直 <code>p</code>。</td><td>是否能永远停留在某类状态。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Spin 和 NuSMV</h3>
+            <p>Spin 常和 Promela、LTL、并发协议验证联系在一起；NuSMV 常用于符号模型检测和 CTL/LTL 性质。考试里重点不是工具命令细节，而是知道模型、性质、验证结果和 counterexample 的关系。</p>
+            <div class="answer-box">
+              <p><strong>Model checking 答题顺序：</strong>说明系统状态是什么，transition 是什么，label 表示什么；把需求写成 LTL 或 CTL；说明 model checker 会探索状态空间；若性质不成立，counterexample 是一条违反性质的路径。</p>
+            </div>
+            <p>对应材料：<code>MCLecture1CS603.pdf</code>、<code>MCLecture2CS603.pdf</code>、<code>MCLecture3CS603.pdf</code>、<code>MCLecture4CS603.pdf</code>、<code>21-ltl_rm.pdf</code>、<code>22-ctl_rm.pdf</code>、<code>temporal-examples_2023.pdf</code>、<code>MCL41VerifyingWithSPIN_cs603.pdf</code>、<code>Verifying with Spin (TL).pdf</code>、<code>SpinTutorial_fromSpinroot.pdf</code>。</p>
+          </section>
+
+          <section id="sat-smt" class="section">
+            <h2>7. SAT、SMT 和 Z3：自动求解逻辑约束</h2>
+            <p>SAT 问布尔公式能不能被某组 true/false 赋值满足。SMT 在 SAT 的基础上加入理论，例如整数、数组、位向量。Z3 是常见 SMT solver。</p>
+            <h3>SAT 基础词</h3>
+            <div class="term-grid">
+              <div class="term"><strong>Literal</strong>一个变量或它的否定，例如 <code>x</code> 或 <code>¬x</code>。</div>
+              <div class="term"><strong>Clause</strong>多个 literal 的 OR，例如 <code>x ∨ ¬y ∨ z</code>。</div>
+              <div class="term"><strong>CNF</strong>多个 clauses 的 AND，例如 <code>(x∨y) ∧ (¬x∨z)</code>。</div>
+              <div class="term"><strong>Model</strong>让公式为 true 的赋值，例如 <code>x=true, y=false</code>。</div>
+            </div>
+            <h3>DPLL / CDCL 的直觉</h3>
+            <p>DPLL 可以理解成系统地猜变量真假，配合简化和回溯。CDCL 在冲突时学习新的 clause，避免以后重复走同样死路。考试通常不需要手写完整 solver，但要知道它们是 SAT solver 背后的搜索和剪枝思想。</p>
+            <h3>SMT 比 SAT 多懂“理论”</h3>
+            <p>SAT 只知道布尔真假，不知道 <code>x+1&gt;x</code> 这种整数性质。SMT solver 懂一些背景理论，所以可以处理程序验证里常见的整数、数组、函数、等式约束。Dafny 背后也会把验证条件交给 SMT solver。</p>
+            <h3>Z3 的基本交互</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>动作</th><th>意思</th><th>结果</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>声明变量</td><td>告诉 solver 有哪些对象和类型。</td><td>例如整数 <code>x</code>、布尔 <code>p</code>。</td></tr>
+                  <tr><td>加入 constraints</td><td>把必须满足的条件放进去。</td><td>例如 <code>x &gt; 0</code> and <code>x &lt; 3</code>。</td></tr>
+                  <tr><td><code>check-sat</code></td><td>问是否有解。</td><td><code>sat</code>、<code>unsat</code> 或 <code>unknown</code>。</td></tr>
+                  <tr><td><code>get-model</code></td><td>如果 sat，取一组具体赋值。</td><td>例如 <code>x = 1</code>。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>对应材料：<code>sld_mth1.pdf</code>、<code>labZ3_PropLogic.pdf</code>、<code>Z3Exercises.pdf</code>、<code>AI4SE_Monahan1.pdf</code>、<code>CS603_FormalVerification_NeuralNetworks.pdf</code>。</p>
+          </section>
+
+          <section id="exam-ladder" class="section">
+            <h2>8. 把教材一路接到考试题</h2>
+            <p>CS603 的题看起来散，其实可以按“性质表达、程序证明、工具验证、状态模型”四类来读。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>台阶</th><th>你要会的动作</th><th>常见题型</th><th>去题型页练什么</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>把自然语言需求改写成逻辑性质。</td><td>Logic / FRET / requirements。</td><td><a href="cs603.html#logic">Logic</a></td></tr>
+                  <tr><td>2</td><td>识别 precondition、postcondition、invariant。</td><td>Contract / Hoare。</td><td><a href="cs603.html#hoare">Hoare</a></td></tr>
+                  <tr><td>3</td><td>证明循环 partial / total correctness。</td><td>Hoare loop proof。</td><td><a href="cs603.html#hoare">Loop invariant</a></td></tr>
+                  <tr><td>4</td><td>补 Dafny invariant、decreases、assert。</td><td>Dafny code questions。</td><td><a href="cs603.html#dafny">Dafny</a></td></tr>
+                  <tr><td>5</td><td>把系统画成状态图，写 LTL/CTL。</td><td>Model checking。</td><td><a href="cs603.html#model-checking">Model Checking</a></td></tr>
+                  <tr><td>6</td><td>解释 SAT/SMT/Z3 的 sat/unsat/model。</td><td>FMAS / solver / AI4SE。</td><td><a href="cs603.html#sat-smt">SAT/SMT</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>教材阅读顺序</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>顺序</th><th>材料</th><th>读完要能回答</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>Module overview, failures, industry, contract slides</td><td>形式化方法为什么不是普通测试？pre/post/invariant 分别约束什么？</td></tr>
+                  <tr><td>2</td><td>Logic slides, Z3 propositional lab</td><td>satisfiable、unsatisfiable、tautology、model 的区别是什么？</td></tr>
+                  <tr><td>3</td><td>Hoare logic notes, summary sheet, loop exercises</td><td>Hoare triple 怎么读？loop invariant 三件事是什么？variant 为什么证明终止？</td></tr>
+                  <tr><td>4</td><td>Dafny intro, recursion, loops, arrays, objects</td><td>Dafny 的 requires/ensures/invariant/decreases/ghost 怎样对应证明义务？</td></tr>
+                  <tr><td>5</td><td>Formalising requirements, FRET, Event-B, FMAS</td><td>需求为什么会有歧义？refinement 怎样保持抽象性质？</td></tr>
+                  <tr><td>6</td><td>Model checking lectures, LTL, CTL, Spin</td><td>state、transition、label、path 是什么？LTL 和 CTL 怎么表达时间性质？</td></tr>
+                  <tr><td>7</td><td>SAT/SMT/Z3, AI4SE, neural network verification</td><td>SAT 和 SMT 差在哪里？solver 返回 sat/unsat/model 分别意味着什么？</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>线性页负责把知识依赖顺下来；做题时回到 <a href="cs603.html">CS603 题型页</a>，按 logic/Hoare、Dafny、FMAS/SAT、model checking 四类练。</p>
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="CS603 线性目录">
+          <h2>CS603 线性目录</h2>
+          <ol>
+            <li><a href="#properties">性质</a></li>
+            <li><a href="#logic">Logic</a></li>
+            <li><a href="#contracts">Contract</a></li>
+            <li><a href="#hoare">Hoare</a></li>
+            <li><a href="#dafny">Dafny</a></li>
+            <li><a href="#requirements">Requirements</a></li>
+            <li><a href="#model-checking">Model Checking</a></li>
+            <li><a href="#sat-smt">SAT / SMT</a></li>
+            <li><a href="#exam-ladder">考试台阶</a></li>
+          </ol>
+        </aside>
+      </div>
+    </main>
+    <footer class="footer"><p>线性页按 CS603 讲义和题型依赖整理；题型模板见 <a href="cs603.html">CS603 题型页</a>。</p></footer>
+    <script src="assets/app.js"></script>
+  </body>
+</html>

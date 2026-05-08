@@ -3,45 +3,397 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CS605 线性教材学习路线</title>
+    <title>CS605 线性教材精讲</title>
     <link rel="stylesheet" href="assets/styles.css">
   </head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
-    <header class="site-header"><div class="topbar"><a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS605 Linear</small></a><nav class="topnav"><a href="index.html">总入口</a><a href="cs605.html">CS605 题型页</a><a href="#path">学习路线</a></nav></div></header>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS605 Linear</small></a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="cs605.html">CS605 题型页</a>
+          <a href="#language">语言</a>
+          <a href="#automata">自动机</a>
+          <a href="#reductions">归约</a>
+          <a href="#np-complete">NP-complete</a>
+        </nav>
+      </div>
+    </header>
+
     <main id="main">
-      <section class="hero"><p class="eyebrow">CS605 linear course path</p><h1>CS605 全教材线性学习：从自动机到 NP-complete</h1><p class="lead">这页按 annotated notes 的时间顺序学习。先学什么是字符串和机器，再学语言类别，最后学不可判定性、归约和复杂度。每一步都先解释为什么需要这个概念。</p></section>
-      <div class="layout"><article class="content">
-        <section id="path" class="section"><h2>1. 数学和语言地基</h2><p>理论计算机的对象不是某个 Java 程序，而是“字符串集合”。先学 alphabet、string、language、set、function、proof by contradiction，后面所有证明才有落脚点。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
-          <tr><td>1.1</td><td>Mathematical preliminaries</td><td>能读懂集合、函数、量词、证明结构。</td><td><code>2026-02-03-Notes-Mathematical_preliminaries_annotated.pdf</code>, <code>CS605 - Mathematical preliminaries.pdf</code></td></tr>
-          <tr><td>1.2</td><td>Historical foundations</td><td>知道课程关心“什么能被计算”。</td><td><code>A - Historical Foundations.pdf</code>, <code>CS605 Overview.pdf</code></td></tr>
-        </tbody></table></div></section>
-        <section class="section"><h2>2. Finite Automata 和 Regular Languages</h2><p>Finite automaton 像一个只有有限记忆的机器。Regular language 就是这种机器能识别的语言。它能处理简单模式，但不能无限计数。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
-          <tr><td>2.1</td><td>Finite automata</td><td>能画状态图，知道 start/accepting states。</td><td><code>2026-02-03-Notes-FAs_annotated.pdf</code>, <code>2026-02-04-Notes-FAs_cont_annotated.pdf</code></td></tr>
-          <tr><td>2.2</td><td>Regular languages</td><td>知道 finite languages regular，能理解非正则证明为什么需要 pumping lemma。</td><td><code>2026-02-04-Notes-Regular_languages_annotated.pdf</code></td></tr>
-        </tbody></table></div></section>
-        <section class="section"><h2>3. PDA 和 Context-Free Languages</h2><p>PDA 比 FA 多一个 stack，所以能处理一类嵌套或配对结构。Context-free language 是 PDA 能识别的语言。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
-          <tr><td>3.1</td><td>PDA</td><td>能解释 stack 为什么能处理 <code>a^n b^n</code>。</td><td><code>2026-02-05-Notes-PDAs_annotated.pdf</code></td></tr>
-          <tr><td>3.2</td><td>CFL</td><td>知道 not CFL proof 为什么需要考虑 <code>uvxyz</code> 的位置。</td><td><code>2026-02-06-Notes-Context_free_languages_annotated.pdf</code></td></tr>
-        </tbody></table></div></section>
-        <section class="section"><h2>4. Countability、Church-Turing 和 Turing Machines</h2><p>这一段把“机器”从 FA/PDA 推到通用计算。Turing machine 是抽象计算机；Church-Turing thesis 说所有合理计算模型本质上能计算同一类函数。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
-          <tr><td>4.1</td><td>Countable / uncountable</td><td>理解为什么“语言比机器多得多”。</td><td><code>2026-02-11-Notes-Countable_and_uncountable_annotated.pdf</code></td></tr>
-          <tr><td>4.2</td><td>Church-Turing thesis</td><td>知道 TM 为什么是计算能力的标准模型。</td><td><code>2026-02-18-Notes-Church-Turing-thesis_annotated.pdf</code></td></tr>
-          <tr><td>4.3</td><td>T-r and decidable</td><td>能区分 recogniser 和 decider。</td><td><code>2026-02-18-Notes-T-r-and-decidable_annotated.pdf</code>, <code>B - Computability I.pdf</code></td></tr>
-        </tbody></table></div></section>
-        <section class="section"><h2>5. Decidability 和 Undecidability</h2><p>Decidable 意味着一定停机并给 yes/no。Undecidable 意味着不存在这样的通用算法。HALT 是核心已知难题。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
-          <tr><td>5.1</td><td>Decidable examples</td><td>能构造 TM pseudocode 证明语言 decidable。</td><td><code>2026-02-25-Notes-Decidable_annotated.pdf</code></td></tr>
-          <tr><td>5.2</td><td>Non-T-r languages</td><td>理解 complement、co-T-r、不可识别。</td><td><code>2026-02-25-Notes-Non-T-r-languages_annotated.pdf</code></td></tr>
-          <tr><td>5.3</td><td>Mapping reductions</td><td>会用 HALT 翻译到新问题。</td><td><code>2026-03-04-Notes-Reductions_annotated.pdf</code>, <code>2026-03-11 Reductions with non-T-r languages_annotated.pdf</code>, reduction videos</td></tr>
-        </tbody></table></div></section>
-        <section class="section"><h2>6. Complexity：从能不能算到算得快不快</h2><p>Computability 问“有没有算法”。Complexity 问“算法要多久”。Polynomial time 是可扩展计算的基本界线。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
-          <tr><td>6.1</td><td>Asymptotic analysis</td><td>能比较 <code>n</code>, <code>n^2</code>, <code>2^n</code>。</td><td><code>2026-03-25-Notes-CCT_asymptotic_analysis_annotated.pdf</code>, <code>Growth rates.pdf</code></td></tr>
-          <tr><td>6.2</td><td>P and PTIME</td><td>知道 P 是 polynomial-time solvable。</td><td><code>2026-03-25-Notes-CCT_PTIME_annotated.pdf</code></td></tr>
-          <tr><td>6.3</td><td>NP</td><td>知道 certificate 和 verifier。</td><td><code>2026-04-01-Notes-CCT_NP_annotated.pdf</code></td></tr>
-          <tr><td>6.4</td><td>NP-complete</td><td>知道 in NP + NP-hard 两步证明。</td><td><code>NPc1.pdf</code>, <code>NPc2.pdf</code>, NP videos</td></tr>
-        </tbody></table></div></section>
-        <section class="section"><h2>7. 最后接到考试</h2><p>读完教材后再回到 <a href="cs605.html">CS605 题型页</a>，按 Q1-Q7 模板练 sample A/B。教材给理解，题型页给考试写法。</p></section>
-      </article><aside class="toc"><h2>CS605 线性目录</h2><ol><li><a href="#path">数学地基</a></li><li><a href="cs605.html">题型页</a></li></ol></aside></div>
-    </main><footer class="footer"><p>线性页按 annotated notes 顺序整理。</p></footer><script src="assets/app.js"></script>
+      <section class="hero">
+        <p class="eyebrow">CS605 linear course</p>
+        <h1>CS605 教材线性精讲：从“字符串集合”学到 NP-complete</h1>
+        <p class="lead">CS605 不是在考背定义，而是在考你能不能判断一个问题属于哪类，并用合适的证明工具说清楚。整门课可以沿着一条线学：先把问题写成语言，再看什么机器能处理它，再证明机器不够强，最后讨论算法快不快。</p>
+        <div class="tag-list">
+          <a class="tag" href="#language">字符串和语言</a>
+          <a class="tag" href="#automata">FA / PDA</a>
+          <a class="tag" href="#tm">TM / Decidable</a>
+          <a class="tag" href="#reductions">HALT 归约</a>
+          <a class="tag" href="#complexity">P / NP</a>
+          <a class="tag" href="#exam-ladder">考试台阶</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+          <section id="language" class="section">
+            <h2>0. 把题目翻译成“哪些字符串算 yes”</h2>
+            <p>理论计算机不直接讨论“这个 Java 程序好不好”，而是先把每个问题变成一个 yes/no 问题。输入是一个字符串；如果字符串满足题目条件，它就在语言里；不满足，就不在语言里。</p>
+            <div class="answer-box">
+              <p><strong>核心翻译：</strong>Language <code>L</code> = all encodings of inputs for which the answer is yes.</p>
+              <p>例如 <code>L = {&lt;M,w&gt; : M halts on input w}</code> 的意思是：把机器 <code>M</code> 和输入 <code>w</code> 编码成字符串；如果 <code>M</code> 在 <code>w</code> 上会停机，这个编码就在语言里。</p>
+            </div>
+            <h3>先把符号降到地面</h3>
+            <div class="term-grid">
+              <div class="term"><strong>Alphabet <code>Σ</code></strong>允许使用的字符集合。像键盘上被允许出现的字符清单。<code>{0,1}</code> 表示只能用 0 和 1。</div>
+              <div class="term"><strong>String / word</strong>字符排成的一串。<code>010</code>、<code>abba</code> 都是 string。空串写作 <code>ε</code>。</div>
+              <div class="term"><strong><code>Σ*</code></strong>alphabet 上所有有限字符串的集合，包括空串。它不是乘号，而是“所有可能长度”的意思。</div>
+              <div class="term"><strong>Language</strong>一组字符串。题目里的条件就是筛选规则：满足条件的字符串进入集合。</div>
+              <div class="term"><strong>Encoding</strong>把机器、图、公式、程序等对象写成字符串。理论课需要这样做，因为 TM 的输入必须是字符串。</div>
+              <div class="term"><strong>Complement</strong>同一个 universe 里所有不在 <code>L</code> 的字符串。证明 TR / co-TR 时常用。</div>
+            </div>
+            <h3>读语言定义的四步</h3>
+            <ol class="rung-list">
+              <li><strong>先找输入长什么样。</strong>如果有尖括号 <code>&lt;M,w&gt;</code>，输入通常是“某个对象的编码”。如果是 <code>{a^n b^n : n ≥ 0}</code>，输入就是普通字符串。</li>
+              <li><strong>再找 yes 条件。</strong>冒号或竖线后面的条件就是加入语言的规则，例如“halts”、“accepts”、“contains a clique”。</li>
+              <li><strong>把条件改写成人话。</strong>不要一看到公式就证明。先说“这个语言收集的是所有会停机的程序输入对”。</li>
+              <li><strong>判断该用哪类工具。</strong>普通字符串结构常接 pumping lemma；机器行为常接 decidable / recognisable / HALT reduction；图或集合优化常接 NP。</li>
+            </ol>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>看到 <code>L={&lt;G,k&gt; : G has a clique of size at least k}</code>，先不要写 NP。先说输入是图 <code>G</code> 和数字 <code>k</code> 的编码，yes 条件是图里存在至少 <code>k</code> 个两两相连的点。</p>
+            </div>
+            <h3>对应材料</h3>
+            <p><code>2026-02-03-Notes-Mathematical_preliminaries_annotated.pdf</code> 和 <code>CS605 - Mathematical preliminaries.pdf</code> 负责集合、函数、量词、证明结构；<code>A - Historical Foundations.pdf</code> 和 <code>CS605 Overview.pdf</code> 负责建立“什么能被计算”的课程问题。</p>
+          </section>
+
+          <section id="proof-basics" class="section">
+            <h2>1. 证明语言：反证法、量词和“任意切法”</h2>
+            <p>CS605 很多分数不是来自最后一句结论，而是来自你有没有控制好证明里的“谁先选、谁后选”。Pumping lemma 和 reductions 都特别看重这一点。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>证明词</th><th>白话意思</th><th>考试里怎么落笔</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Assume for contradiction</td><td>先假装相反结论是真的。</td><td>“Assume <code>L</code> is regular.” 后面推出矛盾。</td></tr>
+                  <tr><td>For all</td><td>所有情况都要成立。</td><td>Pumping proof 里不能只挑一种切法，要覆盖所有允许切法。</td></tr>
+                  <tr><td>There exists</td><td>只需要找到一个对象。</td><td>证明 in NP 时，只要 yes instance 存在一个好 certificate。</td></tr>
+                  <tr><td>If and only if</td><td>两边 yes/no 完全同步。</td><td>Reduction 正确性必须写 <code>x ∈ A iff f(x) ∈ B</code>。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>最容易踩的台阶</h3>
+            <ol class="rung-list">
+              <li><strong>不能用例子代替证明。</strong>举一个字符串 pump 坏了还不够，要说明所有合法切法都会坏。</li>
+              <li><strong>不能把 recogniser 写成 decider。</strong>Recogniser 只保证 yes 时停机；no 时可以永远跑。</li>
+              <li><strong>不能只说“reduce to HALT”。</strong>要说清楚从 HALT 的输入怎样构造新问题输入，以及为什么 yes/no 对齐。</li>
+              <li><strong>不能只写“obviously polynomial”。</strong>NP 相关题要指出 verifier 或 construction 主要循环了什么，规模为什么是多项式。</li>
+            </ol>
+          </section>
+
+          <section id="automata" class="section">
+            <h2>2. FA 和 Regular Languages：有限记忆能做到什么</h2>
+            <p>Finite Automaton 可以理解成“只有有限个状态的读字符串机器”。它从左到右读输入，每读一个字符就换状态。最后停在 accepting state 就接受，否则拒绝。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>部件</th><th>白话解释</th><th>小例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>State</td><td>机器当前记住的有限信息。</td><td>“目前看到偶数个 1”或“目前看到奇数个 1”。</td></tr>
+                  <tr><td>Start state</td><td>还没读输入时所在位置。</td><td>通常画一条箭头指进去。</td></tr>
+                  <tr><td>Transition</td><td>读到某个字符后去哪个状态。</td><td>在偶数状态读到 <code>1</code>，切到奇数状态。</td></tr>
+                  <tr><td>Accepting state</td><td>输入读完后若停在这里，就说字符串属于语言。</td><td>识别偶数个 1 时，偶数状态是 accepting。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Regular language 的直觉</h3>
+            <p>Regular language 是 FA 能识别的语言。它适合固定模式、有限历史、模数信息，比如“以 01 结尾”“包含偶数个 1”“没有连续 00”。它不擅长无限精确计数，比如“<code>a</code> 的数量必须等于后面 <code>b</code> 的数量”。</p>
+            <h3>从会画图到会证明</h3>
+            <ol class="rung-list">
+              <li><strong>先画能识别的简单语言。</strong>例如 even number of 1s。你会看到状态就是“机器能记住的摘要”。</li>
+              <li><strong>再问机器记不住什么。</strong><code>{a^n b^n : n ≥ 0}</code> 需要记住任意多的 <code>a</code> 数量，FA 状态有限，直觉上不够。</li>
+              <li><strong>最后用 pumping lemma 把直觉变成证明。</strong>有限状态意味着足够长的字符串读到中途必定重复某个状态，重复的那段就可以 pump。</li>
+            </ol>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>为什么 <code>{w : w ends with 01}</code> regular，而 <code>{a^n b^n : n ≥ 0}</code> 不 regular？答案不要只写“一个简单一个难”，要说前者只需记住最后两个字符，后者要比较任意大的数量。</p>
+            </div>
+            <p>对应材料：<code>2026-02-03-Notes-FAs_annotated.pdf</code>、<code>2026-02-04-Notes-FAs_cont_annotated.pdf</code>、<code>2026-02-04-Notes-Regular_languages_annotated.pdf</code>。</p>
+          </section>
+
+          <section id="pumping-regular" class="section">
+            <h2>3. Regular Pumping Lemma：证明 FA 不够用</h2>
+            <p>Pumping lemma 的中文直觉是：如果一个语言真的 regular，那么每个足够长的 yes 字符串里，都有一小段可以重复或删除，重复后仍然应该是 yes。我们要证明 not regular，就找一个 yes 字符串，让任何合法小段一动就变成 no。</p>
+            <h3>Regular pumping 里的每个条件</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>条件</th><th>人话</th><th>写证明时怎么用</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>w=xyz</code></td><td>把选中的字符串切成三段。</td><td>你不能指定所有切法，只能利用约束推断 <code>y</code> 在哪里。</td></tr>
+                  <tr><td><code>|xy| ≤ p</code></td><td><code>x</code> 和 <code>y</code> 都在前 <code>p</code> 个字符里。</td><td>若选 <code>w=a^p b^p</code>，则 <code>y</code> 只能由 <code>a</code> 组成。</td></tr>
+                  <tr><td><code>|y| &gt; 0</code></td><td>被 pump 的段不是空的。</td><td>删除或重复 <code>y</code> 一定会改变某些字符数量。</td></tr>
+                  <tr><td><code>xy^iz ∈ L</code></td><td>无论 pump 几次都还应在语言里。</td><td>找 <code>i=0</code> 或 <code>i=2</code> 让它坏掉。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>最小 worked example：<code>{a^n b^n : n ≥ 0}</code></h3>
+            <ol class="rung-list">
+              <li>假设这个语言 regular，于是有 pumping length <code>p</code>。</li>
+              <li>选 <code>w=a^p b^p</code>。这个字符串在语言里，长度也足够长。</li>
+              <li>任意合法切法 <code>w=xyz</code> 满足 <code>|xy|≤p</code>，所以 <code>y</code> 只能落在前面的 <code>a</code> 区域。</li>
+              <li>因为 <code>|y|&gt;0</code>，删掉 <code>y</code> 后，<code>a</code> 变少，<code>b</code> 仍是 <code>p</code> 个。</li>
+              <li><code>xy^0z</code> 不再满足 <code>a</code> 和 <code>b</code> 数量相等，矛盾。所以语言 not regular。</li>
+            </ol>
+            <div class="answer-box">
+              <p><strong>考试模板：</strong>Assume <code>L</code> is regular. Let <code>p</code> be the pumping length. Choose a carefully designed <code>w∈L</code> with <code>|w|≥p</code>. For any split <code>w=xyz</code> satisfying <code>|xy|≤p</code> and <code>|y|&gt;0</code>, show where <code>y</code> must lie. Pump with <code>i=0</code> or <code>i=2</code>. The pumped word violates the language definition, contradiction. Therefore <code>L</code> is not regular.</p>
+            </div>
+          </section>
+
+          <section id="pda-cfl" class="section">
+            <h2>4. PDA 和 CFL：一个 stack 能多做什么</h2>
+            <p>Pushdown Automaton 是 FA 加一个 stack。Stack 像一摞盘子，只能从顶上放和拿。这个额外记忆让 PDA 可以处理某些配对和嵌套结构，例如 <code>a^n b^n</code> 或括号匹配。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>模型</th><th>能记住什么</th><th>典型语言</th><th>边界</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>FA</td><td>有限状态。</td><td>以某后缀结尾、奇偶性。</td><td>不能准确匹配任意大数量。</td></tr>
+                  <tr><td>PDA</td><td>有限状态 + 一个 stack。</td><td><code>a^n b^n</code>、平衡括号。</td><td>难以同时比较三段或交叉依赖。</td></tr>
+                  <tr><td>TM</td><td>可读写的无限纸带。</td><td>一般算法能处理的问题。</td><td>仍然有不可判定问题。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>CFL pumping 和 regular pumping 的差别</h3>
+            <p>Regular pumping 切成 <code>xyz</code>，只 pump 中间一段 <code>y</code>。CFL pumping 切成 <code>uvxyz</code>，同时 pump <code>v</code> 和 <code>y</code>。原因是 context-free derivation 里可能有两处一起重复。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>CFL 条件</th><th>怎么理解</th><th>为什么考分情况</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>w=uvxyz</code></td><td>把字符串切成五段。</td><td>要跟踪 <code>v</code> 和 <code>y</code> 可能落在哪些区间。</td></tr>
+                  <tr><td><code>|vxy|≤p</code></td><td>中间三段总长度不超过 <code>p</code>。</td><td>它们只能覆盖局部区域，不能横跨太远的多段。</td></tr>
+                  <tr><td><code>|vy|&gt;0</code></td><td><code>v</code> 和 <code>y</code> 至少有一个非空。</td><td>pump 后一定有变化。</td></tr>
+                  <tr><td><code>uv^ixy^iz∈L</code></td><td>两段一起重复仍应在语言里。</td><td>找一个 <code>i</code> 打破数量或顺序关系。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>not CFL 的思路</h3>
+            <p>常见 not CFL 语言有三段相等或复制结构，例如 <code>{a^n b^n c^n : n ≥ 0}</code>。选 <code>w=a^p b^p c^p</code> 后，<code>vxy</code> 长度不超过 <code>p</code>，所以它不可能同时覆盖三段。pump 后最多改变一段或两段，三段相等会被破坏。</p>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>解释为什么 <code>|vxy|≤p</code> 是关键。它不是普通长度限制，而是在强迫 <code>v</code> 和 <code>y</code> 只能影响局部，不能同时“同步修正”所有需要相等的区域。</p>
+            </div>
+            <p>对应材料：<code>2026-02-05-Notes-PDAs_annotated.pdf</code>、<code>2026-02-06-Notes-Context_free_languages_annotated.pdf</code>。</p>
+          </section>
+
+          <section id="tm" class="section">
+            <h2>5. Turing Machine：从“识别模式”到“一般计算”</h2>
+            <p>Turing Machine 是抽象版计算机。它有一条可以读写的纸带，一个读写头，一组状态，以及根据当前状态和当前符号决定下一步的规则。它能模拟普通程序，因此后面讨论“有没有算法”时，都以 TM 为标准模型。</p>
+            <h3>Decider 和 recogniser 的差别</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>概念</th><th>yes 输入</th><th>no 输入</th><th>记忆句</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Decidable</td><td>accept and halt</td><td>reject and halt</td><td>永远会给 yes/no 答案。</td></tr>
+                  <tr><td>Turing-recognisable</td><td>accept and halt</td><td>may reject or loop forever</td><td>保证认出 yes，不保证处理完 no。</td></tr>
+                  <tr><td>co-Turing-recognisable</td><td>从 complement 角度看。</td><td>能认出 no 的一侧。</td><td><code>L̄</code> 是 T-r。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>构造 decider 的小台阶</h3>
+            <ol class="rung-list">
+              <li><strong>确认输入是有限对象。</strong>例如 finite automaton、word、graph、formula 都是有限编码。</li>
+              <li><strong>说明先检查编码合法。</strong>非法编码可以直接 reject，这样机器对所有输入都有定义。</li>
+              <li><strong>给出会结束的检查过程。</strong>FA 状态有限，word 长度有限，图节点有限，所以循环不会无限跑。</li>
+              <li><strong>写 accept/reject 条件。</strong>过程满足题目 yes 条件就 accept，否则 reject。</li>
+              <li><strong>最后补一句 halt on every input。</strong>这句是 decidable 题的生命线。</li>
+            </ol>
+            <h3>构造 recogniser 的小台阶</h3>
+            <p>Java program eventually prints something、TM eventually accepts something 这类题，常常只能模拟。只要模拟看到目标事件，就 accept；如果事件永远不发生，模拟就永远继续。这就是 Turing-recognisable 的自然形状。</p>
+            <div class="answer-box">
+              <p><strong>Recogniser 模板：</strong>On input encoding of a program or machine, simulate it step by step. If the required event is observed, accept. If the event never occurs, the simulation may run forever. Therefore every yes instance is eventually accepted, so the language is Turing-recognisable.</p>
+            </div>
+            <p>对应材料：<code>2026-02-11-Notes-Countable_and_uncountable_annotated.pdf</code>、<code>2026-02-18-Notes-Church-Turing-thesis_annotated.pdf</code>、<code>2026-02-18-Notes-T-r-and-decidable_annotated.pdf</code>、<code>2026-02-25-Notes-Decidable_annotated.pdf</code>、<code>B - Computability I.pdf</code>。</p>
+          </section>
+
+          <section id="reductions" class="section">
+            <h2>6. Undecidability 和 Mapping Reduction：把 HALT 翻译过去</h2>
+            <p>HALT 是核心已知难题：给你一台机器 <code>M</code> 和输入 <code>w</code>，问 <code>M</code> 在 <code>w</code> 上会不会停机。结论是没有一个 decider 能对所有 <code>&lt;M,w&gt;</code> 都正确回答。</p>
+            <p>Mapping reduction 的意思是：把一个已知难题的每个输入，机械地改造成新问题的输入。如果新问题能被判定，旧难题也能被判定。旧难题不可能被判定，所以新问题也不可能。</p>
+            <h3>Reduction 不是背方向，是看谁当“难度来源”</h3>
+            <div class="answer-box">
+              <p>要证明 <code>L</code> undecidable，通常写 <code>HALT ≤m L</code>。</p>
+              <p>这读作：HALT 可以被 many-one reduce 到 <code>L</code>。如果我有 <code>L</code> 的 decider，我就能先把 HALT 输入翻译成 <code>L</code> 输入，再调用 <code>L</code> 的 decider，从而解决 HALT。</p>
+            </div>
+            <h3>归约证明的五个台阶</h3>
+            <ol class="rung-list">
+              <li><strong>假设新语言 <code>L</code> decidable。</strong>这是假设对方给了你一个万能判断器 <code>D_L</code>。</li>
+              <li><strong>拿到 HALT 输入 <code>&lt;M,w&gt;</code>。</strong>你的目标是判断 <code>M</code> 会不会在 <code>w</code> 上停机。</li>
+              <li><strong>构造新实例。</strong>通常构造一个机器或程序 <code>N</code>，让 <code>N</code> 的某个性质正好取决于 <code>M</code> 是否 halt on <code>w</code>。</li>
+              <li><strong>证明 iff。</strong><code>&lt;M,w&gt;∈HALT</code> 当且仅当构造出的实例在 <code>L</code> 里。</li>
+              <li><strong>推出矛盾。</strong>如果 <code>D_L</code> 存在，就能 decide HALT，但 HALT undecidable。所以 <code>L</code> undecidable。</li>
+            </ol>
+            <h3>构造机器 <code>N</code> 时怎么想</h3>
+            <p>很多题会要求某个程序有 property，例如“prints hello”、“accepts some input”、“never writes to file”。你可以让 <code>N</code> 先模拟 <code>M(w)</code>。如果模拟停机，就触发题目 property；如果模拟不停机，property 就永远不会出现。这样新问题的 yes/no 被 HALT 控制。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题目 property</th><th>构造思路</th><th>yes/no 对齐</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Program eventually prints <code>hello</code></td><td><code>N</code> 先模拟 <code>M(w)</code>，若停机就 print <code>hello</code>。</td><td><code>N</code> 会 print 当且仅当 <code>M(w)</code> halts。</td></tr>
+                  <tr><td>TM accepts at least one string</td><td><code>N</code> 忽略自己的输入，先模拟 <code>M(w)</code>，若停机就 accept。</td><td><code>L(N)</code> nonempty 当且仅当 <code>M(w)</code> halts。</td></tr>
+                  <tr><td>Program reaches a line</td><td>把目标 line 放在模拟 <code>M(w)</code> 之后。</td><td>line reached 当且仅当模拟停机。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>TR / co-TR 的连接</h3>
+            <p>一个重要事实：如果 <code>L</code> 和 <code>L̄</code> 都 Turing-recognisable，那么 <code>L</code> decidable。方法是并行运行两个 recogniser，哪个先 accept 就给答案。所以如果你已经证明 <code>L</code> undecidable，而又证明 <code>L</code> 是 T-r，那么 <code>L̄</code> 就不能也是 T-r。</p>
+            <p>对应材料：<code>2026-02-25-Notes-Non-T-r-languages_annotated.pdf</code>、<code>2026-03-04-Notes-Reductions_annotated.pdf</code>、<code>2026-03-11 Reductions with non-T-r languages_annotated.pdf</code>、<code>C - Computability II.pdf</code>、reduction videos。</p>
+          </section>
+
+          <section id="complexity" class="section">
+            <h2>7. Complexity：从“能不能算”到“算得快不快”</h2>
+            <p>Computability 问有没有算法。Complexity 问算法随着输入变大，要花多少时间。一个问题可能 decidable，但需要指数时间，实际规模稍大就跑不动。</p>
+            <h3>增长速度怎么读</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>表达</th><th>人话</th><th>考试意义</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>O(n)</code></td><td>输入变两倍，时间大致也变两倍。</td><td>线性扫描。</td></tr>
+                  <tr><td><code>O(n^2)</code></td><td>常见双重循环。</td><td>仍是 polynomial。</td></tr>
+                  <tr><td><code>O(n^k)</code></td><td>固定幂次的多项式时间。</td><td>P 和 NP verifier 关注这个。</td></tr>
+                  <tr><td><code>O(2^n)</code></td><td>每增加一个元素，可能翻倍。</td><td>通常来自枚举所有子集，常被视为不可扩展。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>P 和 NP 不要混</h3>
+            <p><strong>P</strong> 是 polynomial time solvable：机器自己能在多项式时间内找到答案。<strong>NP</strong> 是 polynomial time verifiable：如果别人给你一个候选答案，你能在多项式时间内检查它是否正确。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>词</th><th>白话解释</th><th>例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Certificate</td><td>别人递给你的候选答案。</td><td>clique 题里，certificate 是一组选中的 vertices。</td></tr>
+                  <tr><td>Verifier</td><td>检查 certificate 是否有效的算法。</td><td>检查点数够不够，再检查每对点之间有没有边。</td></tr>
+                  <tr><td>Input size</td><td>输入编码的长度。</td><td>图题通常看 vertices 和 edges 的数量。</td></tr>
+                  <tr><td>Polynomial time</td><td>运行时间被某个固定幂次限制。</td><td>遍历所有边或所有点对通常可接受；遍历所有子集通常不可接受。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>证明 in NP 的四个台阶</h3>
+            <ol class="rung-list">
+              <li><strong>说 certificate 是什么。</strong>不要只写“guess a solution”。要具体：一组 vertices、一组 numbers、一个 assignment。</li>
+              <li><strong>检查格式和大小。</strong>例如 certificate 里的点是否都在图中，数量是否至少 <code>k</code>。</li>
+              <li><strong>检查题目条件。</strong>例如 clique 要检查每对选中点之间都有边。</li>
+              <li><strong>说明时间是 polynomial。</strong>例如最多检查 <code>k^2</code> 对点，每次查边，整体多项式。</li>
+            </ol>
+            <div class="answer-box">
+              <p><strong>in NP 模板：</strong>We construct a polynomial-time verifier <code>V</code>. The certificate is the proposed solution. <code>V</code> checks that the certificate has the right form and size, then checks the condition in the language definition. These checks require only polynomially many steps in the input size, so <code>L∈NP</code>.</p>
+            </div>
+            <p>对应材料：<code>2026-03-25-Notes-CCT-intro_annotated.pdf</code>、<code>2026-03-25-Notes-CCT_asymptotic_analysis_annotated.pdf</code>、<code>2026-03-25-Notes-CCT_PTIME_annotated.pdf</code>、<code>2026-04-01-Notes-CCT_NP_annotated.pdf</code>、<code>Growth rates.pdf</code>。</p>
+          </section>
+
+          <section id="np-complete" class="section">
+            <h2>8. NP-complete：既在 NP，又至少和已知难题一样难</h2>
+            <p>NP-complete 证明有两半。第一半是 membership：证明这个问题在 NP。第二半是 hardness：把一个已知 NP-complete 问题，在多项式时间内翻译成它。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>部分</th><th>要证明什么</th><th>常见扣分点</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>in NP</td><td>给 certificate 后能 polynomial-time verify。</td><td>忘记写 certificate，或忘记说明 runtime。</td></tr>
+                  <tr><td>NP-hard</td><td>已知 NP-complete 问题可多项式时间 reduce 到本题。</td><td>方向写反，或者只说“similar to 3-SAT”没有 construction。</td></tr>
+                  <tr><td>Correctness</td><td>原实例 yes 当且仅当新实例 yes。</td><td>只证明一个方向。</td></tr>
+                  <tr><td>Polynomial construction</td><td>翻译过程本身不能指数爆炸。</td><td>没有说明新实例大小。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>用 3-SAT 归约时怎么读</h3>
+            <p>3-SAT 输入是一组 clauses，每个 clause 有 3 个 literals。问题问是否存在一组 true/false assignment，让所有 clauses 都为 true。很多 reduction 会把 variable、literal、clause 变成图里的节点、集合里的元素或选择结构。</p>
+            <ol class="rung-list">
+              <li><strong>源问题先定清楚。</strong>例如从 <code>3-SAT</code>、<code>CLIQUE</code>、<code>VERTEX-COVER</code> 或 <code>HITTING-SET</code> 来。</li>
+              <li><strong>说明每个源问题部件变成什么。</strong>variable 变成选择 gadget，clause 变成必须满足的约束。</li>
+              <li><strong>证明 yes 到 yes。</strong>如果原公式可满足，怎样从 satisfying assignment 构造新问题的解。</li>
+              <li><strong>证明 yes 反推 yes。</strong>如果新问题有解，怎样读回原公式的 satisfying assignment。</li>
+              <li><strong>说明规模。</strong>每个 variable 和 clause 只产生多项式数量的新对象，所以 reduction polynomial。</li>
+            </ol>
+            <div class="answer-box">
+              <p><strong>NP-complete 模板：</strong>First, prove <code>L∈NP</code> by giving a polynomial-time verifier. Second, prove NP-hardness by reducing from a known NP-complete problem <code>A</code>. Given an instance <code>x</code> of <code>A</code>, construct an instance <code>f(x)</code> of <code>L</code> in polynomial time. Show <code>x∈A iff f(x)∈L</code>. Therefore <code>L</code> is NP-hard. Since <code>L∈NP</code>, <code>L</code> is NP-complete.</p>
+            </div>
+            <p>对应材料：<code>NPc1.pdf</code>、<code>NPc2.pdf</code>、NP-completeness videos、<code>CS605_NPhard_proofs_1_HittingSet.mp4</code>、<code>CS605_NPhard_proofs_2_Clique.mp4</code>、<code>CS605_NPhard_proofs_3_VertexCover.mp4</code>。</p>
+          </section>
+
+          <section id="exam-ladder" class="section">
+            <h2>9. 把教材一路接到考试题</h2>
+            <p>CS605 的考试不是随机散点。每道题基本都能先归到一种证明动作。复习时不要一口气硬背七套模板，而是按下面台阶走。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>台阶</th><th>你要会的动作</th><th>对应题型</th><th>去题型页练什么</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>读懂 language 和输入编码。</td><td>所有题。</td><td><a href="cs605.html#symbols">基础符号</a></td></tr>
+                  <tr><td>2</td><td>判断 FA / PDA / TM 的能力边界。</td><td>Q1、Q2。</td><td><a href="cs605.html#automata">三种机器</a></td></tr>
+                  <tr><td>3</td><td>用 pumping lemma 证明 not regular / not CFL。</td><td>Q1(a)(b)。</td><td><a href="cs605.html#pumping">Pumping 模板</a></td></tr>
+                  <tr><td>4</td><td>构造 decider 或 recogniser。</td><td>Q2。</td><td><a href="cs605.html#tm">TM 与可判定</a></td></tr>
+                  <tr><td>5</td><td>从 HALT 做 mapping reduction。</td><td>Q3-Q5。</td><td><a href="cs605.html#reductions">HALT reductions</a></td></tr>
+                  <tr><td>6</td><td>写 certificate 和 polynomial verifier。</td><td>Q6。</td><td><a href="cs605.html#np">NP</a></td></tr>
+                  <tr><td>7</td><td>写 in NP + NP-hard reduction。</td><td>Q7。</td><td><a href="cs605.html#np">NP-complete</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>教材阅读顺序</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>顺序</th><th>材料</th><th>读完要能回答</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>Mathematical preliminaries, Historical Foundations, Overview</td><td>什么是 language？为什么问题要编码成字符串？反证法在证明里怎么用？</td></tr>
+                  <tr><td>2</td><td>FAs, FAs cont, Regular languages</td><td>FA 能记住什么？regular language 为什么等于有限记忆可识别？</td></tr>
+                  <tr><td>3</td><td>PDAs, Context-free languages</td><td>Stack 解决了什么？CFL pumping 为什么要分情况？</td></tr>
+                  <tr><td>4</td><td>Countable/uncountable, Church-Turing, T-r and decidable</td><td>为什么 TM 是通用计算模型？decider 和 recogniser 差在哪里？</td></tr>
+                  <tr><td>5</td><td>Decidable, Non-T-r languages, Reductions</td><td>如何构造会停机的 decider？HALT reduction 的 iff 怎么写？</td></tr>
+                  <tr><td>6</td><td>CCT intro, asymptotic analysis, PTIME, NP</td><td>P 和 NP 的差别是什么？certificate 和 verifier 怎样落到具体题？</td></tr>
+                  <tr><td>7</td><td>NPc1, NPc2, NP-hard proof videos, Sample A/B</td><td>NP-complete 证明为什么必须有 membership 和 hardness 两半？</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>做题时回到 <a href="cs605.html">CS605 题型页</a>。线性页负责把概念讲顺，题型页负责把这些概念压成可交卷的答案结构。</p>
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="CS605 线性目录">
+          <h2>CS605 线性目录</h2>
+          <ol>
+            <li><a href="#language">语言</a></li>
+            <li><a href="#proof-basics">证明语言</a></li>
+            <li><a href="#automata">FA / Regular</a></li>
+            <li><a href="#pumping-regular">Regular Pumping</a></li>
+            <li><a href="#pda-cfl">PDA / CFL</a></li>
+            <li><a href="#tm">TM</a></li>
+            <li><a href="#reductions">Reductions</a></li>
+            <li><a href="#complexity">P / NP</a></li>
+            <li><a href="#np-complete">NP-complete</a></li>
+            <li><a href="#exam-ladder">考试台阶</a></li>
+          </ol>
+        </aside>
+      </div>
+    </main>
+    <footer class="footer"><p>线性页按 CS605 annotated notes、complexity notes 和 sample 题型整理；考试模板见 <a href="cs605.html">CS605 题型页</a>。</p></footer>
+    <script src="assets/app.js"></script>
   </body>
 </html>

@@ -14,61 +14,98 @@
         <nav class="topnav" aria-label="主导航">
           <a href="index.html">总入口</a>
           <a href="cs615.html">CS615 题型页</a>
+          <a href="#textbook-audit">教材流程</a>
           <a href="#request">网页请求</a>
-          <a href="#materials">教材顺序</a>
+          <a href="#rails">Rails</a>
+          <a href="#node-react">Node / React</a>
+          <a href="#exam-ladder">考试台阶</a>
         </nav>
       </div>
     </header>
+
     <main id="main">
       <section class="hero">
         <p class="eyebrow">CS615 linear course</p>
-        <h1>CS615 教材线性精讲：从一次网页请求学完整门课</h1>
-        <p class="lead">CS615 的主线是 Web 应用工程：用户在浏览器点一下，系统怎样接收请求、运行规则、读写数据、返回页面，最后怎样上线、保护和维护。下面按教材顺序学，术语第一次出现时都用白话拆开。</p>
+        <h1>CS615 教材线性精讲：从一次请求反推整门 Web 工程</h1>
+        <p class="lead">CS615 的教材不是在随机介绍 Rails、Spring、Node、React 和 AI，而是在反复训练同一件事：一个 Web 系统怎样分层、怎样读写数据、怎样暴露 API、怎样保护和部署。复习时先建立这条主线，再把每份讲义放到主线上的对应位置。</p>
+        <div class="tag-list">
+          <a class="tag" href="#textbook-audit">教材反推流程</a>
+          <a class="tag" href="#request">Request / Response</a>
+          <a class="tag" href="#architecture">3-Tier / MVC</a>
+          <a class="tag" href="#database">SQL / NoSQL</a>
+          <a class="tag" href="#rails">Rails</a>
+          <a class="tag" href="#spring">Spring REST</a>
+          <a class="tag" href="#node-react">Node / React</a>
+          <a class="tag" href="#delivery">CI/CD / AI</a>
+        </div>
       </section>
+
       <div class="layout">
         <article class="content">
-          <section id="request" class="section">
-            <h2>0. 一次网页请求经过哪些地方</h2>
-            <p>先想象一个最普通的动作：用户打开购物网站，搜索一件商品，然后点“加入购物车”。这一下不是“网页自己完成了所有事”，而是浏览器和服务器来回传消息。</p>
-            <div class="two-col">
-              <div class="card">
-                <h3>浏览器这边发生什么</h3>
-                <p>浏览器是用户的客户端。它负责显示 HTML 页面，执行 JavaScript，套用 CSS 样式，收集用户点击、输入、选择这些动作。当用户提交搜索词时，浏览器会发出一个 HTTP request。</p>
-                <p>HTTP request 可以理解成一封格式固定的信，里面通常有 URL、method、headers 和 body。URL 说明信要寄到哪里，method 说明想做什么，body 放表单或 JSON 数据。</p>
-              </div>
-              <div class="card">
-                <h3>服务器这边发生什么</h3>
-                <p>服务器收到 request 后，不是随便找一段代码执行，而是先看 route。Route 是“哪种 URL 交给哪段程序处理”的规则。处理 request 的代码通常叫 controller。</p>
-                <p>Controller 会调用业务逻辑，比如检查库存、计算折扣、验证用户是否登录。需要长期保存或查询的数据会交给数据库。最后服务器把结果包装成 response，可能是一页 HTML，也可能是一段 JSON。</p>
-              </div>
-            </div>
-            <h3>这一门课最基本的词</h3>
+          <section id="textbook-audit" class="section">
+            <h2>0. 从教材反推学习流程</h2>
+            <p>从本地 CS615 材料看，课程不是先教某一个框架的语法，而是先给 Web 系统的骨架，再用不同技术栈反复实现同一套骨架。现在的学习流程应该按“概念地基 -> 后端框架 -> 前后端 API -> 工程质量 -> 交付运维 -> sample 新题型”走。</p>
             <div class="table-wrap">
               <table>
                 <thead>
-                  <tr><th>词</th><th>白话理解</th><th>CS615 里怎么用</th></tr>
+                  <tr><th>教材组</th><th>教材真正要训练什么</th><th>学完要能说什么</th><th>接到考试</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Client</td><td>用户手上的那一端，例如浏览器或手机 App。</td><td>Presentation layer，负责界面和交互。</td></tr>
-                  <tr><td>Server</td><td>接收请求、运行程序、返回结果的机器或云服务。</td><td>Application layer，跑 Rails、Spring、Express 等后端框架。</td></tr>
-                  <tr><td>Database</td><td>长期保存数据的地方，不是程序临时变量。</td><td>Data layer，保存 users、orders、products、logs 等数据。</td></tr>
-                  <tr><td>API</td><td>给别的程序调用的入口。前端不需要知道后端内部怎么写，只按 API 传入和取回数据。</td><td>React 前端调用 REST API，Express/Spring/Rails 提供 API。</td></tr>
-                  <tr><td>JSON</td><td>一种用键值对表示数据的文本格式，适合浏览器和服务器交换数据。</td><td><code>{"name":"Ada","role":"admin"}</code> 这种结构常作为 request 或 response body。</td></tr>
-                  <tr><td>CRUD</td><td>Create、Read、Update、Delete，也就是增、查、改、删。</td><td>几乎所有 Web 数据功能都能先拆成 CRUD。</td></tr>
-                  <tr><td>Business logic</td><td>业务规则，例如“学生必须通过前置课才能注册这门课”。</td><td>不应全部塞进 controller，复杂时放到 service 或 model 相关层。</td></tr>
+                  <tr><td><code>DB_WS_C.pdf</code>, <code>ArchitecturalPatterns.pdf</code></td><td>Web 系统的分层和数据地基。</td><td>一个 request 怎样经过前端、业务层、数据库；pattern 和 framework 的区别。</td><td>Full-stack、3-tier、MVC、SQL/NoSQL 比较题。</td></tr>
+                  <tr><td><code>Introduction to Ruby.pdf</code>, Rails 相关材料, gem 材料</td><td>用 Rails 看清 MVC、route、controller、model、Active Record。</td><td>为什么 controller 不该又处理业务又直接拼数据库细节。</td><td>MVC 25 分题、sample Rails controller code review。</td></tr>
+                  <tr><td>Spring / REST / Data / Forms and Security</td><td>用 Java 后端把 REST、service、repository、安全输入串起来。</td><td>REST API 如何暴露 resource，Spring 分层为什么利于测试和维护。</td><td>REST、cloud app、forms/security、framework comparison。</td></tr>
+                  <tr><td><code>WSFE.pdf</code></td><td>把 Node/Express/Mongoose 后端和 React 前端接成完整 Web app。</td><td>Express route/middleware/controller/model 的路径，以及 React 组件如何调用 API。</td><td>Node callback/output、chaining、React vs vanilla、componentization。</td></tr>
+                  <tr><td><code>Security.pdf</code>, quality 相关真题</td><td>功能之外的网站质量：accessibility、SEO、SQL injection、XSS。</td><td>一个网站为什么“能跑”还不够，用户、搜索引擎、攻击者都会影响设计。</td><td>Accessibility、SEO、security 防御题。</td></tr>
+                  <tr><td><code>CICDOBS.pdf</code>, <code>VibeCoding.pdf</code>, <code>CS615Sample.pdf</code></td><td>把 Web 工程放进交付、监控、AI-assisted development 的真实流程。</td><td>CI/CD、observability、AI agents 是 SDLC 的辅助机制，不是替代工程判断。</td><td>Sample Q1-Q4：microservices、AI agents、Rails SRP、CI/CD observability。</td></tr>
                 </tbody>
               </table>
             </div>
-            <div class="answer-box">
-              <p><strong>最小完整链条：</strong>浏览器发出 <code>GET /products?q=book</code>，服务器 route 找到产品 controller，controller 调用 service 处理搜索规则，service 通过 repository 或 model 查询数据库，数据库返回记录，服务器把结果变成 JSON 或 HTML response，浏览器再渲染给用户。</p>
+            <h3>审视后的结论</h3>
+            <ol class="rung-list">
+              <li><strong>不能先从 React 或 AI 开始。</strong>它们很显眼，但没有 request、API、数据库、分层这些地基，React 只是页面语法，AI agents 也只会变成空泛议论文。</li>
+              <li><strong>Rails 和 Spring 不是两门孤立技术。</strong>它们都在训练“request 进 controller，业务规则放合适位置，数据访问有边界”。区别是 Rails 更强调 convention，Spring 更强调显式分层和 dependency injection。</li>
+              <li><strong>WSFE 是桥。</strong>它把后端 API、MongoDB/Mongoose、Express 和 React 连起来，所以应该放在 Rails/Spring 之后读，而不是只当 JavaScript 笔记。</li>
+              <li><strong>Security 和 CICDOBS 要回贴到主线。</strong>安全不是单独背 XSS；CI/CD 也不是单独背 pipeline。它们都服务于“这个 Web app 如何安全、可靠、可维护地运行”。</li>
+              <li><strong>题型页最后收束。</strong>线性页把知识学通，<a href="cs615.html">CS615 题型页</a> 把同一批知识压成历年题和 sample 的答案结构。</li>
+            </ol>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>如果你只能用一句话串起整门 CS615，应该能说：用户请求进入 Web app 后，系统通过分层架构和框架处理业务、访问数据、返回界面或 JSON，并通过安全、云、CI/CD、observability 和 AI-assisted workflow 保证它可用、可维护、可交付。</p>
             </div>
-            <h3>对应教材</h3>
-            <p>从 <code>DB_WS_C.pdf</code> 的 3-tier architecture 入手，再读 <code>ArchitecturalPatterns.pdf</code>。这两份材料负责帮你建立“前端、业务、数据分层”的地图，后面的 Rails、Spring、Node、React 都是在这张地图上换不同技术。</p>
+          </section>
+
+          <section id="request" class="section">
+            <h2>1. 一次网页请求经过哪些地方</h2>
+            <p>先想象一个普通动作：用户打开购物网站，搜索商品，然后点“加入购物车”。浏览器不会自己完成所有事情。它会向服务器发送 request，服务器处理业务规则和数据库，再把 response 发回来。</p>
+            <h3>最小请求链条</h3>
+            <ol class="rung-list">
+              <li><strong>用户操作浏览器。</strong>浏览器显示 HTML/CSS，运行 JavaScript，收集点击、输入、选择。</li>
+              <li><strong>浏览器发 HTTP request。</strong>Request 里有 URL、method、headers，有时还有 body。URL 说明找谁，method 说明想做什么，body 放表单或 JSON。</li>
+              <li><strong>服务器用 route 找处理代码。</strong>Route 是 URL 和 controller action 的对应规则。</li>
+              <li><strong>Controller 协调业务。</strong>Controller 读取参数，调用 service/model/repository，检查权限和输入。</li>
+              <li><strong>数据库保存或查询长期数据。</strong>订单、用户、商品、收据不会只放在内存变量里。</li>
+              <li><strong>服务器返回 response。</strong>Response 可能是 HTML 页面，也可能是 JSON，让 React 或浏览器继续渲染。</li>
+            </ol>
+            <h3>基础词先落地</h3>
+            <div class="term-grid">
+              <div class="term"><strong>Client / Browser</strong>用户实际操作的一端。浏览器负责显示页面、运行前端 JavaScript、发 request。</div>
+              <div class="term"><strong>Server / Backend</strong>处理请求的一端。它运行 Rails、Spring、Express 等框架，执行规则并返回结果。</div>
+              <div class="term"><strong>Database</strong>长期保存数据的系统。服务器重启后，用户、订单、收据仍然存在。</div>
+              <div class="term"><strong>API</strong>给程序调用的入口。前端不需要知道后端内部代码，只按 API 传入和取回数据。</div>
+              <div class="term"><strong>JSON</strong>键值对文本格式，适合浏览器和服务器交换数据，例如 <code>{"id":15,"total":90}</code>。</div>
+              <div class="term"><strong>Business logic</strong>业务规则，例如库存是否够、用户是否能下单、折扣怎样计算。</div>
+            </div>
+            <div class="answer-box">
+              <p><strong>最小完整链条：</strong>Browser sends <code>GET /products?q=book</code>. Router maps the URL to a controller action. The controller calls business logic and data access code. The database returns matching records. The server returns HTML or JSON. The browser renders the result.</p>
+            </div>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>解释 <code>POST /orders</code> 和 <code>GET /orders/15</code> 的区别：前者通常创建新订单，后者读取已有订单。它们都是 request，但 method 和目的不同。</p>
+            </div>
           </section>
 
           <section id="architecture" class="section">
-            <h2>1. 三层架构：前端、业务、数据各管什么</h2>
-            <p>三层架构把一个 Web 系统拆成 presentation layer、business logic layer、data access layer。它的目的不是为了画图好看，而是为了减少互相牵连。界面改版时，不应该顺手破坏数据库；数据库换表结构时，也不应该让每个按钮都重写。</p>
+            <h2>2. 三层架构、MVC 和 framework 的关系</h2>
+            <p>CS615 很多题都在考 separation of concerns，也就是把不同责任拆开。三层架构从系统层面拆：presentation、business logic、data access。MVC 从 Web framework 代码结构上拆：model、view、controller。</p>
+            <h3>三层架构先建立边界</h3>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -76,250 +113,268 @@
                 </thead>
                 <tbody>
                   <tr><td>Presentation layer</td><td>显示页面、收集输入、给用户反馈。</td><td>不直接连数据库，不保存核心业务规则。</td><td>HTML、CSS、JavaScript、React。</td></tr>
-                  <tr><td>Business logic layer</td><td>处理规则、验证输入、协调其他服务。</td><td>不把页面样式写在这里，不把 SQL 到处散落。</td><td>Rails controller/service、Spring service、Express controller。</td></tr>
-                  <tr><td>Data access layer</td><td>读写数据库，保证数据持久保存和可取回。</td><td>不决定页面长什么样，不处理大量界面逻辑。</td><td>Active Record、JPA repository、Mongoose model。</td></tr>
+                  <tr><td>Business logic layer</td><td>验证输入、处理规则、协调服务。</td><td>不写页面样式，不把 SQL 到处散落。</td><td>Rails controller/service、Spring service、Express controller。</td></tr>
+                  <tr><td>Data access layer</td><td>读写数据库，保证数据可保存和可取回。</td><td>不决定页面长相，不处理界面状态。</td><td>Active Record、JPA repository、Mongoose model。</td></tr>
                 </tbody>
               </table>
             </div>
-            <h3>为什么客户端不能直接连数据库</h3>
-            <p>如果浏览器直接连接数据库，用户就可能绕过服务器的检查。比如价格本来只能由后端计算，恶意用户却可以直接修改订单金额。服务器中间层的价值在于统一检查身份、验证输入、运行业务规则、限制数据库权限。</p>
-            <h3>Full-stack 的真正意思</h3>
-            <p>Full-stack developer 不是“每个技术都背得很细”，而是能理解从页面到数据库的完整路径。考试里问 full-stack，答案通常要同时覆盖前端、后端、数据库、API、安全和部署，而不是只列 React、Node、MongoDB 这些名字。</p>
-            <h3>Architectural pattern 和 framework 的区别</h3>
-            <p>Architectural pattern 是组织系统的思路，例如三层架构、MVC、microservices。Framework 是帮你落地这个思路的工具，例如 Rails、Spring Boot、Express。Pattern 回答“应该怎么分工”，framework 回答“用什么代码结构和工具来实现”。</p>
-            <div class="answer-box">
-              <p><strong>考试写法：</strong>先画或描述三层，再说明 request 怎样穿过三层，最后说出这样分层带来的好处：可维护、可测试、安全边界清楚、前后端可以分别演进。</p>
-            </div>
-          </section>
-
-          <section id="database" class="section">
-            <h2>2. 数据库：表格数据、文档数据和出错代价</h2>
-            <p>数据库选择题不能只写“SQL 适合 structured data，NoSQL 适合 unstructured data”。这句话太粗。真正要判断的是三件事：数据形状是否稳定、数据之间关系是否复杂、出错时能不能接受短暂不一致。</p>
-            <h3>关系型数据库从表格开始理解</h3>
-            <p>Relational database 把数据放在 tables 里。Table 像一张表，row 是一条记录，column 是字段。比如 <code>users</code> 表有 <code>id</code>、<code>email</code>、<code>name</code>；<code>orders</code> 表有 <code>id</code>、<code>user_id</code>、<code>total</code>。这里的 <code>user_id</code> 就把订单和用户连起来。</p>
+            <h3>MVC 放在三层里怎么理解</h3>
             <div class="table-wrap">
               <table>
                 <thead>
-                  <tr><th>数据库词</th><th>白话解释</th><th>小例子</th></tr>
+                  <tr><th>MVC 部分</th><th>职责</th><th>三层视角</th><th>考试关键词</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Schema</td><td>数据库表的固定结构，规定有哪些字段、字段类型是什么。</td><td><code>users.email</code> 必须是文本，<code>orders.total</code> 必须是数字。</td></tr>
-                  <tr><td>Primary key</td><td>一张表里唯一识别某条记录的字段。</td><td><code>users.id = 42</code> 表示第 42 个用户。</td></tr>
-                  <tr><td>Foreign key</td><td>一张表里的字段指向另一张表的主键。</td><td><code>orders.user_id</code> 指向下单用户。</td></tr>
-                  <tr><td>Join</td><td>把多张表按关系合起来查。</td><td>查订单时顺便显示用户 email 和配送地址。</td></tr>
-                  <tr><td>Transaction</td><td>一组操作要么全部成功，要么全部取消。</td><td>付款成功和库存减少必须一起发生。</td></tr>
+                  <tr><td>Model</td><td>代表数据和接近数据的规则。</td><td>靠近 data access / domain layer。</td><td>data, validation, Active Record, entity。</td></tr>
+                  <tr><td>View</td><td>显示用户看到的页面或界面片段。</td><td>presentation layer。</td><td>HTML, template, rendering, UI。</td></tr>
+                  <tr><td>Controller</td><td>接 request，读参数，调用 model/service，选择 response。</td><td>business/application coordination。</td><td>route, action, params, response。</td></tr>
                 </tbody>
               </table>
             </div>
-            <h3>ACID 用付款场景记</h3>
-            <p>ACID 是事务可靠性的四个要求。不要把它背成四个英文缩写，要把它放到“付款”这种不能乱来的场景里。</p>
+            <h3>Pattern 和 framework 不要混</h3>
+            <p>Architectural pattern 是组织系统的思想，例如 3-tier、MVC、microservices。Framework 是帮你落地这些思想的工具，例如 Rails、Spring Boot、Express。考试里看到 pattern，要讲职责和 trade-off；看到 framework，要讲它怎样组织代码和请求流程。</p>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>为什么浏览器不该直接连数据库？因为用户可以绕过服务器的权限、价格、库存、验证规则。后端中间层负责统一检查身份、验证输入、运行业务逻辑，并限制数据库权限。</p>
+            </div>
+            <p>对应教材：<code>DB_WS_C.pdf</code>、<code>ArchitecturalPatterns.pdf</code>。这两份先读，因为它们决定后面 Rails、Spring、Node/Express、React 应该放在哪个位置。</p>
+          </section>
+
+          <section id="database" class="section">
+            <h2>3. 数据库：数据形状、关系和出错代价</h2>
+            <p>数据库选择题不要写成“SQL 老，NoSQL 新”。真正的判断是：数据是否像固定表格，关系是否复杂，查询是否经常 join，写入出错的代价是否高，系统是否需要横向扩展。</p>
+            <h3>关系型数据库从表格开始</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>数据库词</th><th>白话解释</th><th>收据系统例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Table</td><td>一类记录的表。</td><td><code>Customers</code>, <code>Receipts</code>, <code>ReceiptItems</code>。</td></tr>
+                  <tr><td>Row</td><td>表里的一条记录。</td><td>一张具体收据。</td></tr>
+                  <tr><td>Column</td><td>字段。</td><td><code>receipt_number</code>, <code>date</code>, <code>total</code>。</td></tr>
+                  <tr><td>Schema</td><td>固定结构规则。</td><td>每张收据必须有唯一编号和总价。</td></tr>
+                  <tr><td>Primary key</td><td>唯一识别一条记录的字段。</td><td><code>receipt_id</code>。</td></tr>
+                  <tr><td>Foreign key</td><td>指向另一张表记录的字段。</td><td><code>receipt_items.receipt_id</code> 指向所属收据。</td></tr>
+                  <tr><td>Join</td><td>把多张表按关系合起来查。</td><td>查顾客购买历史时连接 customers、receipts、items。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Transaction 和 ACID 用付款记</h3>
+            <p>Transaction 是一组必须一起成功或一起失败的操作。ACID 是事务可靠性的四个要求，适合订单、付款、库存、收据这些不能乱来的场景。</p>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr><th>字母</th><th>意思</th><th>付款例子</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>A Atomicity</td><td>一组操作像一个整体，不允许只完成一半。</td><td>钱扣了但订单没生成，这不允许。</td></tr>
-                  <tr><td>C Consistency</td><td>操作前后都要符合系统规则。</td><td>库存不能变成负数，总金额不能和订单行不一致。</td></tr>
-                  <tr><td>I Isolation</td><td>多个操作同时发生时，彼此不该把对方进行到一半的状态看进去。</td><td>两个人同时买最后一件商品，不能都成功。</td></tr>
-                  <tr><td>D Durability</td><td>一旦系统说成功，结果就要真正保存下来。</td><td>订单确认后服务器重启，订单仍然存在。</td></tr>
+                  <tr><td>A Atomicity</td><td>要么全部成功，要么全部取消。</td><td>钱扣了但订单没生成，不允许。</td></tr>
+                  <tr><td>C Consistency</td><td>操作前后都符合系统规则。</td><td>库存不能为负，总价不能和明细矛盾。</td></tr>
+                  <tr><td>I Isolation</td><td>同时操作不能互相看到半成品。</td><td>两个人不能同时买到最后一件库存。</td></tr>
+                  <tr><td>D Durability</td><td>成功后结果真正保存。</td><td>订单确认后服务器重启，订单仍在。</td></tr>
                 </tbody>
               </table>
             </div>
-            <h3>NoSQL 不是“没有结构”</h3>
-            <p>NoSQL 数据库常见的一类是 document database，例如 MongoDB。Document 像一个 JSON 对象，可以把相关信息嵌在一起。它适合字段经常变化、读写量很大、数据关系不需要频繁复杂 join 的场景。</p>
-            <p>但 NoSQL 不是随便乱存。Mongoose 这种 ODM 仍然会定义 schema、验证字段、把 JavaScript 对象翻译成 MongoDB 文档。也就是说，NoSQL 只是结构更灵活，不等于完全不要数据设计。</p>
-            <h3>ORM 和 ODM 在解决什么</h3>
-            <p>程序员写代码时喜欢用对象，例如 <code>user.name</code>、<code>order.items</code>。数据库保存数据时可能用表格，也可能用文档。ORM 或 ODM 的作用就是在“代码里的对象”和“数据库里的记录”之间翻译。</p>
-            <div class="two-col">
-              <div class="card">
-                <h3>ORM</h3>
-                <p>Object-Relational Mapping，用在关系型数据库。Rails 的 Active Record、Spring Data JPA 都属于这个方向。它把 class 和 table、object 和 row 对应起来。</p>
-              </div>
-              <div class="card">
-                <h3>ODM</h3>
-                <p>Object-Document Mapping，用在文档数据库。Mongoose 把 JavaScript object 和 MongoDB document 对应起来，还能做 schema validation。</p>
-              </div>
-            </div>
-            <h3>SQL / NoSQL 选择题怎么想</h3>
+            <h3>NoSQL 和 document database</h3>
+            <p>NoSQL 不是“没有结构”。Document database 例如 MongoDB 把一条记录存成 JSON-like document，字段可以更灵活，相关信息可以嵌在一起。它常适合日志、用户行为事件、灵活内容、海量写入。Mongoose 这种 ODM 仍然可以定义 schema 和 validation。</p>
+            <h3>SQL / NoSQL 判断台阶</h3>
+            <ol class="rung-list">
+              <li><strong>看数据形状。</strong>固定表格、字段稳定、实体关系清楚，偏 SQL；每条记录像灵活文档，偏 NoSQL。</li>
+              <li><strong>看关系复杂度。</strong>经常需要 join 顾客、收据、商品、库存，SQL 更自然。</li>
+              <li><strong>看出错代价。</strong>付款、成绩、库存、收据这类数据需要事务和一致性，优先 SQL。</li>
+              <li><strong>看规模和变化。</strong>海量事件、字段经常变、读写压力大，可以考虑 NoSQL。</li>
+              <li><strong>最后写 trade-off。</strong>好答案不是只说谁好，而是说明另一个方案何时也合理。</li>
+            </ol>
             <div class="answer-box">
-              <p><strong>选 SQL：</strong>数据结构稳定，关系多，查询经常需要 join，付款、成绩、库存这类场景不能接受半成功，事务很重要。</p>
-              <p><strong>选 NoSQL：</strong>数据字段变化快，文档天然聚在一起，横向扩展压力大，应用可以接受短暂同步延迟，例如用户行为日志、商品浏览记录、内容元数据。</p>
-              <p><strong>好答案不要只选边：</strong>先描述数据形状，再描述一致性要求，再描述扩展压力，最后说出 trade-off。</p>
+              <p><strong>购物习惯题答案骨架：</strong>I would choose SQL because the data is structured and relational: customers, receipts, items, prices, and dates can be represented as related tables. Receipt history is transactional, so ACID properties help keep receipt numbers, totals, and item rows consistent. NoSQL could be justified for high-volume clickstream behaviour, but for structured purchase records with integrity requirements, SQL is the stronger default.</p>
             </div>
-            <p>对应教材：<code>DB_WS_C.pdf</code> 建立数据库和三层架构基础；<code>WSFE.pdf</code> 用 ORM/ODM、Mongoose、CRUD API 把数据库接到 Web 项目里。</p>
+            <p>对应教材：<code>DB_WS_C.pdf</code> 建立数据库概念；<code>WSFE.pdf</code> 后面会把 MongoDB/Mongoose 接进 Express API。</p>
           </section>
 
           <section id="rails" class="section">
-            <h2>3. Rails：用 MVC 把 URL、代码和页面接起来</h2>
-            <p>Rails 是 Ruby 语言上的 Web framework。它的核心教学价值是 MVC，因为 Rails 把 route、controller、model、view 的关系做得很清楚。</p>
-            <h3>Ruby 只需要先会读基础语法</h3>
-            <p>复习 Rails 前，不需要先成为 Ruby 程序员，但要能读懂变量、条件、循环、方法、class、block。Ruby 里很多语法看起来像英文句子，这是为了让 Web 代码短一些，但本质仍然是对象、方法调用和数据结构。</p>
+            <h2>4. Rails：用 MVC 看懂 route、controller、model</h2>
+            <p>Rails 是 Ruby 上的 Web framework。它适合用来学习 MVC，因为 route、controller action、view、model、Active Record 的关系很清楚。复习 Rails 不需要先成为 Ruby 程序员，但要能读懂方法、class、block 和基本对象调用。</p>
+            <h3>Rails 基础词</h3>
             <div class="table-wrap">
               <table>
                 <thead>
-                  <tr><th>Ruby / Rails 词</th><th>白话解释</th><th>为什么 CS615 会用到</th></tr>
+                  <tr><th>词</th><th>白话解释</th><th>为什么会考</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Gem</td><td>Ruby 的可复用代码包，类似 JavaScript 的 npm package。</td><td>本地材料有创建 gem 和把 gem 接入 Rails 的讲义，体现代码复用。</td></tr>
-                  <tr><td>Route</td><td>URL 和 controller action 的对应表。</td><td><code>GET /books</code> 应该交给哪个 action 处理。</td></tr>
-                  <tr><td>Controller action</td><td>controller 里的一个方法，专门处理某类请求。</td><td><code>index</code> 显示列表，<code>show</code> 显示单条记录。</td></tr>
-                  <tr><td>Active Record</td><td>Rails 的 ORM，一个 model class 通常对应一张数据库表。</td><td><code>Book.find(1)</code> 背后是在查数据库。</td></tr>
-                  <tr><td>Convention over configuration</td><td>按 Rails 默认命名和目录放文件，少写配置。</td><td>文件放对位置、名字符合约定，Rails 就能自动串起来。</td></tr>
+                  <tr><td>Ruby</td><td>Rails 使用的编程语言。</td><td>能读懂 sample controller 代码。</td></tr>
+                  <tr><td>Gem</td><td>Ruby 的可复用代码包。</td><td>材料讲创建和接入 gem，体现代码复用。</td></tr>
+                  <tr><td>Route</td><td>URL 和 controller action 的对应表。</td><td><code>GET /books</code> 应该交给哪个 action。</td></tr>
+                  <tr><td>Controller action</td><td>controller 里的一个处理请求的方法。</td><td><code>index</code> 列表，<code>show</code> 单条，<code>create</code> 新建。</td></tr>
+                  <tr><td>Active Record</td><td>Rails 的 ORM，把 model object 和 database row 对起来。</td><td><code>Book.find(1)</code> 背后是在查数据库。</td></tr>
+                  <tr><td>Convention over configuration</td><td>按默认目录和命名放文件，少写配置。</td><td>解释 Rails 为什么开发快。</td></tr>
                 </tbody>
               </table>
             </div>
-            <h3>MVC 三个角色</h3>
-            <p>Model 负责数据和接近数据的规则，View 负责显示给用户看的内容，Controller 负责接请求、调用 model 或 service、选择返回哪个 view 或 JSON。Controller 最容易被写胖，因为初学者会把所有事情都塞进去。</p>
-            <div class="answer-box">
-              <p><strong>Rails request flow：</strong>浏览器访问 URL，router 匹配到 controller action，controller 读取 params，调用 model 或 service，model 通过 Active Record 读写数据库，controller 最后 render view 或 redirect。</p>
-            </div>
-            <h3>SRP 为什么常和 MVC 一起考</h3>
-            <p>SRP 是 Single Responsibility Principle，意思是一个模块最好只因为一种原因而改变。比如订单 controller 同时验证输入、算折扣、发邮件、写 analytics、拼 HTML，这就违反 SRP。以后折扣规则变了、邮件模板变了、统计规则变了，都会改同一个 controller，风险很高。</p>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr><th>坏味道</th><th>为什么不好</th><th>更好的放法</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Controller 里直接写大量 SQL 或复杂查询</td><td>controller 被数据访问细节绑死，很难测试。</td><td>交给 model、repository 或 query object。</td></tr>
-                  <tr><td>Controller 里计算折扣、积分、税费</td><td>业务规则分散，多个入口容易算出不同结果。</td><td>交给 service object，例如 <code>PricingService</code>。</td></tr>
-                  <tr><td>Controller 里拼邮件内容或调用多个外部 API</td><td>请求处理和外部副作用混在一起。</td><td>交给 mailer、job、adapter。</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <h3>Rails 讲义阅读顺序</h3>
-            <ol class="checklist">
-              <li><code>Introduction to Ruby.pdf</code>：只抓基础语法和 Ruby 的对象风格。</li>
-              <li><code>Intro to Ruby on Rails.pdf</code>：重点看 MVC、项目目录、controller 和 view 如何配合。</li>
-              <li><code>Rails Routes and Active Record.pdf</code>：重点看 route 如何进 action，Active Record 如何代表数据库。</li>
-              <li><code>Creating a Ruby GEM.pdf</code> 和 <code>Integrating our Custom GEM into a Rails application.pdf</code>：理解 gem 是可复用代码，知道为什么要把通用功能抽出来。</li>
-              <li><code>Design Patterns.pdf</code> 和 <code>Extra Bits.pdf</code>：把复杂业务从 controller 拆出去时，用 pattern 组织代码。</li>
+            <h3>Rails request flow 台阶</h3>
+            <ol class="rung-list">
+              <li><strong>浏览器访问 URL。</strong>例如 <code>GET /books/1</code>。</li>
+              <li><strong>Router 匹配 route。</strong>它决定进入 <code>BooksController#show</code>。</li>
+              <li><strong>Controller 读取 params。</strong>例如从 URL 里拿到 <code>id=1</code>。</li>
+              <li><strong>Controller 调用 model 或 service。</strong>例如 <code>Book.find(params[:id])</code>。</li>
+              <li><strong>Model 通过 Active Record 读写数据库。</strong>代码对象和数据库记录被 ORM 翻译。</li>
+              <li><strong>Controller render view 或 redirect。</strong>最终返回 HTML 或跳到另一个页面。</li>
             </ol>
+            <h3>Sample Rails controller 题怎么审</h3>
+            <p>Sample 里的 Rails controller 题不是让你只解释代码，而是看你能不能用 MVC 和 SRP 审查代码质量。SRP 是 Single Responsibility Principle，一个类或方法最好只承担一类变化原因。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>坏味道</th><th>风险</th><th>重构方向</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Controller 里写大量业务计算。</td><td>请求处理和业务规则混在一起，难测难改。</td><td>抽到 service object，例如 <code>PricingService</code>。</td></tr>
+                  <tr><td>Controller 里直接拼复杂 SQL。</td><td>数据访问细节泄漏到 HTTP 层。</td><td>放到 model、repository、query object。</td></tr>
+                  <tr><td>Controller 里同时发邮件、统计、渲染页面。</td><td>副作用多，失败点多。</td><td>用 mailer、background job、adapter。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>看到一个 Rails action 既读 params、算折扣、直接查库、发邮件、拼 JSON，你应该能说：它违反 separation of concerns / SRP，应该把业务规则移到 service，把数据访问移到 model/query object，把外部副作用移到 mailer/job，并给 service 和 controller 分别写测试。</p>
+            </div>
+            <p>对应教材：<code>Introduction to Ruby.pdf</code>、<code>Intro to Ruby on Rails.pdf</code>、<code>Rails Routes and Active Record.pdf</code>、<code>Creating a Ruby GEM.pdf</code>、<code>Integrating our Custom GEM into a Rails application.pdf</code>、<code>Design Patterns.pdf</code>、<code>Extra Bits.pdf</code>。</p>
           </section>
 
           <section id="spring" class="section">
-            <h2>4. Spring REST：企业后端的 controller/service/repository</h2>
-            <p>Spring Boot 是 Java 生态里常见的 Web framework。它比 Rails 更显式：你常会看到 controller、service、repository 分开写，再用 dependency injection 把它们接起来。</p>
-            <h3>REST 不是“用 JSON 就算 REST”</h3>
-            <p>REST 是一种设计 Web API 的风格。核心想法是把系统里的东西看成 resources，例如 users、orders、products。客户端通过 URL 定位 resource，通过 HTTP method 表达动作，通过 representation 传输状态，常见 representation 是 JSON。</p>
+            <h2>5. Spring REST：显式分层和 REST resource</h2>
+            <p>Spring Boot 是 Java 生态的 Web framework。它常把 controller、service、repository 分开写，再通过 dependency injection 连接。和 Rails 相比，Spring 更显式，适合解释企业后端为什么要分层。</p>
+            <h3>REST 不只是返回 JSON</h3>
+            <p>REST 是一种设计 Web API 的风格。它把系统里的东西看成 resources，例如 users、orders、products。客户端用 URL 定位 resource，用 HTTP method 表达动作，用 representation 传输状态，常见 representation 是 JSON。</p>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr><th>REST 词</th><th>白话解释</th><th>例子</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Resource</td><td>系统里可以被定位和操作的东西。</td><td><code>/orders/15</code> 表示第 15 个订单。</td></tr>
-                  <tr><td>HTTP verbs</td><td>用 method 表示动作，不把动作全塞进 URL 名字。</td><td><code>GET</code> 查，<code>POST</code> 新建，<code>PUT/PATCH</code> 改，<code>DELETE</code> 删。</td></tr>
-                  <tr><td>Stateless</td><td>每个 request 自己带足服务器判断所需的信息。</td><td>服务器不靠“记得上一次你是谁”来理解这次请求。</td></tr>
-                  <tr><td>Representation</td><td>resource 的某种传输形式。</td><td>同一个订单可以用 JSON 返回，也可以用 HTML 页面展示。</td></tr>
+                  <tr><td>Resource</td><td>系统中可被定位和操作的东西。</td><td><code>/orders/15</code> 表示第 15 个订单。</td></tr>
+                  <tr><td>HTTP verbs</td><td>用 method 表示动作。</td><td><code>GET</code> 查，<code>POST</code> 新建，<code>PATCH</code> 改，<code>DELETE</code> 删。</td></tr>
+                  <tr><td>Stateless</td><td>每个 request 自己带足服务器判断所需信息。</td><td>服务器不靠“记得上一请求”来理解当前请求。</td></tr>
+                  <tr><td>Representation</td><td>resource 的传输形式。</td><td>同一订单可以用 JSON 返回，也可以 HTML 显示。</td></tr>
                 </tbody>
               </table>
             </div>
-            <h3>Spring 分层怎样走</h3>
-            <p>一个典型 Spring REST 请求会先到 controller。Controller 只负责接收 HTTP 层的信息，例如 path、query、body。真正的业务规则放在 service。数据库读写放在 repository。这样测试 service 时可以不经过浏览器，换数据库时也不必改 controller。</p>
-            <div class="answer-box">
-              <p><strong>Spring request flow：</strong><code>@RestController</code> 接住请求，方法参数拿到 id 或 JSON body，controller 调用 service，service 做验证和业务规则，repository 访问数据库，结果再变成 response entity 或 JSON 返回。</p>
-            </div>
-            <h3>Dependency injection 用插座理解</h3>
-            <p>Dependency 是一个类运行时需要的其他对象。例如 <code>OrderService</code> 需要 <code>OrderRepository</code> 才能查订单。Dependency injection 是让 framework 把需要的对象传进来，而不是在类里面自己到处 <code>new</code>。这样做的好处是好替换、好测试、耦合更低。</p>
-            <h3>Forms and security 放在一起学</h3>
-            <p>表单是用户输入进入系统的入口，所以天然和安全有关。用户可以输入正常姓名，也可以输入超长字符串、脚本、SQL 片段或伪造请求。后端必须验证输入类型、长度、范围和权限，不能只相信前端页面限制。</p>
-            <ol class="checklist">
-              <li><code>Introduction to Spring.pdf</code>：先抓 Spring Boot 项目结构、controller、service、dependency injection。</li>
-              <li><code>REST Architecture with Spring .pdf</code>：抓 REST resource、verbs、stateless 和 RESTful service design。</li>
-              <li><code>Data and Spring.pdf</code>：抓 repository、data model、数据库访问。</li>
-              <li><code>Forms and Security.pdf</code>：抓表单输入、验证、安全边界。</li>
+            <h3>Spring request flow 台阶</h3>
+            <ol class="rung-list">
+              <li><strong><code>@RestController</code> 接请求。</strong>Controller 读取 path variable、query parameter 或 JSON body。</li>
+              <li><strong>Controller 调 service。</strong>Controller 不应塞满业务规则，它负责 HTTP 边界。</li>
+              <li><strong>Service 执行业务逻辑。</strong>例如验证订单状态、检查权限、计算价格。</li>
+              <li><strong>Repository 访问数据库。</strong>数据库细节集中在 data access 层。</li>
+              <li><strong>返回 response。</strong>结果可以变成 JSON、status code 或错误信息。</li>
             </ol>
+            <h3>Dependency injection 用替换能力理解</h3>
+            <p>Dependency 是一个类运行时需要的其他对象。例如 <code>OrderService</code> 需要 <code>OrderRepository</code>。Dependency injection 是让 framework 把需要的对象传进来。这样测试时可以换 fake repository，维护时可以替换实现，类之间耦合更低。</p>
+            <h3>Forms and security 为什么跟 Spring 放一起</h3>
+            <p>表单是用户输入进入系统的入口。用户可以输入正常姓名，也可以输入超长字符串、脚本、SQL 片段或伪造请求。后端必须验证类型、长度、范围和权限，不能只相信前端页面限制。</p>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>解释 controller、service、repository 的区别：controller 处理 HTTP，service 处理业务规则，repository 处理数据库访问。这个三分法是 Spring 题的核心。</p>
+            </div>
+            <p>对应教材：<code>Introduction to Spring.pdf</code>、<code>REST Architecture with Spring .pdf</code>、<code>Data and Spring.pdf</code>、<code>Forms and Security.pdf</code>。</p>
           </section>
 
-          <section id="node" class="section">
-            <h2>5. Node、Express、Mongoose：JavaScript 后端怎样处理请求</h2>
-            <p>Node.js 让 JavaScript 不只跑在浏览器里，也能跑在服务器上。它常被用来写 Web API，因为它处理网络 I/O 很方便。I/O 指输入输出，例如读文件、查数据库、等网络响应。这类工作经常要等待，Node 的事件循环适合管理大量等待中的请求。</p>
-            <h3>Event loop 不等于“多线程魔法”</h3>
-            <p>很多考试或面试题会问 callback 输出顺序。关键是分清同步代码和异步回调。同步代码会立刻执行；异步操作开始后，回调函数会等当前同步代码跑完、事件触发后才进入队列执行。</p>
-            <div class="answer-box">
-              <p><strong>读 Node 输出题：</strong>先标出所有同步 <code>console.log</code>，它们按顺序先输出。再看 <code>setTimeout</code>、文件读取、数据库请求、Promise callback 这些异步动作，按它们进入任务队列的时机判断后续输出。</p>
-            </div>
-            <h3>Express 把后端拆成 route、middleware、controller</h3>
-            <p>Express 是 Node 上常见的轻量 Web framework。Route 决定 URL 交给谁，middleware 是请求进入 controller 前后可以插入的处理步骤，例如解析 JSON、检查登录、记录日志。Controller 处理请求，model 或 repository 处理数据。</p>
+          <section id="node-react" class="section">
+            <h2>6. Node、Express、Mongoose 和 React：一套 JavaScript Web app</h2>
+            <p><code>WSFE.pdf</code> 把课程从后端框架推到完整前后端应用。Node/Express 负责服务器 API，Mongoose 负责 MongoDB 文档映射，React 负责浏览器界面。它们不是三个散点，而是一条 request/response 链。</p>
+            <h3>Node 和 event loop</h3>
+            <p>Node.js 让 JavaScript 可以跑在服务器上。I/O 指输入输出，例如读文件、查数据库、等网络响应。这些动作经常需要等待。Node 的 event loop 负责在同步代码跑完后，按队列处理异步回调。</p>
+            <ol class="rung-list">
+              <li><strong>先标同步代码。</strong>普通 <code>console.log</code> 立刻按顺序执行。</li>
+              <li><strong>再标异步动作。</strong><code>setTimeout</code>、database query、file read、Promise callback 都可能稍后执行。</li>
+              <li><strong>同步跑完后看队列。</strong>回调等事件完成后进入队列，再由 event loop 执行。</li>
+              <li><strong>输出题写解释。</strong>不要只列答案，要说为什么某行先输出。</li>
+            </ol>
+            <h3>Express 和 Mongoose</h3>
             <div class="table-wrap">
               <table>
                 <thead>
-                  <tr><th>Express 位置</th><th>负责什么</th><th>小例子</th></tr>
+                  <tr><th>位置</th><th>负责什么</th><th>例子</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Route</td><td>把 method 和 URL 对到处理函数。</td><td><code>GET /api/books</code> 交给 <code>bookController.index</code>。</td></tr>
-                  <tr><td>Middleware</td><td>在请求处理中间插一段通用逻辑。</td><td>验证 token、解析 JSON body、统一错误处理。</td></tr>
-                  <tr><td>Controller</td><td>拿 request，调用服务，返回 response。</td><td>读取 <code>req.params.id</code>，返回某本书。</td></tr>
-                  <tr><td>Mongoose model</td><td>定义 MongoDB 文档结构和验证规则。</td><td><code>Book</code> model 规定 title 必填、price 是数字。</td></tr>
+                  <tr><td>Route</td><td>把 method + URL 接到处理函数。</td><td><code>GET /api/books</code>。</td></tr>
+                  <tr><td>Middleware</td><td>在请求前后插入通用逻辑。</td><td>解析 JSON、验证 token、记录日志、错误处理。</td></tr>
+                  <tr><td>Controller</td><td>读取 request，调用服务，返回 response。</td><td><code>bookController.show</code>。</td></tr>
+                  <tr><td>Mongoose model</td><td>定义 MongoDB document 的结构和验证。</td><td><code>Book</code> 规定 title 必填、price 是数字。</td></tr>
+                  <tr><td>Chaining</td><td>连续调用方法，每一步返回可继续调用的对象。</td><td><code>query.find(...).sort(...).limit(...)</code>。</td></tr>
                 </tbody>
               </table>
             </div>
-            <h3>Chaining 为什么常出现在 JavaScript 题里</h3>
-            <p>Chaining 是连续调用方法，例如 <code>query.filter(...).sort(...).limit(...)</code>。它的好处是把一串转换写得紧凑。看这种代码时，按从左到右的顺序想：每一步返回一个对象或结果，让下一步继续调用。</p>
-            <p>对应教材：<code>WSFE.pdf</code> 的后端部分连接了 database modeling、Express、Mongoose 和 CRUD API；<code>Security.pdf</code> 用来补输入和 API 保护。</p>
-          </section>
-
-          <section id="react" class="section">
-            <h2>6. React：把页面拆成会更新的组件</h2>
-            <p>传统 HTML 页面可以理解成“服务器给你一张页面”。React 的思路是把界面拆成 components，由浏览器里的 JavaScript 根据数据变化更新页面的一部分。它不是后端框架，也不直接保存数据库数据。</p>
-            <h3>React 四个入门词</h3>
+            <h3>React 四个词</h3>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr><th>词</th><th>白话解释</th><th>例子</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Component</td><td>页面上的一个可复用 UI 小块。</td><td><code>ProductCard</code>、<code>SearchBox</code>、<code>NavBar</code>。</td></tr>
-                  <tr><td>Props</td><td>父组件传给子组件的只读输入。</td><td><code>ProductCard</code> 收到 <code>name</code> 和 <code>price</code>。</td></tr>
-                  <tr><td>State</td><td>组件自己记住、变化后会引发重新渲染的数据。</td><td>搜索框当前输入、购物车数量、是否展开菜单。</td></tr>
-                  <tr><td>Hook</td><td>函数组件里使用 React 能力的函数。</td><td><code>useState</code> 管状态，<code>useEffect</code> 管副作用。</td></tr>
+                  <tr><td>Component</td><td>可复用 UI 小块。</td><td><code>ProductCard</code>, <code>SearchBox</code>。</td></tr>
+                  <tr><td>Props</td><td>父组件传给子组件的只读输入。</td><td><code>ProductCard</code> 收到 name 和 price。</td></tr>
+                  <tr><td>State</td><td>组件自己记住、变化后会重渲染的数据。</td><td>搜索框输入、购物车数量、loading 状态。</td></tr>
+                  <tr><td>Hook</td><td>函数组件里使用 React 能力的函数。</td><td><code>useState</code>, <code>useEffect</code>。</td></tr>
                 </tbody>
               </table>
             </div>
-            <h3>SPA 的好处和代价</h3>
-            <p>SPA 是 Single Page Application，意思是用户感觉一直在一个应用里切换，不是每点一下都重新加载完整 HTML。它通常更流畅，但也要处理路由、初始加载、SEO、错误状态、可访问性这些问题。考试里不能只写“React 更快”，要说清楚为什么以及代价。</p>
-            <h3>Container / presentational pattern</h3>
-            <p>Container component 更关心数据从哪里来，例如调用 API、管理 loading/error 状态。Presentational component 更关心怎么显示，例如拿到 props 后画卡片、列表、按钮。这样拆分后，显示组件更容易复用和测试。</p>
-            <h3>Fetch、Axios 和 API 错误</h3>
-            <p>React 前端通常通过 Fetch 或 Axios 调后端 API。真正的页面不能只写“请求成功后显示数据”，还要处理加载中、请求失败、空数据、权限不足、后端返回格式变了这些情况。Error boundary 可以兜住某些渲染错误，避免整页白屏。</p>
-            <p>对应教材：<code>WSFE.pdf</code> 的 React fundamentals、hooks、component patterns、connecting React to the API 是本节主材料。</p>
+            <h3>React 和 API 的台阶</h3>
+            <ol class="rung-list">
+              <li><strong>组件加载。</strong>页面先显示初始 UI 或 loading。</li>
+              <li><strong>调用 API。</strong>用 Fetch 或 Axios 请求后端，例如 <code>GET /api/products</code>。</li>
+              <li><strong>处理成功状态。</strong>把返回 JSON 放进 state，组件重新渲染。</li>
+              <li><strong>处理失败状态。</strong>网络错误、权限不足、空数据、格式变化都要给用户反馈。</li>
+              <li><strong>区分 container 和 presentational。</strong>Container 管数据和 API，presentational 管显示，便于复用和测试。</li>
+            </ol>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>React 题不要只写“更快”。更稳的答案是：React 通过 component、props、state 组织复杂 UI，适合动态交互和状态更新；代价是 build tooling、学习成本、SEO/initial load/accessibility 需要额外处理。</p>
+            </div>
+            <p>对应教材：<code>WSFE.pdf</code>，并回连 <code>DB_WS_C.pdf</code> 的数据概念和 <code>Security.pdf</code> 的 API 保护。</p>
           </section>
 
           <section id="quality" class="section">
-            <h2>7. 可访问性、SEO、安全：能用、能被找到、不能轻易被打穿</h2>
-            <p>Web 系统不是“功能跑通就结束”。CS615 很喜欢问工程质量，因为真实网站要面对不同能力用户、搜索引擎、恶意输入和长期维护。</p>
-            <h3>Accessibility 是让更多人能完成任务</h3>
-            <p>Accessibility 不是只给少数用户的额外功能。键盘用户、屏幕阅读器用户、低视力用户、色弱用户、临时受伤的用户，都可能需要更好的可访问性。HTML 本身有语义，例如 <code>button</code>、<code>label</code>、<code>nav</code>、<code>main</code>，正确使用它们比用一堆 <code>div</code> 再补救更可靠。</p>
+            <h2>7. 可访问性、SEO 和安全：功能跑通之后还要能被信任</h2>
+            <p>Web 系统不是功能跑通就结束。真实网站要面对不同能力用户、搜索引擎、恶意输入、权限边界和长期维护。CS615 历年题很喜欢把这些质量要求拆出来考。</p>
+            <h3>Accessibility</h3>
+            <p>Accessibility 是让更多用户能完成任务。键盘用户、屏幕阅读器用户、低视力用户、色弱用户、临时受伤的用户，都可能依赖语义化 HTML、清楚焦点、足够颜色对比和正确表单标签。</p>
             <div class="answer-box">
-              <p><strong>Accessibility 常写点：</strong>图片有 alt text；表单输入有 label；只用键盘也能操作；焦点状态清楚；颜色对比足够；不要只靠颜色表达错误；动态内容变化要能被辅助技术理解。</p>
+              <p><strong>常写点：</strong>Use semantic HTML; provide alt text for meaningful images; associate labels with form inputs; ensure keyboard navigation; show visible focus states; maintain colour contrast; do not rely on colour alone for errors.</p>
             </div>
-            <h3>SEO 是让搜索引擎理解页面</h3>
-            <p>SEO 是 Search Engine Optimization。White-hat SEO 是让页面结构清楚、内容真实、标题和链接有意义、加载性能好。Black-hat SEO 是欺骗搜索引擎，例如堆关键词、隐藏文字、买垃圾链接。这类做法短期可能有效，长期会被惩罚。</p>
-            <h3>SQL injection 和 XSS 都是把用户输入当成了危险东西</h3>
-            <p>SQL injection 是攻击者把 SQL 片段塞进输入框，让数据库执行本来不该执行的查询。XSS 是攻击者把脚本塞进页面，让其他用户浏览时执行。防御的共同原则是：不信任输入，验证和清理数据，输出到页面前转义，用参数化查询，不把字符串拼成可执行命令。</p>
+            <h3>SEO</h3>
+            <p>SEO 是 Search Engine Optimization。White-hat SEO 强调真实内容、清楚标题、语义结构、可抓取链接、合理性能。Black-hat SEO 是欺骗搜索引擎，例如堆关键词、隐藏文字、垃圾外链，长期风险很高。</p>
+            <h3>SQL injection、XSS、CSRF、access control</h3>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr><th>风险</th><th>发生在哪里</th><th>防法</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>SQL injection</td><td>后端把用户输入拼进 SQL。</td><td>参数化查询、ORM 安全 API、输入验证、最小数据库权限。</td></tr>
-                  <tr><td>XSS</td><td>用户输入被当成 HTML 或 JavaScript 输出。</td><td>输出转义、内容安全策略、避免直接插入 HTML、过滤危险内容。</td></tr>
+                  <tr><td>SQL injection</td><td>后端把用户输入拼进 SQL。</td><td>Parameterized queries、ORM 安全 API、输入验证、最小数据库权限。</td></tr>
+                  <tr><td>XSS</td><td>用户输入被当成 HTML/JavaScript 输出。</td><td>Output encoding、sanitization、CSP、避免危险 HTML 插入。</td></tr>
                   <tr><td>CSRF</td><td>用户已登录时，被诱导发出非本人意图的请求。</td><td>CSRF token、SameSite cookie、重要操作二次确认。</td></tr>
-                  <tr><td>Broken access control</td><td>后端只隐藏按钮，但没有检查权限。</td><td>每个敏感 API 都在服务器端检查身份和权限。</td></tr>
+                  <tr><td>Broken access control</td><td>前端隐藏按钮，但后端没有检查权限。</td><td>每个敏感 API 都在服务器端检查身份和权限。</td></tr>
                 </tbody>
               </table>
             </div>
-            <p>对应教材：<code>Security.pdf</code> 和 <code>Forms and Security.pdf</code> 是安全主线；accessibility 和 SEO 可结合 <code>WSFE.pdf</code>、真题和 Web 基础一起复习。</p>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>为什么“前端表单限制输入长度”不能代替后端验证？因为攻击者可以绕过浏览器页面，直接向 API 发送 request。服务器端验证才是安全边界。</p>
+            </div>
+            <p>对应教材：<code>Security.pdf</code>、<code>Forms and Security.pdf</code>，并结合历年 SEO / SQL injection / XSS / accessibility 题。</p>
           </section>
 
           <section id="delivery" class="section">
-            <h2>8. 交付与运维：Cloud、CI/CD、Observability、AI Agents</h2>
-            <p>写完代码只是中点。真实项目还要部署、测试、监控、回滚和持续改进。CS615 后半部分把 Web 工程从“本机能跑”推到“生产环境能稳定运行”。</p>
-            <h3>HTTP 版本解决的是传输效率问题</h3>
-            <p>HTTP 是浏览器和服务器说话的协议。HTTP/1.0 每次连接能力弱，HTTP/1.1 改善持久连接和管线化，HTTP/2 引入多路复用让多个请求更高效地共享连接，HTTP/3 基于 QUIC 改善连接建立和丢包情况下的表现。考试里重点不是背年份，而是说明每一代在减少等待、提高并发、改善可靠性。</p>
+            <h2>8. HTTP、Cloud、CI/CD、Observability 和 AI Agents</h2>
+            <p>CS615 后半部分把 Web app 从“能写出来”推到“能上线、能演进、能排查问题”。这些内容要回贴到主线：request 如何传输，应用在哪里运行，代码如何发布，出事如何定位，AI 如何进入 SDLC。</p>
+            <h3>HTTP 版本看传输效率</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>版本</th><th>解决什么问题</th><th>考试关键词</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>HTTP/1.0</td><td>连接复用弱，多个资源常带来多次连接开销。</td><td>one request per connection, overhead。</td></tr>
+                  <tr><td>HTTP/1.1</td><td>persistent connections 改善复用，但仍可能阻塞。</td><td>keep-alive, pipelining, head-of-line blocking。</td></tr>
+                  <tr><td>HTTP/2</td><td>一个 TCP 连接上 multiplex 多个 streams。</td><td>multiplexing, binary framing, streams。</td></tr>
+                  <tr><td>HTTP/3</td><td>基于 QUIC/UDP，改善连接建立和丢包时表现。</td><td>QUIC, UDP, reduced HOL blocking。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <h3>Cloud model 看你想管理多少东西</h3>
             <div class="table-wrap">
               <table>
@@ -328,35 +383,56 @@
                 </thead>
                 <tbody>
                   <tr><td>IaaS</td><td>虚拟机、操作系统、runtime、部署、补丁。</td><td>需要底层控制，团队有运维能力。</td></tr>
-                  <tr><td>PaaS</td><td>代码和配置，平台负责大部分运行环境。</td><td>课程常见推荐：小团队想快部署 Web app。</td></tr>
-                  <tr><td>SaaS</td><td>几乎只使用软件功能。</td><td>邮件、CRM、文档协作等现成应用。</td></tr>
+                  <tr><td>PaaS</td><td>代码和配置，平台处理大部分运行环境。</td><td>小团队部署自定义 Web app，课程订阅工具常推荐。</td></tr>
+                  <tr><td>SaaS</td><td>主要使用现成软件功能。</td><td>邮件、CRM、文档协作等现成应用。</td></tr>
                 </tbody>
               </table>
             </div>
-            <h3>CI/CD 把人工发布变成可重复流程</h3>
-            <p>CI 是 Continuous Integration，开发者频繁合并代码后自动构建和测试。CD 可以指 Continuous Delivery 或 Continuous Deployment，核心是把发布步骤自动化，让每次上线都更可重复、更少靠手工记忆。</p>
-            <div class="answer-box">
-              <p><strong>典型 pipeline：</strong>提交代码，安装依赖，运行 lint 和 unit tests，构建应用，运行 integration tests，生成 artifact，部署到 staging，人工批准或自动部署到 production，发现问题时回滚。</p>
+            <h3>CI/CD 和 Observability</h3>
+            <ol class="rung-list">
+              <li><strong>CI 防止坏代码进入主干。</strong>每次提交后自动安装依赖、构建、lint、运行测试。</li>
+              <li><strong>CD 让发布可重复。</strong>通过 staging、approval、deployment、rollback 降低人工发布错误。</li>
+              <li><strong>Logs 记录事件。</strong>例如某个 request 报错、某个用户动作发生。</li>
+              <li><strong>Metrics 记录数字趋势。</strong>例如 error rate、latency、CPU、request count。</li>
+              <li><strong>Traces 串起一次请求路径。</strong>特别适合 microservices，能看到 request 穿过哪些服务。</li>
+            </ol>
+            <h3>AI Agents 和 Vibe Coding</h3>
+            <p>AI agents 可以生成代码、测试、重构建议、部署脚本、文档，但它们也可能误解需求、编造 API、引入安全漏洞。好答案要把 agent 放进 SDLC：需求和 acceptance criteria 由人把关，代码进入 PR review，测试、lint、安全扫描、人工架构判断仍然需要。</p>
+            <div class="micro-check">
+              <p><strong>过关小题：</strong>为什么 observability 比 monitoring 更适合解释复杂故障？Monitoring 常回答“是不是坏了”，observability 通过 logs、metrics、traces 帮你调查“为什么坏了”。</p>
             </div>
-            <h3>Observability 是让系统出事时能查清原因</h3>
-            <p>Monitoring 更像“看仪表盘有没有报警”。Observability 更强调系统内部状态能否从外部证据推出来。三种核心证据是 logs、metrics、traces。Logs 是事件记录，metrics 是数字指标，traces 是一次请求穿过多个服务的路径。</p>
-            <h3>AI Agents 和 Vibe Coding 的考试角度</h3>
-            <p>AI agents 可以帮助生成代码、写测试、解释错误、重构、查文档，但它们也可能编造 API、误解需求、引入安全漏洞。好答案要把 agent 放进 SDLC，而不是写成“AI 会替代开发者”。人类仍然负责需求判断、架构取舍、代码审查、安全审查和最终责任。</p>
-            <p>对应教材：<code>CICDOBS.pdf</code> 学 CI/CD 与 observability；<code>VibeCoding.pdf</code> 学 AI-assisted development、agentic workflow 和人类 oversight；<code>CS615Sample.pdf</code> 连接到 sample 新题型。</p>
+            <p>对应教材：<code>CICDOBS.pdf</code>、<code>VibeCoding.pdf</code>、<code>CS615Sample.pdf</code>。</p>
           </section>
 
-          <section id="materials" class="section">
-            <h2>9. 教材阅读顺序和自测问题</h2>
-            <p>下面这条顺序适合从零学。每读完一组材料，就用自测问题确认自己不是只“看过”，而是真的能解释。</p>
+          <section id="exam-ladder" class="section">
+            <h2>9. 把教材一路接到考试题</h2>
+            <p>CS615 的题型跨度大，但答案动作很稳定：定义概念，放进 Web request 或三层架构，比较 trade-off，最后落回题目场景。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>考试题型</th><th>先识别什么</th><th>答案产物</th><th>去题型页练什么</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Full-stack / 3-tier</td><td>题目在问前端、服务器、数据库分工。</td><td>三层职责 + request flow + 好处。</td><td><a href="cs615.html#full-stack">Full-Stack</a></td></tr>
+                  <tr><td>SQL / NoSQL</td><td>数据形状、关系、事务、扩展。</td><td>选择 + 场景理由 + trade-off。</td><td><a href="cs615.html#database">SQL/NoSQL</a></td></tr>
+                  <tr><td>MVC / Rails</td><td>route、controller、model、view、SRP。</td><td>MVC 定义 + request flow + code review。</td><td><a href="cs615.html#mvc">MVC</a></td></tr>
+                  <tr><td>Node / React</td><td>异步输出、Express 分层、componentization。</td><td>event loop 解释 + React pros/cons。</td><td><a href="cs615.html#node-react">Node / React</a></td></tr>
+                  <tr><td>Accessibility / SEO / Security</td><td>用户、搜索引擎、攻击输入。</td><td>定义 + 具体做法 + 防御措施。</td><td><a href="cs615.html#quality">Quality</a></td></tr>
+                  <tr><td>HTTP / Cloud</td><td>传输效率或云责任边界。</td><td>版本比较或 IaaS/PaaS/SaaS 推荐。</td><td><a href="cs615.html#http-cloud">HTTP / Cloud</a></td></tr>
+                  <tr><td>Sample 新题型</td><td>microservices、AI agents、CI/CD、observability。</td><td>定义 + 维度比较 + recommendation。</td><td><a href="cs615.html#sample-topics">Sample Topics</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>教材阅读顺序和每组自测</h3>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr><th>顺序</th><th>材料</th><th>读完要能回答</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>1</td><td><code>DB_WS_C.pdf</code>, <code>ArchitecturalPatterns.pdf</code></td><td>一个 request 怎样经过三层？为什么浏览器不直接访问数据库？framework 和 pattern 有什么区别？</td></tr>
-                  <tr><td>2</td><td><code>DB_WS_C.pdf</code>, <code>WSFE.pdf</code></td><td>SQL 和 NoSQL 的选择依据是什么？ACID 每个字母用付款例子怎么解释？ORM/ODM 在翻译什么？</td></tr>
-                  <tr><td>3</td><td><code>Introduction to Ruby.pdf</code>, <code>Intro to Ruby on Rails.pdf</code>, <code>Rails Routes and Active Record.pdf</code></td><td>Rails 中 route、controller、model、view 怎样接起来？为什么胖 controller 不好？Active Record 做什么？</td></tr>
+                  <tr><td>1</td><td><code>DB_WS_C.pdf</code>, <code>ArchitecturalPatterns.pdf</code></td><td>一个 request 怎样穿过三层？为什么客户端不直接访问数据库？pattern 和 framework 有什么区别？</td></tr>
+                  <tr><td>2</td><td><code>DB_WS_C.pdf</code>, <code>WSFE.pdf</code> 数据部分</td><td>SQL/NoSQL 选择依据是什么？ACID 每个字母用付款例子怎么解释？ORM/ODM 在翻译什么？</td></tr>
+                  <tr><td>3</td><td><code>Introduction to Ruby.pdf</code>, <code>Intro to Ruby on Rails.pdf</code>, <code>Rails Routes and Active Record.pdf</code></td><td>Rails 中 route、controller、model、view 怎样接起来？为什么胖 controller 不好？</td></tr>
                   <tr><td>4</td><td><code>Creating a Ruby GEM.pdf</code>, <code>Integrating our Custom GEM into a Rails application.pdf</code>, <code>Design Patterns.pdf</code>, <code>Extra Bits.pdf</code></td><td>什么时候要抽可复用代码？service object 或 pattern 怎样降低 controller 复杂度？</td></tr>
                   <tr><td>5</td><td><code>Introduction to Spring.pdf</code>, <code>REST Architecture with Spring .pdf</code>, <code>Data and Spring.pdf</code>, <code>Forms and Security.pdf</code></td><td>RESTful API 怎样设计？Spring controller/service/repository 各管什么？dependency injection 为什么有利于测试？</td></tr>
                   <tr><td>6</td><td><code>WSFE.pdf</code>, <code>Security.pdf</code></td><td>Express route/middleware/controller/model 的路径是什么？React component、props、state、hook 各是什么？API 失败时页面要处理什么？</td></tr>
@@ -364,34 +440,36 @@
                 </tbody>
               </table>
             </div>
-            <h3>把教材知识转成考试答案</h3>
-            <div class="answer-box">
-              <p><strong>比较题：</strong>先给定义，再给适用场景，再给 trade-off，最后落回题目场景。</p>
-              <p><strong>架构题：</strong>先画层次或请求流，再说明每层职责，再说为什么这种拆法能提高维护性、测试性、安全性。</p>
-              <p><strong>代码评审题：</strong>先指出违反了哪个原则，例如 MVC、SRP、separation of concerns，再说风险，再给重构方向和测试办法。</p>
-              <p><strong>新技术题：</strong>先解释技术做什么，再列优势和风险，再说明人类或工程流程怎样控制风险。</p>
-            </div>
-            <p>做题页面见 <a href="cs615.html">CS615 题型页</a>。线性页负责把知识讲通，题型页负责把这些知识压成考试可写的答案结构。</p>
+            <h3>最终检查清单</h3>
+            <ol class="rung-list">
+              <li><strong>能不能画出 request flow。</strong>Browser -> route -> controller -> service/model -> database -> response。</li>
+              <li><strong>能不能解释分层边界。</strong>前端、业务、数据各管什么，不该管什么。</li>
+              <li><strong>能不能把技术放回职责。</strong>Rails/Spring/Express/React/Mongoose 不是名字清单，而是各自解决某一层的问题。</li>
+              <li><strong>能不能写 trade-off。</strong>SQL vs NoSQL、monolith vs microservices、IaaS vs PaaS vs SaaS、React vs vanilla 都要比较。</li>
+              <li><strong>能不能给具体防御或流程。</strong>Security、CI/CD、observability、AI agents 题不能只写价值观。</li>
+            </ol>
+            <p>做题和模板见 <a href="cs615.html">CS615 题型页</a>。线性页负责把教材学顺，题型页负责把知识压成可交卷答案。</p>
           </section>
         </article>
-        <aside class="toc">
+
+        <aside class="toc" aria-label="CS615 线性目录">
           <h2>CS615 线性目录</h2>
           <ol>
+            <li><a href="#textbook-audit">教材流程</a></li>
             <li><a href="#request">网页请求</a></li>
-            <li><a href="#architecture">三层架构</a></li>
+            <li><a href="#architecture">架构 / MVC</a></li>
             <li><a href="#database">数据库</a></li>
             <li><a href="#rails">Rails</a></li>
             <li><a href="#spring">Spring REST</a></li>
-            <li><a href="#node">Node / Express</a></li>
-            <li><a href="#react">React</a></li>
+            <li><a href="#node-react">Node / React</a></li>
             <li><a href="#quality">Web Quality</a></li>
             <li><a href="#delivery">交付与运维</a></li>
-            <li><a href="#materials">教材顺序</a></li>
+            <li><a href="#exam-ladder">考试台阶</a></li>
           </ol>
         </aside>
       </div>
     </main>
-    <footer class="footer"><p>线性页用于按教材学习；做题和模板见 <a href="cs615.html">CS615 题型页</a>。</p></footer>
+    <footer class="footer"><p>线性页按 CS615 本地讲义反推学习顺序；题型模板见 <a href="cs615.html">CS615 题型页</a>。</p></footer>
     <script src="assets/app.js"></script>
   </body>
 </html>

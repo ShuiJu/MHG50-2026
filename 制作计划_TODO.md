@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-06 19:21
+更新时间：2026-05-08 17:32
 
 ## 项目目标
 
@@ -105,7 +105,7 @@
 - [x] 扩展 CS603 完整页面。
 - [ ] 用户审阅 CS605 / CS608 / CS603 页面。
 - [x] 为每个科目增加基于教材的线性全课程学习页面。
-- [ ] 按 CS615 新深度继续扩写 CS605 / CS608 / CS603 线性页。
+- [x] 按 CS615 新深度继续扩写 CS605 / CS608 / CS603 线性页。
 - [ ] 制作 `2026 May exam prep.pptx` 考前速查版。
 
 ## 2026-05-06 当前推进
@@ -221,6 +221,68 @@
   - 未发现 `本章按`、`再拿`、`强事务`、`ACID 常见` 等不符合当前风格的残留。
 - 后续建议：
   - 如果用户认可这个深度，就按同一密度继续扩写 `cs605-linear.html`、`cs608-linear.html`、`cs603-linear.html`。
+
+### 2026-05-08 17:05
+
+- 用户反馈：网站学习台阶之间的高度差仍然不够小，希望做到“一个网站拿下整个考试，一个页面拿下整个单个科目或单科考试考点”。
+- 已先把项目初始化成本地 Git 仓库：
+  - 初始提交：`319da9c Initial website project`
+  - `.gitignore` 只跟踪 `exam-prep-site/`、`制作计划_TODO.md` 和 `.gitignore`
+  - PDF/PPT/课程原始资料文件夹已忽略，避免仓库过重。
+- 已新增学习台阶样式：
+  - `.rung-list`：用于分解微步骤。
+  - `.micro-check`：用于每节过关小题。
+  - `.term-grid` / `.term`：用于术语第一次出现时的白话解释。
+- 已按 CS615 线性页的新深度扩写三门线性页：
+  - `exam-prep-site/cs605-linear.html`
+    - 从“字符串集合”开始讲 language。
+    - 增加 proof basics：反证法、量词、iff、任意切法。
+    - 扩写 FA / regular、regular pumping lemma、PDA / CFL、CFL pumping。
+    - 扩写 TM、decider、recogniser、co-T-r、HALT mapping reduction。
+    - 扩写 complexity、P/NP、certificate、verifier、NP-complete reduction。
+    - 增加教材阅读顺序和考试题型台阶。
+  - `exam-prep-site/cs608-linear.html`
+    - 从一个 test case 的组成开始讲 specification、input、expected/actual、failure/fault。
+    - 扩写 coverage、TCI、data values、test cases 的区别。
+    - 扩写 EP / BVA / DT 的判断方法和生成步骤。
+    - 扩写 SC / BC / JaCoCo / short-circuit。
+    - 扩写 class context、automation、TestNG、random testing、numerical、AI/process。
+    - 增加 Q1-Q4 考试台阶和讲义阅读顺序。
+  - `exam-prep-site/cs603-linear.html`
+    - 从“性质”开始讲 formal verification 和 testing 的区别。
+    - 扩写 propositional/predicate logic、satisfiable、tautology、model。
+    - 扩写 contract、pre/post/invariant、Hoare triple、loop invariant、variant。
+    - 扩写 Dafny requires/ensures/assert/invariant/decreases/ghost、arrays、recursion、classes。
+    - 扩写 FRET、requirements、refinement、Event-B。
+    - 扩写 Kripke structure、LTL、CTL、Spin/NuSMV、SAT/SMT/Z3。
+    - 增加教材阅读顺序和考试台阶。
+- 已更新 `exam-prep-site/index.html`：
+  - 首页定位改为“一个网站覆盖整场考试，单科页面吃透一门课”。
+  - 新增“复习系统怎么用”：线性页铺台阶、题型页压答案、关键词补薄弱点。
+  - 四门课入口说明改为线性页与题型页的配合方式。
+
+### 2026-05-08 17:32
+
+- 用户追问 CS615 状态，并要求加强 CS615，同时从教材角度反向审视现有学习流程。
+- 已对照 `1-CS615/` 本地教材文件清单重新审视 CS615 流程：
+  - `DB_WS_C.pdf` + `ArchitecturalPatterns.pdf` 应作为地基，先建立 request flow、3-tier、database、pattern/framework 区别。
+  - Rails/Ruby/gem/design pattern 材料应作为 MVC 和 SRP 的具体实现训练。
+  - Spring/REST/Data/Forms/Security 材料应作为显式后端分层、REST resource、dependency injection、输入安全训练。
+  - `WSFE.pdf` 应作为桥梁，把 Express/Mongoose API 和 React 前端连接起来。
+  - `Security.pdf`、`CICDOBS.pdf`、`VibeCoding.pdf`、`CS615Sample.pdf` 应回贴到 Web app 主线，而不是单独背概念。
+- 已重写 `exam-prep-site/cs615-linear.html`：
+  - 新增 `0. 从教材反推学习流程`，明确为什么 CS615 不能从 React/AI 开始，而应从三层架构和请求链条开始。
+  - 每节增加 `.rung-list` 微步骤和 `.micro-check` 过关小题。
+  - 强化一次 request 的完整路径：browser -> route -> controller -> service/model -> database -> response。
+  - 强化 3-tier、MVC、pattern、framework 之间的关系。
+  - 强化 SQL/NoSQL 的判断台阶：数据形状、关系复杂度、出错代价、规模变化、trade-off。
+  - 强化 Rails request flow、sample Rails controller 的 MVC/SRP/code review 写法。
+  - 强化 Spring REST 的 controller/service/repository、REST resource、dependency injection、forms/security。
+  - 强化 Node event loop 输出题、Express/Mongoose 分层、React component/API/error state。
+  - 强化 Accessibility/SEO/Security、HTTP/Cloud、CI/CD/Observability/AI Agents 的考试连接。
+  - 新增 `把教材一路接到考试题`，把教材组映射到历年题型页练习入口。
+- 已更新 `exam-prep-site/cs615.html`：
+  - 顶部导航和 hero tag 增加 `教材线性页` 入口，方便在题型页和线性页之间切换。
 
 ## 制作记录
 
