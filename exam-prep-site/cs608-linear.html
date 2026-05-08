@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CS608 线性教材学习路线</title><link rel="stylesheet" href="assets/styles.css"></head>
+  <body><a class="skip-link" href="#main">跳到正文</a><header class="site-header"><div class="topbar"><a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS608 Linear</small></a><nav class="topnav"><a href="index.html">总入口</a><a href="cs608.html">CS608 题型页</a><a href="#path">学习路线</a></nav></div></header>
+  <main id="main"><section class="hero"><p class="eyebrow">CS608 linear course path</p><h1>CS608 全教材线性学习：从测试思想到随机和 AI 辅助测试</h1><p class="lead">这页按 01-26 讲义顺序学习。先理解测试为什么需要设计，再学黑盒、白盒、对象上下文、自动化、随机测试和软件过程。</p></section>
+  <div class="layout"><article class="content">
+    <section id="path" class="section"><h2>1. 测试是什么，为什么不能只靠感觉</h2><p>测试的目标不是证明程序完全没错，而是在有限时间内系统地寻找重要错误。先学 specification、test case、expected result、coverage。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>1.1</td><td>Module overview</td><td><code>01-module-overview.pdf</code></td><td>知道四大考试题型。</td></tr>
+      <tr><td>1.2</td><td>Intro to testing</td><td><code>02-intro-to-testing.pdf</code></td><td>能解释测试设计、expected results、coverage。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>2. 黑盒测试：从规格选择输入</h2><p>黑盒测试不看代码，只看规格。先学 EP，再学 BVA，最后学 DT。EP 问“哪些值行为相同”；BVA 问“边界会不会写错”；DT 问“组合会不会写错”。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>2.1</td><td>Equivalence Partitioning</td><td><code>03-ep.pdf</code>, <code>05-ep-more-detail.pdf</code></td><td>能列 input/output partitions、TCI、test cases。</td></tr>
+      <tr><td>2.2</td><td>Boundary Value Analysis</td><td><code>06-bva.pdf</code>, <code>07-bva-more-detail.pdf</code></td><td>能找边界值并避免测所有组合。</td></tr>
+      <tr><td>2.3</td><td>Decision Tables</td><td><code>08-dt.pdf</code>, <code>09-dt-more-detail.pdf</code></td><td>能列 causes/effects/rules/infeasible combinations。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>3. 白盒测试：从代码覆盖补遗漏</h2><p>黑盒测试后，用 JaCoCo 看哪些语句和分支没执行。SC 关注语句，BC 关注条件结果。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>3.1</td><td>Statement and Branch Coverage</td><td><code>10-sc-bc.pdf</code></td><td>能解释 SC/BC 和 additional tests。</td></tr>
+      <tr><td>3.2</td><td>Coverage details</td><td><code>11-sc-bc-more-detail.pdf</code></td><td>能读 JaCoCo yellow/red lines、short-circuit branches。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>4. 对象和类内上下文</h2><p>对象方法依赖对象状态。类内测试要创建对象、设置状态、调用方法、读取结果。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>4.1</td><td>OO basics</td><td><code>12-oo-1.pdf</code></td><td>知道 class、object、attribute、method。</td></tr>
+      <tr><td>4.2</td><td>Testing in class context</td><td><code>13-oo-further-look-at-class-context.pdf</code></td><td>能写 setter -> method -> getter -> assert。</td></tr>
+      <tr><td>4.3</td><td>OO issues and advanced</td><td><code>14-oo-issues.pdf</code>, <code>15-oo-advanced.pdf</code>, <code>16-oo-more-detail.pdf</code></td><td>知道对象上下文会影响测试设计。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>5. 应用、自动化和工具</h2><p>测试设计需要能落到自动化执行。理解 TestNG、JaCoCo、工具链、自动化结构。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>5.1</td><td>Application testing</td><td><code>17-app.pdf</code>, <code>18-app-more-detail.pdf</code></td><td>知道测试从 unit 延伸到应用层。</td></tr>
+      <tr><td>5.2</td><td>Automation</td><td><code>19-auto.pdf</code></td><td>能写参数化测试思路。</td></tr>
+      <tr><td>5.3</td><td>Tools</td><td><code>20-tools.pdf</code></td><td>知道工具帮忙执行和测 coverage。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>6. 随机、数值、AI 和过程</h2><p>后半段把测试扩展到随机数据、数值问题、AI 辅助和软件过程。随机测试仍然要依赖人工设计的 TCI。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>6.1</td><td>Black/white and full testing</td><td><code>21-bandw-full.pdf</code></td><td>能解释为什么先黑盒再白盒。</td></tr>
+      <tr><td>6.2</td><td>Random testing</td><td><code>22-rand.pdf</code></td><td>能说明 data/oracle/completion 三问题。</td></tr>
+      <tr><td>6.3</td><td>Numerical computing</td><td><code>23-NumericalComputing.pdf</code>, floating point paper</td><td>知道浮点误差会影响测试。</td></tr>
+      <tr><td>6.4</td><td>Using AI and process</td><td><code>24-using-ai.pdf</code>, <code>25-process.pdf</code>, <code>26-wrapup.pdf</code></td><td>知道 AI/过程只是辅助，测试设计仍需可解释。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>7. 最后接到考试</h2><p>读完线性页后，回到 <a href="cs608.html">CS608 题型页</a> 做四大题，再用 <a href="cs608-q1-sample.html">Q1 样章</a>精练 BVA/DT。</p></section>
+  </article><aside class="toc"><h2>CS608 线性目录</h2><ol><li><a href="#path">测试基础</a></li><li><a href="cs608.html">题型页</a></li></ol></aside></div></main>
+  <footer class="footer"><p>线性页按 01-26 讲义顺序整理。</p></footer><script src="assets/app.js"></script></body></html>

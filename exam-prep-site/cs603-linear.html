@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CS603 线性教材学习路线</title><link rel="stylesheet" href="assets/styles.css"></head>
+  <body><a class="skip-link" href="#main">跳到正文</a><header class="site-header"><div class="topbar"><a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS603 Linear</small></a><nav class="topnav"><a href="index.html">总入口</a><a href="cs603.html">CS603 题型页</a><a href="#path">学习路线</a></nav></div></header>
+  <main id="main"><section class="hero"><p class="eyebrow">CS603 linear course path</p><h1>CS603 全教材线性学习：从逻辑到 Dafny、模型检测和 SMT</h1><p class="lead">这页按课程知识依赖顺序学习。先学逻辑和 Hoare triples，再学 Dafny 如何把证明写进程序，最后学模型检测、LTL/CTL、SAT/SMT 和需求形式化。</p></section>
+  <div class="layout"><article class="content">
+    <section id="path" class="section"><h2>1. 课程全景：为什么要形式化验证</h2><p>测试只能覆盖有限例子；形式化验证试图证明一类输入或一类行为全部满足性质。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>1.1</td><td>Module overview / failures</td><td><code>1. ModuleOverview.pdf</code>, <code>Software-Fails-Watch.pdf</code>, <code>FormalMethodsinIndustry.pdf</code></td><td>知道形式化方法解决什么问题。</td></tr>
+      <tr><td>1.2</td><td>Design / Programming by Contract</td><td><code>Design by Contract.pdf</code>, <code>Programming by Contract.pdf</code></td><td>能解释 precondition、postcondition、invariant。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>2. Logic 和 Hoare Logic</h2><p>先学如何把句子变成逻辑公式，再学如何把程序片段夹在前后条件之间证明。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>2.1</td><td>Predicate / propositional logic</td><td><code>1_logic_603.pdf</code>, <code>labZ3_PropLogic.pdf</code></td><td>能解释 predicate、tautology、satisfiable、unsatisfiable。</td></tr>
+      <tr><td>2.2</td><td>Hoare logic</td><td><code>2_hoarelogic_RM.pdf</code>, <code>Hoare Logic Summary Sheet.pdf</code>, labs/exercises</td><td>能写 partial correctness proof。</td></tr>
+      <tr><td>2.3</td><td>Loops</td><td><code>Exercises from Lecture_ Hoare Logic Loop.pdf</code></td><td>能说明 invariant establishment/preservation/exit。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>3. Dafny：程序和证明合在一起</h2><p>Dafny 用 requires/ensures/invariant/decreases 告诉 verifier 该证明什么。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>3.1</td><td>Dafny intro</td><td><code>1.Dafny_Intro.pdf</code>, <code>2.Dafny.pdf</code></td><td>能解释 requires、ensures、assert、ghost。</td></tr>
+      <tr><td>3.2</td><td>Recursion and termination</td><td><code>3.RecursionandTermination.pdf</code>, <code>Termination Exercise Sheet 2.pdf</code></td><td>能解释 decreases 为什么证明终止。</td></tr>
+      <tr><td>3.3</td><td>Loops and iterative programs</td><td><code>4.DafnyLoops.pdf</code>, <code>5.Iterative.pdf</code></td><td>能找 invariant 和 variant。</td></tr>
+      <tr><td>3.4</td><td>Arrays</td><td><code>Arrays I.pdf</code>, <code>7.ArraysII_short.pdf</code>, <code>LinearSearch.pdf</code></td><td>能写数组范围和 forall invariant。</td></tr>
+      <tr><td>3.5</td><td>Objects/classes</td><td><code>8.ObjectI2023.pdf</code></td><td>能解释 class invariant、constructor contract、ghost predicate。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>4. Requirements、Refinement 和 Event-B</h2><p>在写代码前，需求本身也可能含糊。Formalising requirements 和 data refinement 讨论如何从自然语言需求走向更精确模型。</p><div class="table-wrap"><table><thead><tr><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>Formalising requirements / FRET</td><td><code>FormalisingRequirements.pdf</code>, <code>2026_Slides_Formalise.pdf</code></td><td>能解释 FRET 如何减少自然语言歧义。</td></tr>
+      <tr><td>Event-B / data refinement</td><td><code>EventB-Summary-refcard.pdf</code>, <code>2024_Slides_FMAS.pdf</code></td><td>能解释 abstract model 到 concrete implementation。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>5. Model Checking 和 Temporal Logic</h2><p>Hoare/Dafny 适合程序前后条件；model checking 适合状态系统和时间性质。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>5.1</td><td>Kripke structures</td><td><code>MCLecture1CS603.pdf</code>, <code>MCLecture2CS603.pdf</code></td><td>能解释 state、transition、label、path。</td></tr>
+      <tr><td>5.2</td><td>LTL</td><td><code>21-ltl_rm.pdf</code>, <code>ltl_vissoft.pdf</code>, <code>temporal-examples_2023.pdf</code></td><td>能用 G/F/X/U 写性质。</td></tr>
+      <tr><td>5.3</td><td>CTL</td><td><code>22-ctl_rm.pdf</code>, <code>CTL_Exercises.pdf</code></td><td>能区分 A/E 路径量词。</td></tr>
+      <tr><td>5.4</td><td>Spin / NuSMV</td><td><code>MCL41VerifyingWithSPIN_cs603.pdf</code>, <code>Verifying with Spin (TL).pdf</code>, <code>SpinTutorial_fromSpinroot.pdf</code></td><td>能比较 Spin 和 NuSMV。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>6. SAT、SMT、Z3 和 AI4SE</h2><p>最后学自动推理工具。SAT 只处理布尔真假；SMT 还懂整数、数组等理论；Z3 是 SMT solver。</p><div class="table-wrap"><table><thead><tr><th>内容</th><th>材料</th><th>过关标准</th></tr></thead><tbody>
+      <tr><td>SAT / DPLL / CDCL / CNF</td><td><code>sld_mth1.pdf</code>, <code>labZ3_PropLogic.pdf</code></td><td>能解释 sat/unsat/model 和 DPLL 基本思路。</td></tr>
+      <tr><td>SMT / Z3</td><td><code>Z3Exercises.pdf</code>, <code>labZ3_PropLogic.pdf</code></td><td>知道 Z3 如何用 check-sat/get-model。</td></tr>
+      <tr><td>AI4SE / neural network verification</td><td><code>AI4SE_Monahan1.pdf</code>, <code>CS603_FormalVerification_NeuralNetworks.pdf</code></td><td>知道形式化方法也可用于 AI/software engineering。</td></tr>
+    </tbody></table></div></section>
+    <section class="section"><h2>7. 最后接到考试</h2><p>读完线性页后，回到 <a href="cs603.html">CS603 题型页</a> 按 Q1-Q4 练：logic/Hoare、Dafny、FMAS/SAT、model checking。</p></section>
+  </article><aside class="toc"><h2>CS603 线性目录</h2><ol><li><a href="#path">课程全景</a></li><li><a href="cs603.html">题型页</a></li></ol></aside></div></main>
+  <footer class="footer"><p>线性页按知识依赖和本地讲义整理。</p></footer><script src="assets/app.js"></script></body></html>

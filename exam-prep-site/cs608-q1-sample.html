@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS608 Q1：BVA / DT 与黑盒测试</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html">
+          <span>2026 May Exam Prep</span>
+          <small>CS608 样章</small>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="#knowledge">代表性测试</a>
+          <a href="#judge">区分 BVA / DT</a>
+          <a href="#exam-patterns">历年考法</a>
+          <a href="#classic">经典题拆解</a>
+          <a href="#summary">总结</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS608 Software Testing / Q1 sample chapter</p>
+        <h1>Q1 关于 BVA / DT 和黑盒测试</h1>
+        <p class="lead">
+          CS608 Q1 通常要求你先说明穷举测试为什么不可行，再用黑盒测试技术设计一组有限但有代表性的测试。BVA 关注边界值，Decision Table 关注条件组合，二者的表格结构相似，但 TCI 的来源完全不同。
+        </p>
+        <div class="tag-list">
+          <a class="tag" href="#bva">BVA</a>
+          <a class="tag" href="#dt">Decision Table</a>
+          <a class="tag" href="#tci">TCI</a>
+          <a class="tag" href="#exhaustive">Exhaustive testing</a>
+          <a class="tag" href="#worked-bva">2025 Climate.determine()</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+          <section id="knowledge" class="section">
+            <h2>1. 用系统方法挑出少量有代表性的测试</h2>
+            <p>
+              测试设计不是把所有输入都试一遍，而是在规格中找出最容易暴露错误的位置。CS608 Q1 的黑盒题通常围绕两个问题展开：哪些值最值得测，哪些条件组合最值得测。BVA 回答第一个问题，Decision Table 回答第二个问题。
+            </p>
+
+            <div class="three-col">
+              <div class="card" id="exhaustive">
+                <h3>Exhaustive Testing</h3>
+                <p>穷举测试就是测所有输入组合。考试要点是写出组合数量，并说明 test design time 和 test execution time 都不可行。</p>
+              </div>
+              <div class="card" id="bva">
+                <h3>BVA</h3>
+                <p>Boundary Value Analysis 专门测边界。它假设程序员最容易在边界条件写错，例如把 <code>&lt;</code> 写成 <code>&lt;=</code>。</p>
+              </div>
+              <div class="card" id="dt">
+                <h3>Decision Table</h3>
+                <p>Decision Table 专门测条件组合。它把输入条件写成 causes，把输出写成 effects，每个 feasible rule 都要测试。</p>
+              </div>
+            </div>
+
+            <h3>BVA 怎么理解</h3>
+            <p>
+              BVA 的直觉是：规格把输入切成不同区间，而 bug 常出现在区间边缘。比如湿度 <code>0..60</code> 不需要 AC，<code>61..100</code> 需要 AC，那么 <code>60</code> 和 <code>61</code> 就是必须测的边界。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>术语</th>
+                    <th>中文理解</th>
+                    <th>考试里要做什么</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Value line</td>
+                    <td>把一个输入参数的范围画成一条线</td>
+                    <td>标出 natural range 和 specification-based partitions</td>
+                  </tr>
+                  <tr>
+                    <td>Partition</td>
+                    <td>规格认为行为相同的一段值</td>
+                    <td>写出输入分区和输出分区，包括错误分区</td>
+                  </tr>
+                  <tr>
+                    <td>Boundary value</td>
+                    <td>分区边缘的值</td>
+                    <td>把每个非错误边界值列成 TCI</td>
+                  </tr>
+                  <tr>
+                    <td>Output TCI</td>
+                    <td>期望输出本身也要被覆盖</td>
+                    <td>如果某个输出没被边界测试覆盖，要加测试用例补上</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>DT 怎么理解</h3>
+            <p>
+              DT 的直觉是：有些 bug 不是单个输入边界导致的，而是多个条件组合导致的。比如系统是否开启、温度属于哪个范围，两者一起决定输出。DT 的每一列 rule，就是一种需要覆盖的组合。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>术语</th>
+                    <th>中文理解</th>
+                    <th>考试里要做什么</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Cause</td>
+                    <td>输入条件，通常是 boolean 表达式</td>
+                    <td>例如 <code>isOn</code>、<code>t &lt; 1</code>、<code>t &gt;= 25</code></td>
+                  </tr>
+                  <tr>
+                    <td>Effect</td>
+                    <td>输出结果</td>
+                    <td>例如 <code>return HIGH</code>、<code>return LOW</code>、<code>return NONE</code></td>
+                  </tr>
+                  <tr>
+                    <td>Candidate combination</td>
+                    <td>所有真假组合</td>
+                    <td>N 个 cause 理论上有 <code>2^N</code> 列</td>
+                  </tr>
+                  <tr>
+                    <td>Infeasible combination</td>
+                    <td>逻辑上不可能发生的组合</td>
+                    <td>划掉并解释，例如 <code>t&lt;1</code> 和 <code>t>=25</code> 不可能同时为真</td>
+                  </tr>
+                  <tr>
+                    <td>Rule</td>
+                    <td>一个可行组合</td>
+                    <td>每个 rule 是一个 TCI，也需要一个 test case</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3 id="tci">TCI / Data Values / Test Cases 是什么</h3>
+            <p>
+              学 BVA 和 DT 时，最后都会落到三类表格。它们不是额外负担，而是把你的测试设计讲清楚的固定格式。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>表格</th>
+                    <th>它回答的问题</th>
+                    <th>在 BVA / DT 中的来源</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>TCI table</td>
+                    <td>我承诺要覆盖哪些东西?</td>
+                    <td>BVA 来自边界值和输出；DT 来自每个 feasible rule。</td>
+                  </tr>
+                  <tr>
+                    <td>Data Values table</td>
+                    <td>每个分区我准备用哪个具体值?</td>
+                    <td>BVA 常列边界值和代表值；DT 常列能触发 rule 的代表输入。</td>
+                  </tr>
+                  <tr id="test-cases">
+                    <td>Test Cases table</td>
+                    <td>每个测试具体输入、期望输出、覆盖项是什么?</td>
+                    <td>每个 TC 都要写 expected result 和 covered TCI。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="judge" class="section">
+            <h2>2. 根据题面关键词区分 BVA 和 Decision Table</h2>
+            <p>
+              Q1 最容易丢分的地方，是把 BVA 当成 DT 做，或者把 DT 当成 BVA 做。先看题目关键词，再决定你的表格来源。
+            </p>
+            <img class="flow-img" src="assets/cs608-q1-flow.svg" alt="CS608 Q1 workflow: specification, value lines, partitions, TCIs, data values, test cases, review">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>题目关键词</th>
+                    <th>题型</th>
+                    <th>TCI 来自哪里</th>
+                    <th>不要犯的错</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Boundary Value Analysis</code>, <code>value lines</code>, <code>selected equivalence values</code>, <code>without errors</code></td>
+                    <td>BVA</td>
+                    <td>输入边界值 + 必要输出 TCI</td>
+                    <td>不要列所有输入组合；不要把非法值放进 without errors 的测试用例</td>
+                  </tr>
+                  <tr>
+                    <td><code>Decision Tables</code>, <code>causes</code>, <code>effects</code>, <code>candidate combinations</code>, <code>infeasible combinations</code></td>
+                    <td>DT</td>
+                    <td>每个 feasible rule</td>
+                    <td>不要只测边界；不要忘记解释不可行组合</td>
+                  </tr>
+                  <tr>
+                    <td><code>exhaustive testing is infeasible</code>, <code>test design time</code>, <code>test execution time</code></td>
+                    <td>穷举不可行说明题</td>
+                    <td>不是 TCI 题</td>
+                    <td>不要只写 “too many”；必须写数量级和原因</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>一句话判断</h3>
+            <p>
+              BVA 问的是“边界附近有没有错”；DT 问的是“这些条件组合起来输出对不对”。如果你先问清楚这句话，后面的表格就不会跑偏。
+            </p>
+          </section>
+
+          <section id="exam-patterns" class="section">
+            <h2>3. 2023-2025 年 Q1 考法变化</h2>
+            <p>
+              下面这张表不是为了背题，而是为了看出重复结构：Q1(a) 基本稳定考穷举不可行；Q1(b)(c) 在 DT 和 BVA 之间切换。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>年份</th>
+                    <th>Q1(a)</th>
+                    <th>Q1(b)(c)</th>
+                    <th>主攻题型</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2023 Summer</td>
+                    <td><code>int[] maxv</code> 穷举不可行</td>
+                    <td><code>boilerSetting(t,isOn)</code></td>
+                    <td>Decision Table + TCI + Test Cases</td>
+                  </tr>
+                  <tr>
+                    <td>2024 Summer</td>
+                    <td><code>long maxv(x,y,z)</code> 穷举不可行</td>
+                    <td><code>fanSetting(temp,isOn)</code></td>
+                    <td>Decision Table + infeasible combinations</td>
+                  </tr>
+                  <tr>
+                    <td>2025 Summer</td>
+                    <td><code>long greater(a,b)</code> 穷举不可行</td>
+                    <td><code>Climate.determine(temp,humidity)</code></td>
+                    <td>BVA without errors + output TCI</td>
+                  </tr>
+                  <tr>
+                    <td>2025 Autumn</td>
+                    <td>1M records * 128 bytes 的数据库状态数</td>
+                    <td><code>Braking.evaluate(battLevel,bPressure)</code></td>
+                    <td>BVA without errors + no duplicate coverage</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="classic" class="section">
+            <h2>4. 从经典题拆解完整答题表格</h2>
+            <p>
+              这一段开始拿题目练。顺序是先做 5 分穷举解释，再做 2025 Summer 的 BVA 大题，最后用 2023 Summer 的 DT 题说明另一种 Q1。
+            </p>
+
+            <section class="worked-example">
+              <h3>经典题 1：穷举测试为什么不可行</h3>
+              <p>
+                2025 Summer 给出 <code>long greater(long a, long b)</code>。Java <code>long</code> 是 64-bit，所以一个参数有 <code>2^64</code> 个可能值，两个参数共有：
+              </p>
+              <div class="answer-box">
+                <p><code>2^64 * 2^64 = 2^128 input combinations</code></p>
+              </div>
+              <div class="template-box">
+                <h3>5 分答案模板</h3>
+                <div class="answer-box" id="exhaustive-template">
+                  <p>For exhaustive testing, we would need one test case for every possible input combination.</p>
+                  <p>Each <code>long</code> parameter has <code>2^64</code> possible values, so two <code>long</code> parameters give <code>2^128</code> input combinations.</p>
+                  <p>This is infeasible for two reasons. First, test design is infeasible because each test case needs input data and an expected result. Second, test execution is infeasible because running <code>2^128</code> tests would take an unrealistic amount of time.</p>
+                  <p>Therefore exhaustive testing is not practical; we need systematic sampling techniques such as BVA or Decision Table testing.</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="worked-bva" class="worked-example" style="margin-top: 18px;">
+              <h3>经典题 2：2025 Summer <code>Climate.determine()</code> 的 BVA</h3>
+              <p>
+                规格摘要：温度低于 16 度需要 heating；湿度高于 60% 需要 AC。<code>temp</code> 合法范围是 <code>-130..60</code>，<code>humidity</code> 合法范围是 <code>0..100</code>。题目要求 <code>Do not include error values</code>。
+              </p>
+
+              <h3>Step 1：先列分区</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>参数/输出</th>
+                      <th>分区</th>
+                      <th>含义</th>
+                      <th>错误?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>temp</code></td><td><code>Integer.MIN_VALUE..-131</code></td><td>低于允许范围</td><td>是</td></tr>
+                    <tr><td><code>temp</code></td><td><code>-130..15</code></td><td>合法且需要 heating</td><td>否</td></tr>
+                    <tr><td><code>temp</code></td><td><code>16..60</code></td><td>合法且不需要 heating</td><td>否</td></tr>
+                    <tr><td><code>temp</code></td><td><code>61..Integer.MAX_VALUE</code></td><td>高于允许范围</td><td>是</td></tr>
+                    <tr><td><code>humidity</code></td><td><code>Integer.MIN_VALUE..-1</code></td><td>低于允许百分比</td><td>是</td></tr>
+                    <tr><td><code>humidity</code></td><td><code>0..60</code></td><td>合法且不需要 AC</td><td>否</td></tr>
+                    <tr><td><code>humidity</code></td><td><code>61..100</code></td><td>合法且需要 AC</td><td>否</td></tr>
+                    <tr><td><code>humidity</code></td><td><code>101..Integer.MAX_VALUE</code></td><td>高于允许百分比</td><td>是</td></tr>
+                    <tr><td>Return</td><td><code>NONE / HEAT_ONLY / AC_ONLY / HEAT_AND_AC / ERROR</code></td><td>由两个输入共同决定</td><td><code>ERROR</code> 是</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Step 2：把非错误边界值写成 TCI</h3>
+              <p>
+                因为题目说不包含 error values，所以不把 <code>-131</code>、<code>61</code> 作为温度错误测试，也不把 <code>-1</code>、<code>101</code> 作为湿度错误测试。但合法范围边缘仍然必须测。
+              </p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>TCI</th>
+                      <th>来源</th>
+                      <th>边界值 / 期望输出</th>
+                      <th>Covered by TC</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>BV1</td><td><code>temp</code></td><td><code>-130</code></td><td>TC1</td></tr>
+                    <tr><td>BV2</td><td><code>temp</code></td><td><code>15</code></td><td>TC2</td></tr>
+                    <tr><td>BV3</td><td><code>temp</code></td><td><code>16</code></td><td>TC3</td></tr>
+                    <tr><td>BV4</td><td><code>temp</code></td><td><code>60</code></td><td>TC4</td></tr>
+                    <tr><td>BV5</td><td><code>humidity</code></td><td><code>0</code></td><td>TC1</td></tr>
+                    <tr><td>BV6</td><td><code>humidity</code></td><td><code>60</code></td><td>TC2</td></tr>
+                    <tr><td>BV7</td><td><code>humidity</code></td><td><code>61</code></td><td>TC3</td></tr>
+                    <tr><td>BV8</td><td><code>humidity</code></td><td><code>100</code></td><td>TC4</td></tr>
+                    <tr><td>OUT1</td><td>Return</td><td><code>NONE</code></td><td>TC4</td></tr>
+                    <tr><td>OUT2</td><td>Return</td><td><code>HEAT_ONLY</code></td><td>TC1, TC2</td></tr>
+                    <tr><td>OUT3</td><td>Return</td><td><code>AC_ONLY</code></td><td>TC3</td></tr>
+                    <tr><td>OUT4</td><td>Return</td><td><code>HEAT_AND_AC</code></td><td>TC5</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Step 3：列 selected equivalence values</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>参数</th>
+                      <th>分区</th>
+                      <th>代表值</th>
+                      <th>边界值</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>temp</code></td><td>Heating required</td><td><code>10</code></td><td><code>-130</code>, <code>15</code></td></tr>
+                    <tr><td><code>temp</code></td><td>No heating</td><td><code>20</code></td><td><code>16</code>, <code>60</code></td></tr>
+                    <tr><td><code>humidity</code></td><td>No AC</td><td><code>50</code></td><td><code>0</code>, <code>60</code></td></tr>
+                    <tr><td><code>humidity</code></td><td>AC required</td><td><code>80</code></td><td><code>61</code>, <code>100</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Step 4：列 Test Cases</h3>
+              <p>
+                前 4 个 test case 覆盖 8 个输入边界。第 5 个 test case 是为了补输出 <code>HEAT_AND_AC</code>，因为只靠前 4 个边界组合没有覆盖这个 expected output。
+              </p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>TC</th>
+                      <th><code>temp</code></th>
+                      <th><code>humidity</code></th>
+                      <th>Expected</th>
+                      <th>New coverage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>TC1</td><td><code>-130</code></td><td><code>0</code></td><td><code>HEAT_ONLY</code></td><td>BV1, BV5, OUT2</td></tr>
+                    <tr><td>TC2</td><td><code>15</code></td><td><code>60</code></td><td><code>HEAT_ONLY</code></td><td>BV2, BV6</td></tr>
+                    <tr><td>TC3</td><td><code>16</code></td><td><code>61</code></td><td><code>AC_ONLY</code></td><td>BV3, BV7, OUT3</td></tr>
+                    <tr><td>TC4</td><td><code>60</code></td><td><code>100</code></td><td><code>NONE</code></td><td>BV4, BV8, OUT1</td></tr>
+                    <tr><td>TC5</td><td><code>15</code></td><td><code>61</code></td><td><code>HEAT_AND_AC</code></td><td>OUT4</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h3>Step 5：写 review 句</h3>
+              <p>
+                The completed TCI table shows that every non-error boundary value and every non-error expected output is covered by at least one test case. Each test case contributes at least one new TCI, so there is no unnecessary duplicate test case.
+              </p>
+            </section>
+
+            <section id="worked-dt" class="worked-example" style="margin-top: 18px;">
+              <h3>经典题 3：2023 Summer <code>boilerSetting(t,isOn)</code> 的 DT</h3>
+              <p>
+                规格：如果 <code>isOn=false</code>，返回 <code>NONE</code>。否则，<code>t&lt;1</code> 返回 <code>HIGH</code>，<code>1..24</code> 返回 <code>LOW</code>，<code>t>=25</code> 返回 <code>NONE</code>。
+              </p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rule</th>
+                      <th><code>isOn</code></th>
+                      <th><code>t &lt; 1</code></th>
+                      <th><code>1 <= t < 25</code></th>
+                      <th><code>t >= 25</code></th>
+                      <th>Effect</th>
+                      <th>Example test data</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>R1</td><td>F</td><td>-</td><td>-</td><td>-</td><td><code>NONE</code></td><td><code>t=-50, isOn=false</code></td></tr>
+                    <tr><td>R2</td><td>T</td><td>T</td><td>F</td><td>F</td><td><code>HIGH</code></td><td><code>t=-50, isOn=true</code></td></tr>
+                    <tr><td>R3</td><td>T</td><td>F</td><td>T</td><td>F</td><td><code>LOW</code></td><td><code>t=10, isOn=true</code></td></tr>
+                    <tr><td>R4</td><td>T</td><td>F</td><td>F</td><td>T</td><td><code>NONE</code></td><td><code>t=50, isOn=true</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                讲题时要解释不可行组合：<code>t&lt;1</code>、<code>1<=t<25</code>、<code>t>=25</code> 是互斥温度区间，不可能同时为真。每个可行 rule 都是一个 TCI，也对应一个 test case。
+              </p>
+            </section>
+          </section>
+
+          <section id="summary" class="section">
+            <h2>5. Q1 答案必须包含的东西</h2>
+            <ol class="checklist">
+              <li>先判断题型：BVA 测边界，DT 测组合，exhaustive 题写数量级。</li>
+              <li>BVA 要有 value line、input/output partitions、TCI、selected values、test cases。</li>
+              <li>DT 要有 causes、effects、candidate combinations、infeasible combinations、decision table、rule-based TCI。</li>
+              <li>TCI 必须编号，并在最后一列写清楚被哪个 test case 覆盖。</li>
+              <li>Test Cases 表必须包含输入、expected result、covered TCI。</li>
+              <li>题目说 <code>without errors</code> 时，测试用例不要使用非法输入；但分析中仍可说明错误分区。</li>
+              <li>最后加 review 句：full TCI coverage achieved, no unnecessary duplicate test cases。</li>
+            </ol>
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="本章目录">
+          <h2>本章目录</h2>
+          <ol>
+            <li><a href="#knowledge">代表性测试</a></li>
+            <li><a href="#judge">区分 BVA / DT</a></li>
+            <li><a href="#exam-patterns">历年考法</a></li>
+            <li><a href="#classic">经典题拆解</a></li>
+            <li><a href="#summary">总结</a></li>
+          </ol>
+          <label for="keyword-search"><strong>关键词过滤</strong></label>
+          <input id="keyword-search" class="search-box" type="search" placeholder="BVA / DT / TCI" data-keyword-search="[data-keyword-item]">
+          <div class="tag-list">
+            <a class="keyword-link" data-keyword-item data-keywords="exhaustive infeasible 穷举" href="#exhaustive">Exhaustive</a>
+            <a class="keyword-link" data-keyword-item data-keywords="BVA boundary 边界值" href="#bva">BVA</a>
+            <a class="keyword-link" data-keyword-item data-keywords="decision table dt 决策表" href="#dt">DT</a>
+            <a class="keyword-link" data-keyword-item data-keywords="TCI coverage item 覆盖项" href="#tci">TCI</a>
+            <a class="keyword-link" data-keyword-item data-keywords="test cases 测试用例" href="#test-cases">Test Cases</a>
+            <a class="keyword-link" data-keyword-item data-keywords="Climate determine 2025 summer" href="#worked-bva">Climate</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>样章依据：本地 CS608 lecture notes 中 BVA / Decision Table slides，以及 2023-2025 CS608 Summer/Autumn 试卷题型结构。</p>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

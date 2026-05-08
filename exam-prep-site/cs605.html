@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS605：Theory of Computer Science</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html">
+          <span>2026 May Exam Prep</span>
+          <small>CS605</small>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="#symbols">基础符号</a>
+          <a href="#pumping">Pumping</a>
+          <a href="#tm">TM</a>
+          <a href="#reductions">Reductions</a>
+          <a href="#np">NP</a>
+          <a href="#exam-map">考法地图</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS605 Mathematics and Theory of Computer Science</p>
+        <h1>CS605 理论计算机：语言、图灵机、归约和 NP 证明</h1>
+        <p class="lead">
+          CS605 考的是“如何证明一个问题属于或不属于某类”。先把语言、字符串、机器、可判定、可识别这些词变成人话，再用固定证明模板处理 7 类题：非正则、非 CFL、decidable / Turing-recognisable、undecidable、TR/co-TR、in NP、NP-complete。
+        </p>
+        <div class="tag-list">
+          <a class="tag" href="#symbols">语言和符号</a>
+          <a class="tag" href="#automata">FA / PDA / TM</a>
+          <a class="tag" href="#pumping">Pumping Lemma</a>
+          <a class="tag" href="#reductions">HALT Reductions</a>
+          <a class="tag" href="#np">NP / NP-complete</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+          <section id="symbols" class="section">
+            <h2>1. 先把题目里的符号读懂</h2>
+            <p>
+              CS605 的题面看起来吓人，很多时候只是用数学符号描述“哪些字符串算合格”。Language 可以理解为一组字符串；证明题就是判断这组字符串能不能被某种机器识别、判定，或者能不能在多项式时间内验证。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>符号</th>
+                    <th>从零理解</th>
+                    <th>例子</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Alphabet <code>Σ</code></td><td>允许使用的字符集合。</td><td><code>Σ={0,1}</code> 表示字符串只能由 0 和 1 组成。</td></tr>
+                  <tr><td>String / word</td><td>由 alphabet 里的字符排成的一串。</td><td><code>0101</code>, <code>abba</code></td></tr>
+                  <tr><td><code>Σ*</code></td><td>alphabet 上所有有限字符串的集合，包括空串。</td><td><code>{0,1}*</code> 包含 <code>ε</code>, <code>0</code>, <code>11</code>...</td></tr>
+                  <tr><td>Language <code>L</code></td><td>某些字符串组成的集合。它通常由一个条件定义。</td><td><code>L={w : w has even length}</code></td></tr>
+                  <tr><td><code>|w|</code></td><td>字符串 <code>w</code> 的长度。</td><td>如果 <code>w=010</code>，则 <code>|w|=3</code>。</td></tr>
+                  <tr><td><code>&lt;M,w&gt;</code></td><td>把机器 <code>M</code> 和输入 <code>w</code> 编码成一个字符串。</td><td>HALT 的输入就是“一台机器 + 一个输入”。</td></tr>
+                  <tr><td>Complement <code>L̄</code></td><td>所有不在 <code>L</code> 里的字符串，前提是 alphabet 相同。</td><td>如果 <code>L</code> 是偶数长度字符串，<code>L̄</code> 是奇数长度字符串。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <img class="flow-img" src="assets/cs605-proof-flow.svg" alt="CS605 proof workflow: read language, choose proof tool, use template, explain why, final claim">
+          </section>
+
+          <section id="automata" class="section">
+            <h2>2. 三种机器：FA、PDA、TM</h2>
+            <p>
+              这门课常把“问题难不难”转化成“什么机器能处理它”。机器越强，能处理的 language 越多。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>机器/模型</th>
+                    <th>人话理解</th>
+                    <th>对应 language</th>
+                    <th>能力边界</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Finite Automaton (FA)</td>
+                    <td>只有有限个状态，没有额外记忆。像一个只会按规则换状态的小控制器。</td>
+                    <td>Regular languages</td>
+                    <td>能记住“当前状态”，但不能无限计数。</td>
+                  </tr>
+                  <tr>
+                    <td>Pushdown Automaton (PDA)</td>
+                    <td>FA 加一个 stack。Stack 像一摞盘子，只能从顶部放入和拿出。</td>
+                    <td>Context-free languages (CFL)</td>
+                    <td>适合一层嵌套或配对，例如括号匹配。</td>
+                  </tr>
+                  <tr>
+                    <td>Turing Machine (TM)</td>
+                    <td>有无限纸带，可读写和移动。它是抽象版通用计算机。</td>
+                    <td>Decidable / Turing-recognisable languages</td>
+                    <td>很强，但仍有 HALT 这类不可判定问题。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Regular 和 Context-free 的直觉</h3>
+            <p>
+              Regular language 适合“有限记忆能判断”的规则，比如是否以 01 结尾。Context-free language 可以处理一类需要 stack 的结构，比如 <code>a^n b^n</code>，因为看到 <code>a</code> 时压栈，看到 <code>b</code> 时出栈。超过这种能力的语言，需要更强机器，或者根本不能被某类机器处理。
+            </p>
+          </section>
+
+          <section id="pumping" class="section">
+            <h2>3. Pumping Lemma：证明某语言不是 regular / CFL</h2>
+            <p>
+              Pumping lemma 的目的不是证明一个语言 regular，而是反过来证明“不可能 regular”或“不可能 context-free”。核心套路是：如果它真属于这个类别，那么足够长的字符串应该能被切开并重复某部分后仍留在语言里；我们找到一个字符串，让任何切法一 pump 就坏。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>题型</th>
+                    <th>你要证明什么</th>
+                    <th>常见操作</th>
+                    <th>最后矛盾</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Not regular</td>
+                    <td>FA 的有限记忆不够用</td>
+                    <td>选一个依赖计数/中间位置的长字符串，按 <code>xyz</code> 切。</td>
+                    <td>重复 <code>y</code> 后，数量关系或位置关系被破坏。</td>
+                  </tr>
+                  <tr>
+                    <td>Not context-free</td>
+                    <td>单个 stack 也不够用</td>
+                    <td>选一个有多段相互依赖的长字符串，按 <code>uvxyz</code> 切。</td>
+                    <td>重复 <code>v</code> 和 <code>y</code> 后，多段平衡关系被破坏。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>非正则证明模板</h3>
+            <div class="answer-box">
+              <p>Assume, for contradiction, that <code>L</code> is regular. Then the pumping lemma applies, so there is a pumping length <code>p</code>.</p>
+              <p>Choose a word <code>w</code> in <code>L</code> with length at least <code>p</code>. Because <code>L</code> is regular, <code>w</code> can be split as <code>w=xyz</code> with <code>|xy|≤p</code>, <code>|y|>0</code>, and for every <code>i≥0</code>, <code>xy^iz</code> is still in <code>L</code>.</p>
+              <p>Now use the constraints to show where <code>y</code> must sit. Pump with a convenient value such as <code>i=0</code> or <code>i=2</code>. The pumped word breaks the defining rule of <code>L</code>, so it is not in <code>L</code>. This contradicts the pumping lemma. Therefore <code>L</code> is not regular.</p>
+            </div>
+            <h3>非 CFL 证明模板</h3>
+            <div class="answer-box">
+              <p>Assume, for contradiction, that <code>L</code> is context-free. Then there is a pumping length <code>p</code>.</p>
+              <p>Choose a word <code>w</code> in <code>L</code> with length at least <code>p</code>. The word can be split as <code>w=uvxyz</code> with <code>|vxy|≤p</code>, <code>|vy|>0</code>, and for every <code>i≥0</code>, <code>uv^ixy^iz</code> is in <code>L</code>.</p>
+              <p>Because <code>|vxy|≤p</code>, the pumped pieces can only cover a limited local region of the word. Consider the possible positions of <code>v</code> and <code>y</code>. In every case, pumping changes some required equality/order but not the matching parts elsewhere. Therefore the pumped word is outside <code>L</code>, contradiction. So <code>L</code> is not context-free.</p>
+            </div>
+          </section>
+
+          <section id="tm" class="section">
+            <h2>4. Decidable 和 Turing-recognisable</h2>
+            <p>
+              这里最容易混。Decider 像一个永远会给 yes/no 的程序；recogniser 像一个只保证 yes 时会停下来的程序。如果输入不属于语言，它可能拒绝，也可能永远跑下去。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>概念</th>
+                    <th>输入在语言里</th>
+                    <th>输入不在语言里</th>
+                    <th>人话</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Decidable</td><td>accept 并停机</td><td>reject 并停机</td><td>一定会给答案。</td></tr>
+                  <tr><td>Turing-recognisable</td><td>accept 并停机</td><td>可以 reject，也可以永远不停止</td><td>只保证能认出 yes instance。</td></tr>
+                  <tr><td>co-Turing-recognisable</td><td>看 complement</td><td>complement 是 T-r</td><td>能认出 no instance 的一侧。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Finite automata 相关 decidable 题</h3>
+            <p>
+              如果题目问有限自动机是否接受某个 word、是否接受至少一个 word、是否接受所有以某前缀开头的 word，通常可以构造 decider。原因是 FA 是有限对象，可以系统地模拟或检查它的有限状态图。
+            </p>
+            <div class="answer-box">
+              <p>We prove the language is decidable by constructing a TM <code>D</code>. On input encoding of a finite automaton <code>M</code>, first check that the encoding is valid. Then perform the finite check required by the question: simulate <code>M</code> on the specified word, or search the finite state graph for an accepting path, or construct/check the relevant automaton property.</p>
+              <p>Because a finite automaton has finitely many states and the procedure always finishes, <code>D</code> halts on every input. It accepts exactly the encodings satisfying the required property and rejects the others. Therefore the language is decidable.</p>
+            </div>
+            <h3>Java program property 的 Turing-recognisable 题</h3>
+            <p>
+              如果题目说“Java program eventually does X”，常见做法是模拟程序运行，一旦观察到 X 就 accept。若程序永远不做 X，模拟可能永远继续，所以这通常只证明 Turing-recognisable，而不是 decidable。
+            </p>
+          </section>
+
+          <section id="reductions" class="section">
+            <h2>5. Mapping Reduction：用 HALT 证明 undecidable</h2>
+            <p>
+              Reduction 不是“把问题变小”，而是“把一个已知很难的问题翻译成新问题”。如果 HALT 能被翻译成新问题 <code>L</code>，并且假设 <code>L</code> 可判定，那么我们就能解决 HALT。但 HALT 已知不可判定，所以假设错了，<code>L</code> 也不可判定。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>步骤</th>
+                    <th>要写什么</th>
+                    <th>为什么</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>Assume <code>L</code> is decidable.</td><td>反证法，先假设新问题能解决。</td></tr>
+                  <tr><td>2</td><td>Construct mapping function <code>F</code> from <code>&lt;M,w&gt;</code> to an instance of <code>L</code>.</td><td>把 HALT 输入翻译成新问题输入。</td></tr>
+                  <tr><td>3</td><td>Make the constructed program/machine behave differently depending on whether <code>M</code> halts on <code>w</code>.</td><td>让新问题的 yes/no 正好反映 HALT 的 yes/no。</td></tr>
+                  <tr><td>4</td><td>Show <code>F(&lt;M,w&gt;) ∈ L iff &lt;M,w&gt; ∈ HALT</code>.</td><td>证明翻译正确。</td></tr>
+                  <tr><td>5</td><td>Use decider for <code>L</code> to decide HALT, contradiction.</td><td>HALT 不可判定，所以 <code>L</code> 不可判定。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Mapping reduction 模板</h3>
+            <div class="answer-box">
+              <p>We will use a mapping reduction to prove <code>HALT ≤m L</code>. Assume, for contradiction, that <code>L</code> is decidable.</p>
+              <p>Define a computable function <code>f</code> by constructing a TM <code>F</code>. On input <code>&lt;M,w&gt;</code>, <code>F</code> constructs a new machine/program <code>N</code> whose behaviour is designed so that <code>N</code> has the property in <code>L</code> exactly when <code>M</code> halts on <code>w</code>. Then <code>F</code> outputs the encoding required by <code>L</code>.</p>
+              <p>Now <code>f(&lt;M,w&gt;) ∈ L</code> iff <code>&lt;M,w&gt; ∈ HALT</code>. Therefore, if <code>L</code> were decidable, we could decide HALT by computing <code>f(&lt;M,w&gt;)</code> and running the decider for <code>L</code>. This contradicts the undecidability of HALT. Therefore <code>L</code> is undecidable.</p>
+            </div>
+            <h3>Q4 TR / not TR 的常见逻辑</h3>
+            <p>
+              一旦你已经证明 <code>L</code> 和 <code>L̄</code> 都 undecidable，就可以用一个重要事实：如果一个语言和它的 complement 都 Turing-recognisable，那么它 decidable。因此如果二者都 undecidable，至少有一边不是 T-r。考试通常还要求你构造一台 recogniser 证明其中一边是 T-r，再推出另一边不是 T-r。
+            </p>
+          </section>
+
+          <section id="np" class="section">
+            <h2>6. P、NP、Certificate 和 Verifier</h2>
+            <p>
+              Complexity 讨论的是“问题规模变大时需要多少时间”。P 是能快速求解的问题；NP 是如果别人给你一个候选答案，你能快速检查它对不对的问题。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>术语</th>
+                    <th>从零理解</th>
+                    <th>考试中怎么用</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Input size</td><td>输入有多大，例如图的顶点数和边数。</td><td>运行时间要用输入大小表达。</td></tr>
+                  <tr><td>Polynomial time</td><td>时间像 <code>n</code>, <code>n^2</code>, <code>n^3</code> 这样增长，而不是 <code>2^n</code>。</td><td>证明 verifier 快速。</td></tr>
+                  <tr><td>Certificate</td><td>别人给你的候选答案。</td><td>例如 clique 题里，certificate 是那组被选中的 vertices。</td></tr>
+                  <tr><td>Verifier</td><td>检查 certificate 是否真的有效的算法。</td><td>构造 TM <code>M</code> 在 polynomial time 验证。</td></tr>
+                  <tr><td>NP</td><td>yes instance 有短 certificate 且可快速验证。</td><td>Q6 证明某语言 in NP。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>证明 in NP 的模板</h3>
+            <div class="answer-box">
+              <p>We prove that <code>L</code> is in NP by constructing a polynomial-time verifier <code>V</code>.</p>
+              <p>Let the certificate <code>c</code> be the proposed solution: for example, a subset of vertices, a subset of numbers, a matching, or a hitting set.</p>
+              <p>On input <code>x</code> and certificate <code>c</code>, verifier <code>V</code> first checks that <code>c</code> has the required form and size. Then it checks the condition in the language definition directly. If all checks pass, accept; otherwise reject.</p>
+              <p>The checks use loops over the input objects, such as vertices, edges, sets, or numbers. This takes polynomial time in the input size. Therefore <code>L</code> is in NP.</p>
+            </div>
+            <h3>NP-complete 证明</h3>
+            <p>
+              NP-complete 证明有两半。第一，证明这个问题在 NP：给你答案你能快速检查。第二，证明它 NP-hard：把一个已知 NP-complete 问题，例如 3-SAT，polynomial-time reduce 到它。
+            </p>
+            <div class="answer-box">
+              <p>To prove <code>L</code> is NP-complete, first prove <code>L ∈ NP</code> using a polynomial-time verifier.</p>
+              <p>Then prove <code>L</code> is NP-hard by giving a polynomial-time reduction from a known NP-complete problem such as <code>3-SAT</code>. The reduction converts an instance <code>C</code> of <code>3-SAT</code> into an instance <code>f(C)</code> of <code>L</code>.</p>
+              <p>Show correctness: <code>f(C) ∈ L</code> iff <code>C ∈ 3-SAT</code>. Show the construction runs in polynomial time. Therefore <code>L</code> is NP-hard. Since <code>L</code> is also in NP, <code>L</code> is NP-complete.</p>
+            </div>
+          </section>
+
+          <section id="question-types" class="section">
+            <h2>7. 7 道题分别在考什么</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>题号</th>
+                    <th>常见要求</th>
+                    <th>使用工具</th>
+                    <th>不要漏</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Q1(a)</td><td>Prove not regular</td><td>Regular pumping lemma</td><td>选 word、说明切法限制、pump 后不在语言里。</td></tr>
+                  <tr><td>Q1(b)</td><td>Prove not context-free</td><td>CFL pumping lemma</td><td>分情况讨论 <code>v,y</code> 位置。</td></tr>
+                  <tr><td>Q2(a)</td><td>Prove decidable</td><td>Construct decider</td><td>说明机器每个输入都会 halt。</td></tr>
+                  <tr><td>Q2(b)</td><td>Prove Turing-recognisable</td><td>Construct recogniser</td><td>只需 yes 时 accept；no 时可 loop。</td></tr>
+                  <tr><td>Q3/Q5</td><td>Prove undecidable</td><td>Mapping reduction from HALT</td><td>写 iff 关系和 contradiction。</td></tr>
+                  <tr><td>Q4</td><td>TR / not TR for language and complement</td><td>Recognizer + theorem</td><td>用“若 L 和 complement 都 T-r，则 decidable”。</td></tr>
+                  <tr><td>Q6</td><td>Prove in NP</td><td>Certificate + verifier</td><td>说明 certificate 和 polynomial runtime。</td></tr>
+                  <tr><td>Q7</td><td>Prove NP-complete</td><td>in NP + reduction from 3-SAT</td><td>membership、hardness、correctness、polynomial time。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="exam-map" class="section">
+            <h2>8. 2025-2026 考法地图</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>试卷</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3-Q5</th>
+                    <th>Q6-Q7</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2025 Summer</td>
+                    <td>not regular + not CFL</td>
+                    <td>FA decidable + Java T-r</td>
+                    <td>HALT reductions + TR/complement</td>
+                    <td>graph/subset in NP + NP-complete from 3-SAT</td>
+                  </tr>
+                  <tr>
+                    <td>2025 Autumn</td>
+                    <td>not regular + not CFL</td>
+                    <td>FA decidable + Java T-r</td>
+                    <td>HALT reductions + TR/complement</td>
+                    <td>3D matching/subset in NP + hitting set NP-complete</td>
+                  </tr>
+                  <tr>
+                    <td>Sample A</td>
+                    <td>not regular + not CFL</td>
+                    <td>decidable + T-r template</td>
+                    <td>Java property reductions + TR/complement</td>
+                    <td>in NP + sports/hitting-set style NP-complete</td>
+                  </tr>
+                  <tr>
+                    <td>Sample B</td>
+                    <td>not regular + choose not CFL</td>
+                    <td>FA nonempty decidable + Java file property T-r</td>
+                    <td>TM nonempty language + Java mean property reductions</td>
+                    <td>clique/vertex-cover style in NP + 3-SAT reduction</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="summary" class="section">
+            <h2>9. CS605 答案检查清单</h2>
+            <ol class="checklist">
+              <li>先把 language 的意思翻译成普通话，再开始证明。</li>
+              <li>Pumping proof 必须写 contradiction，不要只说“显然不行”。</li>
+              <li>Decidable 题必须说明 TM halts on every input。</li>
+              <li>Turing-recognisable 题不要误写成一定 reject；no instance 可以 loop。</li>
+              <li>Reduction 题必须写 <code>iff</code>：新实例在 <code>L</code> 中，当且仅当原 HALT instance 是 yes。</li>
+              <li>Q4 记住：如果一个语言和 complement 都 T-r，那么它 decidable。</li>
+              <li>in NP 题必须说 certificate 是什么，以及 verifier 为什么 polynomial time。</li>
+              <li>NP-complete 题必须两步：先 in NP，再 NP-hard。</li>
+            </ol>
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="CS605 目录">
+          <h2>CS605 目录</h2>
+          <ol>
+            <li><a href="#symbols">基础符号</a></li>
+            <li><a href="#automata">三种机器</a></li>
+            <li><a href="#pumping">Pumping</a></li>
+            <li><a href="#tm">TM 与可判定</a></li>
+            <li><a href="#reductions">Reductions</a></li>
+            <li><a href="#np">NP</a></li>
+            <li><a href="#question-types">题型</a></li>
+            <li><a href="#exam-map">考法地图</a></li>
+          </ol>
+          <label for="keyword-search"><strong>关键词过滤</strong></label>
+          <input id="keyword-search" class="search-box" type="search" placeholder="HALT / NP / pumping" data-keyword-search="[data-keyword-item]">
+          <div class="tag-list">
+            <a class="keyword-link" data-keyword-item data-keywords="alphabet string language sigma" href="#symbols">Language</a>
+            <a class="keyword-link" data-keyword-item data-keywords="finite automata regular PDA context-free TM" href="#automata">Machines</a>
+            <a class="keyword-link" data-keyword-item data-keywords="pumping lemma regular CFL" href="#pumping">Pumping</a>
+            <a class="keyword-link" data-keyword-item data-keywords="decidable Turing-recognisable co-T-r" href="#tm">Decidable</a>
+            <a class="keyword-link" data-keyword-item data-keywords="HALT mapping reduction undecidable" href="#reductions">Reduction</a>
+            <a class="keyword-link" data-keyword-item data-keywords="NP certificate verifier polynomial NP-complete 3-SAT" href="#np">NP</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>依据本地 CS605 annotated notes、2025 Summer/Autumn 和 2026 Sample A/B 题型整理。</p>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

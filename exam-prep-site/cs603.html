@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS603：Formal Verification</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html">
+          <span>2026 May Exam Prep</span>
+          <small>CS603</small>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="#logic">Logic</a>
+          <a href="#hoare">Hoare</a>
+          <a href="#dafny">Dafny</a>
+          <a href="#model-checking">Model Checking</a>
+          <a href="#sat-smt">SAT/SMT</a>
+          <a href="#exam-map">考法地图</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS603 Formal Verification</p>
+        <h1>CS603 形式化验证：用逻辑证明程序和系统满足性质</h1>
+        <p class="lead">
+          CS603 的核心是“不要只测试几个例子，而是用数学方式证明”。题目分成几块：逻辑表达、Hoare logic、Dafny 程序验证、模型检测和 SAT/SMT 求解。页面先解释符号，再讲每类题怎么下手。
+        </p>
+        <div class="tag-list">
+          <a class="tag" href="#logic">Predicate logic</a>
+          <a class="tag" href="#hoare">Hoare logic</a>
+          <a class="tag" href="#dafny">Dafny</a>
+          <a class="tag" href="#model-checking">LTL / CTL / Spin</a>
+          <a class="tag" href="#sat-smt">SAT / SMT / Z3</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+          <section id="foundation" class="section">
+            <h2>1. 形式化验证在做什么</h2>
+            <p>
+              普通测试问：“这几个输入能不能跑对？” 形式化验证问：“所有满足条件的输入都能不能保证正确？” 它用逻辑公式写清楚程序前后应该满足什么，再让人或工具证明这些公式。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>词</th>
+                    <th>从零理解</th>
+                    <th>例子</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Specification</td><td>程序应该满足的说明。</td><td>排序后数组递增。</td></tr>
+                  <tr><td>Precondition</td><td>程序开始前必须是真的条件。</td><td>数组长度大于 0。</td></tr>
+                  <tr><td>Postcondition</td><td>程序结束后必须是真的条件。</td><td>返回值是数组最小值。</td></tr>
+                  <tr><td>Invariant</td><td>在某个过程反复执行时一直保持真的条件。</td><td>循环每次开始时 <code>0 <= i <= a.Length</code>。</td></tr>
+                  <tr><td>Verifier</td><td>检查证明条件是否成立的工具。</td><td>Dafny verifier、Z3、model checker。</td></tr>
+                  <tr><td>Ghost</td><td>只用于证明、不进入最终运行程序的变量/代码。</td><td>Dafny ghost field 记录抽象状态。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="logic" class="section">
+            <h2>2. 逻辑：把英文要求变成公式</h2>
+            <p>
+              Predicate 是一个带参数的真假判断。比如 <code>Student(x)</code> 表示 x 是学生，<code>Took(x, pen)</code> 表示 x 拿了笔。Predicate logic 题就是把英文句子翻译成这些判断和量词。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>符号</th>
+                    <th>意思</th>
+                    <th>读法</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>∀x</code></td><td>for all x</td><td>所有 x 都...</td></tr>
+                  <tr><td><code>∃x</code></td><td>there exists x</td><td>存在至少一个 x...</td></tr>
+                  <tr><td><code>P -> Q</code></td><td>if P then Q</td><td>如果 P 成立，则 Q 成立。</td></tr>
+                  <tr><td><code>P ∧ Q</code></td><td>and</td><td>P 和 Q 都成立。</td></tr>
+                  <tr><td><code>P ∨ Q</code></td><td>or</td><td>P 或 Q 至少一个成立。</td></tr>
+                  <tr><td><code>¬P</code></td><td>not P</td><td>P 不成立。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Tautology / Satisfiable / Unsatisfiable</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>词</th>
+                    <th>从零理解</th>
+                    <th>例子</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Tautology</td><td>不管变量真假怎么取，公式总是真的。</td><td><code>P ∨ ¬P</code></td></tr>
+                  <tr><td>Satisfiable</td><td>至少有一种取值能让公式为真。</td><td><code>P ∧ Q</code> 在 P=true, Q=true 时为真。</td></tr>
+                  <tr><td>Unsatisfiable</td><td>没有任何取值能让公式为真。</td><td><code>P ∧ ¬P</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="hoare" class="section">
+            <h2>3. Hoare Logic：证明程序片段的前后条件</h2>
+            <p>
+              Hoare triple 写成 <code>{P} S {Q}</code>。意思是：如果程序片段 <code>S</code> 开始前 <code>P</code> 成立，并且程序正常结束，那么结束后 <code>Q</code> 成立。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>概念</th>
+                    <th>从零理解</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Partial correctness</td><td>如果程序结束，结果一定对；但不保证一定结束。</td></tr>
+                  <tr><td>Total correctness</td><td>结果对，并且程序一定结束。</td></tr>
+                  <tr><td>Loop invariant</td><td>循环开始前、每轮后、循环结束时都能用的事实。</td></tr>
+                  <tr><td>Variant / decreases</td><td>用来证明循环会结束的度量，每轮都变小且不能无限变小。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Loop proof 必写三件事</h3>
+            <ol class="checklist">
+              <li>Establishment：循环第一次检查 guard 前，invariant 已经成立。</li>
+              <li>Preservation：假设 invariant 和 guard 成立，执行 loop body 后 invariant 仍成立。</li>
+              <li>Exit reasoning：循环结束时，invariant 和 not guard 一起推出 postcondition。</li>
+            </ol>
+            <div class="answer-box">
+              <p>Partial correctness answer shape: identify the precondition and postcondition; state the loop invariant; show it is established before the loop; show it is preserved by the loop body; when the loop exits, combine invariant with negation of guard to derive the postcondition.</p>
+              <p>Total correctness additionally needs a variant/decreases expression that is non-negative and strictly decreases on each loop iteration.</p>
+            </div>
+          </section>
+
+          <section id="dafny" class="section">
+            <h2>4. Dafny：把证明写进代码旁边</h2>
+            <p>
+              Dafny 是一种带 verifier 的程序语言。你写方法时不仅写代码，还写 <code>requires</code>、<code>ensures</code>、<code>invariant</code>、<code>decreases</code>。Verifier 会尝试证明：所有满足 requires 的输入，执行后都满足 ensures。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Dafny 关键词</th>
+                    <th>人话解释</th>
+                    <th>考试中常问</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>requires</code></td><td>调用者必须保证的条件。</td><td>缺少 requires 会导致方法无法安全使用数组。</td></tr>
+                  <tr><td><code>ensures</code></td><td>方法承诺结束后成立的条件。</td><td>说明返回值满足什么性质。</td></tr>
+                  <tr><td><code>invariant</code></td><td>循环中一直保持真的条件。</td><td>数组循环、binary search、copy method。</td></tr>
+                  <tr><td><code>decreases</code></td><td>证明递归或循环会停止的度量。</td><td>Ackermann、fib、while loop termination。</td></tr>
+                  <tr><td><code>assert</code></td><td>要求 verifier 在该位置证明某事实。</td><td>解释为什么 assert 可/不可验证。</td></tr>
+                  <tr><td><code>ghost</code></td><td>只用于证明的代码，编译后删除。</td><td>ghost field、ghost predicate Valid。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Dafny loop invariant 怎么找</h3>
+            <p>
+              Invariant 通常是“到目前为止已经处理的部分是正确的”。如果循环变量是 <code>i</code>，常见 invariant 会包含范围 <code>0 <= i <= a.Length</code>，再加上已经处理过的区域性质，例如 <code>forall k :: 0 <= k < i ==> ...</code>。
+            </p>
+            <h3>Class invariant 和 ghost predicate</h3>
+            <p>
+              Class invariant 是对象任何公开方法结束后都应该保持的规则。Dafny 常用 ghost predicate <code>Valid()</code> 表达这个规则。Ghost 的意义是：证明时需要它，但运行时程序不需要它。
+            </p>
+            <div class="answer-box">
+              <p>解释 class verification 时可写：the constructor must establish the class invariant; each public method may assume the invariant at entry and must re-establish it before exit; ghost fields and predicates help express abstract state and validity conditions without affecting compiled code.</p>
+            </div>
+          </section>
+
+          <section id="model-checking" class="section">
+            <h2>5. Model Checking：穷尽检查状态系统</h2>
+            <p>
+              Model checking 用在 reactive systems，也就是不断和环境交互的系统，例如协议、并发程序、控制器。它把系统建成有限状态图，然后自动检查 temporal logic 公式是否成立。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>词</th>
+                    <th>从零理解</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>State</td><td>系统某一刻的变量取值。</td></tr>
+                  <tr><td>Transition</td><td>从一个 state 到下一个 state 的一步变化。</td></tr>
+                  <tr><td>Kripke structure</td><td>一个带状态、转移、初始状态和标签的状态图。</td></tr>
+                  <tr><td>Atomic proposition</td><td>在某个 state 中为真或假的简单命题。</td></tr>
+                  <tr><td>Path</td><td>沿着 transition 走出来的一条状态序列。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>LTL 和 CTL</h3>
+            <p>
+              Temporal logic 用来表达“将来会发生什么”。LTL 看一条线性时间路径；CTL 可以明确说“所有路径”或“存在某条路径”。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>符号</th>
+                    <th>意思</th>
+                    <th>人话</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>G p</code></td><td>Globally</td><td>从现在起一直 p。</td></tr>
+                  <tr><td><code>F p</code></td><td>Finally</td><td>将来某个时刻 p。</td></tr>
+                  <tr><td><code>X p</code></td><td>neXt</td><td>下一步 p。</td></tr>
+                  <tr><td><code>p U q</code></td><td>Until</td><td>p 一直成立直到 q 发生。</td></tr>
+                  <tr><td><code>AG p</code></td><td>All paths globally</td><td>所有路径上永远 p。</td></tr>
+                  <tr><td><code>EF p</code></td><td>Exists path finally</td><td>存在某条路径将来到达 p。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Spin / NuSMV / Runtime Verification</h3>
+            <p>
+              Spin 使用 Promela 建模，常用于 LTL 和并发系统。NuSMV 使用 SMV 建模，支持 CTL 和 LTL。Model checking 在运行前检查模型；runtime verification 在系统运行时监控实际执行轨迹，因此通常只能看到实际发生的路径。
+            </p>
+          </section>
+
+          <section id="sat-smt" class="section">
+            <h2>6. SAT、SMT、Z3 和 DPLL</h2>
+            <p>
+              SAT 问的是：有没有一种 true/false 赋值让布尔公式为真？SMT 是 SAT 的升级版，不只处理布尔变量，还能处理整数、数组、函数等理论。Z3 是一个 SMT solver。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>词</th>
+                    <th>从零理解</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>SAT</td><td>找布尔公式的 satisfying assignment。</td></tr>
+                  <tr><td>CNF</td><td>Conjunctive Normal Form，很多 clause 用 AND 连起来，每个 clause 里是 OR。</td></tr>
+                  <tr><td>DPLL</td><td>经典 SAT 搜索算法：尝试赋值、传播约束、遇到冲突就回溯。</td></tr>
+                  <tr><td>CDCL</td><td>Conflict-Driven Clause Learning，从冲突中学习新 clause，避免重复犯错。</td></tr>
+                  <tr><td>SMT</td><td>SAT + 背景理论，例如整数算术、数组、未解释函数。</td></tr>
+                  <tr><td>Z3</td><td>微软开发的 SMT solver，可返回 sat/unsat/model。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Validity 和 satisfiability 的关系：要证明公式 <code>F</code> 永远为真，可以让 Z3 检查 <code>not F</code> 是否 unsatisfiable。如果 <code>not F</code> 没有任何模型，那么 <code>F</code> 就是 valid。
+            </p>
+          </section>
+
+          <section id="fret-refinement" class="section">
+            <h2>7. FRET、Data Refinement 和 Under-specification</h2>
+            <p>
+              FRET 帮助把自然语言需求变成更形式化的需求，方便后续生成或检查 temporal formulae。Data refinement 是用更具体的数据结构实现更抽象的规格，只要外部可观察行为保持一致即可。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>概念</th>
+                    <th>人话解释</th>
+                    <th>考试答法</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Under-specification</td><td>规格说得太少，允许很多不想要的实现也通过。</td><td>解释缺少约束，并补充 contract/invariant。</td></tr>
+                  <tr><td>Data refinement</td><td>抽象模型换成具体实现，但保持用户看到的行为。</td><td>例如 abstract set 用 array/list 实现。</td></tr>
+                  <tr><td>FRET</td><td>把自然语言需求结构化，减少歧义，并连接到形式化检查。</td><td>提到 requirements documentation、formalisation、model checking。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="exam-map" class="section">
+            <h2>8. 2023-2025 考法地图</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>试卷</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>2023 Summer</td><td>DbC + Hoare + partial/total + under-spec</td><td>Dafny code + loop + class</td><td>Event-B/data refinement/Z3/SAT</td><td>Spin + LTL + LTL/CTL</td></tr>
+                  <tr><td>2024 Summer</td><td>terms + Hoare + partial/total + under-spec</td><td>Dafny decreases + binary search + class</td><td>Event-B + data refinement + FRET + SAT</td><td>Spin + LTL/CTL formulas</td></tr>
+                  <tr><td>2025 Summer</td><td>predicate logic + propositional terms + Hoare</td><td>Dafny decreases/invariant + ghost/class</td><td>model analysis + data refinement + FRET + SAT</td><td>Spin/NuSMV/runtime + LTL</td></tr>
+                  <tr><td>2025 Autumn</td><td>logic + tautology + terms + Hoare</td><td>Dafny decreases + array copy + assert verification</td><td>Event-B/data refinement/FRET/SAT</td><td>Spin + runtime verification + CTL/LTL</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="summary" class="section">
+            <h2>9. CS603 答案检查清单</h2>
+            <ol class="checklist">
+              <li>逻辑翻译题先定义 predicates，再写公式。</li>
+              <li>Hoare 题必须写 invariant establishment、preservation、exit reasoning。</li>
+              <li>Total correctness 必须额外证明 termination。</li>
+              <li>Dafny 题看到循环先找 invariant 和 decreases。</li>
+              <li>Class invariant 题要说 constructor establishes，methods preserve。</li>
+              <li>LTL/CTL 题先分清路径：LTL 隐式看路径，CTL 有 A/E 路径量词。</li>
+              <li>Z3/SAT 题要分清 sat、unsat、valid；证明 valid 常检查 negation unsat。</li>
+              <li>解释题要加例子，尤其是 under-specification、data refinement、FRET。</li>
+            </ol>
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="CS603 目录">
+          <h2>CS603 目录</h2>
+          <ol>
+            <li><a href="#foundation">验证基础</a></li>
+            <li><a href="#logic">Logic</a></li>
+            <li><a href="#hoare">Hoare</a></li>
+            <li><a href="#dafny">Dafny</a></li>
+            <li><a href="#model-checking">Model Checking</a></li>
+            <li><a href="#sat-smt">SAT/SMT</a></li>
+            <li><a href="#fret-refinement">FRET/Refinement</a></li>
+            <li><a href="#exam-map">考法地图</a></li>
+          </ol>
+          <label for="keyword-search"><strong>关键词过滤</strong></label>
+          <input id="keyword-search" class="search-box" type="search" placeholder="Dafny / LTL / Z3" data-keyword-search="[data-keyword-item]">
+          <div class="tag-list">
+            <a class="keyword-link" data-keyword-item data-keywords="predicate propositional tautology satisfiable" href="#logic">Logic</a>
+            <a class="keyword-link" data-keyword-item data-keywords="Hoare partial total invariant variant" href="#hoare">Hoare</a>
+            <a class="keyword-link" data-keyword-item data-keywords="Dafny requires ensures invariant decreases ghost" href="#dafny">Dafny</a>
+            <a class="keyword-link" data-keyword-item data-keywords="model checking Kripke LTL CTL Spin NuSMV" href="#model-checking">Model checking</a>
+            <a class="keyword-link" data-keyword-item data-keywords="SAT SMT Z3 DPLL CNF CDCL" href="#sat-smt">SAT/SMT</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>依据本地 CS603 lecture notes 和 2023-2025 Summer/Autumn 试卷题型整理。</p>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2026 May Exam Prep</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html">
+          <span>2026 May Exam Prep</span>
+          <small>静态复习站</small>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="#learning-path">课程顺序</a>
+          <a href="#keywords">关键词跳转</a>
+          <a href="cs615.html">CS615</a>
+          <a href="cs608-q1-sample.html">CS608 样章</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">2026 May revision site</p>
+        <h1>四门课的考试题型、基础知识和答题模板。</h1>
+        <p class="lead">
+          主版使用静态网页整理，PPT 后续压缩成考前速查版。当前制作顺序是 CS615、CS605、CS608、CS603。
+        </p>
+        <div class="tag-list" aria-label="当前状态">
+          <span class="status">CS615 制作中</span>
+          <span class="tag">主目标：攻克历年与 sample 题型</span>
+          <span class="tag">后续：压缩成 PPT 速查版</span>
+        </div>
+      </section>
+
+      <section id="learning-path" class="section hero">
+        <h2>课程制作顺序</h2>
+        <p class="muted">按考试安排和复习优先级推进。每门课都会覆盖本地教材、历年题、sample 题和高频答题模板。</p>
+        <div class="course-grid">
+          <article class="card">
+            <h2>CS615</h2>
+            <p>Web / Full Stack：HTTP、MVC、Rails、Node、React、Accessibility、SEO、Security。</p>
+            <p><a href="cs615-linear.html">教材线性页</a> · <a href="cs615.html">题型页</a></p>
+          </article>
+          <article class="card">
+            <h2>CS605</h2>
+            <p>Theory：regular/CFL、pumping lemma、decidability、reductions、NP。</p>
+            <p><a href="cs605-linear.html">教材线性页</a> · <a href="cs605.html">题型页</a></p>
+          </article>
+          <article class="card">
+            <h2>CS608</h2>
+            <p>Software Testing：黑盒、白盒、类内测试、随机测试。</p>
+            <p><a href="cs608-linear.html">教材线性页</a> · <a href="cs608.html">题型页</a> · <a href="cs608-q1-sample.html">Q1 样章</a></p>
+          </article>
+          <article class="card">
+            <h2>CS603</h2>
+            <p>Formal Verification：logic、Hoare、Dafny、model checking、LTL/CTL、SMT。</p>
+            <p><a href="cs603-linear.html">教材线性页</a> · <a href="cs603.html">题型页</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="keywords" class="section hero">
+        <h2>关键词跳转</h2>
+        <p class="muted">输入关键词可过滤，适合快速跳到相关考点。</p>
+        <input class="search-box" type="search" placeholder="例如：MVC, React, SQL, BVA, TCI" data-keyword-search="[data-keyword-item]">
+        <div class="keyword-grid tag-list" style="margin-top: 16px;">
+          <a class="keyword-link" data-keyword-item data-keywords="CS615 full-stack frontend server database 3-tier" href="cs615.html#full-stack">CS615 Full-Stack</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS615 linear textbook full course rails spring react" href="cs615-linear.html">CS615 教材线性页</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS615 SQL NoSQL database CRUD shopping habits" href="cs615.html#database">CS615 SQL/NoSQL</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS615 MVC Rails Spring Express controller model view" href="cs615.html#mvc">CS615 MVC</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS615 Node React callback chaining Express componentization" href="cs615.html#node-react">CS615 Node/React</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS615 accessibility SEO security XSS SQL injection" href="cs615.html#quality">CS615 Quality</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS615 HTTP 1.0 1.1 2 3 QUIC cloud PaaS IaaS SaaS" href="cs615.html#http-cloud">CS615 HTTP/Cloud</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS615 sample microservices AI agents CI/CD observability" href="cs615.html#sample-topics">CS615 Sample</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS605 language alphabet string sigma regular CFL" href="cs605.html#symbols">CS605 Language</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS605 linear textbook full course automata Turing NP" href="cs605-linear.html">CS605 教材线性页</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS605 pumping lemma regular context-free CFL" href="cs605.html#pumping">CS605 Pumping</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS605 decidable Turing recognisable HALT reduction" href="cs605.html#tm">CS605 Decidable</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS605 NP certificate verifier NP-complete 3-SAT" href="cs605.html#np">CS605 NP</a>
+          <a class="keyword-link" data-keyword-item data-keywords="exhaustive 穷举 infeasible" href="cs608-q1-sample.html#exhaustive">Exhaustive testing</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS608 black-box BVA Decision Table TCI" href="cs608.html#q1">CS608 Black-box</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS608 linear textbook full course testing coverage random" href="cs608-linear.html">CS608 教材线性页</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS608 white-box JaCoCo statement branch coverage" href="cs608.html#q2">CS608 White-box</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS608 class context EP static instance accessor" href="cs608.html#q3">CS608 Class Context</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS608 random testing oracle completion rand" href="cs608.html#q4">CS608 Random</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS603 logic predicate propositional tautology" href="cs603.html#logic">CS603 Logic</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS603 linear textbook full course Dafny model checking SMT" href="cs603-linear.html">CS603 教材线性页</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS603 Hoare partial total invariant variant" href="cs603.html#hoare">CS603 Hoare</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS603 Dafny requires ensures decreases ghost" href="cs603.html#dafny">CS603 Dafny</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS603 model checking LTL CTL Spin NuSMV Kripke" href="cs603.html#model-checking">CS603 Model Checking</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS603 SAT SMT Z3 DPLL CNF" href="cs603.html#sat-smt">CS603 SAT/SMT</a>
+          <a class="keyword-link" data-keyword-item data-keywords="bva boundary value analysis 边界值" href="cs608-q1-sample.html#bva">BVA</a>
+          <a class="keyword-link" data-keyword-item data-keywords="decision table DT 决策表 combinations" href="cs608-q1-sample.html#dt">Decision Table</a>
+          <a class="keyword-link" data-keyword-item data-keywords="TCI coverage item 覆盖项" href="cs608-q1-sample.html#tci">TCI table</a>
+          <a class="keyword-link" data-keyword-item data-keywords="test cases 测试用例" href="cs608-q1-sample.html#test-cases">Test Cases</a>
+          <a class="keyword-link" data-keyword-item data-keywords="Climate determine 2025 summer" href="cs608-q1-sample.html#worked-bva">2025 Climate.determine()</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>制作记录和 todo 见根目录 <code>制作计划_TODO.md</code>。</p>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

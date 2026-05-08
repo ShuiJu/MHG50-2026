@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS615：Internet Solutions Engineering</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html">
+          <span>2026 May Exam Prep</span>
+          <small>CS615</small>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="#foundation">基础词汇</a>
+          <a href="#full-stack">Full-Stack</a>
+          <a href="#mvc">MVC</a>
+          <a href="#node-react">Node / React</a>
+          <a href="#http-cloud">HTTP / Cloud</a>
+          <a href="#exam-map">历年考法</a>
+          <a href="#templates">答题模板</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS615 Internet Solutions Engineering</p>
+        <h1>CS615 Web 应用工程：从浏览器请求到部署运维</h1>
+        <p class="lead">
+          这门课可以理解成“一个网站怎样被设计、实现、保护、发布和维护”。页面从浏览器、服务器、数据库这些基本词开始，再进入 MVC、SQL/NoSQL、Node、React、网站质量、云服务和 sample 新题型。
+        </p>
+        <div class="tag-list">
+          <a class="tag" href="#foundation">基础词汇</a>
+          <a class="tag" href="#full-stack">3-Tier</a>
+          <a class="tag" href="#database">SQL / NoSQL</a>
+          <a class="tag" href="#mvc">MVC</a>
+          <a class="tag" href="#node-react">Node / React</a>
+          <a class="tag" href="#quality">Accessibility / SEO / Security</a>
+          <a class="tag" href="#http-cloud">HTTP / Cloud</a>
+          <a class="tag" href="#sample-topics">Sample Topics</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+          <section id="foundation" class="section">
+            <h2>1. Web 应用的基础词汇</h2>
+            <p>
+              CS615 的大多数题都在问同一件事：用户在浏览器里做一个动作后，请求如何进入服务器，服务器如何处理业务规则，数据如何存取，最后结果如何回到页面。下面这些词是后面所有章节的地基。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>词</th>
+                    <th>从零理解</th>
+                    <th>小例子</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Client / Browser</td>
+                    <td>用户实际操作的程序。浏览器负责显示网页、运行前端 JavaScript、向服务器发请求。</td>
+                    <td>Chrome 打开购物网站并点击“结账”。</td>
+                  </tr>
+                  <tr>
+                    <td>Frontend</td>
+                    <td>用户看得见、点得到的部分，包括页面布局、按钮、表单、交互和部分状态。</td>
+                    <td>React 页面显示订单列表和搜索框。</td>
+                  </tr>
+                  <tr>
+                    <td>Server / Backend</td>
+                    <td>用户看不见但真正处理规则的部分。它接收请求、检查权限、运行业务逻辑、读写数据库。</td>
+                    <td>Express 接收 <code>POST /orders</code> 并创建订单。</td>
+                  </tr>
+                  <tr>
+                    <td>Database</td>
+                    <td>长期保存数据的系统。服务器重启后，数据库里的订单、用户和商品仍然存在。</td>
+                    <td>PostgreSQL 保存 receipts；MongoDB 保存 JSON-like documents。</td>
+                  </tr>
+                  <tr>
+                    <td>Request / Response</td>
+                    <td>浏览器向服务器发 request；服务器处理后发 response 回来。</td>
+                    <td>浏览器请求 <code>GET /products</code>，服务器返回产品 JSON。</td>
+                  </tr>
+                  <tr>
+                    <td>API</td>
+                    <td>Application Programming Interface。这里通常指前端和后端约定好的“接口地址 + 数据格式”。</td>
+                    <td><code>GET /api/orders/15</code> 返回第 15 号订单。</td>
+                  </tr>
+                  <tr>
+                    <td>JSON</td>
+                    <td>一种轻量数据格式，很像 JavaScript object，常用于前后端传数据。</td>
+                    <td><code>{"id":15,"total":90}</code></td>
+                  </tr>
+                  <tr>
+                    <td>Business Logic</td>
+                    <td>业务规则，不是页面样式也不是数据库本身。例如折扣、权限、库存、订阅规则。</td>
+                    <td>订单超过 1000 欧给 premium user 打九折。</td>
+                  </tr>
+                  <tr>
+                    <td>Framework</td>
+                    <td>帮你组织项目的工具和规则。它规定常见文件结构和写法，减少重复工作。</td>
+                    <td>Rails、Spring Boot、Express、React。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>常见英文缩写先过一遍</h3>
+            <p>
+              CS615 试卷喜欢直接写缩写。先把它们翻译成人话，后面再看到就不会卡住。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>缩写</th>
+                    <th>全称</th>
+                    <th>人话解释</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>HTTP</td><td>HyperText Transfer Protocol</td><td>浏览器和服务器传网页/数据的规则。</td></tr>
+                  <tr><td>API</td><td>Application Programming Interface</td><td>前端调用后端的约定入口，例如某个 URL 返回某种 JSON。</td></tr>
+                  <tr><td>URL</td><td>Uniform Resource Locator</td><td>网页或 API 的地址。</td></tr>
+                  <tr><td>JSON</td><td>JavaScript Object Notation</td><td>前后端常用的数据格式，看起来像 JavaScript object。</td></tr>
+                  <tr><td>MVC</td><td>Model-View-Controller</td><td>把数据、页面、控制流程拆开的代码组织方式。</td></tr>
+                  <tr><td>CRUD</td><td>Create, Read, Update, Delete</td><td>对数据最基本的四种操作：增、查、改、删。</td></tr>
+                  <tr><td>SQL</td><td>Structured Query Language</td><td>关系型数据库常用的查询语言。</td></tr>
+                  <tr><td>NoSQL</td><td>Not only SQL</td><td>非传统表格型数据库的统称，例如文档数据库 MongoDB。</td></tr>
+                  <tr><td>SPA</td><td>Single Page Application</td><td>主要靠 JavaScript 在一个页面里切换内容的应用。</td></tr>
+                  <tr><td>CI/CD</td><td>Continuous Integration / Continuous Delivery or Deployment</td><td>自动构建、测试、发布代码的一套流程。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="full-stack" class="section">
+            <h2>2. 三层架构和 Full-Stack 的基本分工</h2>
+            <p>
+              Full-stack application 不是“前端加后端”这么简单。考试里要把职责分清楚：前端负责用户界面和交互，服务器负责业务逻辑、认证和 API，数据库负责持久化、查询和一致性。持久化的意思是数据会被长期保存；一致性的意思是系统不会出现互相矛盾的数据，例如一个收据总价和商品明细对不上。三层架构把这些职责整理成 Presentation、Application/Logic、Data 三层。
+            </p>
+            <img class="flow-img" src="assets/cs615-3tier.svg" alt="Three-tier web architecture: presentation, application logic, data">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>层</th>
+                    <th>主要职责</th>
+                    <th>常见技术</th>
+                    <th>考试答法关键词</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Frontend / Presentation</td>
+                    <td>显示界面、收集用户输入、处理客户端状态、调用 API</td>
+                    <td>HTML, CSS, JavaScript, React</td>
+                    <td>UI, user interaction, rendering, accessibility</td>
+                  </tr>
+                  <tr>
+                    <td>Server / Application Logic</td>
+                    <td>路由请求、执行业务规则、认证授权、调用数据库或外部服务</td>
+                    <td>Node.js/Express, Rails, Spring Boot</td>
+                    <td>routes, controllers, services, validation</td>
+                  </tr>
+                  <tr>
+                    <td>Database / Data</td>
+                    <td>存储数据、执行查询、保证重要数据不互相矛盾，或提供灵活文档模型</td>
+                    <td>PostgreSQL, MySQL, MongoDB</td>
+                    <td>persistence = 长期保存；query = 查询；schema = 数据结构规则</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>CRUD 和 HTTP 动作</h3>
+            <p>
+              CRUD 是 Web 应用最基础的数据生命周期：创建、读取、更新、删除。REST API 常用 HTTP verbs 来表达这些动作。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>CRUD</th>
+                    <th>含义</th>
+                    <th>常见 HTTP verb</th>
+                    <th>例子</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Create</td><td>新增资源</td><td><code>POST</code></td><td><code>POST /orders</code> 创建订单</td></tr>
+                  <tr><td>Read</td><td>读取资源</td><td><code>GET</code></td><td><code>GET /orders/15</code> 查看订单</td></tr>
+                  <tr><td>Update</td><td>修改资源</td><td><code>PUT</code> / <code>PATCH</code></td><td><code>PATCH /orders/15</code> 修改地址</td></tr>
+                  <tr><td>Delete</td><td>删除资源</td><td><code>DELETE</code></td><td><code>DELETE /orders/15</code> 删除订单</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="database" class="section">
+            <h2>3. SQL / NoSQL 的选择取决于数据形状和出错代价</h2>
+            <p>
+              2024 和 2025 都考过 SQL 与 NoSQL。不要把答案写成“SQL 老，NoSQL 新”。更好的判断方法是先问：这份数据像表格还是像一份灵活文档？数据之间有没有清晰关系？如果写入过程中出错，代价有多高？
+            </p>
+            <h3>先把数据库术语拆开</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>术语</th>
+                    <th>不假设基础的解释</th>
+                    <th>为什么考试会用到</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Schema</td>
+                    <td>数据的固定格式规则。比如收据必须有 receipt number、date、total，每个 item 必须有 name、quantity、price。</td>
+                    <td>如果题目里的数据格式稳定、字段规则清楚，通常支持选 SQL。</td>
+                  </tr>
+                  <tr>
+                    <td>Relation / 外键</td>
+                    <td>数据之间的连接关系。比如一个 customer 可以有很多 receipts，一个 receipt 可以有很多 items。</td>
+                    <td>关系清楚、需要 join 查询时，SQL 通常更自然。</td>
+                  </tr>
+                  <tr>
+                    <td>Transaction / 事务</td>
+                    <td>一组必须一起成功或一起失败的操作。比如创建收据和扣库存，不能只成功一半。</td>
+                    <td>订单、付款、收据这类题目通常要强调事务。</td>
+                  </tr>
+                  <tr>
+                    <td>Consistency / 一致性</td>
+                    <td>系统里的数据不互相打架。比如收据总价是 30，但三件商品加起来是 25，这就是不一致。</td>
+                    <td>交易历史、收据、账户余额通常需要强一致性。</td>
+                  </tr>
+                  <tr>
+                    <td>Join</td>
+                    <td>把多张表按关系合起来查。比如查某个顾客的所有收据，再查每张收据的商品明细。</td>
+                    <td>关系型数据常需要 join，所以 SQL 更方便。</td>
+                  </tr>
+                  <tr>
+                    <td>Horizontal scaling</td>
+                    <td>不是买一台更强的机器，而是加更多机器一起分担数据和请求。</td>
+                    <td>高流量、海量事件、分布式系统常提到 NoSQL 扩展。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>ACID 是什么</h3>
+            <p>
+              ACID 是数据库事务的四个安全承诺。它听起来抽象，但可以用“创建一张收据”理解：系统不能保存半张收据，不能让总价和明细对不上，不能让两个操作互相踩踏，保存成功后不能突然丢失。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>字母</th>
+                    <th>意思</th>
+                    <th>收据例子</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>A - Atomicity</td><td>原子性：一组操作要么全部成功，要么全部失败。</td><td>收据、商品明细、库存扣减不能只保存其中一部分。</td></tr>
+                  <tr><td>C - Consistency</td><td>一致性：操作前后都要满足数据规则。</td><td>receipt total 必须等于 item prices 加总。</td></tr>
+                  <tr><td>I - Isolation</td><td>隔离性：同时发生的操作不能互相干扰。</td><td>两个员工同时改同一张收据，不应产生混乱结果。</td></tr>
+                  <tr><td>D - Durability</td><td>持久性：一旦系统说保存成功，数据就应该留下来。</td><td>用户付款后，即使服务器重启，收据也不能消失。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>维度</th>
+                    <th>SQL / Relational</th>
+                    <th>NoSQL / Non-relational</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>数据模型</td>
+                    <td>像 spreadsheet：表、行、列、外键，格式规则清楚</td>
+                    <td>像 JSON 文件夹：每条记录可以是一份文档，格式可以更灵活</td>
+                  </tr>
+                  <tr>
+                    <td>适合数据</td>
+                    <td>订单、收据、用户、交易、库存等结构化关系</td>
+                    <td>日志、内容、用户行为事件、灵活 JSON 文档</td>
+                  </tr>
+                  <tr>
+                    <td>一致性</td>
+                    <td>适合“不能保存一半、不能互相矛盾”的数据，例如付款和收据</td>
+                    <td>适合更灵活或更大量的数据；有些系统会接受短时间内不同副本不完全同步</td>
+                  </tr>
+                  <tr>
+                    <td>扩展</td>
+                    <td>常见做法是升级机器或加读副本；复杂关系查询强</td>
+                    <td>常见做法是把数据分到多台机器；大量写入和分布式场景常见</td>
+                  </tr>
+                  <tr>
+                    <td>考试选择句</td>
+                    <td>当数据结构稳定、关系清晰、出错代价高时选 SQL</td>
+                    <td>当数据格式变化快、数量很大、每条记录更像独立文档时选 NoSQL</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>经典场景：记录顾客购物习惯</h3>
+            <p>
+              题目给出的数据包括 customer、items、price、date、unique receipt number。这些信息天然像订单系统：顾客、收据、商品、价格和日期之间有清晰关系。收据数据还很怕“只存了一半”：如果保存了收据号但没有保存商品明细，或者总价和明细对不上，系统就不可信。因此推荐 SQL 更稳。
+            </p>
+            <div class="answer-box">
+              <p>I would choose an SQL database for this scenario. The data is structured: each customer has purchases, each purchase has a receipt number, a date, a price, and a set of purchased items. These entities can be represented cleanly using relational tables such as Customers, Receipts, ReceiptItems, and Products.</p>
+              <p>SQL is also suitable because receipt history is transactional data. In plain terms, this means several related records must be saved together correctly: the receipt number, the item rows, the prices, and the final total. We want integrity constraints, reliable joins, and ACID transactions so that totals, receipt numbers, and item records remain consistent.</p>
+              <p>A NoSQL database could be justified if the main requirement were high-volume clickstream behaviour or flexible event documents, but based on the question as written, the structured shopping records and consistency requirements make SQL the better default choice.</p>
+            </div>
+          </section>
+
+          <section id="mvc" class="section">
+            <h2>4. MVC 把数据、页面和控制流程拆开</h2>
+            <p>
+              MVC 是 CS615 最稳定的大题之一。它的核心不是背 Model、View、Controller 三个词，而是能解释一次请求如何从 route 进入 controller，如何调用 model/database，最后如何选择 view 或 JSON response。
+            </p>
+            <h3>先用一次点餐理解 MVC</h3>
+            <p>
+              可以把 MVC 想成餐厅点餐。View 像菜单和上菜窗口，用户通过它看信息、提交选择；Controller 像服务员，接单、判断该找谁处理、最后把结果带回来；Model 像厨房和库存系统，知道菜品、价格、库存，并真正改变数据。这个比喻不完美，但能帮你记住：controller 不应该自己炒菜，也不应该自己长期保存库存。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>MVC 部分</th>
+                    <th>职责</th>
+                    <th>Rails 例子</th>
+                    <th>Spring / Express 对应</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Model</td>
+                    <td>代表领域数据和数据访问规则。领域数据就是系统真正关心的东西，例如订单、用户、商品。</td>
+                    <td><code>Order</code> 继承 Active Record，映射到 orders table</td>
+                    <td>Spring entity/repository，Mongoose model</td>
+                  </tr>
+                  <tr>
+                    <td>View</td>
+                    <td>把数据呈现给用户。渲染的意思是把数据变成用户能看见的 HTML 页面、组件或 JSON 结果。</td>
+                    <td>ERB template 或 JSON view</td>
+                    <td>Thymeleaf, React UI, JSON response</td>
+                  </tr>
+                  <tr>
+                    <td>Controller</td>
+                    <td>接收请求、读取参数、调用 model/service、选择 response。它负责协调，不应该塞满业务规则。</td>
+                    <td><code>OrdersController#create</code></td>
+                    <td>Spring controller, Express route handler/controller</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>25 分 MVC 题的答案骨架</h3>
+            <div class="answer-box">
+              <p>MVC separates a web application into Model, View, and Controller. The Model represents the application data and business entities, and usually interacts with the database. The View is responsible for presenting information to the user, such as HTML pages or JSON consumed by a frontend. The Controller receives HTTP requests, coordinates the work, and chooses which response to return.</p>
+              <p>For example, in a Rails shop application, a route such as <code>POST /orders</code> maps to <code>OrdersController#create</code>. The controller builds an <code>Order</code> model from form parameters, asks the model or a service to validate and save it, and then redirects to an order page or renders the form again. The view displays the result to the user.</p>
+              <p>The same pattern adapts to other environments. In Spring Boot, controllers use annotations such as <code>@GetMapping</code>, models are entities/repositories, and views may be Thymeleaf templates or JSON responses. In Express, routes map URLs to handlers, controllers coordinate request logic, and Mongoose or repository classes handle data.</p>
+            </div>
+
+            <h3>Sample Rails controller 题：为什么违反 MVC 和 SRP</h3>
+            <p>
+              Sample Q3 的 controller 同时做折扣计算、保存订单、发邮件、记录 analytics、redirect/render。问题是 controller 太胖：它不只是控制流程，还包含业务规则和副作用，违反 Single Responsibility Principle。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>问题</th>
+                    <th>为什么不好</th>
+                    <th>重构方向</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>折扣逻辑在 controller</td>
+                    <td>业务规则难复用、难单元测试</td>
+                    <td>移到 <code>DiscountService</code> 或 Strategy pattern</td>
+                  </tr>
+                  <tr>
+                    <td>邮件和 analytics 直接调用</td>
+                    <td>请求流程耦合外部副作用</td>
+                    <td>移到 job/event/observer after order created</td>
+                  </tr>
+                  <tr>
+                    <td>controller 承担太多职责</td>
+                    <td>违反 SRP，难维护</td>
+                    <td>controller 只负责参数、调用服务、选择 response</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              重构后，折扣逻辑可以用普通 unit test 独立测试，不需要构造完整 controller request；controller test 只检查它是否调用服务并处理成功/失败分支。
+            </p>
+          </section>
+
+          <section id="node-react" class="section">
+            <h2>5. Node.js / Express / React 的高频问答</h2>
+            <h3>为什么用 Node.js 做 Web 项目</h3>
+            <p>
+              Node.js 的意思是：让 JavaScript 不只在浏览器里运行，也能在服务器上运行。它的优势来自 JavaScript runtime 和事件驱动 I/O。Runtime 可以理解为“代码运行的环境”；I/O 是 input/output，指读数据库、读文件、发网络请求这类等待外部结果的工作。Node 很适合这类等待很多、计算不重的 Web 服务。
+            </p>
+            <p>
+              它适合实时应用、API gateway、聊天、dashboard、快速原型和 JavaScript 全栈开发。答案里也要承认边界：CPU 密集型计算不是 Node 的天然强项。CPU 密集型指大量数学计算、图片视频处理这类一直占用处理器的任务，可能需要 worker、队列或其他服务。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>优点</th>
+                    <th>解释</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Non-blocking I/O</td><td>等待数据库、文件或网络时，不会让整个服务器停在那里干等。服务器可以先处理其他请求。</td></tr>
+                  <tr><td>Event-driven</td><td>事件驱动：事情完成时再回来处理。例如数据库查完后，再执行对应 callback 或 promise。</td></tr>
+                  <tr><td>Same language across stack</td><td>前后端都可使用 JavaScript/TypeScript，团队共享模型和工具。</td></tr>
+                  <tr><td>NPM ecosystem</td><td>Express、Mongoose、JWT、testing、build tools 等生态丰富。</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Callback 和代码输出题</h3>
+            <p>
+              Callback 是“先交代好，等事情完成后再执行”的函数。比如你设置一个定时器，相当于告诉 Node：几毫秒后请调用这个函数。同步代码会马上执行；定时器和 I/O 回调要等当前同步代码执行完后，再由 event loop 安排执行。Event loop 可以理解为 Node 的排队系统：它不断检查哪些异步任务已经完成，然后把对应 callback 拿出来执行。
+            </p>
+            <p>因此 2023 的嵌套 <code>setTimeout</code> 代码输出是：</p>
+            <div class="answer-box">
+              <p><code>first</code></p>
+              <p><code>fifth</code></p>
+              <p><code>second</code></p>
+              <p><code>third</code></p>
+              <p><code>fourth</code></p>
+            </div>
+            <p>
+              原因是 <code>console.log("first")</code> 和 <code>console.log("fifth")</code> 是同步代码，先执行。第一个 timeout 到期后打印 <code>second</code>，然后才注册内部 timeout；内部 timeout 再依次打印 <code>third</code> 和 <code>fourth</code>。
+            </p>
+
+            <h3>Chaining、routes、controllers、models</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>概念</th>
+                    <th>答题解释</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Chaining</td>
+                    <td>把多个操作连续写在一起，例如 promise 的 <code>.then().catch()</code>，或 API 方法返回对象本身以继续调用。它让异步步骤或配置步骤更紧凑，但过度 chaining 会降低可读性。</td>
+                  </tr>
+                  <tr>
+                    <td>Routes</td>
+                    <td>定义 HTTP method + URL 到 handler/controller 的映射，例如 <code>GET /api/orders/:id</code>。</td>
+                  </tr>
+                  <tr>
+                    <td>Controllers</td>
+                    <td>处理 request/response，读取参数，调用 service/model，返回 HTML/JSON/status。</td>
+                  </tr>
+                  <tr>
+                    <td>Models</td>
+                    <td>表示数据结构和数据访问，例如 Mongoose schema/model 或 ORM entity。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>React 和 vanilla HTML/CSS/JS 的比较</h3>
+            <p>
+              React 是用于构建用户界面的 JavaScript library。Library 是一组别人写好的工具，你按它的方式调用。React 的核心想法是把 UI 拆成 components。Component 就是一块可复用界面，例如按钮、导航栏、订单卡片。Props 是父组件传给子组件的数据；state 是组件自己记住、会变化的数据，例如搜索框内容或购物车数量。
+            </p>
+            <p>
+              SPA 是 Single Page Application，意思是用户看起来在一个网页里完成很多切换，页面主要通过 JavaScript 更新内容，而不是每点一次都整页刷新。React 很适合 SPA、dashboard、动态表单和状态变化频繁的应用。Vanilla HTML/CSS/JS 更轻、更直接，适合简单页面、小型交互和不需要复杂状态管理的站点。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>维度</th>
+                    <th>React</th>
+                    <th>Vanilla HTML/CSS/JS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>结构</td><td>Component-based，复用性强</td><td>页面和脚本直接组织，简单直观</td></tr>
+                  <tr><td>状态管理</td><td>state/props/hooks 支持复杂 UI</td><td>需要手动操作 DOM 和状态</td></tr>
+                  <tr><td>适合场景</td><td>SPA、dashboard、动态表单、MERN stack</td><td>简单站点、静态页面、轻量交互</td></tr>
+                  <tr><td>成本</td><td>需要 build tools 和学习曲线</td><td>依赖少，加载和维护可更简单</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Componentization 的价值在于把 UI 拆成独立、可复用、可测试的小块。例如 <code>OrderCard</code>、<code>SearchFilter</code>、<code>Navbar</code> 可以独立开发，再组合成完整页面。
+            </p>
+          </section>
+
+          <section id="quality" class="section">
+            <h2>6. Accessibility、SEO 和 Web Security</h2>
+            <h3>Accessibility 和 CSS</h3>
+            <p>
+              Accessible website 指不同能力、设备和辅助技术用户都能使用的网站。辅助技术包括屏幕阅读器、键盘导航、放大显示等。CSS 不能替代语义化 HTML，但它能显著影响可读性、焦点、响应式布局和动画敏感性。语义化 HTML 指用正确标签表达内容意义，例如标题用 heading，按钮用 button，而不是所有东西都用 div。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>CSS 做法</th>
+                    <th>为什么提升 accessibility</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>足够颜色对比度</td><td>低视力用户能读清文本，避免浅灰字和低对比按钮。</td></tr>
+                  <tr><td>清晰的 <code>:focus</code> 样式</td><td>键盘用户能知道当前焦点在哪里。</td></tr>
+                  <tr><td>响应式布局和可缩放字体</td><td>移动端和放大页面时内容不重叠、不丢失。</td></tr>
+                  <tr><td>不要只靠颜色传达信息</td><td>色盲用户仍能通过文字、图标、边框理解状态。</td></tr>
+                  <tr><td><code>prefers-reduced-motion</code></td><td>减少动画对眩晕或敏感用户的影响。</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>SEO：white-hat 与 black-hat</h3>
+            <p>
+              SEO 是 Search Engine Optimization，也就是让网站更容易被搜索引擎理解，并更可能出现在合适搜索结果里。White-hat SEO 改善真实内容和用户体验；black-hat SEO 试图欺骗搜索引擎，例如堆砌关键词、隐藏文字、买垃圾链接，可能导致排名惩罚。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>White-hat 建议</th>
+                    <th>答题展开</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>高质量原创内容</td><td>围绕用户问题提供清晰、有用、更新的内容。</td></tr>
+                  <tr><td>语义化 HTML 和 metadata</td><td>合理使用 title、description、headings、alt text。</td></tr>
+                  <tr><td>性能和移动端体验</td><td>快速加载、响应式设计、减少阻塞资源。</td></tr>
+                  <tr><td>自然链接和站点结构</td><td>清晰 URL、内部链接、sitemap，避免 keyword stuffing 和隐藏文本。</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>SQL Injection 和 XSS</h3>
+            <p>
+              Web security 题要用“攻击原理 + 例子 + 防御”三段写。Injection 的意思是攻击者把本来应该只是普通输入的内容，变成了系统会执行的命令或脚本。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>攻击</th>
+                    <th>原理</th>
+                    <th>简单例子</th>
+                    <th>防御</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SQL Injection</td>
+                    <td>把用户输入拼进 SQL，使输入被当成 SQL 代码执行。SQL 是数据库查询语言。</td>
+                    <td>登录框输入类似 <code>' OR '1'='1</code> 试图绕过条件</td>
+                    <td>Prepared statements / parameterized queries、输入验证、最小权限、不要拼接 SQL</td>
+                  </tr>
+                  <tr>
+                    <td>XSS</td>
+                    <td>把恶意脚本注入页面，让其他用户浏览时执行。脚本在这里通常指 JavaScript。</td>
+                    <td>评论区提交 <code>&lt;script&gt;...&lt;/script&gt;</code></td>
+                    <td>输出编码、sanitize input、CSP headers、HttpOnly cookies、避免直接插入 HTML</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="http-cloud" class="section">
+            <h2>7. HTTP 版本和 Cloud 选择</h2>
+            <h3>HTTP 1.0 到 HTTP 3 如何处理多个请求/响应</h3>
+            <p>
+              HTTP 是浏览器和服务器说话的协议。Protocol 可以理解为双方都遵守的通信规则。2023 Q1(a) 考过 HTTP evolution。答题重点不是背年份，而是说明浏览器和服务器如何处理多个 request/response，以及每一代如何减少等待和阻塞。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>版本</th>
+                    <th>处理多个请求/响应的方式</th>
+                    <th>考试关键词</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>HTTP/1.0</td>
+                    <td>通常每个请求建立一个 TCP 连接，请求完成后连接关闭。多个资源需要多个连接，开销大。</td>
+                    <td>one request per connection, connection overhead</td>
+                  </tr>
+                  <tr>
+                    <td>HTTP/1.1</td>
+                    <td>默认 persistent connections，可以在同一连接上发送多个请求；pipelining 理论可用，但仍容易受 head-of-line blocking 影响。</td>
+                    <td>keep-alive, persistent connection, pipelining, HOL blocking</td>
+                  </tr>
+                  <tr>
+                    <td>HTTP/2</td>
+                    <td>在一个 TCP 连接上 multiplex 多个 streams，请求和响应可以交错传输，减少 HTTP 层面的阻塞。</td>
+                    <td>multiplexing, streams, binary framing</td>
+                  </tr>
+                  <tr>
+                    <td>HTTP/3</td>
+                    <td>基于 QUIC over UDP，连接建立更快，并减少 TCP 层 head-of-line blocking 对多个 stream 的影响。</td>
+                    <td>QUIC, UDP, connection migration, reduced HOL blocking</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Cloud computing model 选择</h3>
+            <p>
+              Cloud computing 指不用自己买和维护全部服务器，而是租用云服务商的计算、存储、数据库或平台能力。2023 的场景是：网站内容不多，但需要自建 cloud-based course subscriptions tool。因为需要部署自定义应用，同时不想自己管理底层服务器，推荐 PaaS 最自然。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>模型</th>
+                    <th>你管理什么</th>
+                    <th>适合什么</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>IaaS</td><td>Infrastructure as a Service。你租虚拟机，自己管理操作系统、runtime、应用和数据。</td><td>需要底层控制，但运维负担较高。</td></tr>
+                  <tr><td>PaaS</td><td>Platform as a Service。你主要上传应用和管理数据，平台帮你处理 runtime，也就是程序运行环境、部署和伸缩。</td><td>适合自定义 Web app、课程订阅系统、快速上线。</td></tr>
+                  <tr><td>SaaS</td><td>Software as a Service。你直接使用现成软件，只做配置。</td><td>适合现成工具，不适合题目中“开发自己的工具”。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="answer-box">
+              <p>I would recommend PaaS. The client needs a custom course subscription tool, so SaaS may be too restrictive, but the site does not sound infrastructure-heavy enough to justify managing virtual machines directly with IaaS.</p>
+              <p>PaaS lets the team deploy their own application while the provider handles much of the runtime, scaling, patching, and deployment infrastructure. This reduces operational work and helps the team focus on the course subscription features.</p>
+              <p>For security, privacy, and data ownership, the team must still consider where student data is stored, access control, backups, compliance, and vendor lock-in. For cost efficiency, PaaS can be cheaper early because it avoids hiring infrastructure specialists, but costs can grow with usage and platform-specific services.</p>
+            </div>
+          </section>
+
+          <section id="sample-topics" class="section">
+            <h2>8. Sample 新题型：架构、AI Agents、CI/CD 和系统可观察性</h2>
+            <h3>三层单体 vs 微服务</h3>
+            <p>
+              Sample Q1 用 FinTrack 比较传统 3-tier monolith 和 microservices。Monolith 是单体应用：很多功能在一个应用里一起开发、一起部署。Microservices 是微服务：把系统拆成多个小服务，例如用户服务、价格服务、通知服务，每个服务可以独立部署。
+            </p>
+            <p>
+              答题时先把两种方案映射到 Presentation、Application、Data 三层，再比较几个维度：scalability 是系统能不能承受更多用户或数据；performance 是速度和响应时间；resilience 是某部分坏了以后系统还能不能继续服务；development velocity 是开发和部署速度。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>维度</th>
+                    <th>3-Tier Monolith + Spring + PostgreSQL</th>
+                    <th>Microservices + React SPA + Node services + NoSQL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Scalability</td><td>扩展通常是整个应用一起扩。简单，但某个模块压力大时不够精细。</td><td>可以只扩展压力大的服务，例如价格更新服务。</td></tr>
+                  <tr><td>Consistency</td><td>PostgreSQL 适合交易历史，因为相关记录可以作为事务一起保存。</td><td>NoSQL 更灵活，但多个服务各自存数据时，更难保证所有服务马上同步。</td></tr>
+                  <tr><td>Resilience</td><td>部署简单，但单体里一个严重错误可能影响整个应用。</td><td>服务隔离更好，但网络失败、重试、数据同步更复杂。</td></tr>
+                  <tr><td>Velocity</td><td>小团队早期开发快，调试容易，因为代码和部署都集中。</td><td>团队可并行开发，但需要更多 DevOps、接口文档和部署治理。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              推荐答案可以选择“模块化单体优先，保留后续拆分空间”。模块化单体的意思是仍然部署成一个应用，但内部代码按模块清楚分开。FinTrack 需要可靠交易历史，早期团队更需要简单可靠的 PostgreSQL 和清晰模块边界；实时价格流可以用缓存、队列或单独服务逐步拆出。
+            </p>
+
+            <h3>AI Agents 在 SDLC 中的作用</h3>
+            <p>
+              AI agent 不是普通聊天机器人。这里指能连续执行多个开发步骤的 AI 工具，例如读需求、改代码、写测试、运行命令、根据错误继续修复。SDLC 是 Software Development Lifecycle，也就是软件从需求、设计、实现、测试、部署到维护的全过程。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>优点</th>
+                    <th>风险</th>
+                    <th>平衡策略</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>加速样板代码、测试、重构、文档和部署脚本</td>
+                    <td>可能生成难理解、难调试或不符合架构的代码</td>
+                    <td>要求 PR review、测试、lint、安全扫描和人工架构检查</td>
+                  </tr>
+                  <tr>
+                    <td>能执行多步骤工作流，减少上下文切换</td>
+                    <td>可能误解需求或引入 security / privacy 风险</td>
+                    <td>先写 PRD 和 acceptance criteria，再让 agent 实现</td>
+                  </tr>
+                  <tr>
+                    <td>帮助 junior developer 学习和验证思路</td>
+                    <td>过度依赖会削弱基本工程判断</td>
+                    <td>开发者角色转向 orchestration、verification、debugging</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>CI/CD 和 Observability</h3>
+            <p>
+              CI/CD 关注如何快速、可靠地交付。CI 是 Continuous Integration，意思是频繁合并代码，并自动构建和测试，尽早发现问题。CD 是 Continuous Deployment/Delivery，意思是把通过检查的代码自动或半自动发布到测试环境或生产环境。Observability 关注生产系统内部状态是否可理解：出问题时，我们能不能通过 logs、metrics、traces 看出发生了什么。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>概念</th>
+                    <th>定义</th>
+                    <th>答题关键词</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>CI</td><td>频繁合并代码并自动构建、测试</td><td>unit, integration, security tests, fast feedback</td></tr>
+                  <tr><td>CD</td><td>自动或半自动部署到 staging/production</td><td>deployment pipeline, rollback, canary release</td></tr>
+                  <tr><td>Monitoring</td><td>盯着已知指标，告诉你“是不是坏了”。</td><td>alerts, dashboards, uptime, CPU, error rate</td></tr>
+                  <tr><td>Observability</td><td>帮你调查“为什么坏了”。Logs 是事件记录，metrics 是数字指标，traces 是一次请求经过哪些服务的路径。</td><td>unknown failures, tracing, debugging production behaviour</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              协同点：CI 阶段防止明显错误进入主干；CD 支持小批量发布和快速回滚；observability 发现真实用户环境中的延迟、错误和异常路径，再把这些信息反馈到下一轮测试和开发中。挑战包括工具成本、数据量、隐私、安全、团队 DevOps 能力和告警疲劳。
+            </p>
+          </section>
+
+          <section id="triage" class="section">
+            <h2>9. 根据题面识别答案结构</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>题面关键词</th>
+                    <th>题型</th>
+                    <th>答案结构</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>frontend, database, servers, CRUD, SQL/NoSQL</td><td>基础 full-stack 解释</td><td>定义 + 职责 + 例子 + 选择理由</td></tr>
+                  <tr><td>MVC, diagram, database to generate content</td><td>MVC 大题</td><td>Model/View/Controller 定义 + request flow + web example + non-web/framework adaptation</td></tr>
+                  <tr><td>Node.js interview, callback, chaining, output</td><td>Node / Express 问答</td><td>简短定义 + 同步/异步区别 + event loop 排队机制 + 输出顺序</td></tr>
+                  <tr><td>React, componentization, vanilla JS</td><td>React 论证题</td><td>React 是什么 + component/props/state 是什么 + 用在哪 + 与 vanilla 的 trade-off</td></tr>
+                  <tr><td>accessible website, CSS</td><td>Accessibility</td><td>定义 + 3/4 个 CSS 做法 + 为什么帮助用户</td></tr>
+                  <tr><td>SEO, SQL injection, XSS</td><td>SEO / Security</td><td>概念 + 例子 + 防御措施</td></tr>
+                  <tr><td>HTTP 1.0, HTTP 1.1, HTTP 2, HTTP 3</td><td>HTTP evolution</td><td>逐版本说明 multiple requests/responses 如何改进</td></tr>
+                  <tr><td>cloud model, subscriptions tool, security/privacy, cost</td><td>Cloud 选择题</td><td>推荐 PaaS + 解释为什么不是 IaaS/SaaS + strengths/weaknesses</td></tr>
+                  <tr><td>microservices, AI Agents, CI/CD, Observability</td><td>Sample 新题型</td><td>先定义，再用维度比较，最后给 recommendation/trade-offs</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="exam-map" class="section">
+            <h2>10. 2023-2025 和 Sample 考法地图</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>试卷</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2023 Summer</td>
+                    <td>HTTP evolution + MVC</td>
+                    <td>NoSQL + Node + callback + output</td>
+                    <td>Accessibility + React + Cloud</td>
+                    <td>SEO + SQL injection + XSS</td>
+                  </tr>
+                  <tr>
+                    <td>2024 Summer</td>
+                    <td>Full-stack roles + CRUD + SQL/NoSQL + database choice</td>
+                    <td>SEO + SQL injection + XSS</td>
+                    <td>Accessibility + React + componentization + stack</td>
+                    <td>Node + chaining + Express MVC + output</td>
+                  </tr>
+                  <tr>
+                    <td>2025 Summer</td>
+                    <td>Full-stack roles + CRUD + SQL/NoSQL + shopping database</td>
+                    <td>MVC 25-mark essay</td>
+                    <td>Node + React vs vanilla + code explanation</td>
+                    <td>Accessibility + React merits</td>
+                  </tr>
+                  <tr>
+                    <td>Sample</td>
+                    <td>3-tier monolith vs microservices</td>
+                    <td>AI Agents in SDLC</td>
+                    <td>Rails controller, MVC, SRP, refactor</td>
+                    <td>CI/CD + Observability</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="templates" class="section">
+            <h2>11. 高频 25 分题的写法</h2>
+            <h3>MVC 25 分题</h3>
+            <ol class="checklist">
+              <li>先定义 MVC：Model、View、Controller 各自职责。</li>
+              <li>画或描述 request flow：Browser -> Route -> Controller -> Model/Database -> View/Response。</li>
+              <li>给一个 concrete web example，例如 Rails/Spring/Express 的订单创建。</li>
+              <li>说明为什么好：separation of concerns、maintainability、testability、parallel development。</li>
+              <li>说明可移植性：Rails、Spring、Express、desktop/mobile GUI 都能套类似思想。</li>
+            </ol>
+
+            <h3>方案比较题</h3>
+            <ol class="checklist">
+              <li>先把两个方案映射到共同框架，例如 3-tier architecture。</li>
+              <li>按题目给的维度逐项比较，不要只写一边好。</li>
+              <li>每个维度都写 trade-off：scalability 是能不能承受更多用户/数据；resilience 是出故障时能不能继续服务；velocity 是开发和部署速度；consistency 是数据会不会互相矛盾；cost 是钱和人力成本。</li>
+              <li>最后给 recommendation，并明确你的假设。</li>
+            </ol>
+
+            <h3>Security 题</h3>
+            <ol class="checklist">
+              <li>定义攻击是什么。</li>
+              <li>给一个简短例子。</li>
+              <li>写清楚防御：SQL injection 用 parameterized queries；XSS 用 output encoding、sanitization、CSP、HttpOnly cookies。</li>
+            </ol>
+          </section>
+
+          <section id="summary" class="section">
+            <h2>12. CS615 答案检查清单</h2>
+            <ol class="checklist">
+              <li>解释题不要只背定义，要加 Web 场景例子。</li>
+              <li>比较题必须有维度和 trade-off。</li>
+              <li>MVC 题必须有 request flow，并说明 Model/Controller/View 分工。</li>
+              <li>数据库选择题要根据数据结构、出错代价、查询方式和扩展方式来判断。</li>
+              <li>Node 输出题先分同步代码和异步 callback，并说明 event loop 是排队执行异步结果的机制。</li>
+              <li>React 题要讲 component、props、state、适用场景和成本。</li>
+              <li>Accessibility/SEO/security 题要给具体做法，不要只写价值观。</li>
+              <li>Sample 新题型要给 recommendation，并说明 human oversight 是人类审查和把关，observability feedback 是从生产日志/指标/链路中学到的信息，deployment trade-offs 是发布速度、风险和成本之间的取舍。</li>
+            </ol>
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="CS615 目录">
+          <h2>CS615 目录</h2>
+          <ol>
+            <li><a href="#foundation">基础词汇</a></li>
+            <li><a href="#full-stack">Full-Stack</a></li>
+            <li><a href="#database">SQL / NoSQL</a></li>
+            <li><a href="#mvc">MVC</a></li>
+            <li><a href="#node-react">Node / React</a></li>
+            <li><a href="#quality">Web Quality</a></li>
+            <li><a href="#http-cloud">HTTP / Cloud</a></li>
+            <li><a href="#sample-topics">Sample Topics</a></li>
+            <li><a href="#triage">题型识别</a></li>
+            <li><a href="#exam-map">历年考法</a></li>
+            <li><a href="#templates">答题写法</a></li>
+          </ol>
+          <label for="keyword-search"><strong>关键词过滤</strong></label>
+          <input id="keyword-search" class="search-box" type="search" placeholder="MVC / React / SQL" data-keyword-search="[data-keyword-item]">
+          <div class="tag-list">
+            <a class="keyword-link" data-keyword-item data-keywords="basic terms browser request response API JSON frontend backend" href="#foundation">基础词汇</a>
+            <a class="keyword-link" data-keyword-item data-keywords="3-tier full-stack frontend server database" href="#full-stack">3-Tier</a>
+            <a class="keyword-link" data-keyword-item data-keywords="CRUD REST HTTP verbs" href="#full-stack">CRUD</a>
+            <a class="keyword-link" data-keyword-item data-keywords="SQL NoSQL database shopping habits" href="#database">SQL/NoSQL</a>
+            <a class="keyword-link" data-keyword-item data-keywords="MVC Rails Spring Express controller model view" href="#mvc">MVC</a>
+            <a class="keyword-link" data-keyword-item data-keywords="Node callback chaining event loop Express" href="#node-react">Node</a>
+            <a class="keyword-link" data-keyword-item data-keywords="React componentization vanilla JS MERN" href="#node-react">React</a>
+            <a class="keyword-link" data-keyword-item data-keywords="accessibility CSS SEO XSS SQL injection security" href="#quality">Quality</a>
+            <a class="keyword-link" data-keyword-item data-keywords="HTTP 1.0 1.1 2 3 QUIC cloud PaaS SaaS IaaS" href="#http-cloud">HTTP/Cloud</a>
+            <a class="keyword-link" data-keyword-item data-keywords="microservices AI agents CI/CD observability sample" href="#sample-topics">Sample</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>依据本地 CS615 lecture notes 与 2023-2025 Summer / CS615 Sample 题型整理。</p>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS605 线性教材学习路线</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header"><div class="topbar"><a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS605 Linear</small></a><nav class="topnav"><a href="index.html">总入口</a><a href="cs605.html">CS605 题型页</a><a href="#path">学习路线</a></nav></div></header>
+    <main id="main">
+      <section class="hero"><p class="eyebrow">CS605 linear course path</p><h1>CS605 全教材线性学习：从自动机到 NP-complete</h1><p class="lead">这页按 annotated notes 的时间顺序学习。先学什么是字符串和机器，再学语言类别，最后学不可判定性、归约和复杂度。每一步都先解释为什么需要这个概念。</p></section>
+      <div class="layout"><article class="content">
+        <section id="path" class="section"><h2>1. 数学和语言地基</h2><p>理论计算机的对象不是某个 Java 程序，而是“字符串集合”。先学 alphabet、string、language、set、function、proof by contradiction，后面所有证明才有落脚点。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
+          <tr><td>1.1</td><td>Mathematical preliminaries</td><td>能读懂集合、函数、量词、证明结构。</td><td><code>2026-02-03-Notes-Mathematical_preliminaries_annotated.pdf</code>, <code>CS605 - Mathematical preliminaries.pdf</code></td></tr>
+          <tr><td>1.2</td><td>Historical foundations</td><td>知道课程关心“什么能被计算”。</td><td><code>A - Historical Foundations.pdf</code>, <code>CS605 Overview.pdf</code></td></tr>
+        </tbody></table></div></section>
+        <section class="section"><h2>2. Finite Automata 和 Regular Languages</h2><p>Finite automaton 像一个只有有限记忆的机器。Regular language 就是这种机器能识别的语言。它能处理简单模式，但不能无限计数。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
+          <tr><td>2.1</td><td>Finite automata</td><td>能画状态图，知道 start/accepting states。</td><td><code>2026-02-03-Notes-FAs_annotated.pdf</code>, <code>2026-02-04-Notes-FAs_cont_annotated.pdf</code></td></tr>
+          <tr><td>2.2</td><td>Regular languages</td><td>知道 finite languages regular，能理解非正则证明为什么需要 pumping lemma。</td><td><code>2026-02-04-Notes-Regular_languages_annotated.pdf</code></td></tr>
+        </tbody></table></div></section>
+        <section class="section"><h2>3. PDA 和 Context-Free Languages</h2><p>PDA 比 FA 多一个 stack，所以能处理一类嵌套或配对结构。Context-free language 是 PDA 能识别的语言。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
+          <tr><td>3.1</td><td>PDA</td><td>能解释 stack 为什么能处理 <code>a^n b^n</code>。</td><td><code>2026-02-05-Notes-PDAs_annotated.pdf</code></td></tr>
+          <tr><td>3.2</td><td>CFL</td><td>知道 not CFL proof 为什么需要考虑 <code>uvxyz</code> 的位置。</td><td><code>2026-02-06-Notes-Context_free_languages_annotated.pdf</code></td></tr>
+        </tbody></table></div></section>
+        <section class="section"><h2>4. Countability、Church-Turing 和 Turing Machines</h2><p>这一段把“机器”从 FA/PDA 推到通用计算。Turing machine 是抽象计算机；Church-Turing thesis 说所有合理计算模型本质上能计算同一类函数。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
+          <tr><td>4.1</td><td>Countable / uncountable</td><td>理解为什么“语言比机器多得多”。</td><td><code>2026-02-11-Notes-Countable_and_uncountable_annotated.pdf</code></td></tr>
+          <tr><td>4.2</td><td>Church-Turing thesis</td><td>知道 TM 为什么是计算能力的标准模型。</td><td><code>2026-02-18-Notes-Church-Turing-thesis_annotated.pdf</code></td></tr>
+          <tr><td>4.3</td><td>T-r and decidable</td><td>能区分 recogniser 和 decider。</td><td><code>2026-02-18-Notes-T-r-and-decidable_annotated.pdf</code>, <code>B - Computability I.pdf</code></td></tr>
+        </tbody></table></div></section>
+        <section class="section"><h2>5. Decidability 和 Undecidability</h2><p>Decidable 意味着一定停机并给 yes/no。Undecidable 意味着不存在这样的通用算法。HALT 是核心已知难题。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
+          <tr><td>5.1</td><td>Decidable examples</td><td>能构造 TM pseudocode 证明语言 decidable。</td><td><code>2026-02-25-Notes-Decidable_annotated.pdf</code></td></tr>
+          <tr><td>5.2</td><td>Non-T-r languages</td><td>理解 complement、co-T-r、不可识别。</td><td><code>2026-02-25-Notes-Non-T-r-languages_annotated.pdf</code></td></tr>
+          <tr><td>5.3</td><td>Mapping reductions</td><td>会用 HALT 翻译到新问题。</td><td><code>2026-03-04-Notes-Reductions_annotated.pdf</code>, <code>2026-03-11 Reductions with non-T-r languages_annotated.pdf</code>, reduction videos</td></tr>
+        </tbody></table></div></section>
+        <section class="section"><h2>6. Complexity：从能不能算到算得快不快</h2><p>Computability 问“有没有算法”。Complexity 问“算法要多久”。Polynomial time 是可扩展计算的基本界线。</p><div class="table-wrap"><table><thead><tr><th>顺序</th><th>内容</th><th>过关标准</th><th>材料</th></tr></thead><tbody>
+          <tr><td>6.1</td><td>Asymptotic analysis</td><td>能比较 <code>n</code>, <code>n^2</code>, <code>2^n</code>。</td><td><code>2026-03-25-Notes-CCT_asymptotic_analysis_annotated.pdf</code>, <code>Growth rates.pdf</code></td></tr>
+          <tr><td>6.2</td><td>P and PTIME</td><td>知道 P 是 polynomial-time solvable。</td><td><code>2026-03-25-Notes-CCT_PTIME_annotated.pdf</code></td></tr>
+          <tr><td>6.3</td><td>NP</td><td>知道 certificate 和 verifier。</td><td><code>2026-04-01-Notes-CCT_NP_annotated.pdf</code></td></tr>
+          <tr><td>6.4</td><td>NP-complete</td><td>知道 in NP + NP-hard 两步证明。</td><td><code>NPc1.pdf</code>, <code>NPc2.pdf</code>, NP videos</td></tr>
+        </tbody></table></div></section>
+        <section class="section"><h2>7. 最后接到考试</h2><p>读完教材后再回到 <a href="cs605.html">CS605 题型页</a>，按 Q1-Q7 模板练 sample A/B。教材给理解，题型页给考试写法。</p></section>
+      </article><aside class="toc"><h2>CS605 线性目录</h2><ol><li><a href="#path">数学地基</a></li><li><a href="cs605.html">题型页</a></li></ol></aside></div>
+    </main><footer class="footer"><p>线性页按 annotated notes 顺序整理。</p></footer><script src="assets/app.js"></script>
+  </body>
+</html>

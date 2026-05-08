@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 180" role="img" aria-labelledby="title desc">
+  <title id="title">CS608 Q1 workflow</title>
+  <desc id="desc">A linear workflow from specification to value lines, partitions, TCI table, data values, test cases and review.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f5d50"/>
+    </marker>
+  </defs>
+  <rect width="960" height="180" rx="18" fill="#f7faf8"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <g fill="#fff" stroke="#8bb7a6" stroke-width="2">
+      <rect x="28" y="48" width="124" height="84" rx="12"/>
+      <rect x="184" y="48" width="124" height="84" rx="12"/>
+      <rect x="340" y="48" width="124" height="84" rx="12"/>
+      <rect x="496" y="48" width="124" height="84" rx="12"/>
+      <rect x="652" y="48" width="124" height="84" rx="12"/>
+      <rect x="808" y="48" width="124" height="84" rx="12"/>
+    </g>
+    <g stroke="#2f5d50" stroke-width="2.2" marker-end="url(#arrow)">
+      <path d="M152 90 H178"/>
+      <path d="M308 90 H334"/>
+      <path d="M464 90 H490"/>
+      <path d="M620 90 H646"/>
+      <path d="M776 90 H802"/>
+    </g>
+    <g text-anchor="middle" fill="#18362f" font-weight="700" font-size="16">
+      <text x="90" y="82">Spec</text>
+      <text x="246" y="82">Value</text>
+      <text x="246" y="103">Lines</text>
+      <text x="402" y="82">Partitions</text>
+      <text x="558" y="82">TCIs</text>
+      <text x="714" y="82">Data</text>
+      <text x="714" y="103">Values</text>
+      <text x="870" y="82">Test</text>
+      <text x="870" y="103">Cases</text>
+    </g>
+    <g text-anchor="middle" fill="#5c6f68" font-size="12">
+      <text x="90" y="118">read rules</text>
+      <text x="402" y="118">input/output</text>
+      <text x="558" y="118">unique ids</text>
+      <text x="870" y="118">review</text>
+    </g>
+  </g>
+</svg>

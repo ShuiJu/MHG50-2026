@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 260" role="img" aria-labelledby="title desc">
+  <title id="title">CS615 three-tier web architecture</title>
+  <desc id="desc">A three-tier web architecture with presentation, application logic, and data tiers.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f5d50"/>
+    </marker>
+  </defs>
+  <rect width="980" height="260" rx="18" fill="#f7faf8"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <g fill="#ffffff" stroke="#8bb7a6" stroke-width="2">
+      <rect x="40" y="58" width="250" height="140" rx="12"/>
+      <rect x="365" y="58" width="250" height="140" rx="12"/>
+      <rect x="690" y="58" width="250" height="140" rx="12"/>
+    </g>
+    <g stroke="#2f5d50" stroke-width="2.4" marker-end="url(#arrow)">
+      <path d="M290 128 H357"/>
+      <path d="M615 128 H682"/>
+    </g>
+    <g text-anchor="middle" fill="#18362f">
+      <text x="165" y="92" font-size="22" font-weight="700">Presentation</text>
+      <text x="490" y="92" font-size="22" font-weight="700">Application / Logic</text>
+      <text x="815" y="92" font-size="22" font-weight="700">Data</text>
+      <text x="165" y="125" font-size="16">React / HTML / CSS / JS</text>
+      <text x="165" y="151" font-size="16">User input, rendering, state</text>
+      <text x="490" y="125" font-size="16">Spring / Rails / Express</text>
+      <text x="490" y="151" font-size="16">Routes, controllers, services</text>
+      <text x="815" y="125" font-size="16">PostgreSQL / MySQL / MongoDB</text>
+      <text x="815" y="151" font-size="16">Persistence, queries, consistency</text>
+    </g>
+    <g fill="#5c6f68" font-size="14" text-anchor="middle">
+      <text x="323" y="116">HTTP</text>
+      <text x="323" y="149">JSON / HTML</text>
+      <text x="648" y="116">SQL / ORM</text>
+      <text x="648" y="149">ODM / Driver</text>
+    </g>
+  </g>
+</svg>

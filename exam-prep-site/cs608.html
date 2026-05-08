@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS608：Software Testing</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html">
+          <span>2026 May Exam Prep</span>
+          <small>CS608</small>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="#terms">基础词汇</a>
+          <a href="#q1">Q1 黑盒</a>
+          <a href="#q2">Q2 白盒</a>
+          <a href="#q3">Q3 类内</a>
+          <a href="#q4">Q4 随机</a>
+          <a href="#exam-map">考法地图</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS608 Software Testing</p>
+        <h1>CS608 软件测试：从规格分区到覆盖率和随机测试</h1>
+        <p class="lead">
+          CS608 的考试几乎固定围绕四个问题：黑盒测试如何从规格选测试、白盒测试如何补覆盖率、类内测试如何按对象状态调用方法、随机测试如何自动生成有意义的数据。核心不是写代码，而是把测试设计写成可检查的表格。
+        </p>
+        <div class="tag-list">
+          <a class="tag" href="#q1">BVA / DT</a>
+          <a class="tag" href="#q2">SC / BC / JaCoCo</a>
+          <a class="tag" href="#q3">In-class context</a>
+          <a class="tag" href="#q4">Random testing</a>
+          <a class="tag" href="cs608-q1-sample.html">Q1 样章</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+          <section id="terms" class="section">
+            <h2>1. 软件测试基础词汇</h2>
+            <p>
+              测试不是“随便试几个输入”。考试里的测试设计要回答：为什么选这些测试、它们覆盖了什么、期望输出是什么、是否还有遗漏。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>词</th>
+                    <th>从零理解</th>
+                    <th>考试里怎么用</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Specification</td><td>规格说明。它告诉你方法应该做什么，而不是代码实际怎么写。</td><td>黑盒测试从 specification 出发。</td></tr>
+                  <tr><td>Test case</td><td>一次具体测试：输入是什么，期望输出是什么。</td><td>表格中写 TC1、TC2...</td></tr>
+                  <tr><td>Expected result</td><td>根据规格推出来的正确结果。</td><td>不能只写输入，必须写 expected。</td></tr>
+                  <tr><td>TCI</td><td>Test Coverage Item。你承诺要覆盖的项目。</td><td>BVA 来自边界；DT 来自 rule；white-box 来自未覆盖语句/分支。</td></tr>
+                  <tr><td>Black-box</td><td>只看规格，不看内部代码。</td><td>EP、BVA、DT。</td></tr>
+                  <tr><td>White-box</td><td>看代码结构和覆盖率。</td><td>Statement coverage、branch coverage、JaCoCo。</td></tr>
+                  <tr><td>Coverage</td><td>测试执行到了哪些规格项目或代码结构。</td><td>最后要证明 full TCI coverage。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="q1" class="section">
+            <h2>2. Q1：黑盒测试用规格挑代表性输入</h2>
+            <p>
+              Q1 通常先问 exhaustive testing 为什么不可行，再要求 BVA 或 Decision Table。Exhaustive testing 是把所有输入组合全测一遍；它通常不可行，因为测试数量爆炸，而且每个测试还要设计 expected result。
+            </p>
+            <h3>BVA：边界附近最容易出错</h3>
+            <p>
+              Boundary Value Analysis 的直觉是程序员常把边界写错，例如 <code>&lt;</code> 和 <code>&lt;=</code>。所以 BVA 不测所有值，而是测每个合法分区边缘的值。题目如果说 <code>without errors</code>，测试用例不要放非法输入，但分析表仍可说明错误分区。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>BVA 表格</th>
+                    <th>作用</th>
+                    <th>例子</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Value line / partitions</td><td>把每个输入切成规格认为不同的区间。</td><td><code>humidity: 0..60</code> 不需要 AC，<code>61..100</code> 需要 AC。</td></tr>
+                  <tr><td>TCI table</td><td>列出每个要覆盖的边界值和输出。</td><td><code>60</code>、<code>61</code>、<code>AC_ONLY</code>。</td></tr>
+                  <tr><td>Selected values</td><td>写明每个分区可用的具体值。</td><td>代表值 <code>50</code>，边界值 <code>60</code>、<code>61</code>。</td></tr>
+                  <tr><td>Test Cases</td><td>每个测试输入、expected、covered TCI。</td><td>TC3: temp=16, humidity=61, expected=AC_ONLY。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>DT：多个条件组合起来决定输出</h3>
+            <p>
+              Decision Table 用于测组合。Cause 是输入条件，例如 <code>isOn</code> 或 <code>t&lt;1</code>；effect 是输出，例如 <code>HIGH</code>。每个可行 rule 都是一个 TCI，也通常对应一个 test case。
+            </p>
+            <div class="answer-box">
+              <p>DT 答题顺序：定义 causes 和 effects；列 candidate combinations；划掉 infeasible combinations 并解释；把 feasible combinations 写成 decision table；每个 rule 写入 TCI table；最后写 selected data values 和 test cases。</p>
+            </div>
+            <p>
+              Q1 的详细样章见 <a href="cs608-q1-sample.html">CS608 Q1 关于 BVA / DT 和黑盒测试</a>。
+            </p>
+          </section>
+
+          <section id="q2" class="section">
+            <h2>3. Q2：白盒测试用覆盖率补遗漏代码</h2>
+            <p>
+              白盒测试不是从规格开始，而是看代码或覆盖率报告。JaCoCo 是 Java coverage tool，它会告诉你哪些行没执行、哪些分支没走。绿色通常表示覆盖，黄色表示部分覆盖，红色表示没覆盖。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>概念</th>
+                    <th>从零理解</th>
+                    <th>考试动作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Statement coverage (SC)</td><td>每条可执行语句至少执行一次。</td><td>找红色未执行行，把每个未执行 statement 当 TCI。</td></tr>
+                  <tr><td>Branch coverage (BC)</td><td>每个条件的 true/false 分支都至少走一次。</td><td>找黄色 diamond 的 missed branch，设计输入走过去。</td></tr>
+                  <tr><td>Null else</td><td>代码没有显式 <code>else</code>，但条件 false 时仍有一条“什么都不做”的分支。</td><td>BC 题要明确写出这种 missed branch。</td></tr>
+                  <tr><td>Short-circuit</td><td><code>&&</code> 或 <code>||</code> 中后面的条件可能不会被求值。</td><td>JaCoCo 可能按 bytecode 统计多个 branches。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>Q2 答题流程</h3>
+            <ol class="checklist">
+              <li>读 coverage report：哪些行红、哪些行黄、diamond 写了几 of 几 branches missed。</li>
+              <li>列 unexecuted statements 或 untaken branches。</li>
+              <li>反推要走到它们，输入条件必须是什么。</li>
+              <li>写 TCI table：每个未覆盖 statement/branch 一个 TCI。</li>
+              <li>写 Test Cases table：输入、expected、covered TCI。</li>
+              <li>最后说明这些是 additional tests，用来补充已有 black-box tests。</li>
+            </ol>
+            <h3>Black-box vs white-box 四点对比</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>维度</th>
+                    <th>Black-box</th>
+                    <th>White-box</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>依据</td><td>规格</td><td>代码结构和覆盖率</td></tr>
+                  <tr><td>能先写吗</td><td>可以，代码还没写也能从规格设计</td><td>通常要有代码</td></tr>
+                  <tr><td>擅长发现</td><td>规格理解错误、缺失功能、边界/组合问题</td><td>未执行代码、遗漏分支、死代码附近 bug</td></tr>
+                  <tr><td>为什么先 black-box</td><td>先验证行为是否符合需求</td><td>再用 coverage 找行为测试没碰到的内部结构</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="q3" class="section">
+            <h2>4. Q3：类内测试要按对象状态调用方法</h2>
+            <p>
+              Conventional testing 常测 static method：给输入，立刻拿返回值。In-class context testing 测 instance method：先创建对象，通过 setter 设置对象状态，调用方法改变对象，再通过 getter 取结果并断言。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>测试方式</th>
+                    <th>调用顺序</th>
+                    <th>常见失分</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Static method</td><td><code>actual = isZero(x)</code>，直接 compare expected。</td><td>少写 expected 或边界分区。</td></tr>
+                  <tr><td>In-class context</td><td><code>obj = new Class()</code> -> setter -> method under test -> getter -> assert。</td><td>只写输入和 expected，没有写完整 method calls。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>EP in class context</h3>
+            <p>
+              EP 是 Equivalence Partitioning：把输入分成规格认为行为相同的区。Q3 的 EP 题还要先识别 accessor methods。Accessor 就是 get/set 方法，用来读写对象内部属性。
+            </p>
+            <ol class="checklist">
+              <li>找 attributes，例如 <code>override</code>、<code>power</code>、<code>needCooling</code>。</li>
+              <li>找 accessor methods，例如 <code>setOverride()</code>、<code>getPower()</code>。</li>
+              <li>给数值参数画 value line，例如 temperature、dangerLevel、lux。</li>
+              <li>列 input/output EP 和 TCI。</li>
+              <li>写 test cases，必须包含 method call sequence。</li>
+            </ol>
+            <div class="answer-box">
+              <p>典型 test case 写法：create object；call setter for the relevant state；call the method under test with selected input；call getter to obtain actual result；assert expected equals actual；record covered TCI.</p>
+            </div>
+          </section>
+
+          <section id="q4" class="section">
+            <h2>5. Q4：随机测试要解决三件事</h2>
+            <p>
+              Random testing 不是“乱测”。考试里的随机测试通常基于已经人工设计好的 TCI，把具体数据值从固定值改成随机生成，但仍然控制在对应分区内。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>问题</th>
+                    <th>从零理解</th>
+                    <th>考试解决方法</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Test Data Problem</td><td>随机数可能都落在同一类，没测到关键分区。</td><td>为每个 EP/DT rule 写 min/max 或 criteria，用 <code>rand(min,max)</code> 控制范围。</td></tr>
+                  <tr><td>Test Oracle Problem</td><td>随机输入很多，怎么知道 expected result?</td><td>先由人工 TCI/分区确定 expected，再在该分区内随机选值。</td></tr>
+                  <tr><td>Test Completion Problem</td><td>随机测试理论上可以无限跑，何时停?</td><td>每个 TCI 运行固定次数，或达到覆盖/预算/时间标准。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>随机测试表格</h3>
+            <p>
+              常见表格是 Equivalence Value Criteria Table 和 Random EP Test Cases Table。前者写每个分区的随机生成条件，后者写 test id、随机范围、固定 boolean、expected。
+            </p>
+            <div class="answer-box">
+              <p>Automated random testing outline: define TCI from EP/DT; define random criteria for each TCI; use a data provider to pass min/max or criteria into the test method; generate random values inside those criteria; run the method; compare against the expected result already determined from the TCI; repeat enough times per TCI.</p>
+            </div>
+            <p>
+              如果题目问 <code>rand(int min, int max)</code>，要说明 inclusive range，并避免越界。Java 中简单 int 可写成 <code>min + random.nextInt(max - min + 1)</code>，但 long 范围更大时要更小心，讲义中提醒过 overflow 和边界问题。
+            </p>
+          </section>
+
+          <section id="exam-map" class="section">
+            <h2>6. 2023-2025 年考法地图</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>试卷</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>2023 Summer</td><td>Exhaustive + DT</td><td>BB vs WB + SC + input conditions</td><td>Static vs class context + EP</td><td>Random testing problems + random EP</td></tr>
+                  <tr><td>2024 Summer</td><td>Exhaustive + DT</td><td>BB vs WB + SC</td><td>Static vs class context + EP</td><td>Random testing problems + random EP</td></tr>
+                  <tr><td>2025 Summer</td><td>Exhaustive + BVA</td><td>BC + short-circuit + BB/WB</td><td>Class context + EP</td><td>Random tests from DT + automated code outline</td></tr>
+                  <tr><td>2025 Autumn</td><td>Database exhaustive + BVA</td><td>SC + TestNG pseudo-code + Scrum</td><td>Class context + EP</td><td>Random tests + rand + automation discussion</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="summary" class="section">
+            <h2>7. CS608 答案检查清单</h2>
+            <ol class="checklist">
+              <li>每个测试设计题都要有 TCI table 和 Test Cases table。</li>
+              <li>BVA 不等于测所有组合；DT 不等于只测边界。</li>
+              <li>White-box 题要从 coverage report 反推输入条件。</li>
+              <li>Branch coverage 题不要漏 null else 和 short-circuit branches。</li>
+              <li>Class context 题必须写完整调用顺序。</li>
+              <li>Random testing 题必须回答 data、oracle、completion 三个问题。</li>
+              <li>最后 review：每个 TCI 被覆盖，每个 test case 至少贡献一个新覆盖项。</li>
+            </ol>
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="CS608 目录">
+          <h2>CS608 目录</h2>
+          <ol>
+            <li><a href="#terms">基础词汇</a></li>
+            <li><a href="#q1">Q1 黑盒</a></li>
+            <li><a href="#q2">Q2 白盒</a></li>
+            <li><a href="#q3">Q3 类内</a></li>
+            <li><a href="#q4">Q4 随机</a></li>
+            <li><a href="#exam-map">考法地图</a></li>
+          </ol>
+          <label for="keyword-search"><strong>关键词过滤</strong></label>
+          <input id="keyword-search" class="search-box" type="search" placeholder="BVA / JaCoCo / random" data-keyword-search="[data-keyword-item]">
+          <div class="tag-list">
+            <a class="keyword-link" data-keyword-item data-keywords="BVA boundary value decision table DT TCI" href="#q1">Black-box</a>
+            <a class="keyword-link" data-keyword-item data-keywords="statement branch coverage JaCoCo white-box" href="#q2">White-box</a>
+            <a class="keyword-link" data-keyword-item data-keywords="class context static instance EP accessor" href="#q3">Class context</a>
+            <a class="keyword-link" data-keyword-item data-keywords="random testing oracle data completion rand" href="#q4">Random</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>依据本地 CS608 lecture notes、2023-2025 Summer/Autumn 试卷和已制作 Q1 样章整理。</p>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>
