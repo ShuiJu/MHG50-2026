@@ -473,63 +473,399 @@
   const pageName = decodeURIComponent(window.location.pathname.split("/").pop() || "index.html");
 
   const examFollowups = (section) => {
-    const title = section.querySelector("h2")?.textContent.trim() || "本节";
     const id = section.id;
-    const isLinear = pageName.includes("-linear");
     const pageKey = pageName.replace(".html", "");
-    const label = title.replace(/^\d+\.\s*/, "").replace(/^0\.\s*/, "");
 
-    if (pageKey.startsWith("cs615")) {
-      return [
-        q(`考试追问：题面如果考 ${label}，第一句应该先写什么？`, "先给一句可评分定义，再立刻放回 Web 场景，例如 request flow、3-tier、MVC、API、database 或 deployment，不要只背术语。"),
-        q(`考试追问：这一节最容易变成哪类 CS615 题？`, "通常是 explain、compare 或 recommend 题。答案要有 definition、example、trade-off 和 recommendation，尤其要落回题目给的 business scenario。"),
-        q(`考试追问：本节答案最不能漏哪个工程判断？`, "不能漏职责边界和取舍：谁负责什么，为什么这样分层或选择，以及代价是什么。")
-      ];
-    }
+    const cs615 = {
+      "textbook-audit": [
+        q("CS615 Sample Q1 FinTrack 说明教材流程为什么要先学 3-tier？", "因为题目直接要求把 monolith 和 microservices 映射到 Presentation/Application/Data 三层。"),
+        q("2025 Summer Q1 说明为什么数据库要早学？", "因为 full-stack 和 shopping habits database choice 都要求先懂 server/database 分工、SQL/NoSQL 和 transaction。"),
+        q("Sample Q4 说明为什么 CI/CD/Observability 不能单独背？", "因为 CI/CD 和 observability 要服务于生产 Web app 的交付、回滚、质量和故障排查。")
+      ],
+      foundation: [
+        q("2025 Summer Q1(a) 小题：给 intern 解释 full-stack 时，frontend、server、database 各用一句话怎么分工？", "Frontend 显示界面并收集输入；server 接 request、执行业务规则和权限检查；database 长期保存用户、订单、收据等数据。"),
+        q("2025 Summer Q1(a) 小题：CRUD 里的 Update 和 Create 各对应什么 HTTP 意图？", "Create 是新增资源，常用 <code>POST</code>；Update 是修改已有资源，常用 <code>PUT</code> 或 <code>PATCH</code>。"),
+        q("2025 Summer Q1(a) 小题：SQL 和 NoSQL 的差别不能只写“表格 vs 文档”，还要补哪一点？", "要补数据关系、事务一致性、查询方式和扩展压力；这些才决定题目场景里选哪一个。")
+      ],
+      "full-stack": [
+        q("2025 Summer Q1(a) 小题：如果要求解释 frontend、database、servers roles，答案应该按哪三层写？", "按 presentation、application/business logic、data layer 写，并用 request/response 串起来。"),
+        q("2024 Summer Q1 小题：CRUD 解释要不要给 Web API 例子？", "要。比如 <code>POST /orders</code> 创建订单，<code>GET /orders/15</code> 读取订单，能把抽象 CRUD 落到 Web 场景。"),
+        q("CS615 past paper 小题：full-stack 题里为什么不能只列 MERN 技术名？", "因为题目问角色和职责。要说每层做什么、如何通信、数据在哪里保存、权限在哪里检查。")
+      ],
+      database: [
+        q("2025 Summer Q1(b) 小题：顾客购物习惯数据有 items、price、date、unique receipt number，为什么先考虑 SQL？", "因为它像收据/订单系统，实体关系清楚，receipt number 和 item rows 需要一致，适合表、外键、join 和 transaction。"),
+        q("2025 Summer Q1(b) 小题：这个场景下 NoSQL 什么时候才更合理？", "如果题目重点变成高量 clickstream、浏览事件、灵活行为日志，而不是可靠收据和交易历史，NoSQL 才更好辩护。"),
+        q("2024/2025 SQL/NoSQL 小题：写 database choice 时必须出现哪三个判断维度？", "数据形状是否稳定、关系和 join 是否重要、出错时是否需要 ACID transaction。")
+      ],
+      mvc: [
+        q("2025 Summer Q2 小题：MVC 25 分题里 web example 的 request flow 怎么写？", "Browser -> route -> controller -> model/database -> view/response，并说明每一步的职责。"),
+        q("Sample Q3 Rails controller 小题：controller 同时算折扣、保存订单、发邮件、记录 analytics，违反什么？", "违反 MVC 的职责边界和 SRP。折扣应进 service，保存进 model/repository，邮件和 analytics 应拆到 mailer/job/adapter。"),
+        q("2023 Summer Q1(b) 小题：MVC 还要求另一个 programming environment example，怎么避免只写 Rails？", "可以写 desktop/mobile GUI：View 是界面，Controller 处理用户动作，Model 保存和验证数据。")
+      ],
+      architecture: [
+        q("Sample Q1 FinTrack 小题：Approach A 的 3-tier monolith 怎样映射三层？", "React frontend 是 presentation；Spring Boot backend 是 application/logic；PostgreSQL 是 data layer。"),
+        q("Sample Q1 FinTrack 小题：Approach B 的 Application tier 和 A 最大通信差别是什么？", "B 把 application tier 拆成多个 Node services，服务之间通过 API/网络通信；A 的 logic 多在一个 monolith 内部调用。"),
+        q("Sample Q1 FinTrack 小题：transaction history strict consistency 更支持哪种 data choice？", "更支持 PostgreSQL/SQL，因为交易历史需要可靠事务、一致性和关系查询。")
+      ],
+      request: [
+        q("2025 Summer full-stack 小题：点击“查看 receipt”时 request/response 链条怎么拆？", "Browser 发 <code>GET /receipts/{id}</code>，server route 到 controller，controller 查 database，server 返回 HTML/JSON，browser 渲染。"),
+        q("Sample FinTrack 小题：real-time stock price update 走 request/response 时，Application tier 需要额外考虑什么？", "需要考虑频繁更新、缓存/streaming、服务吞吐和前端状态刷新，而不是只做一次普通页面加载。"),
+        q("2023 cloud subscriptions 小题：学生 sign up to courses 时，为什么 request 必须经过后端？", "后端要检查身份、课程容量、权限和数据一致性，不能让前端直接写数据库。")
+      ],
+      rails: [
+        q("Sample Q3 Rails 小题：<code>OrdersController#create</code> 里折扣计算应该抽到哪里？", "抽到 service object，例如 <code>OrderPricingService</code>，controller 只协调 request 和 response。"),
+        q("Sample Q3 Rails 小题：如果 action 同时 redirect/render、发邮件、记 analytics，测试会难在哪里？", "每个测试都被多个副作用牵连，难以只验证一个职责，mock/stub 也会变多。"),
+        q("Sample Q3 Rails 小题：重构后至少要写哪两类测试？", "Service 的业务规则单元测试，以及 controller 的 request/response、params、redirect/render 测试。")
+      ],
+      spring: [
+        q("Sample FinTrack 小题：Spring Boot monolith 里 controller、service、repository 怎样分工？", "Controller 接 API request，service 处理 filtering/transaction rule，repository 访问 PostgreSQL。"),
+        q("2023 course subscriptions 小题：PaaS 部署 Spring app 时，团队主要还要负责什么？", "负责应用代码、配置、数据模型、访问控制和业务功能；平台负责大量 runtime 和部署基础设施。"),
+        q("Forms/Security 小题：学生课程注册表单为什么要后端验证？", "因为用户可以绕过前端。后端必须检查身份、输入范围、课程是否可选和重复注册。")
+      ],
+      "node-react": [
+        q("2023 Summer Q2(iv) 小题：<code>console.log('first'); setTimeout(...); console.log('fifth')</code> 前两个输出是什么？", "先输出 <code>first</code>，再输出 <code>fifth</code>，因为同步代码先执行，timeout callback 后进队列。"),
+        q("2023 Summer Q2(ii) 小题：为什么会用 Node.js 做 web project？", "Node 适合 I/O-heavy Web API，JavaScript 前后端统一，生态丰富，Express 能快速写 routes/middleware。"),
+        q("2025 Summer Q3(b) 小题：有人说永远不该用 React，你至少要反驳哪两点？", "React 用 component/props/state 管复杂交互，适合动态 UI；但也承认 tooling、SEO、initial load 和学习成本。")
+      ],
+      quality: [
+        q("2023 Summer Q3(a) 小题：accessible website 用 CSS 能写哪三个具体做法？", "足够颜色对比、可见 focus outline、响应式/可缩放字号布局；还可避免只靠颜色表达状态。"),
+        q("2023 Summer Q4(a) 小题：white-hat SEO 给 client 的两条建议是什么？", "清楚标题和语义结构、真实高质量内容、可读 URL、alt text、合理性能和内部链接。"),
+        q("2023 Summer Q4(b) 小题：SQL injection 防御不能只写 sanitize，还要写什么？", "写 parameterized queries/prepared statements、ORM 安全 API、输入验证和最小数据库权限。")
+      ],
+      "http-cloud": [
+        q("2023 Summer Q1(a) 小题：HTTP/1.1 相比 HTTP/1.0 处理多个请求的关键改进是什么？", "HTTP/1.1 支持 persistent connections/keep-alive，减少每个资源都新建连接的开销。"),
+        q("2023 Summer Q1(a) 小题：HTTP/2 的 multiplexing 要解决什么？", "让多个 streams 在一个连接上交错传输，减少 HTTP 层面的 head-of-line blocking。"),
+        q("2023 Summer Q3(c) 小题：course subscriptions tool 为什么推荐 PaaS 而不是 SaaS？", "题目要自建订阅工具，SaaS 太固定；PaaS 能部署自定义 app，又少管底层服务器。")
+      ],
+      delivery: [
+        q("Sample Q4(a) 小题：CI/CD 和 Observability 各用一句话怎么定义？", "CI/CD 是自动构建、测试、交付/部署流程；Observability 是通过 logs、metrics、traces 理解生产系统内部状态。"),
+        q("Sample Q4(b) 小题：Observability 和 Monitoring 的区别用 production bug 怎么说？", "Monitoring 告诉你 error rate 升高；observability 帮你用 trace/log 找到哪个 service、哪次 deploy、哪条 request 出问题。"),
+        q("Sample Q2 AI agents 小题：agent 重构 monolith 成 microservices 时，opaque optimized code 最大风险是什么？", "维护性下降、debug 困难、技术债隐藏，团队可能无法审查架构边界和安全影响。")
+      ],
+      "sample-topics": [
+        q("Sample Q1 FinTrack 小题：高频价格更新更支持 microservices 的哪一面？", "可以单独扩展价格/streaming 服务，提高 scalability；但会增加网络、部署和数据一致性复杂度。"),
+        q("Sample Q2 AI Agents 小题：列一个 advantage 和一个 risk，必须贴 e-commerce。", "Advantage：快速生成 login/cart tests 或 deployment scripts；risk：误处理支付/隐私逻辑或生成难审查代码。"),
+        q("Sample Q4 CI/CD 小题：full observability stack 的 trade-off 写哪两类？", "收益是更快定位生产问题；代价是工具成本、数据量、隐私风险、团队学习成本和告警疲劳。")
+      ],
+      triage: [
+        q("2025 Summer Q1(b) 看到 receipt number、items、price、date，应归到哪类答案结构？", "SQL/NoSQL database choice：先描述数据关系和事务一致性，再比较 NoSQL 何时可行。"),
+        q("2023 Summer Q2(iv) 看到嵌套 <code>setTimeout</code>，应归到哪类答案结构？", "Node event loop 输出题：先列同步输出，再解释 callback 排队和延迟。"),
+        q("Sample Q1 看到 FinTrack 和两种 architecture，应归到哪类答案结构？", "Architecture comparison：映射 3-tier，再按 scalability/performance/resilience/deployment 比较并推荐。")
+      ],
+      "exam-map": [
+        q("从 2023 到 2025，MVC 在 CS615 里出现过几种问法？", "2023 要解释 MVC 并给 web/other environment；2025 是 25 分 essay；Sample Q3 用 Rails controller 检查 MVC/SRP。"),
+        q("从 2023 到 2025，Node/React 出题怎样变化？", "2023 偏 Node callback/output 和 React merits；2024/2025 继续考 Node/Express/React 与 componentization。"),
+        q("Sample 相比 past paper 新增了哪些工程主题？", "FinTrack architecture、AI agents、Rails controller refactor、CI/CD 和 observability。")
+      ],
+      templates: [
+        q("2025 MVC 25 分题：模板第一段不要写什么？", "不要直接堆 Rails 名词；先定义 Model/View/Controller，然后再放 request flow 和 concrete example。"),
+        q("Sample FinTrack 比较题：recommendation 不能只选 microservices，为什么？", "要看团队能力、transaction consistency 和 operational complexity；可推荐 modular monolith 或逐步拆分。"),
+        q("2023 security 题：SQL injection/XSS 模板都要有哪三段？", "定义攻击、给一个简短攻击例子、写具体防御。")
+      ],
+      summary: [
+        q("做 2025 shopping database 题时，答案最后用哪一句收束？", "Given structured receipt data and consistency needs, SQL is the stronger default; NoSQL is only better for flexible high-volume event data."),
+        q("做 2023 HTTP evolution 题时，答案最后用哪条主线收束？", "每一代都在减少连接开销、阻塞和等待，提高多个 requests/responses 的传输效率。"),
+        q("做 Sample AI agents 题时，答案最后要落在哪个立场？", "AI agents can accelerate SDLC tasks, but human oversight, tests, review and security checks remain necessary.")
+      ],
+      "exam-ladder": [
+        q("CS615 2025 Q1 小题：学完线性页后第一套可练哪题？", "练 2025 Summer Q1：intern full-stack explanation + shopping habits SQL/NoSQL choice。"),
+        q("CS615 Sample 小题：学完架构和数据库后应练哪题？", "练 Sample Q1 FinTrack：3-tier monolith vs microservices，并比较 scalability、resilience、deployment。"),
+        q("CS615 Sample 小题：学完 Rails/SRP 后应练哪题？", "练 Sample Q3 OrdersController：指出 controller 过胖、违反 SRP，并提出 service/job/model 重构。")
+      ]
+    };
 
-    if (pageKey.startsWith("cs605")) {
-      return [
-        q(`考试追问：题面如果落在 ${label}，先判断哪种证明工具？`, "先看它是字符串结构、机器行为还是图/集合复杂度题；再选 pumping lemma、decider/recogniser、HALT reduction、in NP 或 NP-complete proof。"),
-        q(`考试追问：这节写成证明时必须出现什么硬结构？`, "必须有假设、构造或选择对象、关键限制、推出矛盾或 iff 正确性，最后明确 conclusion。"),
-        q(`考试追问：最常见扣分点是什么？`, "只写直觉不写形式理由。例如 pumping 不覆盖所有切法、decidable 不说明 halt、reduction 不写 iff、NP 不写 certificate 和 polynomial time。")
-      ];
-    }
+    const cs605 = {
+      language: [
+        q("Sample B Q1(a) 小题：<code>L1A={w1#w2#...#w2n : wi∈{a}*, wi=wi+1 for one odd i}</code> 的输入长什么样？", "输入是用 <code>#</code> 分隔的偶数个 unary blocks，例如 <code>a#aa#...</code>；yes 条件是某个奇数位置 block 等于下一个 block。"),
+        q("Sample A Q2(b) 小题：<code>{J,a,b,c : running J sometime makes a+b=c true}</code> 是在问字符串结构还是程序行为？", "是在问 Java program 的运行行为，所以更接近 recogniser/模拟，而不是 pumping lemma。"),
+        q("Sample B Q6A 小题：CARA friends clique 语言的 yes instance 是什么？", "输入是 graph <code>G,k</code>；yes 条件是存在 size <code>k</code> 的学生集合，集合中任意两人都是朋友。")
+      ],
+      symbols: [
+        q("Sample B Q6A 小题：<code>G=(V,E)</code> 里 <code>V</code> 和 <code>E</code> 分别是什么？", "<code>V</code> 是学生集合，<code>E</code> 是社交网站 CARA 上互为朋友的学生对。"),
+        q("Sample A Q6B 小题：<code>A</code> 是一组 finite automata，<code>W</code> 是什么？", "<code>W</code> 是 <code>n</code> 个长度正好为 <code>n</code> 的 words，题目要求某个 word 被所有 automata 接受。"),
+        q("Sample B Q5 小题：<code>{J,b,c : throughout execution b &lt; mean(c)}</code> 的输入编码包含哪些对象？", "包含 Java program <code>J</code>、浮点变量 <code>b</code> 和整数数组 <code>c</code> 的编码。")
+      ],
+      "proof-basics": [
+        q("Sample B Q1(a) not regular 小题：证明开头第一句怎么写？", "Assume for contradiction that <code>L1A</code> is regular. Let <code>p</code> be the pumping length."),
+        q("Sample A Q3 L3 exception 21 小题：mapping reduction 里 <code>iff</code> 要对齐哪两件事？", "构造出的 Java program 是否不抛 exception 21，要和原 <code>M</code> 是否 halts on <code>w</code> 精确对齐。"),
+        q("Sample B Q7 3-SAT to CARA clique 小题：correctness 需要哪两个方向？", "如果 3-SAT formula satisfiable，则构造图有 clique；如果图有目标 clique，则能读回 satisfying assignment。")
+      ],
+      automata: [
+        q("Sample A Q2(a) 小题：FA accepts at least one word of length greater than 5，decider 先检查什么？", "先检查输入是否是有效 FA 编码，再搜索有限状态图中是否存在长度大于 5 的 accepting path。"),
+        q("Sample B Q2(a) 小题：FA language nonempty 怎么 decide？", "从 start state 做 graph reachability，看是否能到达 accepting state；状态有限，所以会停机。"),
+        q("Sample A Q6B 小题：一组 FA 都接受某个 word，verifier 要模拟什么？", "证书给出那个 word；verifier 检查 word 在 <code>W</code> 中且每个 automaton 都接受它。")
+      ],
+      "pumping-regular": [
+        q("Sample B Q1(a) 小题：对 <code>w1#w2#...#w2n</code> 类语言，pumping 时为什么要选很多 unary block？", "因为要让 pumped part 被限制在某个局部，pump 后破坏某个相邻 block 相等关系或分隔结构。"),
+        q("Sample A Q1(a) 小题：not regular 证明中，选 word 后下一句必须说明什么？", "说明任意合法 split <code>xyz</code> 中 <code>y</code> 被 pumping length 限制在特定区域。"),
+        q("Sample B Q1(a) 小题：pump 后如何写 contradiction？", "指出 pumped string 不再满足题目定义的相等/位置条件，但 pumping lemma 要求仍在语言中。")
+      ],
+      pumping: [
+        q("Sample B Q1(a) 小题：not regular 证明不能只说“FA 记不住”，还要写什么？", "要写 pumping length、选 word、任意 split 限制、pump 值和 pumped word 不在语言里。"),
+        q("Sample A/B Q1(b) 小题：not CFL 证明为什么要按 <code>v,y</code> 位置分情况？", "因为 <code>v,y</code> 可落在不同 block 或跨分隔符，必须证明所有合法位置 pump 后都会破坏条件。"),
+        q("Sample Q1 小题：如果题目让 choose one not CFL，选择时优先选什么样的语言？", "优先选结构分区清楚、pump 后容易破坏多段相等或复制关系的语言。")
+      ],
+      "pda-cfl": [
+        q("Sample Q1(b) 小题：not context-free 题里 <code>|vxy|≤p</code> 的作用是什么？", "它让 <code>vxy</code> 只能覆盖局部区域，不能同时修正所有相关 block。"),
+        q("Sample Q1(b) 小题：如果 <code>v</code> 和 <code>y</code> 都落在同一段，pump 后通常破坏什么？", "通常破坏该段数量而其他段不变，从而破坏相等或配对关系。"),
+        q("Sample Q1(b) 小题：如果 <code>vxy</code> 跨过分隔符，pump 后常破坏什么？", "常破坏字符串格式或分隔符数量/位置，使 pumped word 不符合语言定义。")
+      ],
+      tm: [
+        q("Sample A Q2(b) 小题：Java 运行中某次 <code>a+b=c</code>，recogniser 怎么构造？", "模拟 <code>J</code>，每一步检查变量 <code>a,b,c</code>；一旦发现 <code>a+b=c</code> 就 accept。"),
+        q("Sample B Q2(b) 小题：Java opens at least <code>n</code> files 后文件数不等于 <code>n</code>，为什么是 recognisable？", "可以模拟程序，观察 open file count；一旦目标事件发生就 accept，若永不发生可一直模拟。"),
+        q("Sample A/B Q2(a) 小题：FA 相关 decidable proof 结尾必须写什么？", "状态图有限、搜索/模拟有限，因此 TM halts on every input。")
+      ],
+      reductions: [
+        q("Sample A Q3 小题：L3 是 Java program 不抛 exception 21，构造 <code>N</code> 时如何让 HALT 控制 property？", "<code>N</code> 先模拟 <code>M(w)</code>；根据是否 halts 决定是否抛 exception 21，使 property 与 HALT 对齐。"),
+        q("Sample A Q5 小题：line number <code>n</code> never executed，如何把目标 line 放进构造？", "让 <code>N</code> 先模拟 <code>M(w)</code>；若模拟停机才执行指定 line，从而 line 是否执行反映 HALT。"),
+        q("Sample B Q5 小题：<code>b &lt; mean(c)</code> throughout execution 的 reduction 要控制什么？", "构造程序让该不变量在 <code>M(w)</code> 是否停机时被保持或被破坏，从而和 HALT yes/no 对齐。")
+      ],
+      complexity: [
+        q("Sample B Q6A 小题：CARA clique 的 certificate 是什么？", "一个 size <code>k</code> 的学生子集 <code>S</code>。Verifier 检查每对学生是否在 <code>E</code> 中。"),
+        q("Sample B Q6B 小题：phones vertex cover 语言的 certificate 是什么？", "一个 size <code>k</code> 的 phone 子集 <code>S</code>。Verifier 检查每条 communication edge 至少有一个端点在 <code>S</code> 中。"),
+        q("Sample A Q6A 小题：两个 proper subsets <code>Y,Z</code> 覆盖 <code>A</code> 且 sums equal，certificate 是什么？", "Certificate 是两个子集 <code>Y,Z</code>；verifier 检查 proper、覆盖每个元素、并比较两边 sum。")
+      ],
+      np: [
+        q("Sample B Q6A 小题：CARA clique verifier 的 polynomial loop 主要检查什么？", "检查 <code>|S|=k</code>，然后检查 <code>S</code> 中每一对学生是否都有 edge。最多二重循环，多项式。"),
+        q("Sample B Q6B 小题：phone vertex cover verifier 为什么是 polynomial？", "遍历每条 communication pair，检查至少一端在证书集合 <code>S</code> 中；最多按边数循环。"),
+        q("Sample A Q6B 小题：FA set + word set 题的 verifier 为什么不是 exponential？", "证书指定某个 word；verifier 只需对每台 FA 模拟这个 word，不需要枚举所有 words。")
+      ],
+      "np-complete": [
+        q("Sample B Q7 小题：要证明 CARA clique NP-complete，已知源问题是什么？", "题目给定 3-SAT is NP-complete，因此 reduction 从 3-SAT 到 L6A/CARA clique。"),
+        q("Sample B Q7(b) 小题：给公式 <code>(b∨a∨c)...</code> 要求 reduction output，考的是什么？", "考你是否真的会把 clauses/literals 转成 clique construction 的 vertices 和 edges，而不是只背模板。"),
+        q("Sample Q7 小题：证明 NP-complete 时为什么要引用前一题 in NP？", "因为 NP-complete 需要 membership + hardness；前一题已经证明 <code>L∈NP</code>，Q7 重点补 NP-hard reduction。")
+      ],
+      "question-types": [
+        q("Sample A Q2(a) 对 FA 接受长度 >5 的 word，是哪类题？", "Construct decider：有限自动机状态有限，可以有限搜索。"),
+        q("Sample A Q3/Q5 exception 21、line n never executed，是哪类题？", "HALT mapping reduction：构造程序把停机行为转成 Java property。"),
+        q("Sample B Q6/Q7 CARA clique，是哪两类题连续出现？", "先 Q6 证明 in NP，再 Q7 从 3-SAT reduce 证明 NP-complete。")
+      ],
+      "exam-map": [
+        q("Sample A 和 B 的 Q2 有什么共同模式？", "Q2(a) 是 FA decidable；Q2(b) 是 Java program property Turing-recognisable。"),
+        q("Sample A 和 B 的 Q3/Q5 有什么共同模式？", "都从 HALT 做 mapping reduction 到 Java/TM 行为性质。"),
+        q("Sample B Q6/Q7 比 Sample A 更具体在哪里？", "它用 CARA friends clique 和 phone vertex cover 这类图问题，让 certificate/verifier 更具体。")
+      ],
+      summary: [
+        q("Sample A Q3 exception 21 题检查清单第一项是什么？", "是否明确写出从 <code>&lt;M,w&gt;</code> 到 Java program <code>N</code> 的 computable mapping。"),
+        q("Sample B Q6A clique 题检查清单第一项是什么？", "是否明确 certificate 是 size <code>k</code> 的 vertex/student subset。"),
+        q("Sample B Q1 pumping 题检查清单第一项是什么？", "是否先选了足够长且结构能暴露矛盾的 word，并说明任意 split 的限制。")
+      ],
+      "exam-ladder": [
+        q("CS605 Sample A 小题：学完 decider/recogniser 后先练哪题？", "练 Q2：FA accepts word length >5 decidable，以及 Java <code>a+b=c</code> Turing-recognisable。"),
+        q("CS605 Sample A 小题：学完 reductions 后先练哪题？", "练 Q3 exception 21 和 Q5 line number n never executed 的 HALT mapping reductions。"),
+        q("CS605 Sample B 小题：学完 NP 后先练哪题？", "练 Q6 CARA clique/phone vertex cover in NP，再接 Q7 3-SAT reduction。")
+      ]
+    };
 
-    if (pageKey.startsWith("cs608")) {
-      return [
-        q(`考试追问：题面如果考 ${label}，要先交付什么表格或测试产物？`, "先判断是 TCI/data/test case 表、additional tests、class context test sequence，还是 random testing strategy；CS608 不能只写概念解释。"),
-        q(`考试追问：这一节的 expected result 或 oracle 从哪里来？`, "从 specification、coverage target、代码路径或测试 oracle 来，不能从 actual output 倒推。"),
-        q(`考试追问：最容易漏掉的评分点是什么？`, "漏 coverage explanation：要说明测试为什么代表某个分区、边界、rule、statement、branch、对象状态或随机测试准则。")
-      ];
-    }
+    const cs608 = {
+      "test-case": [
+        q("2025 Summer Q1(b) Climate.determine 小题：<code>temp&lt;16</code> 和 <code>humidity&gt;60</code> 各对应什么输出风险？", "温度边界控制 HEAT，湿度边界控制 AC；两者组合产生 NONE、HEAT_ONLY、AC_ONLY、HEAT_AND_AC。"),
+        q("2023 Summer Q1(a) maxv 小题：为什么 expected result 不能靠程序输出？", "maxv 的 oracle 应该是数组最大值定义；如果用 actual output 当 expected，就无法发现错误。"),
+        q("2025 Summer Q2 decideWrite 小题：additional test 也必须写 expected result，为什么？", "因为 coverage 只说明执行路径，expected result 才能判断路径上的行为是否正确。")
+      ],
+      terms: [
+        q("2023 Summer Q1(a) maxv 小题：exhaustive testing 不可行要同时提哪两种时间？", "Test design time 和 test execution time；Java array 最大长度让输入组合巨大。"),
+        q("2025 Summer Q1(c) Climate.determine 小题：TCI 和 Test Case 为什么不能混？", "TCI 是覆盖目标，如 temp boundary；Test Case 是具体调用和 expected output。"),
+        q("2025 Summer Q4 PV.exportPower 小题：random testing 的 oracle 是什么？", "根据 Decision Table 判断 enabled/nettPower 对应 true/false，而不是随机猜结果。")
+      ],
+      coverage: [
+        q("2025 Summer Q1(c) Climate.determine 小题：BVA 的 selected equivalence values 应围绕哪些边界？", "围绕 <code>temp=16</code> 和 <code>humidity=60</code>，例如 just below/on/above，且不包含 error values。"),
+        q("2023 Summer Q2 Wind.categorise 小题：JaCoCo 红线表示什么 coverage item？", "红线表示未执行 statement，需要设计输入让该语句执行，形成 statement coverage TCI。"),
+        q("2025 Summer Q2 decideWrite 小题：黄色 diamond 的 TCI 应怎样写？", "写成具体未走分支，例如 line 28 true/false branch 或 null else branch，而不是只写“yellow line”。")
+      ],
+      "black-box": [
+        q("2025 Summer Q1(c) Climate.determine 小题：为什么题目说 Do not include error values？", "BVA tests 只覆盖非错误边界附近的有效行为，error partition 已在 part (b) 输入/输出 partition 里处理。"),
+        q("2023 Summer Q1(b) boilerSetting 小题：温度 <code>t</code> 的 value line 至少有哪些区间？", "非常低、<code>t&lt;1</code>、<code>1≤t&lt;25</code>、<code>t≥25</code>，并结合 <code>isOn</code> 形成 causes。"),
+        q("2023 Summer Q1(c) boilerSetting 小题：为什么要 cross out infeasible combinations？", "Decision Table 可能包含互斥条件组合，例如同一 <code>t</code> 不可能同时在两个温度区间。")
+      ],
+      q1: [
+        q("2025 Summer Q1(b) Climate.determine 小题：input partitions 应包含哪些错误类？", "温度/湿度超出规格允许范围时应列 error partitions，并映射到 <code>ERROR</code> 输出。"),
+        q("2023 Summer Q1(c) boilerSetting 小题：题目指定 -50 和 +50 是让你做什么？", "用作 very low / very high 的具体 data values，支撑 DT test cases。"),
+        q("2025 Summer Q1(c) Climate.determine 小题：如何避免 duplicate coverage？", "每个 test case 要覆盖新的 TCI 或 expected output TCI；已经覆盖的边界不要重复用另一个等价 test case。")
+      ],
+      "white-box": [
+        q("2025 Summer Q2(a) decideWrite 小题：lines 28 和 32 黄色、line 33 红色，第一步写什么？", "明确未走分支和未执行语句，包括 null else，再给触发条件。"),
+        q("2025 Summer Q2(b) optimized decideWrite 小题：line 51 的 '1 of 4 branches missed' 为什么是 4？", "复合条件经过 short-circuit bytecode 分成多个 branch，不只是源代码层面一个 if 的 true/false。"),
+        q("2023 Summer Q2 Wind.categorise 小题：full SC 和 full BC 要求有什么不同？", "SC 只要求红色语句执行；BC 还要求每个 decision 的 true/false 分支都走到。")
+      ],
+      q2: [
+        q("2023 Summer Q2(a) 小题：black-box vs white-box 要比较哪五点？", "错误类型、source code change 对测试的影响、能否先于代码写测试、specification 作用、coverage 是否易测量。"),
+        q("2025 Summer Q2(a) decideWrite 小题：Test Coverage Items table 里不要写什么？", "不要只写 test input；要写未覆盖 branch/statement 本身作为 coverage item。"),
+        q("2025 Summer Q2(b) short-circuit 小题：答案必须提到哪个层次？", "必须提 bytecode-level branch coverage，因为 JaCoCo 的 4 branches 来自编译后的短路控制流。")
+      ],
+      oo: [
+        q("2025 Summer Q3(a) Numbers 小题：static <code>isNeg(x)</code> 的调用顺序是什么？", "直接调用 <code>Numbers.isNeg(x)</code>，把 return value 和 expected result 比较。"),
+        q("2025 Summer Q3(a) Numbers 小题：instance <code>checkValue/isNegative</code> 的调用顺序是什么？", "创建 object，<code>setValue(x)</code>，调用 <code>isNegative()</code>，再 <code>getResult()</code> 并 assert。"),
+        q("2023 Summer Q3(b) Lighting.decide 小题：为什么要先识别 accessor methods？", "因为 class context 测试要通过 setters/getters 或 public methods 设置状态和观察 power/override。")
+      ],
+      q3: [
+        q("2025 Summer Q3(b) Braking.decide 小题：analysis 阶段要列哪三个东西？", "Accessor methods、dangerLevel value line、override/dangerLevel/emergencyBrake 的 EP。"),
+        q("2023 Summer Q3(b) Lighting.decide 小题：brightness 的关键 partitions 是什么？", "sensor error <0、dark <100、dim 100..500、bright >500，并结合 override。"),
+        q("2023 Summer Q3(b) Lighting.decide 小题：Test Cases 必须显示什么？", "必须显示精确 method call sequence 和 expected return/getter values。")
+      ],
+      automation: [
+        q("2025 Summer Q4(b) PV.exportPower 小题：自动化 random test outline 必须包含什么？", "循环/重复结构、随机生成范围、调用 method、assert expected、覆盖每条 DT rule。"),
+        q("2025 Summer Q4(b) 小题：安全生成两个 integer limits 之间的 random int 要注意什么？", "要控制 inclusive/exclusive 边界，避免 overflow，并确保生成范围匹配 TCI。"),
+        q("2025 Autumn Q2 TestNG pseudo-code 小题：参数化测试表里至少要有什么？", "输入、expected result、TCI id，并让测试方法逐行取数据执行 assert。")
+      ],
+      random: [
+        q("2025 Summer Q4(a) PV.exportPower 小题：Rule 1 的随机数据条件是什么？", "<code>enabled=true</code> 且 <code>nettPower&gt;0</code>，expected return true。"),
+        q("2023 Summer Q4(a) isSquare 小题：oracle problem 怎么具体化？", "随机给 <code>x</code> 后，必须有办法判断它是否平方数，例如计算整数平方根再验证。"),
+        q("2023 Summer Q4(b) whatSpeed 小题：ERROR partitions 对应哪些 random ranges？", "例如 temp below valid range 或 above valid range，对应 EP1*/EP5*，expected ERROR。")
+      ],
+      q4: [
+        q("2025 Summer Q4 PV.exportPower 小题：Decision Table 四条 rules 如何变成 random test cases？", "每条 rule 固定 boolean cause，再为 nettPower 的 true/false 条件生成随机范围值。"),
+        q("2023 Summer Q4 isSquare 小题：test completion problem 可以用什么停止条件？", "固定随机次数、覆盖所有 partitions、达到时间预算，或失败率稳定后停止。"),
+        q("2023 Summer Q4 whatSpeed 小题：Random EP Test Cases Table 里 <code>rand(0,50)</code> 覆盖什么？", "覆盖 temp 的 0..50 partition，同时结合其他 boolean/input EP 和 expected OFF。")
+      ],
+      "exam-map": [
+        q("2023 Q1 boilerSetting 和 2025 Q1 Climate.determine 的共同训练是什么？", "都训练从 specification 生成黑盒 coverage items、data values 和 test cases。"),
+        q("2023 Wind.categorise 和 2025 decideWrite 的共同训练是什么？", "都训练从 JaCoCo coverage 找 additional tests，但一个偏 SC，一个偏 BC/short-circuit。"),
+        q("2023 isSquare/whatSpeed 和 2025 PV.exportPower 的共同训练是什么？", "都训练 random testing 三问题，并把随机生成限制在 EP/DT coverage criteria 内。")
+      ],
+      summary: [
+        q("2025 Climate.determine 检查清单：BVA 答案少哪张表会扣大分？", "少 TCI、selected equivalence values 或 Test Cases 任一表都会让设计不完整。"),
+        q("2025 decideWrite 检查清单：additional tests 少哪句话不够？", "少解释该 test 触发哪个 untaken branch/statement，不只是给输入。"),
+        q("2025 PV.exportPower 检查清单：random tests 少哪一项不够？", "少 random value generation criteria 或 oracle/expected result，就不能说明随机测试有效。")
+      ],
+      "exam-ladder": [
+        q("CS608 2025 小题：学完黑盒后先练哪题？", "练 2025 Summer Q1 Climate.determine partitions + BVA tables。"),
+        q("CS608 2025 小题：学完白盒后先练哪题？", "练 2025 Summer Q2 decideWrite JaCoCo 黄色/红色 additional BC tests。"),
+        q("CS608 2025 小题：学完随机测试后先练哪题？", "练 2025 Summer Q4 PV.exportPower random DT tests 和 automated code outline。")
+      ],
+      knowledge: [
+        q("2023 Summer maxv 小题：为什么 Java 最大数组长度这个数字能支持 infeasible？", "因为数组长度和每个元素取值组合极大，设计 expected result 和执行所有组合都不可行。"),
+        q("2025 Climate.determine 小题：HEAT_AND_AC 何时出现？", "<code>temp&lt;16</code> 且 <code>humidity&gt;60</code> 同时成立时。"),
+        q("2023 boilerSetting 小题：<code>isOn=false</code> 对 effects 有什么影响？", "即使温度低，也应返回 NONE/off，因为系统开关关闭。")
+      ],
+      judge: [
+        q("2025 Climate.determine 小题：为什么这是 BVA 而不是 DT 主题？", "核心是 temp=16、humidity=60 这类数值边界附近的错误风险。"),
+        q("2023 boilerSetting 小题：为什么这是 Decision Table？", "它有温度区间和 <code>isOn</code> 多个 causes 组合，对应 LOW/HIGH/NONE effects。"),
+        q("2025 PV.exportPower 小题：为什么 random tests 基于 Decision Table？", "题目直接给 DT rules，随机数据只是在每条 rule 的条件范围内生成具体值。")
+      ],
+      "exam-patterns": [
+        q("2023 Q1 与 2025 Q1 的差异是什么？", "2023 偏 exhaustive + boilerSetting DT；2025 偏 exhaustive/input-output partitions + Climate.determine BVA。"),
+        q("2025 Autumn Q1 database exhaustive + BVA 说明什么？", "BVA 不只出在气候控制，也会出在数据库/业务规则方法上；关键仍是边界和 partitions。"),
+        q("样章复习时要把 2023 boilerSetting 和 2025 Climate.determine 对照什么？", "对照题面关键词：组合条件走 DT，数值阈值边界走 BVA。")
+      ],
+      classic: [
+        q("2025 Climate.determine worked example：选择 temp=15/16/17 是为了覆盖什么？", "覆盖 heating boundary just below/on/above 16。"),
+        q("2023 boilerSetting worked example：为什么 -50 和 +50 是 sensible data values？", "它们代表 very low 和 very high 温度，方便覆盖 HIGH/NONE 这类极端区间。"),
+        q("2025 decideWrite 类题的 worked mindset 是什么？", "不要从规格开始，而是从 JaCoCo 未覆盖 line/branch 反推 additional inputs。")
+      ],
+      "worked-bva": [
+        q("Climate.determine 小题：humidity=59/60/61 分别服务哪个 BVA 目标？", "分别是 just below/on/above air-conditioning boundary 60。"),
+        q("Climate.determine 小题：如果 temp 测边界，humidity 应取什么？", "取 nominal valid value，避免同时触发另一个边界，让测试目标清楚。"),
+        q("Climate.determine 小题：为什么题目要求 identify expected output TCIs？", "因为输出 NONE/HEAT_ONLY/AC_ONLY/HEAT_AND_AC 也要被覆盖，不能只覆盖输入边界。")
+      ],
+      "worked-dt": [
+        q("boilerSetting 小题：causes 至少包括哪两类？", "温度区间 causes 和 <code>isOn</code> cause。"),
+        q("boilerSetting 小题：effects 对应哪三个 enum？", "<code>NONE</code>、<code>LOW</code>、<code>HIGH</code>。"),
+        q("boilerSetting 小题：interpret each rule 是让你做什么？", "用一句话解释每条可行组合为什么返回对应 boiler setting，确认 DT 没填错。")
+      ]
+    };
 
-    if (pageKey.startsWith("cs603")) {
-      return [
-        q(`考试追问：题面如果考 ${label}，先把什么形式化？`, "先把自然语言要求改成 property、pre/postcondition、invariant、temporal formula 或 SAT/SMT constraint。"),
-        q(`考试追问：这一节对应的交卷证据是什么？`, "可能是 Hoare proof、Dafny annotations、LTL/CTL formula、counterexample explanation、Z3 sat/unsat/model，必须写出可检查结构。"),
-        q(`考试追问：最常见扣分点是什么？`, "只写工具名不写证明义务。例如 invariant 不证明建立/保持/退出，Dafny 不写 decreases，model checking 不解释 state/path/formula。")
-      ];
-    }
+    const cs603 = {
+      properties: [
+        q("2025 Summer Q1(d) Find 小题：<code>ensures forall i :: min <= a[i]</code> 表达什么性质？", "返回的 <code>min</code> 不大于数组中任何元素，是 Find 方法 partial correctness 的核心 postcondition。"),
+        q("2025 Summer Q2(c) BankAccount 小题：<code>Balance == deposits.total - withdrawals.total</code> 是什么性质？", "这是 class invariant/ghost predicate <code>Valid()</code> 中的账户一致性性质。"),
+        q("2025 Summer Q4(a) Spin 小题：safety property 在 model checking 里通常表达什么？", "表达坏事永不发生，例如某个 error state 不可达或 mutual exclusion 不被破坏。")
+      ],
+      foundation: [
+        q("2025 Summer Q1(d) Find 小题：partial correctness 要证明什么？", "如果程序终止，则返回 <code>min</code> 满足 postcondition，例如不大于数组每个元素。"),
+        q("2025 Summer Q1(e) 小题：total correctness 比 partial 多证明什么？", "多证明 termination，通常需要 variant/ranking function。"),
+        q("2025 Summer Q4(c) 小题：state explosion problem 是哪类验证的痛点？", "Model checking，因为它要探索大量系统状态和路径。")
+      ],
+      logic: [
+        q("2025 Summer Q1(a) 小题：'If John is right, somebody took his pen' 需要哪些 predicate？", "例如 <code>Right(John)</code>、<code>Took(x, PenOfJohn)</code>，公式可写 <code>Right(John) => ∃x Took(x, PenOfJohn)</code>。"),
+        q("2025 Summer Q1(a) 小题：'Every person is walking and talking' 的量词结构是什么？", "<code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>。"),
+        q("2025 Summer Q1(b) 小题：tautology、satisfiable、unsatisfiable 要不要给例子？", "要。题目明确要求 explain terms with example。")
+      ],
+      contracts: [
+        q("2025 Find 小题：<code>requires a.Length > 0</code> 为什么是 precondition？", "因为方法先读 <code>a[0]</code>；空数组会越界，调用者必须保证非空。"),
+        q("2025 BankAccount 小题：constructor contract 要建立什么？", "要建立对象初始状态和 class invariant，例如 transactions 初始化、Balance 与 totals 一致。"),
+        q("2025 BankAccount 小题：withdraw 方法的 precondition 应防止什么？", "防止取款后余额为负，或破坏 <code>Valid()</code> 中 Balance/totals 的关系。")
+      ],
+      hoare: [
+        q("2025 Summer Q1(d) Find 小题：while loop 的核心 invariant 应描述什么？", "已扫描部分 <code>a[0..i)</code> 中，<code>min</code> 不大于每个已扫描元素，并且 <code>1≤i≤a.Length</code>。"),
+        q("2025 Summer Q1(d) Find 小题：退出时 <code>i >= a.Length</code> 如何推出 postcondition？", "结合 invariant 的已扫描范围，当 <code>i==a.Length</code> 时已扫描部分就是整个数组。"),
+        q("2025 Summer Q1(e) Find 小题：total correctness 的 variant 可选什么？", "可选 <code>a.Length - i</code>，每次循环 <code>i := i+1</code> 后严格减少且非负。")
+      ],
+      dafny: [
+        q("2025 Summer Q2(a) Ack 小题：为什么 <code>decreases</code> 可以用 tuple？", "Ack 递归有两个参数，tuple metric 允许按词典序证明递归调用整体变小。"),
+        q("2025 Summer Q2(b) method <code>M(x,y)</code> 小题：找 code errors 后为什么还要给 invariant 和 variant？", "题目要求修复/解释循环正确性和终止性，invariant 证明结果关系，variant 证明循环停止。"),
+        q("2025 Summer Q2(c) BankAccount 小题：ghost predicate <code>Valid()</code> 的作用是什么？", "把对象一致性条件集中成可复用证明义务，方法前后都要维护它。")
+      ],
+      requirements: [
+        q("2025 Summer Q3(c) FRET 小题：FRET 如何支持 model checking temporal formulae？", "把结构化自然语言需求生成 temporal formulae，并进入相应 tool chain 做模型检查。"),
+        q("2025 Summer Q3(b) Data Refinement 小题：coded example 要体现什么？", "要体现抽象数据表示和具体数据表示之间的 relation，并证明操作保持抽象行为。"),
+        q("2024/2025 FMAS 小题：under-specification 在需求里通常表现为什么？", "时间、触发条件、异常情况或术语范围没说清，导致实现可钻空子。")
+      ],
+      "model-checking": [
+        q("2025 Summer Q4(a) Spin 小题：答案要说明系统模型怎样表示？", "说明用状态/transition 或 Promela-like model 表示系统行为，并用 temporal formula 表示要检查的性质。"),
+        q("2025 Summer Q4(b) NuSMV vs Spin 小题：比较时至少提哪一差别？", "Spin 常用于 Promela/explicit-state/LTL 并发协议；NuSMV 常用于 symbolic model checking，支持 CTL/LTL。"),
+        q("2025 Summer Q4(d) LTL 小题：如果题目说“请求最终被响应”，常用哪个 LTL 形状？", "常用 <code>G(request -> F response)</code>：每次 request 后最终 response。")
+      ],
+      "sat-smt": [
+        q("2025 Summer Q3(d) SAT/CDCL 小题：CDCL 比 stochastic search 的优势是什么？", "CDCL 从冲突中学习 clauses，避免重复同类错误搜索；stochastic search 通常缺少这种系统学习保证。"),
+        q("2025 Summer Q1(b) propositional logic 小题：unsatisfiable 的例子可以写什么？", "<code>P ∧ ¬P</code>，没有任何赋值能让它为 true。"),
+        q("Z3 lab 类小题：<code>check-sat</code> 返回 sat 后为什么要看 model？", "model 给出使 constraints 成立的具体赋值，可用于解释或调试约束。")
+      ],
+      "fret-refinement": [
+        q("2025 Summer Q3(c) FRET 小题：temporal formulae 来自哪里？", "来自结构化需求句子中的条件、触发、响应和时间约束。"),
+        q("2025 Summer Q3(b) Data Refinement 小题：Dafny/Event-B example 至少要说明什么 relation？", "说明 concrete state 如何对应 abstract state，以及每个 concrete operation 如何模拟 abstract operation。"),
+        q("2023/2024 under-spec 小题：如果需求写“quickly respond”，应怎样改？", "改成具体时间边界，例如 request 后 2 seconds 内 response，才能检查。")
+      ],
+      "exam-map": [
+        q("2025 Summer Q1 把 logic 和 Hoare 放在一起考，说明复习时要连哪两步？", "先把性质写成公式，再用 Hoare/invariant 证明程序满足公式。"),
+        q("2025 Summer Q2 把 Ack、loop、BankAccount 放在一起考，说明 Dafny 题覆盖哪三类？", "递归终止、循环 invariant/variant、对象 ghost/class invariant。"),
+        q("2025 Summer Q4 把 Spin/NuSMV/runtime/LTL 放一起考，说明 model checking 题至少要会什么？", "工具差异、系统模型、temporal formula、counterexample/runtime verification。")
+      ],
+      summary: [
+        q("2025 Find Hoare 题最后检查哪三项？", "Precondition 使用、loop invariant 三步、variant/termination 如果问 total correctness。"),
+        q("2025 Ack Dafny 题最后检查哪两项？", "Decreases clause 是否适合递归结构，以及是否解释 tuple metrics。"),
+        q("2025 SAT/CDCL 题最后检查哪一项？", "是否用一个冲突学习例子解释 CDCL，而不是只展开缩写。")
+      ],
+      "exam-ladder": [
+        q("CS603 2025 小题：学完 logic/Hoare 后先练哪题？", "练 2025 Summer Q1：predicate logic、tautology/sat/unsat、Find 方法 Hoare proof。"),
+        q("CS603 2025 小题：学完 Dafny 后先练哪题？", "练 2025 Summer Q2：Ack decreases、method M invariant/variant、BankAccount ghost Valid。"),
+        q("CS603 2025 小题：学完 model checking 后先练哪题？", "练 2025 Summer Q4：Spin verification、NuSMV vs Spin、state explosion、LTL formulae。")
+      ]
+    };
 
-    if (pageKey === "index") {
-      return [
-        q("考试追问：首页路线怎样转成每天复习动作？", "每天选一门课，先读线性页一个 section，再做对应题型页小节，最后用 QA 追问检查能不能写成考场答案。"),
-        q("考试追问：关键词搜索什么时候用最有效？", "做题卡住具体术语时使用，例如 HALT、BVA、MVC、Dafny；搜完要回到题型页确认答案结构。"),
-        q("考试追问：怎么判断自己不是只看懂网页？", "遮住答案后能说出题面关键词、答题产物和常见扣分点，才算能上考场。")
-      ];
-    }
+    const indexDrills = {
+      "exam-system": [
+        q("具体复习动作：做 CS608 2025 Climate.determine 前，应先打开哪两页？", "先看 CS608 线性页黑盒/BVA，再看 CS608 Q1 样章 worked BVA。"),
+        q("具体复习动作：做 CS615 Sample FinTrack 前，应先补哪两块？", "先补 CS615 线性页的 3-tier/MVC/database，再到题型页 sample-topics 做架构比较。"),
+        q("具体复习动作：做 CS605 Sample B CARA clique 前，应先补哪两块？", "先补 CS605 的 certificate/verifier，再补 NP-complete reduction from 3-SAT。")
+      ],
+      "learning-path": [
+        q("从 past paper 角度：CS615 第一轮完成后应能答哪道具体题？", "2025 Summer Q1：给 interns 解释 full-stack、CRUD、SQL/NoSQL，并为 shopping habits 选数据库。"),
+        q("从 past paper 角度：CS608 第一轮完成后应能答哪道具体题？", "2025 Summer Q1：Climate.determine input/output partitions 和 BVA tables。"),
+        q("从 past paper 角度：CS603 第一轮完成后应能答哪道具体题？", "2025 Summer Q1(d)：用 Hoare logic 验证 Find 方法 partial correctness。")
+      ],
+      keywords: [
+        q("搜 <code>HALT</code> 后应练哪道具体题？", "CS605 Sample A Q3 exception 21 或 Sample B Q5 Java mean property 的 mapping reduction。"),
+        q("搜 <code>BVA</code> 后应练哪道具体题？", "CS608 2025 Climate.determine BVA，不包含 error values，并完成 TCI/data/test cases。"),
+        q("搜 <code>MVC</code> 后应练哪道具体题？", "CS615 2025 MVC 25-mark essay 或 Sample Rails OrdersController SRP/refactor 题。")
+      ]
+    };
 
-    return [
-      q(`考试追问：${label} 会怎样出现在试卷里？`, `它通常会变成定义解释、比较判断、证明步骤、测试表格或工具分析题；先判断题型再写答案。`),
-      q(`考试追问：${label} 的答案必须有哪三件事？`, "至少要有定义、题目场景连接、可评分产物，例如公式、表格、流程、证明、trade-off 或 recommendation。"),
-      q(`考试追问：复习 ${label} 时怎么模拟考场？`, "用 60 秒写出开头定义，再用 3 个 bullet 写核心步骤，最后补一个常见扣分点。")
-    ];
+    if (pageKey === "index") return indexDrills[id] || indexDrills["exam-system"];
+    if (pageKey.startsWith("cs615")) return cs615[id] || cs615.foundation;
+    if (pageKey.startsWith("cs605")) return cs605[id] || cs605.language;
+    if (pageKey.startsWith("cs608")) return cs608[id] || cs608.terms;
+    if (pageKey.startsWith("cs603")) return cs603[id] || cs603.properties;
+
+    return indexDrills["exam-system"];
   };
 
   document.querySelectorAll("main section[id]").forEach((section) => {
     if (section.querySelector(".qa-set")) return;
     const key = `${pageName}#${section.id}`;
-    const questions = [...(sectionQuizzes[key] || fallbackQuestions(section)), ...examFollowups(section)];
+    const examQuestions = examFollowups(section);
+    const questions =
+      examQuestions.length >= 3 ? examQuestions : [...(sectionQuizzes[key] || fallbackQuestions(section)), ...examQuestions];
     if (questions.length < 3) return;
 
     const set = document.createElement("div");
@@ -538,10 +874,10 @@
 
     const title = document.createElement("p");
     title.className = "qa-title";
-    title.textContent = "过关问答：鼠标悬停或点击题目显示答案";
+    title.textContent = "过关问答：基于 past/sample paper，悬停或点击显示答案";
     set.appendChild(title);
 
-    questions.slice(0, 8).forEach((item, index) => {
+    questions.slice(0, 5).forEach((item, index) => {
       const card = document.createElement("article");
       card.className = "qa-card";
 

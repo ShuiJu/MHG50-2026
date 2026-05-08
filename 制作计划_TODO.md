@@ -312,6 +312,19 @@
   - 首页追问偏向：如何把网站路线转成每日复习动作、关键词补洞、考场自测。
   - QA 展示上限从 5 道提高到 8 道，保证原有 3 道基础问答后能追加 3 道考试追问。
 
+### 2026-05-08 20:20
+
+- 用户进一步要求：QA 小题必须用 past exam、example/sample paper 或从这些题目扩展出来的材料加工，不能再用宽泛的“可能怎样考”式问题。
+- 已更新 `exam-prep-site/assets/app.js`：
+  - 删除原先 `examFollowups(section)` 里的泛化题型追问逻辑。
+  - 为 CS615、CS605、CS608、CS603 与首页建立按 section id 分配的具体 past/sample 小题题库。
+  - CS615 小题素材来自 FinTrack sample、AI agents sample、Rails OrdersController sample、CI/CD/Observability sample、2023 HTTP/MVC/Node/SEO/Security、2025 full-stack/SQL-NoSQL/MVC 等。
+  - CS605 小题素材来自 Sample A/B 的 pumping、decidable/T-r、HALT reduction、Java property、CARA clique、phone vertex cover、3-SAT reduction 等。
+  - CS608 小题素材来自 2025 Climate.determine、decideWrite、Numbers/Braking、PV.exportPower，以及 2023 maxv、boilerSetting、Wind、Lighting、isSquare、whatSpeed 等。
+  - CS603 小题素材来自 2025 predicate logic、Find Hoare proof、Ack decreases、method M、BankAccount ghost invariant、FRET/refinement、SAT/CDCL、Spin/NuSMV/LTL 等。
+  - 页面渲染逻辑改为：如果当前 section 有 3 道以上 past/sample 派生题，就只展示这些题；旧概念题只作为未来缺题库 section 的兜底。
+  - QA 展示上限回到 5 道，匹配“每个区块 3-5 道问答”的节奏。
+
 ## 制作记录
 
 ### 2026-05-05
