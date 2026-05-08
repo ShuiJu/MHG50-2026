@@ -325,6 +325,14 @@
   - 页面渲染逻辑改为：如果当前 section 有 3 道以上 past/sample 派生题，就只展示这些题；旧概念题只作为未来缺题库 section 的兜底。
   - QA 展示上限回到 5 道，匹配“每个区块 3-5 道问答”的节奏。
 
+### 2026-05-08 20:24
+
+- 用户指出 SQL/NoSQL 这类回答仍然太宽泛，不能只写“看数据形状、关系复杂度、出错代价”，必须用例子解释如何抉择。
+- 已更新 CS615 数据库相关内容：
+  - `exam-prep-site/assets/app.js` 中 SQL/NoSQL QA 改为场景题写法：2025 shopping habits 先画成 Customers、Receipts、ReceiptItems，所以默认 SQL；若题目改成 clickstream/行为事件 document，才更适合 NoSQL。
+  - `exam-prep-site/cs615-linear.html` 的数据库“判断台阶”改为“先画题目数据 -> 用收据例子证明 SQL -> 用点击流反例说明 NoSQL -> 写 trade-off”。
+  - `exam-prep-site/cs615.html` 增加“用两个场景直接做选择”对照表：收据系统选 SQL，点击流系统选 NoSQL。
+
 ## 制作记录
 
 ### 2026-05-05

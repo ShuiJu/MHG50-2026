@@ -208,7 +208,7 @@
           <section id="database" class="section">
             <h2>3. SQL / NoSQL 的选择取决于数据形状和出错代价</h2>
             <p>
-              2024 和 2025 都考过 SQL 与 NoSQL。不要把答案写成“SQL 老，NoSQL 新”。更好的判断方法是先问：这份数据像表格还是像一份灵活文档？数据之间有没有清晰关系？如果写入过程中出错，代价有多高？
+              2024 和 2025 都考过 SQL 与 NoSQL。不要把答案写成“SQL 老，NoSQL 新”，也不要只写“看数据形状”。考试里要把题面变成例子：如果是 customer、receipt number、items、price、date，就按收据系统解释 SQL；如果是 click、search、scroll、device、timestamp 这种行为事件，就按点击流解释 NoSQL。
             </p>
             <h3>先把数据库术语拆开</h3>
             <div class="table-wrap">
@@ -224,12 +224,12 @@
                   <tr>
                     <td>Schema</td>
                     <td>数据的固定格式规则。比如收据必须有 receipt number、date、total，每个 item 必须有 name、quantity、price。</td>
-                    <td>如果题目里的数据格式稳定、字段规则清楚，通常支持选 SQL。</td>
+                    <td>2025 shopping habits 里 receipt 字段固定，所以可以说它支持 SQL table schema。</td>
                   </tr>
                   <tr>
                     <td>Relation / 外键</td>
                     <td>数据之间的连接关系。比如一个 customer 可以有很多 receipts，一个 receipt 可以有很多 items。</td>
-                    <td>关系清楚、需要 join 查询时，SQL 通常更自然。</td>
+                    <td>查某个顾客买过什么时要连接 Customers、Receipts、ReceiptItems，所以 SQL 更自然。</td>
                   </tr>
                   <tr>
                     <td>Transaction / 事务</td>
@@ -244,12 +244,12 @@
                   <tr>
                     <td>Join</td>
                     <td>把多张表按关系合起来查。比如查某个顾客的所有收据，再查每张收据的商品明细。</td>
-                    <td>关系型数据常需要 join，所以 SQL 更方便。</td>
+                    <td>例如分析顾客购物习惯时，要把顾客、收据、商品明细合起来看，这就是 SQL 的强项。</td>
                   </tr>
                   <tr>
                     <td>Horizontal scaling</td>
                     <td>不是买一台更强的机器，而是加更多机器一起分担数据和请求。</td>
-                    <td>高流量、海量事件、分布式系统常提到 NoSQL 扩展。</td>
+                    <td>例如每秒写入大量 clickstream events 时，可以用 NoSQL 解释分布式写入。</td>
                   </tr>
                 </tbody>
               </table>
@@ -307,8 +307,36 @@
                   </tr>
                   <tr>
                     <td>考试选择句</td>
-                    <td>当数据结构稳定、关系清晰、出错代价高时选 SQL</td>
-                    <td>当数据格式变化快、数量很大、每条记录更像独立文档时选 NoSQL</td>
+                    <td>这题像收据系统：Customers、Receipts、ReceiptItems 要用 key、join、transaction 保持一致，所以选 SQL</td>
+                    <td>这题像点击流系统：每条事件是独立 JSON-like document，字段常变、写入量大，所以可选 NoSQL</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>用两个场景直接做选择</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>题面给什么</th>
+                    <th>先把它想成什么数据</th>
+                    <th>更强选择</th>
+                    <th>一句可交卷理由</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>customer</code>, <code>items</code>, <code>price</code>, <code>date</code>, unique receipt number</td>
+                    <td>顾客表、收据表、收据商品明细表</td>
+                    <td>SQL</td>
+                    <td>收据号要唯一，总价要和明细一致，收据和 items 要一起保存，适合 keys、joins 和 ACID transaction。</td>
+                  </tr>
+                  <tr>
+                    <td>每次点击、搜索词、页面停留时间、设备、A/B test group、timestamp</td>
+                    <td>一条条行为事件 document</td>
+                    <td>NoSQL</td>
+                    <td>每条事件相对独立，字段可能经常变化，写入量很大，document database 的灵活 schema 和横向扩展更好解释。</td>
                   </tr>
                 </tbody>
               </table>

@@ -62,9 +62,9 @@
       q("Pattern 和 framework 怎么区分？", "Pattern 是组织思想，例如 MVC、3-tier；framework 是落地工具，例如 Rails、Spring、Express。")
     ],
     "cs615-linear.html#database": [
-      q("SQL / NoSQL 判断先看哪三件事？", "先看数据形状是否稳定，关系是否复杂，写入出错代价是否高。然后再看扩展压力和变化速度。"),
-      q("为什么收据、付款、库存常偏 SQL？", "它们关系清楚且不能半成功，适合表、外键、join 和 ACID transaction。"),
-      q("NoSQL 不是没有结构，那它灵活在哪里？", "Document database 可以让每条记录像 JSON 文档，字段更灵活，也适合高写入和分布式场景；但仍可用 schema/validation 管理。")
+      q("2025 shopping habits 题怎样用例子判断 SQL / NoSQL？", "把题面先翻成数据表：Customer -> Receipt -> ReceiptItem，每张收据有唯一编号、日期、价格和商品明细。这个例子怕半张收据、总价对不上、重复 receipt number，所以优先 SQL。"),
+      q("同一道购物题里，什么时候才改选 NoSQL？", "如果题目改成记录每次点击、搜索词、停留时间、页面滚动、推荐曝光这类行为事件，每条事件字段可能不同且写入量很大，才更像 MongoDB document / NoSQL。"),
+      q("SQL / NoSQL 答案最后怎样写 trade-off？", "写成对照句：SQL 让 Customers、Receipts、Items 用外键和 transaction 保持一致；NoSQL 更适合高量行为日志，但不如 SQL 自然地保证收据和明细的关系。")
     ],
     "cs615-linear.html#rails": [
       q("Rails request flow 的六步是什么？", "URL 进 router，匹配 controller action，读取 params，调用 model/service，Active Record 读写数据库，render view 或 redirect。"),
@@ -246,9 +246,9 @@
       q("三层架构的好处怎么写？", "写 maintainability、testability、security boundary、frontend/backend 可分别演进。")
     ],
     "cs615.html#database": [
-      q("购物习惯题为什么默认选 SQL？", "customer、receipt、items、price、date 关系清楚，且收据数据需要事务和一致性。"),
-      q("什么时候 NoSQL 可以被合理辩护？", "如果重点是高量点击流、灵活事件文档或字段经常变化，而不是强交易一致性。"),
-      q("ACID 最适合用什么场景解释？", "用付款、库存、收据这类不能只成功一半的场景解释。")
+      q("购物习惯题为什么默认选 SQL？", "因为它不是散乱行为日志，而是收据系统：<code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code> 要靠 receipt id 连接，总价和明细还要一致。"),
+      q("什么时候 NoSQL 可以被合理辩护？", "如果题目改成每次点击、搜索、滚动、设备、实验分组都生成一条事件，每条 JSON-like document 字段不同且写入量很大，就可以辩护 MongoDB/NoSQL。"),
+      q("ACID 最适合用什么场景解释？", "用“保存收据”解释：收据头、商品明细、库存扣减要么一起成功，要么一起失败；不能钱扣了、items 没保存。")
     ],
     "cs615.html#mvc": [
       q("MVC 25 分题必须出现什么流程？", "Browser -> route -> controller -> model/database -> view/response。"),
@@ -485,7 +485,7 @@
       foundation: [
         q("2025 Summer Q1(a) 小题：给 intern 解释 full-stack 时，frontend、server、database 各用一句话怎么分工？", "Frontend 显示界面并收集输入；server 接 request、执行业务规则和权限检查；database 长期保存用户、订单、收据等数据。"),
         q("2025 Summer Q1(a) 小题：CRUD 里的 Update 和 Create 各对应什么 HTTP 意图？", "Create 是新增资源，常用 <code>POST</code>；Update 是修改已有资源，常用 <code>PUT</code> 或 <code>PATCH</code>。"),
-        q("2025 Summer Q1(a) 小题：SQL 和 NoSQL 的差别不能只写“表格 vs 文档”，还要补哪一点？", "要补数据关系、事务一致性、查询方式和扩展压力；这些才决定题目场景里选哪一个。")
+        q("2025 Summer Q1(a) 小题：SQL 和 NoSQL 的差别不能只写“表格 vs 文档”，要用哪两个例子拉开？", "用收据/订单例子说明 SQL：Customers、Receipts、ReceiptItems 之间有关系且要 transaction；用 clickstream 例子说明 NoSQL：每条行为事件像 JSON document，字段变化快、写入量大。")
       ],
       "full-stack": [
         q("2025 Summer Q1(a) 小题：如果要求解释 frontend、database、servers roles，答案应该按哪三层写？", "按 presentation、application/business logic、data layer 写，并用 request/response 串起来。"),
@@ -494,8 +494,8 @@
       ],
       database: [
         q("2025 Summer Q1(b) 小题：顾客购物习惯数据有 items、price、date、unique receipt number，为什么先考虑 SQL？", "因为它像收据/订单系统，实体关系清楚，receipt number 和 item rows 需要一致，适合表、外键、join 和 transaction。"),
-        q("2025 Summer Q1(b) 小题：这个场景下 NoSQL 什么时候才更合理？", "如果题目重点变成高量 clickstream、浏览事件、灵活行为日志，而不是可靠收据和交易历史，NoSQL 才更好辩护。"),
-        q("2024/2025 SQL/NoSQL 小题：写 database choice 时必须出现哪三个判断维度？", "数据形状是否稳定、关系和 join 是否重要、出错时是否需要 ACID transaction。")
+        q("2025 Summer Q1(b) 小题：这个场景下 NoSQL 什么时候才更合理？", "如果题目不是保存购买记录，而是保存 <code>{userId, page, eventType, device, experimentId, timestamp}</code> 这类点击流事件，字段经常加减且每秒写入很多条，NoSQL 更好辩护。"),
+        q("2024/2025 SQL/NoSQL 小题：怎样把判断维度写成例子？", "写：一张 receipt 要同时保存 receipt number、item rows、price total，所以 SQL 的外键和 transaction 有用；如果只是独立行为事件 document，NoSQL 的灵活 schema 和横向扩展更有用。")
       ],
       mvc: [
         q("2025 Summer Q2 小题：MVC 25 分题里 web example 的 request flow 怎么写？", "Browser -> route -> controller -> model/database -> view/response，并说明每一步的职责。"),
@@ -548,7 +548,7 @@
         q("Sample Q4 CI/CD 小题：full observability stack 的 trade-off 写哪两类？", "收益是更快定位生产问题；代价是工具成本、数据量、隐私风险、团队学习成本和告警疲劳。")
       ],
       triage: [
-        q("2025 Summer Q1(b) 看到 receipt number、items、price、date，应归到哪类答案结构？", "SQL/NoSQL database choice：先描述数据关系和事务一致性，再比较 NoSQL 何时可行。"),
+        q("2025 Summer Q1(b) 看到 receipt number、items、price、date，应归到哪类答案结构？", "SQL/NoSQL database choice：先把它画成 Customers、Receipts、ReceiptItems，再说明 receipt number 唯一、total 和 items 要一致，所以默认 SQL；最后补 clickstream 才可能 NoSQL。"),
         q("2023 Summer Q2(iv) 看到嵌套 <code>setTimeout</code>，应归到哪类答案结构？", "Node event loop 输出题：先列同步输出，再解释 callback 排队和延迟。"),
         q("Sample Q1 看到 FinTrack 和两种 architecture，应归到哪类答案结构？", "Architecture comparison：映射 3-tier，再按 scalability/performance/resilience/deployment 比较并推荐。")
       ],
@@ -563,7 +563,7 @@
         q("2023 security 题：SQL injection/XSS 模板都要有哪三段？", "定义攻击、给一个简短攻击例子、写具体防御。")
       ],
       summary: [
-        q("做 2025 shopping database 题时，答案最后用哪一句收束？", "Given structured receipt data and consistency needs, SQL is the stronger default; NoSQL is only better for flexible high-volume event data."),
+        q("做 2025 shopping database 题时，答案最后用哪一句收束？", "For receipt records, SQL is the stronger default because Customers, Receipts and ReceiptItems need keys, joins and transactions; NoSQL would fit better only if the data were flexible high-volume clickstream events."),
         q("做 2023 HTTP evolution 题时，答案最后用哪条主线收束？", "每一代都在减少连接开销、阻塞和等待，提高多个 requests/responses 的传输效率。"),
         q("做 Sample AI agents 题时，答案最后要落在哪个立场？", "AI agents can accelerate SDLC tasks, but human oversight, tests, review and security checks remain necessary.")
       ],

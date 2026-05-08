@@ -141,7 +141,7 @@
 
           <section id="database" class="section">
             <h2>3. 数据库：数据形状、关系和出错代价</h2>
-            <p>数据库选择题不要写成“SQL 老，NoSQL 新”。真正的判断是：数据是否像固定表格，关系是否复杂，查询是否经常 join，写入出错的代价是否高，系统是否需要横向扩展。</p>
+            <p>数据库选择题不要写成“SQL 老，NoSQL 新”，也不要只背“看数据形状”。先把题目翻成具体数据。如果题目给的是 receipt number、items、price、date，就把它想成顾客、收据、商品明细三张表；如果题目给的是点击、搜索、停留时间、设备、实验分组，就把它想成一条条行为事件文档。</p>
             <h3>关系型数据库从表格开始</h3>
             <div class="table-wrap">
               <table>
@@ -178,14 +178,14 @@
             <p>NoSQL 不是“没有结构”。Document database 例如 MongoDB 把一条记录存成 JSON-like document，字段可以更灵活，相关信息可以嵌在一起。它常适合日志、用户行为事件、灵活内容、海量写入。Mongoose 这种 ODM 仍然可以定义 schema 和 validation。</p>
             <h3>SQL / NoSQL 判断台阶</h3>
             <ol class="rung-list">
-              <li><strong>看数据形状。</strong>固定表格、字段稳定、实体关系清楚，偏 SQL；每条记录像灵活文档，偏 NoSQL。</li>
-              <li><strong>看关系复杂度。</strong>经常需要 join 顾客、收据、商品、库存，SQL 更自然。</li>
-              <li><strong>看出错代价。</strong>付款、成绩、库存、收据这类数据需要事务和一致性，优先 SQL。</li>
-              <li><strong>看规模和变化。</strong>海量事件、字段经常变、读写压力大，可以考虑 NoSQL。</li>
-              <li><strong>最后写 trade-off。</strong>好答案不是只说谁好，而是说明另一个方案何时也合理。</li>
+              <li><strong>先画题目数据。</strong>2025 shopping habits 题可以画成 <code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code>；一张收据对应多条商品明细。</li>
+              <li><strong>用例子证明 SQL。</strong>收据号必须唯一，总价必须等于商品明细加总，保存时不能出现“有收据号但没有 items”的半成品，所以需要 primary key、foreign key、join 和 transaction。</li>
+              <li><strong>再给 NoSQL 的合理反例。</strong>如果题目改成记录 <code>{userId, page, eventType, device, timestamp}</code> 这类点击流，每条事件字段可能不同、写入量很大、关系查询少，MongoDB/document database 才更自然。</li>
+              <li><strong>最后写 trade-off。</strong>SQL 牺牲一些灵活性换一致性和关系查询；NoSQL 牺牲一些关系约束换灵活 schema 和高量事件写入。</li>
             </ol>
             <div class="answer-box">
-              <p><strong>购物习惯题答案骨架：</strong>I would choose SQL because the data is structured and relational: customers, receipts, items, prices, and dates can be represented as related tables. Receipt history is transactional, so ACID properties help keep receipt numbers, totals, and item rows consistent. NoSQL could be justified for high-volume clickstream behaviour, but for structured purchase records with integrity requirements, SQL is the stronger default.</p>
+              <p><strong>购物习惯题答案骨架：</strong>I would choose SQL because the question is about purchase records, not just vague behaviour. A customer can have many receipts, and each receipt has a unique receipt number, date, total price, and several item rows. These fit relational tables such as Customers, Receipts, and ReceiptItems.</p>
+              <p>SQL is safer here because the receipt data must stay consistent: the receipt number should be unique, the total should match the item prices, and the receipt header and item rows should be saved together in one transaction. NoSQL would become easier to justify if the requirement changed to high-volume clickstream events, where each event is an independent JSON-like document with flexible fields.</p>
             </div>
             <p>对应教材：<code>DB_WS_C.pdf</code> 建立数据库概念；<code>WSFE.pdf</code> 后面会把 MongoDB/Mongoose 接进 Express API。</p>
           </section>
