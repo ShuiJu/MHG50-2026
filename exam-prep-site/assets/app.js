@@ -860,13 +860,242 @@
     return indexDrills["exam-system"];
   };
 
+  const hashString = (value) => {
+    let hash = 0;
+    for (let index = 0; index < value.length; index += 1) {
+      hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+    }
+    return hash;
+  };
+
+  const rotate = (items, seed) => {
+    if (!items.length) return items;
+    const start = seed % items.length;
+    return [...items.slice(start), ...items.slice(0, start)];
+  };
+
+  const examSupplementPool = (pageKey) => {
+    if (pageKey === "index") {
+      return [
+        q("首页考试补题：CS615 2025 Q1 第一轮应能写哪句话？", "写清 frontend 收集输入、server 执行业务规则、database 保存收据/用户/订单，再用 CRUD 和 SQL/NoSQL 选择收束。"),
+        q("首页考试补题：CS608 2025 Q1 第一轮应能产出什么表？", "Climate.determine 的 input/output partitions、围绕 16 和 60 的 BVA data values、以及带 expected output 的 test cases。"),
+        q("首页考试补题：CS605 Sample B CARA 题第一轮应能说出什么 certificate？", "一个 size <code>k</code> 的学生集合，verifier 检查任意两人之间都有 friend edge。"),
+        q("首页考试补题：CS603 2025 Find 题第一轮应能写哪条 invariant？", "<code>min</code> 不大于已扫描区间 <code>a[0..i)</code> 中每个元素，并且 <code>1<=i<=a.Length</code>。"),
+        q("首页考试补题：CS608 2025 decideWrite 卡住时搜什么？", "搜 JaCoCo、branch coverage、short-circuit，再回到 Q2 题型页写 additional test + expected result + coverage explanation。"),
+        q("首页考试补题：CS605 HALT 卡住时练哪两道？", "Sample A Q3 exception 21 和 Sample A Q5 line number <code>n</code> never executed，二者都要写 HALT mapping reduction。"),
+        q("首页考试补题：CS615 Sample FinTrack 卡住时先补什么？", "先补 3-tier monolith、microservices、PostgreSQL/NoSQL、scalability/resilience/deployment trade-off。"),
+        q("首页考试补题：CS603 BankAccount 卡住时先补什么？", "先补 ghost state、class invariant、<code>Valid()</code>，尤其是 <code>Balance == deposits.total - withdrawals.total</code>。")
+      ];
+    }
+
+    if (pageKey.startsWith("cs615")) {
+      return [
+        q("CS615 考试补题：2025 Q1(a) full-stack 题如何举例？", "用用户查看 receipt：browser 发 <code>GET /receipts/7</code>，server 查数据库并执行业务规则，database 返回收据和 items。"),
+        q("CS615 考试补题：2025 Q1(b) shopping habits 为什么默认 SQL？", "因为 <code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code> 要用 key/join/transaction 保持 receipt number、items、total 一致。"),
+        q("CS615 考试补题：2023 HTTP evolution 写哪条主线？", "HTTP/1.1 用 persistent connection，HTTP/2 用 multiplexing，HTTP/3 基于 QUIC 减少连接和传输阻塞。"),
+        q("CS615 考试补题：2023 Node 输出题先写什么？", "先写同步输出，例如 <code>console.log('first')</code> 和后面的同步 log，再解释 <code>setTimeout</code> callback 排队。"),
+        q("CS615 考试补题：Sample FinTrack recommendation 怎样不空泛？", "若交易历史一致性重要、团队小，可推荐 modular monolith + PostgreSQL；价格流压力大时再拆服务。"),
+        q("CS615 考试补题：Sample Rails controller 怎样指出问题？", "指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。"),
+        q("CS615 考试补题：Sample CI/CD 与 observability 怎么区分？", "CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。"),
+        q("CS615 考试补题：2023 SQL injection 防御写什么例子？", "不要拼接 <code>'...'+userInput</code>；用 parameterized query/prepared statement、输入验证和最小数据库权限。")
+      ];
+    }
+
+    if (pageKey.startsWith("cs605")) {
+      return [
+        q("CS605 考试补题：Sample B Q1A 的 word 怎么选？", "选足够长的 unary block 串，让 pumping 后某个奇数位置相邻 blocks 不再相等，从而破坏 yes 条件。"),
+        q("CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？", "FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。"),
+        q("CS605 考试补题：Sample A Q2B Java <code>a+b=c</code> 怎么认出 yes？", "模拟 <code>J</code> 每一步，读变量 <code>a,b,c</code>；一旦 <code>a+b=c</code> 成立就 accept。"),
+        q("CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？", "构造程序先模拟 <code>M(w)</code>；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。"),
+        q("CS605 考试补题：Sample A Q5 line never executed 怎么构造？", "把目标 line 放在模拟 <code>M(w)</code> 之后；模拟停机才执行该 line，不停机则永远不到。"),
+        q("CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？", "证书是 <code>k</code> 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。"),
+        q("CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？", "证书是 <code>k</code> 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。"),
+        q("CS605 考试补题：Sample B Q7 NP-complete 先引用什么？", "先引用 Q6 已证 in NP，再从 3-SAT 构造 CARA clique 实例，并证明 formula satisfiable iff clique exists。")
+      ];
+    }
+
+    if (pageKey.startsWith("cs608")) {
+      return [
+        q("CS608 考试补题：2025 Climate.determine BVA 具体值是什么？", "围绕 <code>temp=16</code> 取 15/16/17，围绕 <code>humidity=60</code> 取 59/60/61，并写 expected enum。"),
+        q("CS608 考试补题：2023 boilerSetting 为什么是 DT？", "它组合温度区间和 <code>isOn</code>，effects 是 <code>NONE</code>/<code>LOW</code>/<code>HIGH</code>，每条可行 rule 要有 test case。"),
+        q("CS608 考试补题：2025 decideWrite line 33 red 要怎么补？", "给一个能走到 line 33 的 concrete input，写 expected result，并说明它补 statement coverage。"),
+        q("CS608 考试补题：2025 optimized line 51 为什么有 4 branches？", "短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。"),
+        q("CS608 考试补题：2025 Numbers static vs instance 怎么写？", "Static 直接 <code>Numbers.isNeg(-1)</code>；instance 要 create object、set value、call method、get result。"),
+        q("CS608 考试补题：2023 Lighting.decide class context 怎么落地？", "用 public setter/constructor 设置 brightness 和 override，调用 <code>decide()</code>，再用 getter 检查 power state。"),
+        q("CS608 考试补题：2025 PV.exportPower random rule 怎么写？", "enabled=true 且 nettPower>0 时随机取正数 expected true；enabled=false 或 nettPower<=0 expected false。"),
+        q("CS608 考试补题：2023 isSquare oracle 怎么写？", "随机给 <code>x</code> 后，用整数平方根反算验证 <code>r*r==x</code>，不能用被测函数输出当 expected。")
+      ];
+    }
+
+    if (pageKey.startsWith("cs603")) {
+      return [
+        q("CS603 考试补题：2025 John/right 谓词逻辑怎么写？", "选 <code>Right(John)</code> 和 <code>Took(x, PenOfJohn)</code>，写 <code>Right(John) => ∃x Took(x, PenOfJohn)</code>。"),
+        q("CS603 考试补题：2025 Every person walking/talking 怎么写？", "写 <code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>，不要漏 person 的范围条件。"),
+        q("CS603 考试补题：2025 Find invariant 怎么写？", "在已扫描区间 <code>a[0..i)</code> 内，<code>min</code> 不大于每个已扫描元素，并保持 <code>1<=i<=a.Length</code>。"),
+        q("CS603 考试补题：2025 Find total correctness 的 variant 是什么？", "用 <code>a.Length - i</code>；每次循环 <code>i</code> 增加，variant 严格变小且非负。"),
+        q("CS603 考试补题：2025 Ack decreases 为什么用 tuple？", "Ack 有两个递归参数，用 <code>decreases m, n</code> 按词典序证明递归调用整体变小。"),
+        q("CS603 考试补题：2025 BankAccount <code>Valid()</code> 写什么？", "写 <code>Balance == deposits.total - withdrawals.total</code>，并要求 constructor/deposit/withdraw 前后保持。"),
+        q("CS603 考试补题：2025 Spin LTL 请求响应怎么写？", "用 <code>G(request -> F response)</code> 表示每次 request 后最终出现 response。"),
+        q("CS603 考试补题：2025 CDCL 比 stochastic search 强在哪？", "CDCL 在冲突后学习 clause，避免重复同类失败；stochastic search 更多靠随机移动，缺少这种系统学习。")
+      ];
+    }
+
+    return [];
+  };
+
+  const completeExamQuestions = (section, initialQuestions) => {
+    const pageKey = pageName.replace(".html", "");
+    const seen = new Set(initialQuestions.map((item) => item.question));
+    const questions = [...initialQuestions];
+    const seed = hashString(`${pageKey}#${section.id}`);
+
+    rotate(examSupplementPool(pageKey), seed).forEach((item) => {
+      if (questions.length >= 5 || seen.has(item.question)) return;
+      questions.push(item);
+      seen.add(item.question);
+    });
+
+    return questions.slice(0, 5);
+  };
+
+  const courseKey = () => {
+    const pageKey = pageName.replace(".html", "");
+    if (pageKey.startsWith("cs615")) return "cs615";
+    if (pageKey.startsWith("cs605")) return "cs605";
+    if (pageKey.startsWith("cs608")) return "cs608";
+    if (pageKey.startsWith("cs603")) return "cs603";
+    return "index";
+  };
+
+  const specificAnswerDetails = (item, groupLabel) => {
+    const text = `${item.question} ${item.answer}`;
+
+    if (/SQL|NoSQL|receipt|shopping|收据|购物|数据库|clickstream/i.test(text)) {
+      return [
+        ["为什么", "判断不是背“结构化/非结构化”这组词，而是看题面对象能不能画成关系。2025 shopping habits 里的 <code>customer</code>、<code>receipt number</code>、<code>items</code>、<code>price</code>、<code>date</code> 可以画成 <code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code>，所以 SQL 的 key、join、transaction 都有用。"],
+        ["卷面写法", "先说本题数据是 purchase/receipt records，所以选 SQL；再说 receipt number 要唯一、total 要和 items 对上、收据头和明细要一起保存；最后补一句：如果题目改成 high-volume clickstream events，每条记录像 JSON document，NoSQL 才更好辩护。"]
+      ];
+    }
+
+    if (/HALT|reduction|exception|line number|never executed|recognisable|decidable|Turing|停机|归约/i.test(text)) {
+      return [
+        ["为什么", "CS605 这类题的分数在“构造”和“iff 对齐”。不能只写 HALT 很难；要说明从 <code>&lt;M,w&gt;</code> 怎样机械地产生新程序或新机器。"],
+        ["卷面写法", "写三步：假设目标语言有 decider；给定 HALT 输入 <code>&lt;M,w&gt;</code>，构造程序 <code>N</code> 先模拟 <code>M(w)</code>；证明 <code>M(w)</code> halts iff <code>N</code> 具有题目 property，例如抛 exception、执行 line、或让某个变量关系成立/破坏。"]
+      ];
+    }
+
+    if (/CARA|clique|vertex cover|certificate|NP-complete|NP-hard|3-SAT|verifier/i.test(text)) {
+      return [
+        ["为什么", "NP 题不要只写“guess a solution”。题目要看你能不能指出 certificate 是什么，以及 verifier 如何在 polynomial time 检查它。"],
+        ["卷面写法", "CARA clique 写 certificate 是 <code>k</code> 个学生集合 <code>S</code>，verifier 检查 <code>|S|=k</code>，再检查 <code>S</code> 中每一对学生都有 friend edge。NP-complete 题再补：已在 NP，并从 3-SAT 构造实例，证明 satisfiable iff clique exists。"]
+      ];
+    }
+
+    if (/Climate|BVA|temp|humidity|boundary|边界/i.test(text)) {
+      return [
+        ["为什么", "BVA 的关键是把抽象边界变成具体值。2025 Climate.determine 不是只写“测边界”，而是围绕 <code>temp=16</code> 和 <code>humidity=60</code> 取 just below/on/above。"],
+        ["卷面写法", "表里可以写 <code>temp=15,16,17</code>，<code>humidity=59,60,61</code>。每个 test case 要有 expected enum，例如只触发 heating 是 HEAT_ONLY，只触发 AC 是 AC_ONLY，两者都触发是 HEAT_AND_AC。"]
+      ];
+    }
+
+    if (/boilerSetting|Decision Table|DT|PV\.exportPower|enabled|nettPower/i.test(text)) {
+      return [
+        ["为什么", "Decision Table 题考的是条件组合，不是单个边界。你要把 causes、effects、rules、infeasible combinations 分开。"],
+        ["卷面写法", "例如 <code>PV.exportPower()</code>：enabled=true 且 nettPower>0 时 expected true；enabled=false 或 nettPower<=0 时 expected false。随机测试也必须受这些 rules 限制，不能随便生成值后再猜结果。"]
+      ];
+    }
+
+    if (/decideWrite|JaCoCo|branch|statement|line 33|short-circuit|coverage|黄色|红色/i.test(text)) {
+      return [
+        ["为什么", "白盒题的答案必须从 coverage 缺口反推测试。红色通常是 statement 没执行，黄色通常是 branch 只走了一边。"],
+        ["卷面写法", "不要只给 input。写：这个 test 会让控制流到达哪一行或哪一边 branch，expected result 是什么，以及它把 JaCoCo 中哪条 red/yellow coverage item 补上。short-circuit 题还要说明缺口可能来自 bytecode-level branch。"]
+      ];
+    }
+
+    if (/Numbers|Lighting|Braking|class context|static|instance|getter|setter|accessor|private field/i.test(text)) {
+      return [
+        ["为什么", "对象题不是只喂一个参数。instance method 可能依赖对象字段和之前调用历史，所以 test case 必须包含调用序列。"],
+        ["卷面写法", "Static method 可以直接 call，例如 <code>Numbers.isNeg(-1)</code>。Instance/class context 要写：create object -> set state through public API -> call method under test -> observe via getter/return value -> assert expected result。"]
+      ];
+    }
+
+    if (/random|isSquare|whatSpeed|oracle|completion/i.test(text)) {
+      return [
+        ["为什么", "Random testing 不是“跑很多次”。它必须回答 data problem、oracle problem、completion problem，否则无法证明测试有意义。"],
+        ["卷面写法", "写清随机值从哪些 partitions/rules 生成；oracle 从 specification、DT、EP 或数学性质来。例如 <code>isSquare(x)</code> 可用整数平方根反算验证；completion 可以是每个 partition 至少 N 次或覆盖所有 rules。"]
+      ];
+    }
+
+    if (/Find|Hoare|invariant|partial correctness|min|variant|total correctness/i.test(text)) {
+      return [
+        ["为什么", "Hoare 题要把“程序正确”拆成可证明义务。Find 题里 postcondition 不是一句 find minimum，而是 <code>forall i :: min <= a[i]</code>。"],
+        ["卷面写法", "写 invariant：已扫描区间 <code>a[0..i)</code> 内，<code>min</code> 不大于每个已扫描元素，并保持 <code>1<=i<=a.Length</code>。若问 total correctness，再写 variant <code>a.Length - i</code> 每轮严格减少。"]
+      ];
+    }
+
+    if (/Ack|decreases|Dafny|method M|BankAccount|Valid|Balance|ghost/i.test(text)) {
+      return [
+        ["为什么", "Dafny 题不仅问代码跑不跑，还问 verifier 需要哪些证明线索。递归要 decreases，循环要 invariant/variant，对象要 class invariant 或 ghost predicate。"],
+        ["卷面写法", "Ack 可写 tuple decreases，例如 <code>decreases m, n</code>。BankAccount 可把 <code>Balance == deposits.total - withdrawals.total</code> 放进 <code>Valid()</code>，并说明 constructor、deposit、withdraw 后都要保持。"]
+      ];
+    }
+
+    if (/Spin|NuSMV|LTL|CTL|model checking|state explosion|temporal|request|response|safety/i.test(text)) {
+      return [
+        ["为什么", "Model checking 题要有模型和性质两部分。只写工具名不够，要说明 states、transitions、labels，以及要检查的 temporal formula。"],
+        ["卷面写法", "请求最终响应可写 <code>G(request -> F response)</code>；安全性质可写 <code>G !error</code>。若性质不成立，counterexample 是一条具体状态路径，说明系统如何违反公式。"]
+      ];
+    }
+
+    if (/logic|predicate|tautology|satisfiable|unsatisfiable|John|person|Walking|Talking|SAT|SMT|Z3|CDCL/i.test(text)) {
+      return [
+        ["为什么", "逻辑题要先定对象、predicate 和变量范围。不要只翻译关键词，要把量词和 implication 的方向写对。"],
+        ["卷面写法", "例如 “Every person is walking and talking” 写 <code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>；unsatisfiable 例子可以写 <code>P ∧ ¬P</code>；Z3 返回 sat 后要用 model 展示具体赋值。"]
+      ];
+    }
+
+    const course = courseKey();
+    const detailByCourse = {
+      cs615: [
+        ["展开理解", "把答案接回一条 Web 主线：browser 发 request，server/controller 处理规则，service/model/database 保存或读取数据，最后返回 HTML/JSON。"],
+        ["卷面写法", "至少写 definition、题目场景例子、trade-off 或风险。避免只堆技术名，例如 React、Rails、Spring、Node、MongoDB。"]
+      ],
+      cs605: [
+        ["展开理解", "先把题面翻成输入编码和 yes condition，再决定工具：pumping、decider/recogniser、HALT reduction、in NP 或 NP-hard reduction。"],
+        ["卷面写法", "证明题要写清假设、构造、关键限制、iff 正确性和结论。只写直觉通常不够给分。"]
+      ],
+      cs608: [
+        ["展开理解", "把答案落到测试产物：TCI、data values、test cases、expected result、coverage explanation 或 oracle。"],
+        ["卷面写法", "每个测试都要说明为什么覆盖该 partition/boundary/rule/statement/branch，并写 expected result。"]
+      ],
+      cs603: [
+        ["展开理解", "把自然语言变成 property、pre/postcondition、invariant、variant、temporal formula 或 SAT/SMT constraints。"],
+        ["卷面写法", "写出可检查结构：公式、Hoare proof obligation、Dafny annotation、LTL/CTL formula、counterexample 或 solver model。"]
+      ],
+      index: [
+        ["展开理解", "先用内容题确认概念，再用考试题确认能不能把概念写成表格、证明、公式、流程或 trade-off。"],
+        ["卷面写法", "回答时必须落到某门课的真实题型：CS615 写场景取舍，CS605 写证明结构，CS608 写测试表，CS603 写形式化性质。"]
+      ]
+    };
+
+    return groupLabel === "考试" ? detailByCourse[course] : detailByCourse[course].slice(0, 1);
+  };
+
+  const renderAnswerHtml = (item, groupLabel) => {
+    const details = specificAnswerDetails(item, groupLabel);
+    const paragraphs = [[groupLabel === "考试" ? "直接答案" : "核心答案", item.answer], ...details];
+    return paragraphs.map(([label, value]) => `<p><strong>${label}：</strong>${value}</p>`).join("");
+  };
+
   document.querySelectorAll("main section[id]").forEach((section) => {
     if (section.querySelector(".qa-set")) return;
     const key = `${pageName}#${section.id}`;
-    const examQuestions = examFollowups(section);
-    const questions =
-      examQuestions.length >= 3 ? examQuestions : [...(sectionQuizzes[key] || fallbackQuestions(section)), ...examQuestions];
-    if (questions.length < 3) return;
+    const contentQuestions = (sectionQuizzes[key] || fallbackQuestions(section)).slice(0, 3);
+    const examQuestions = completeExamQuestions(section, examFollowups(section));
+    const questionGroups = [
+      { title: "内容理解题（先做 3 题）", label: "内容", questions: contentQuestions },
+      { title: "考试题目题（再做 5 题）", label: "考试", questions: examQuestions }
+    ];
 
     const set = document.createElement("div");
     set.className = "qa-set";
@@ -874,31 +1103,38 @@
 
     const title = document.createElement("p");
     title.className = "qa-title";
-    title.textContent = "过关问答：基于 past/sample paper，悬停或点击显示答案";
+    title.textContent = "过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案";
     set.appendChild(title);
 
-    questions.slice(0, 5).forEach((item, index) => {
-      const card = document.createElement("article");
-      card.className = "qa-card";
+    questionGroups.forEach((group) => {
+      const groupTitle = document.createElement("p");
+      groupTitle.className = "qa-subtitle";
+      groupTitle.textContent = group.title;
+      set.appendChild(groupTitle);
 
-      const button = document.createElement("button");
-      button.className = "qa-question";
-      button.type = "button";
-      button.setAttribute("aria-expanded", "false");
-      button.innerHTML = `${index + 1}. ${item.question}`;
+      group.questions.forEach((item, index) => {
+        const card = document.createElement("article");
+        card.className = `qa-card qa-card-${group.label === "内容" ? "content" : "exam"}`;
 
-      const answer = document.createElement("div");
-      answer.className = "qa-answer";
-      answer.innerHTML = `<p>${item.answer}</p>`;
+        const button = document.createElement("button");
+        button.className = "qa-question";
+        button.type = "button";
+        button.setAttribute("aria-expanded", "false");
+        button.innerHTML = `${group.label}${index + 1}. ${item.question}`;
 
-      button.addEventListener("click", () => {
-        const isOpen = card.classList.toggle("is-open");
-        button.setAttribute("aria-expanded", String(isOpen));
+        const answer = document.createElement("div");
+        answer.className = "qa-answer";
+        answer.innerHTML = renderAnswerHtml(item, group.label);
+
+        button.addEventListener("click", () => {
+          const isOpen = card.classList.toggle("is-open");
+          button.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        card.appendChild(button);
+        card.appendChild(answer);
+        set.appendChild(card);
       });
-
-      card.appendChild(button);
-      card.appendChild(answer);
-      set.appendChild(card);
     });
 
     section.appendChild(set);

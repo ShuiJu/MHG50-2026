@@ -342,6 +342,28 @@
   - `exam-prep-site/cs603-linear.html` 增加 2025 题面例子表：John/right 谓词逻辑、Find Hoare invariant、Ack decreases、method M invariant/variant、BankAccount `Valid()`、Spin/LTL safety。
   - `exam-prep-site/assets/app.js` 同步压实 CS608/CS603 QA 中偏抽象的答案，让卡片答案也带具体值、调用、公式或题面对象。
 
+### 2026-05-08 20:39
+
+- 用户要求：每个 QA 环节保留纯内容小题，并把引用考试题目的小题增加到 5 题；顺序必须是先 3 道内容题，再 5 道考试题。
+- 已更新 `exam-prep-site/assets/app.js`：
+  - QA 渲染逻辑改为固定两组：`内容理解题（先做 3 题）` + `考试题目题（再做 5 题）`。
+  - 内容题继续来自原 `sectionQuizzes` 或 fallback，不再被考试题覆盖。
+  - 考试题先使用 section 专属 past/sample 小题；不足 5 道时，用课程级具体 past/sample 题库轮换补齐到 5 道。
+  - 课程级补题池覆盖 CS615、CS605、CS608、CS603 和首页，素材仍来自 2023/2025 past paper、Sample A/B、CS615 sample、CS608 Q1 sample 等具体题。
+- 已更新 `exam-prep-site/assets/styles.css`：
+  - 新增 `.qa-subtitle` 和 `.qa-card-exam`，让内容题和考试题分组更清楚。
+
+### 2026-05-08 23:38
+
+- 用户指出 QA 回答不够详细，要求完善答案。
+- 已更新 `exam-prep-site/assets/app.js`：
+  - 新增 `renderAnswerHtml()`，每张答案卡不再只显示一句答案，而是显示“核心/直接答案 + 展开理解/为什么 + 卷面写法”。
+  - 新增按题面关键词匹配的详细解释：SQL/NoSQL、HALT reduction、NP certificate、BVA、Decision Table、JaCoCo/coverage、class context、random testing、Hoare/Find、Dafny/BankAccount、Spin/LTL、logic/SAT/SMT 等都会补具体例子和可交卷表达。
+  - 如果没有命中具体关键词，则按课程补默认展开：CS615 接 Web request 主线，CS605 接证明结构，CS608 接测试产物，CS603 接形式化性质。
+- 已更新 `exam-prep-site/assets/styles.css`：
+  - 增大 `.qa-answer` 展开高度，避免详细答案被截断。
+  - 增加答案段落间距和加粗标签颜色，让多段答案更易读。
+
 ## 制作记录
 
 ### 2026-05-05
