@@ -1087,6 +1087,90 @@
     return paragraphs.map(([label, value]) => `<p><strong>${label}：</strong>${value}</p>`).join("");
   };
 
+  const progressKeyFor = (section) => `exam-prep-progress:${pageName}#${section.id}`;
+
+  const readProgress = (section) => {
+    try {
+      return JSON.parse(window.localStorage.getItem(progressKeyFor(section)) || "{}");
+    } catch (error) {
+      return {};
+    }
+  };
+
+  const writeProgress = (section, progress) => {
+    try {
+      window.localStorage.setItem(progressKeyFor(section), JSON.stringify(progress));
+    } catch (error) {
+      // Progress is helpful but not required; private browsing can block storage.
+    }
+  };
+
+  const buildReviewGate = (section) => {
+    const progress = readProgress(section);
+    const gates = [
+      {
+        id: "content",
+        label: "内容理解过关",
+        help: "能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。"
+      },
+      {
+        id: "exam",
+        label: "考试题目过关",
+        help: "能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。"
+      }
+    ];
+
+    const panel = document.createElement("div");
+    panel.className = "qa-gate";
+
+    const title = document.createElement("p");
+    title.className = "qa-gate-title";
+    title.textContent = "本节过关门槛";
+    panel.appendChild(title);
+
+    const controls = document.createElement("div");
+    controls.className = "qa-gate-controls";
+    panel.appendChild(controls);
+
+    const status = document.createElement("p");
+    status.className = "qa-gate-status";
+
+    const updateStatus = () => {
+      const doneCount = gates.filter((gate) => progress[gate.id]).length;
+      panel.classList.toggle("is-complete", doneCount === gates.length);
+      status.textContent =
+        doneCount === gates.length
+          ? "本节已过关：可以进入下一节，或回题型页做同类真题。"
+          : `还差 ${gates.length - doneCount} 个门槛：不要急着跳下一节，先补没有勾上的部分。`;
+    };
+
+    gates.forEach((gate) => {
+      const label = document.createElement("label");
+      label.className = "qa-gate-label";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = Boolean(progress[gate.id]);
+
+      const text = document.createElement("span");
+      text.innerHTML = `<strong>${gate.label}</strong><small>${gate.help}</small>`;
+
+      checkbox.addEventListener("change", () => {
+        progress[gate.id] = checkbox.checked;
+        writeProgress(section, progress);
+        updateStatus();
+      });
+
+      label.appendChild(checkbox);
+      label.appendChild(text);
+      controls.appendChild(label);
+    });
+
+    panel.appendChild(status);
+    updateStatus();
+    return panel;
+  };
+
   document.querySelectorAll("main section[id]").forEach((section) => {
     if (section.querySelector(".qa-set")) return;
     const key = `${pageName}#${section.id}`;
@@ -1137,6 +1221,7 @@
       });
     });
 
+    set.appendChild(buildReviewGate(section));
     section.appendChild(set);
   });
 })();
