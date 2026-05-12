@@ -70,6 +70,101 @@
               </table>
             </div>
             <img class="flow-img" src="assets/cs605-proof-flow.svg" alt="CS605 proof workflow: read language, choose proof tool, use template, explain why, final claim">
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 看到 CS605 题面先做什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>先把符号和 language 条件翻译成人话，明确输入是什么、yes 条件是什么。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 看到 CS605 题面先做什么？”。标准答案里的“先把符号和 language 条件翻译成人话，明确输入是什么、yes 条件是什么。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
+          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
+          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
+          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. <code>&lt;M,w&gt;</code> 表示什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>把机器 <code>M</code> 和输入 <code>w</code> 编码成一个字符串，作为语言的输入。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. <M,w> 表示什么？”。标准答案里的“把机器 M 和输入 w 编码成一个字符串，作为语言的输入。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
+          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
+          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
+          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Complement 必须注意什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Complement 是相对于同一个 universe 或 alphabet 的所有不在 <code>L</code> 的字符串。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Complement 必须注意什么？”。标准答案里的“Complement 是相对于同一个 universe 或 alphabet 的所有不在 L 的字符串。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
+          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
+          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
+          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q6A 小题：<code>G=(V,E)</code> 里 <code>V</code> 和 <code>E</code> 分别是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong><code>V</code> 是学生集合，<code>E</code> 是社交网站 CARA 上互为朋友的学生对。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample B Q6A 小题：G=(V,E) 里 V 和 E 分别是什么？”。标准答案里的“V 是学生集合，E 是社交网站 CARA 上互为朋友的学生对。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A Q6B 小题：<code>A</code> 是一组 finite automata，<code>W</code> 是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong><code>W</code> 是 <code>n</code> 个长度正好为 <code>n</code> 的 words，题目要求某个 word 被所有 automata 接受。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A Q6B 小题：A 是一组 finite automata，W 是什么？”。标准答案里的“W 是 n 个长度正好为 n 的 words，题目要求某个 word 被所有 automata 接受。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q5 小题：<code>{J,b,c : throughout execution b &lt; mean(c)}</code> 的输入编码包含哪些对象？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>包含 Java program <code>J</code>、浮点变量 <code>b</code> 和整数数组 <code>c</code> 的编码。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q5 小题：{J,b,c : throughout execution b < mean(c)} 的输入编码包含哪些对象？”。标准答案里的“包含 Java program J、浮点变量 b 和整数数组 c 的编码。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>构造程序先模拟 <code>M(w)</code>；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？”。标准答案里的“构造程序先模拟 M(w)；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q5 line never executed 怎么构造？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>把目标 line 放在模拟 <code>M(w)</code> 之后；模拟停机才执行该 line，不停机则永远不到。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q5 line never executed 怎么构造？”。标准答案里的“把目标 line 放在模拟 M(w) 之后；模拟停机才执行该 line，不停机则永远不到。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#symbols">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="automata" class="section">
@@ -113,6 +208,101 @@
             <p>
               Regular language 适合“有限记忆能判断”的规则，比如是否以 01 结尾。Context-free language 可以处理一类需要 stack 的结构，比如 <code>a^n b^n</code>，因为看到 <code>a</code> 时压栈，看到 <code>b</code> 时出栈。超过这种能力的语言，需要更强机器，或者根本不能被某类机器处理。
             </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 三种机器能力从弱到强怎么排？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>FA，PDA，TM。FA 有有限状态，PDA 加 stack，TM 有可读写无限纸带。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 三种机器能力从弱到强怎么排？”。标准答案里的“FA，PDA，TM。FA 有有限状态，PDA 加 stack，TM 有可读写无限纸带。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. PDA 为什么能处理 <code>a^n b^n</code>？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>它可以读 <code>a</code> 时压栈，读 <code>b</code> 时出栈，用 stack 匹配数量。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. PDA 为什么能处理 a^n b^n？”。标准答案里的“它可以读 a 时压栈，读 b 时出栈，用 stack 匹配数量。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. TM 强但仍有什么限制？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>它仍然不能 decide HALT 这类不可判定问题。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. TM 强但仍有什么限制？”。标准答案里的“它仍然不能 decide HALT 这类不可判定问题。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A Q2(a) 小题：FA accepts at least one word of length greater than 5，decider 先检查什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>先检查输入是否是有效 FA 编码，再搜索有限状态图中是否存在长度大于 5 的 accepting path。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A Q2(a) 小题：FA accepts at least one word of length greater than 5，decider 先检查什么？”。标准答案里的“先检查输入是否是有效 FA 编码，再搜索有限状态图中是否存在长度大于 5 的 accepting path。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q2(a) 小题：FA language nonempty 怎么 decide？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>从 start state 做 graph reachability，看是否能到达 accepting state；状态有限，所以会停机。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample B Q2(a) 小题：FA language nonempty 怎么 decide？”。标准答案里的“从 start state 做 graph reachability，看是否能到达 accepting state；状态有限，所以会停机。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample A Q6B 小题：一组 FA 都接受某个 word，verifier 要模拟什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>证书给出那个 word；verifier 检查 word 在 <code>W</code> 中且每个 automaton 都接受它。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample A Q6B 小题：一组 FA 都接受某个 word，verifier 要模拟什么？”。标准答案里的“证书给出那个 word；verifier 检查 word 在 W 中且每个 automaton 都接受它。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample B Q1A 的 word 怎么选？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>选足够长的 unary block 串，让 pumping 后某个奇数位置相邻 blocks 不再相等，从而破坏 yes 条件。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample B Q1A 的 word 怎么选？”。标准答案里的“选足够长的 unary block 串，让 pumping 后某个奇数位置相邻 blocks 不再相等，从而破坏 yes 条件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？”。标准答案里的“FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#automata">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="pumping" class="section">
@@ -158,6 +348,101 @@
               <p>Choose a word <code>w</code> in <code>L</code> with length at least <code>p</code>. The word can be split as <code>w=uvxyz</code> with <code>|vxy|≤p</code>, <code>|vy|>0</code>, and for every <code>i≥0</code>, <code>uv^ixy^iz</code> is in <code>L</code>.</p>
               <p>Because <code>|vxy|≤p</code>, the pumped pieces can only cover a limited local region of the word. Consider the possible positions of <code>v</code> and <code>y</code>. In every case, pumping changes some required equality/order but not the matching parts elsewhere. Therefore the pumped word is outside <code>L</code>, contradiction. So <code>L</code> is not context-free.</p>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Pumping lemma proof 的结尾必须是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>指出 pumped word 不在语言里，与 lemma 矛盾，因此语言不属于该类。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Pumping lemma proof 的结尾必须是什么？”。标准答案里的“指出 pumped word 不在语言里，与 lemma 矛盾，因此语言不属于该类。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Not regular 和 not CFL 最大形式差别是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Regular 切 <code>xyz</code>，CFL 切 <code>uvxyz</code> 并同时 pump <code>v</code> 和 <code>y</code>。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Not regular 和 not CFL 最大形式差别是什么？”。标准答案里的“Regular 切 xyz，CFL 切 uvxyz 并同时 pump v 和 y。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. 为什么不能只写“显然 pump 后不行”？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>考试要看到切法限制和所有合法切法都会导致矛盾的理由。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 为什么不能只写“显然 pump 后不行”？”。标准答案里的“考试要看到切法限制和所有合法切法都会导致矛盾的理由。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
+          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
+          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
+          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q1(a) 小题：not regular 证明不能只说“FA 记不住”，还要写什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>要写 pumping length、选 word、任意 split 限制、pump 值和 pumped word 不在语言里。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample B Q1(a) 小题：not regular 证明不能只说“FA 记不住”，还要写什么？”。标准答案里的“要写 pumping length、选 word、任意 split 限制、pump 值和 pumped word 不在语言里。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A/B Q1(b) 小题：not CFL 证明为什么要按 <code>v,y</code> 位置分情况？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>因为 <code>v,y</code> 可落在不同 block 或跨分隔符，必须证明所有合法位置 pump 后都会破坏条件。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A/B Q1(b) 小题：not CFL 证明为什么要按 v,y 位置分情况？”。标准答案里的“因为 v,y 可落在不同 block 或跨分隔符，必须证明所有合法位置 pump 后都会破坏条件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample Q1 小题：如果题目让 choose one not CFL，选择时优先选什么样的语言？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>优先选结构分区清楚、pump 后容易破坏多段相等或复制关系的语言。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample Q1 小题：如果题目让 choose one not CFL，选择时优先选什么样的语言？”。标准答案里的“优先选结构分区清楚、pump 后容易破坏多段相等或复制关系的语言。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q2B Java <code>a+b=c</code> 怎么认出 yes？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>模拟 <code>J</code> 每一步，读变量 <code>a,b,c</code>；一旦 <code>a+b=c</code> 成立就 accept。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q2B Java a+b=c 怎么认出 yes？”。标准答案里的“模拟 J 每一步，读变量 a,b,c；一旦 a+b=c 成立就 accept。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>构造程序先模拟 <code>M(w)</code>；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？”。标准答案里的“构造程序先模拟 M(w)；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#pumping">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="tm" class="section">
@@ -194,6 +479,101 @@
             <p>
               如果题目说“Java program eventually does X”，常见做法是模拟程序运行，一旦观察到 X 就 accept。若程序永远不做 X，模拟可能永远继续，所以这通常只证明 Turing-recognisable，而不是 decidable。
             </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Decidable 题的机器要保证什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>对每个输入都 halt，并正确 accept/reject。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Decidable 题的机器要保证什么？”。标准答案里的“对每个输入都 halt，并正确 accept/reject。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. T-r 题为什么 no instance 可以 loop？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Recognizer 只要求 yes instance 最终 accept，不要求 no instance 一定 reject。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. T-r 题为什么 no instance 可以 loop？”。标准答案里的“Recognizer 只要求 yes instance 最终 accept，不要求 no instance 一定 reject。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. co-T-r 怎么理解？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Complement 是 Turing-recognisable，也就是能认出 no 的一侧。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. co-T-r 怎么理解？”。标准答案里的“Complement 是 Turing-recognisable，也就是能认出 no 的一侧。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A Q2(b) 小题：Java 运行中某次 <code>a+b=c</code>，recogniser 怎么构造？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>模拟 <code>J</code>，每一步检查变量 <code>a,b,c</code>；一旦发现 <code>a+b=c</code> 就 accept。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A Q2(b) 小题：Java 运行中某次 a+b=c，recogniser 怎么构造？”。标准答案里的“模拟 J，每一步检查变量 a,b,c；一旦发现 a+b=c 就 accept。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q2(b) 小题：Java opens at least <code>n</code> files 后文件数不等于 <code>n</code>，为什么是 recognisable？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>可以模拟程序，观察 open file count；一旦目标事件发生就 accept，若永不发生可一直模拟。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample B Q2(b) 小题：Java opens at least n files 后文件数不等于 n，为什么是 recognisable？”。标准答案里的“可以模拟程序，观察 open file count；一旦目标事件发生就 accept，若永不发生可一直模拟。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample A/B Q2(a) 小题：FA 相关 decidable proof 结尾必须写什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>状态图有限、搜索/模拟有限，因此 TM halts on every input。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample A/B Q2(a) 小题：FA 相关 decidable proof 结尾必须写什么？”。标准答案里的“状态图有限、搜索/模拟有限，因此 TM halts on every input。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？”。标准答案里的“FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q2B Java <code>a+b=c</code> 怎么认出 yes？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>模拟 <code>J</code> 每一步，读变量 <code>a,b,c</code>；一旦 <code>a+b=c</code> 成立就 accept。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q2B Java a+b=c 怎么认出 yes？”。标准答案里的“模拟 J 每一步，读变量 a,b,c；一旦 a+b=c 成立就 accept。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#tm">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="reductions" class="section">
@@ -229,6 +609,101 @@
             <p>
               一旦你已经证明 <code>L</code> 和 <code>L̄</code> 都 undecidable，就可以用一个重要事实：如果一个语言和它的 complement 都 Turing-recognisable，那么它 decidable。因此如果二者都 undecidable，至少有一边不是 T-r。考试通常还要求你构造一台 recogniser 证明其中一边是 T-r，再推出另一边不是 T-r。
             </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. HALT reduction 的核心矛盾是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>如果新语言有 decider，就能通过翻译输入来 decide HALT，但 HALT 已知 undecidable。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. HALT reduction 的核心矛盾是什么？”。标准答案里的“如果新语言有 decider，就能通过翻译输入来 decide HALT，但 HALT 已知 undecidable。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Reduction 的 construction 要证明什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>可计算、yes/no 对齐，并且能用新问题 decider 解旧难题。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Reduction 的 construction 要证明什么？”。标准答案里的“可计算、yes/no 对齐，并且能用新问题 decider 解旧难题。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Q4 常用哪个定理？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>如果 <code>L</code> 和 complement 都 T-r，则 <code>L</code> decidable。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Q4 常用哪个定理？”。标准答案里的“如果 L 和 complement 都 T-r，则 L decidable。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A Q3 小题：L3 是 Java program 不抛 exception 21，构造 <code>N</code> 时如何让 HALT 控制 property？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong><code>N</code> 先模拟 <code>M(w)</code>；根据是否 halts 决定是否抛 exception 21，使 property 与 HALT 对齐。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A Q3 小题：L3 是 Java program 不抛 exception 21，构造 N 时如何让 HALT 控制 property？”。标准答案里的“N 先模拟 M(w)；根据是否 halts 决定是否抛 exception 21，使 property 与 HALT 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A Q5 小题：line number <code>n</code> never executed，如何把目标 line 放进构造？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>让 <code>N</code> 先模拟 <code>M(w)</code>；若模拟停机才执行指定 line，从而 line 是否执行反映 HALT。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A Q5 小题：line number n never executed，如何把目标 line 放进构造？”。标准答案里的“让 N 先模拟 M(w)；若模拟停机才执行指定 line，从而 line 是否执行反映 HALT。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q5 小题：<code>b &lt; mean(c)</code> throughout execution 的 reduction 要控制什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>构造程序让该不变量在 <code>M(w)</code> 是否停机时被保持或被破坏，从而和 HALT yes/no 对齐。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q5 小题：b < mean(c) throughout execution 的 reduction 要控制什么？”。标准答案里的“构造程序让该不变量在 M(w) 是否停机时被保持或被破坏，从而和 HALT yes/no 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample B Q1A 的 word 怎么选？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>选足够长的 unary block 串，让 pumping 后某个奇数位置相邻 blocks 不再相等，从而破坏 yes 条件。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample B Q1A 的 word 怎么选？”。标准答案里的“选足够长的 unary block 串，让 pumping 后某个奇数位置相邻 blocks 不再相等，从而破坏 yes 条件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？”。标准答案里的“FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#reductions">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="np" class="section">
@@ -270,6 +745,101 @@
               <p>Then prove <code>L</code> is NP-hard by giving a polynomial-time reduction from a known NP-complete problem such as <code>3-SAT</code>. The reduction converts an instance <code>C</code> of <code>3-SAT</code> into an instance <code>f(C)</code> of <code>L</code>.</p>
               <p>Show correctness: <code>f(C) ∈ L</code> iff <code>C ∈ 3-SAT</code>. Show the construction runs in polynomial time. Therefore <code>L</code> is NP-hard. Since <code>L</code> is also in NP, <code>L</code> is NP-complete.</p>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 证明 in NP 必须写哪两件事？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Certificate 是什么，verifier 为什么 polynomial time。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 证明 in NP 必须写哪两件事？”。标准答案里的“Certificate 是什么，verifier 为什么 polynomial time。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Polynomial time 为什么重要？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>NP 关注能否快速验证候选答案，不允许验证过程本身指数爆炸。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Polynomial time 为什么重要？”。标准答案里的“NP 关注能否快速验证候选答案，不允许验证过程本身指数爆炸。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. NP-complete 证明为什么先 in NP？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>因为 NP-complete 必须同时属于 NP 并且 NP-hard。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. NP-complete 证明为什么先 in NP？”。标准答案里的“因为 NP-complete 必须同时属于 NP 并且 NP-hard。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q6A 小题：CARA clique verifier 的 polynomial loop 主要检查什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>检查 <code>|S|=k</code>，然后检查 <code>S</code> 中每一对学生是否都有 edge。最多二重循环，多项式。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample B Q6A 小题：CARA clique verifier 的 polynomial loop 主要检查什么？”。标准答案里的“检查 |S|=k，然后检查 S 中每一对学生是否都有 edge。最多二重循环，多项式。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q6B 小题：phone vertex cover verifier 为什么是 polynomial？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>遍历每条 communication pair，检查至少一端在证书集合 <code>S</code> 中；最多按边数循环。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample B Q6B 小题：phone vertex cover verifier 为什么是 polynomial？”。标准答案里的“遍历每条 communication pair，检查至少一端在证书集合 S 中；最多按边数循环。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample A Q6B 小题：FA set + word set 题的 verifier 为什么不是 exponential？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>证书指定某个 word；verifier 只需对每台 FA 模拟这个 word，不需要枚举所有 words。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample A Q6B 小题：FA set + word set 题的 verifier 为什么不是 exponential？”。标准答案里的“证书指定某个 word；verifier 只需对每台 FA 模拟这个 word，不需要枚举所有 words。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q2B Java <code>a+b=c</code> 怎么认出 yes？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>模拟 <code>J</code> 每一步，读变量 <code>a,b,c</code>；一旦 <code>a+b=c</code> 成立就 accept。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q2B Java a+b=c 怎么认出 yes？”。标准答案里的“模拟 J 每一步，读变量 a,b,c；一旦 a+b=c 成立就 accept。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>构造程序先模拟 <code>M(w)</code>；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？”。标准答案里的“构造程序先模拟 M(w)；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#np">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="question-types" class="section">
@@ -296,6 +866,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Q1 通常考什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Not regular 和 not context-free 的 pumping lemma proof。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Q1 通常考什么？”。标准答案里的“Not regular 和 not context-free 的 pumping lemma proof。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Q3-Q5 常见工具是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>从 HALT 做 mapping reductions，并分析 TR/complement。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Q3-Q5 常见工具是什么？”。标准答案里的“从 HALT 做 mapping reductions，并分析 TR/complement。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Q6-Q7 的差别是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Q6 证明 in NP；Q7 证明 NP-complete，需要 in NP + NP-hard。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Q6-Q7 的差别是什么？”。标准答案里的“Q6 证明 in NP；Q7 证明 NP-complete，需要 in NP + NP-hard。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A Q2(a) 对 FA 接受长度 >5 的 word，是哪类题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Construct decider：有限自动机状态有限，可以有限搜索。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A Q2(a) 对 FA 接受长度 >5 的 word，是哪类题？”。标准答案里的“Construct decider：有限自动机状态有限，可以有限搜索。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A Q3/Q5 exception 21、line n never executed，是哪类题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>HALT mapping reduction：构造程序把停机行为转成 Java property。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A Q3/Q5 exception 21、line n never executed，是哪类题？”。标准答案里的“HALT mapping reduction：构造程序把停机行为转成 Java property。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q6/Q7 CARA clique，是哪两类题连续出现？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>先 Q6 证明 in NP，再 Q7 从 3-SAT reduce 证明 NP-complete。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q6/Q7 CARA clique，是哪两类题连续出现？”。标准答案里的“先 Q6 证明 in NP，再 Q7 从 3-SAT reduce 证明 NP-complete。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q2B Java <code>a+b=c</code> 怎么认出 yes？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>模拟 <code>J</code> 每一步，读变量 <code>a,b,c</code>；一旦 <code>a+b=c</code> 成立就 accept。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q2B Java a+b=c 怎么认出 yes？”。标准答案里的“模拟 J 每一步，读变量 a,b,c；一旦 a+b=c 成立就 accept。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>构造程序先模拟 <code>M(w)</code>；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？”。标准答案里的“构造程序先模拟 M(w)；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#question-types">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="exam-map" class="section">
@@ -343,6 +1008,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 考法地图显示 CS605 的稳定结构是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>每年大致覆盖 pumping、decidable/T-r、HALT reductions、NP、NP-complete。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 考法地图显示 CS605 的稳定结构是什么？”。标准答案里的“每年大致覆盖 pumping、decidable/T-r、HALT reductions、NP、NP-complete。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Sample A/B 应该怎样用？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>按题型拆模板，而不是只做一遍答案。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Sample A/B 应该怎样用？”。标准答案里的“按题型拆模板，而不是只做一遍答案。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
+          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
+          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
+          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. 地图里 Q6-Q7 为什么要一起看？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>它们都用 certificate/verifier 思维，但 Q7 多了 reduction hardness。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 地图里 Q6-Q7 为什么要一起看？”。标准答案里的“它们都用 certificate/verifier 思维，但 Q7 多了 reduction hardness。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A 和 B 的 Q2 有什么共同模式？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Q2(a) 是 FA decidable；Q2(b) 是 Java program property Turing-recognisable。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A 和 B 的 Q2 有什么共同模式？”。标准答案里的“Q2(a) 是 FA decidable；Q2(b) 是 Java program property Turing-recognisable。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
+          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
+          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
+          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A 和 B 的 Q3/Q5 有什么共同模式？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>都从 HALT 做 mapping reduction 到 Java/TM 行为性质。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A 和 B 的 Q3/Q5 有什么共同模式？”。标准答案里的“都从 HALT 做 mapping reduction 到 Java/TM 行为性质。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q6/Q7 比 Sample A 更具体在哪里？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>它用 CARA friends clique 和 phone vertex cover 这类图问题，让 certificate/verifier 更具体。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q6/Q7 比 Sample A 更具体在哪里？”。标准答案里的“它用 CARA friends clique 和 phone vertex cover 这类图问题，让 certificate/verifier 更具体。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？”。标准答案里的“证书是 k 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q7 NP-complete 先引用什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>先引用 Q6 已证 in NP，再从 3-SAT 构造 CARA clique 实例，并证明 formula satisfiable iff clique exists。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q7 NP-complete 先引用什么？”。标准答案里的“先引用 Q6 已证 in NP，再从 3-SAT 构造 CARA clique 实例，并证明 formula satisfiable iff clique exists。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#exam-map">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="summary" class="section">
@@ -357,6 +1117,101 @@
               <li>in NP 题必须说 certificate 是什么，以及 verifier 为什么 polynomial time。</li>
               <li>NP-complete 题必须两步：先 in NP，再 NP-hard。</li>
             </ol>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Pumping proof 最后检查什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>是否写了 contradiction、切法限制、pump 值和 pumped word 不在语言里。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Pumping proof 最后检查什么？”。标准答案里的“是否写了 contradiction、切法限制、pump 值和 pumped word 不在语言里。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Reduction proof 最后检查什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>是否写了 mapping function、iff、computable construction 和 HALT contradiction。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Reduction proof 最后检查什么？”。标准答案里的“是否写了 mapping function、iff、computable construction 和 HALT contradiction。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. NP proof 最后检查什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>是否写清 certificate、verifier 步骤和 polynomial runtime。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. NP proof 最后检查什么？”。标准答案里的“是否写清 certificate、verifier 步骤和 polynomial runtime。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A Q3 exception 21 题检查清单第一项是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>是否明确写出从 <code>&lt;M,w&gt;</code> 到 Java program <code>N</code> 的 computable mapping。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A Q3 exception 21 题检查清单第一项是什么？”。标准答案里的“是否明确写出从 <M,w> 到 Java program N 的 computable mapping。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
+          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
+          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q6A clique 题检查清单第一项是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>是否明确 certificate 是 size <code>k</code> 的 vertex/student subset。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample B Q6A clique 题检查清单第一项是什么？”。标准答案里的“是否明确 certificate 是 size k 的 vertex/student subset。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q1 pumping 题检查清单第一项是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>是否先选了足够长且结构能暴露矛盾的 word，并说明任意 split 的限制。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q1 pumping 题检查清单第一项是什么？”。标准答案里的“是否先选了足够长且结构能暴露矛盾的 word，并说明任意 split 的限制。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
+          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
+          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
+          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？”。标准答案里的“证书是 k 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q7 NP-complete 先引用什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>先引用 Q6 已证 in NP，再从 3-SAT 构造 CARA clique 实例，并证明 formula satisfiable iff clique exists。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q7 NP-complete 先引用什么？”。标准答案里的“先引用 Q6 已证 in NP，再从 3-SAT 构造 CARA clique 实例，并证明 formula satisfiable iff clique exists。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
+          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
+          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs605.html#summary">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
         </article>
 

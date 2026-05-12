@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-12 18:05
+更新时间：2026-05-12 21:00
 
 ## 项目目标
 
@@ -402,6 +402,20 @@
   - 修正 model checking 的匹配范围，避免 CS615 普通 request/response 小题误套 Spin/LTL 分析。
 - 已更新 `exam-prep-site/assets/styles.css`：
   - 再次增大 `.qa-answer` 展开高度，避免更长的标准分析被截断。
+
+### 2026-05-12 21:00
+
+- 用户指出：QA 内容应该直接硬编码到 HTML 文件里，而不是由 JS 用通用解释去套所有问题。
+- 已按该方向重构：
+  - 11 个 HTML 页面、90 个 section 已直接写入静态 QA 块，每个 section 固定包含 `3 道内容理解题 + 5 道考试题目题`。
+  - 每张 QA 卡片都在 HTML 中硬编码五段：`核心/标准答案`、`标准分析（为什么）`、`题目语境怎么用`、`卷面写法`、`常见失分点`。
+  - `exam-prep-site/assets/app.js` 已删去 QA 数据、关键词分类、自动生成逻辑，只保留搜索、复制、点击展开、过关门槛 localStorage 保存。
+  - 修正并审计了之前的串台问题：FinTrack/streaming 不再套 Hoare；CARA/3-SAT/NP-complete 不再套 HALT 或 security；首页关键词内容题不再套 HALT。
+- 已检查：
+  - HTML 中 `qa-hardcoded:start` 共 90 个。
+  - QA 卡片总数 720。
+  - 自动串台审计 suspicious count 为 0。
+  - `node --check exam-prep-site/assets/app.js` 通过。
 
 ## 制作记录
 

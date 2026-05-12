@@ -140,6 +140,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. CS615 基础词汇最该串成哪条线？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Browser request -> backend processing -> database -> response。不要把词孤立背。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. CS615 基础词汇最该串成哪条线？”。标准答案里的“Browser request -> backend processing -> database -> response。不要把词孤立背。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. API 的考试解释要包含什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>要说它是前后端约定好的入口，包括 URL、method、数据格式和 response。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. API 的考试解释要包含什么？”。标准答案里的“要说它是前后端约定好的入口，包括 URL、method、数据格式和 response。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Business logic 和 database 有什么区别？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Business logic 是规则；database 是持久保存数据的地方。规则不应散落在页面或 SQL 字符串里。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Business logic 和 database 有什么区别？”。标准答案里的“Business logic 是规则；database 是持久保存数据的地方。规则不应散落在页面或 SQL 字符串里。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q1(a) 小题：给 intern 解释 full-stack 时，frontend、server、database 各用一句话怎么分工？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Frontend 显示界面并收集输入；server 接 request、执行业务规则和权限检查；database 长期保存用户、订单、收据等数据。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q1(a) 小题：给 intern 解释 full-stack 时，frontend、server、database 各用一句话怎么分工？”。标准答案里的“Frontend 显示界面并收集输入；server 接 request、执行业务规则和权限检查；database 长期保存用户、订单、收据等数据。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q1(a) 小题：CRUD 里的 Update 和 Create 各对应什么 HTTP 意图？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Create 是新增资源，常用 <code>POST</code>；Update 是修改已有资源，常用 <code>PUT</code> 或 <code>PATCH</code>。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q1(a) 小题：CRUD 里的 Update 和 Create 各对应什么 HTTP 意图？”。标准答案里的“Create 是新增资源，常用 POST；Update 是修改已有资源，常用 PUT 或 PATCH。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 Summer Q1(a) 小题：SQL 和 NoSQL 的差别不能只写“表格 vs 文档”，要用哪两个例子拉开？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>用收据/订单例子说明 SQL：Customers、Receipts、ReceiptItems 之间有关系且要 transaction；用 clickstream 例子说明 NoSQL：每条行为事件像 JSON document，字段变化快、写入量大。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 Summer Q1(a) 小题：SQL 和 NoSQL 的差别不能只写“表格 vs 文档”，要用哪两个例子拉开？”。标准答案里的“用收据/订单例子说明 SQL：Customers、Receipts、ReceiptItems 之间有关系且要 transaction；用 clickstream 例子说明 NoSQL：每条行为事件像 JSON document，字段变化快、写入量大。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：Sample FinTrack recommendation 怎样不空泛？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>若交易历史一致性重要、团队小，可推荐 modular monolith + PostgreSQL；价格流压力大时再拆服务。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：Sample FinTrack recommendation 怎样不空泛？”。标准答案里的“若交易历史一致性重要、团队小，可推荐 modular monolith + PostgreSQL；价格流压力大时再拆服务。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：Sample Rails controller 怎样指出问题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：Sample Rails controller 怎样指出问题？”。标准答案里的“指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#foundation">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="full-stack" class="section">
@@ -203,6 +298,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Full-stack 题不能只列什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>不能只列 React、Node、MongoDB。要解释前端、后端、数据库、API、安全和部署如何协作。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Full-stack 题不能只列什么？”。标准答案里的“不能只列 React、Node、MongoDB。要解释前端、后端、数据库、API、安全和部署如何协作。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. CRUD 和 HTTP verbs 怎么对应？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Create 常用 POST，Read 用 GET，Update 用 PUT/PATCH，Delete 用 DELETE。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. CRUD 和 HTTP verbs 怎么对应？”。标准答案里的“Create 常用 POST，Read 用 GET，Update 用 PUT/PATCH，Delete 用 DELETE。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. 三层架构的好处怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>写 maintainability、testability、security boundary、frontend/backend 可分别演进。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 三层架构的好处怎么写？”。标准答案里的“写 maintainability、testability、security boundary、frontend/backend 可分别演进。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q1(a) 小题：如果要求解释 frontend、database、servers roles，答案应该按哪三层写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>按 presentation、application/business logic、data layer 写，并用 request/response 串起来。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q1(a) 小题：如果要求解释 frontend、database、servers roles，答案应该按哪三层写？”。标准答案里的“按 presentation、application/business logic、data layer 写，并用 request/response 串起来。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2024 Summer Q1 小题：CRUD 解释要不要给 Web API 例子？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>要。比如 <code>POST /orders</code> 创建订单，<code>GET /orders/15</code> 读取订单，能把抽象 CRUD 落到 Web 场景。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2024 Summer Q1 小题：CRUD 解释要不要给 Web API 例子？”。标准答案里的“要。比如 POST /orders 创建订单，GET /orders/15 读取订单，能把抽象 CRUD 落到 Web 场景。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. CS615 past paper 小题：full-stack 题里为什么不能只列 MERN 技术名？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>因为题目问角色和职责。要说每层做什么、如何通信、数据在哪里保存、权限在哪里检查。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. CS615 past paper 小题：full-stack 题里为什么不能只列 MERN 技术名？”。标准答案里的“因为题目问角色和职责。要说每层做什么、如何通信、数据在哪里保存、权限在哪里检查。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：2023 Node 输出题先写什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>先写同步输出，例如 <code>console.log('first')</code> 和后面的同步 log，再解释 <code>setTimeout</code> callback 排队。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：2023 Node 输出题先写什么？”。标准答案里的“先写同步输出，例如 console.log('first') 和后面的同步 log，再解释 setTimeout callback 排队。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：Sample FinTrack recommendation 怎样不空泛？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>若交易历史一致性重要、团队小，可推荐 modular monolith + PostgreSQL；价格流压力大时再拆服务。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：Sample FinTrack recommendation 怎样不空泛？”。标准答案里的“若交易历史一致性重要、团队小，可推荐 modular monolith + PostgreSQL；价格流压力大时再拆服务。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#full-stack">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="database" class="section">
@@ -351,6 +541,101 @@
               <p>SQL is also suitable because receipt history is transactional data. In plain terms, this means several related records must be saved together correctly: the receipt number, the item rows, the prices, and the final total. We want integrity constraints, reliable joins, and ACID transactions so that totals, receipt numbers, and item records remain consistent.</p>
               <p>A NoSQL database could be justified if the main requirement were high-volume clickstream behaviour or flexible event documents, but based on the question as written, the structured shopping records and consistency requirements make SQL the better default choice.</p>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 购物习惯题为什么默认选 SQL？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>因为它不是散乱行为日志，而是收据系统：<code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code> 要靠 receipt id 连接，总价和明细还要一致。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 购物习惯题为什么默认选 SQL？”。标准答案里的“因为它不是散乱行为日志，而是收据系统：Customers、Receipts、ReceiptItems 要靠 receipt id 连接，总价和明细还要一致。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 什么时候 NoSQL 可以被合理辩护？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>如果题目改成每次点击、搜索、滚动、设备、实验分组都生成一条事件，每条 JSON-like document 字段不同且写入量很大，就可以辩护 MongoDB/NoSQL。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 什么时候 NoSQL 可以被合理辩护？”。标准答案里的“如果题目改成每次点击、搜索、滚动、设备、实验分组都生成一条事件，每条 JSON-like document 字段不同且写入量很大，就可以辩护 MongoDB/NoSQL。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. ACID 最适合用什么场景解释？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>用“保存收据”解释：收据头、商品明细、库存扣减要么一起成功，要么一起失败；不能钱扣了、items 没保存。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. ACID 最适合用什么场景解释？”。标准答案里的“用“保存收据”解释：收据头、商品明细、库存扣减要么一起成功，要么一起失败；不能钱扣了、items 没保存。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q1(b) 小题：顾客购物习惯数据有 items、price、date、unique receipt number，为什么先考虑 SQL？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>因为它像收据/订单系统，实体关系清楚，receipt number 和 item rows 需要一致，适合表、外键、join 和 transaction。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q1(b) 小题：顾客购物习惯数据有 items、price、date、unique receipt number，为什么先考虑 SQL？”。标准答案里的“因为它像收据/订单系统，实体关系清楚，receipt number 和 item rows 需要一致，适合表、外键、join 和 transaction。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q1(b) 小题：这个场景下 NoSQL 什么时候才更合理？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>如果题目不是保存购买记录，而是保存 <code>{userId, page, eventType, device, experimentId, timestamp}</code> 这类点击流事件，字段经常加减且每秒写入很多条，NoSQL 更好辩护。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q1(b) 小题：这个场景下 NoSQL 什么时候才更合理？”。标准答案里的“如果题目不是保存购买记录，而是保存 {userId, page, eventType, device, experimentId, timestamp} 这类点击流事件，字段经常加减且每秒写入很多条，NoSQL 更好辩护。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2024/2025 SQL/NoSQL 小题：怎样把判断维度写成例子？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>写：一张 receipt 要同时保存 receipt number、item rows、price total，所以 SQL 的外键和 transaction 有用；如果只是独立行为事件 document，NoSQL 的灵活 schema 和横向扩展更有用。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2024/2025 SQL/NoSQL 小题：怎样把判断维度写成例子？”。标准答案里的“写：一张 receipt 要同时保存 receipt number、item rows、price total，所以 SQL 的外键和 transaction 有用；如果只是独立行为事件 document，NoSQL 的灵活 schema 和横向扩展更有用。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：Sample FinTrack recommendation 怎样不空泛？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>若交易历史一致性重要、团队小，可推荐 modular monolith + PostgreSQL；价格流压力大时再拆服务。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：Sample FinTrack recommendation 怎样不空泛？”。标准答案里的“若交易历史一致性重要、团队小，可推荐 modular monolith + PostgreSQL；价格流压力大时再拆服务。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：Sample Rails controller 怎样指出问题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：Sample Rails controller 怎样指出问题？”。标准答案里的“指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#database">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="mvc" class="section">
@@ -437,6 +722,101 @@
             <p>
               重构后，折扣逻辑可以用普通 unit test 独立测试，不需要构造完整 controller request；controller test 只检查它是否调用服务并处理成功/失败分支。
             </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. MVC 25 分题必须出现什么流程？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Browser -> route -> controller -> model/database -> view/response。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. MVC 25 分题必须出现什么流程？”。标准答案里的“Browser -> route -> controller -> model/database -> view/response。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Controller 不该做什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>不该承担大量业务计算、复杂查询、邮件发送和页面拼接全部职责。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Controller 不该做什么？”。标准答案里的“不该承担大量业务计算、复杂查询、邮件发送和页面拼接全部职责。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. MVC 的主要工程好处是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Separation of concerns，让维护、测试和并行开发更容易。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. MVC 的主要工程好处是什么？”。标准答案里的“Separation of concerns，让维护、测试和并行开发更容易。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q2 小题：MVC 25 分题里 web example 的 request flow 怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Browser -> route -> controller -> model/database -> view/response，并说明每一步的职责。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q2 小题：MVC 25 分题里 web example 的 request flow 怎么写？”。标准答案里的“Browser -> route -> controller -> model/database -> view/response，并说明每一步的职责。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample Q3 Rails controller 小题：controller 同时算折扣、保存订单、发邮件、记录 analytics，违反什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>违反 MVC 的职责边界和 SRP。折扣应进 service，保存进 model/repository，邮件和 analytics 应拆到 mailer/job/adapter。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample Q3 Rails controller 小题：controller 同时算折扣、保存订单、发邮件、记录 analytics，违反什么？”。标准答案里的“违反 MVC 的职责边界和 SRP。折扣应进 service，保存进 model/repository，邮件和 analytics 应拆到 mailer/job/adapter。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2023 Summer Q1(b) 小题：MVC 还要求另一个 programming environment example，怎么避免只写 Rails？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>可以写 desktop/mobile GUI：View 是界面，Controller 处理用户动作，Model 保存和验证数据。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2023 Summer Q1(b) 小题：MVC 还要求另一个 programming environment example，怎么避免只写 Rails？”。标准答案里的“可以写 desktop/mobile GUI：View 是界面，Controller 处理用户动作，Model 保存和验证数据。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：2025 Q1(b) shopping habits 为什么默认 SQL？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>因为 <code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code> 要用 key/join/transaction 保持 receipt number、items、total 一致。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：2025 Q1(b) shopping habits 为什么默认 SQL？”。标准答案里的“因为 Customers、Receipts、ReceiptItems 要用 key/join/transaction 保持 receipt number、items、total 一致。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：2023 HTTP evolution 写哪条主线？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>HTTP/1.1 用 persistent connection，HTTP/2 用 multiplexing，HTTP/3 基于 QUIC 减少连接和传输阻塞。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：2023 HTTP evolution 写哪条主线？”。标准答案里的“HTTP/1.1 用 persistent connection，HTTP/2 用 multiplexing，HTTP/3 基于 QUIC 减少连接和传输阻塞。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#mvc">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="node-react" class="section">
@@ -538,6 +918,101 @@
             <p>
               Componentization 的价值在于把 UI 拆成独立、可复用、可测试的小块。例如 <code>OrderCard</code>、<code>SearchFilter</code>、<code>Navbar</code> 可以独立开发，再组合成完整页面。
             </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Node callback 输出题怎么做？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>先输出同步代码，再根据 event loop 和异步回调进入队列的顺序判断后续输出。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Node callback 输出题怎么做？”。标准答案里的“先输出同步代码，再根据 event loop 和异步回调进入队列的顺序判断后续输出。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Chaining 的读法是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>从左到右读，每一步返回一个对象或结果，供下一步继续调用。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Chaining 的读法是什么？”。标准答案里的“从左到右读，每一步返回一个对象或结果，供下一步继续调用。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. React componentization 的价值是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>把复杂 UI 拆成可复用组件，用 props 和 state 管输入与变化。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. React componentization 的价值是什么？”。标准答案里的“把复杂 UI 拆成可复用组件，用 props 和 state 管输入与变化。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2023 Summer Q2(iv) 小题：<code>console.log('first'); setTimeout(...); console.log('fifth')</code> 前两个输出是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>先输出 <code>first</code>，再输出 <code>fifth</code>，因为同步代码先执行，timeout callback 后进队列。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2023 Summer Q2(iv) 小题：console.log('first'); setTimeout(...); console.log('fifth') 前两个输出是什么？”。标准答案里的“先输出 first，再输出 fifth，因为同步代码先执行，timeout callback 后进队列。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2023 Summer Q2(ii) 小题：为什么会用 Node.js 做 web project？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Node 适合 I/O-heavy Web API，JavaScript 前后端统一，生态丰富，Express 能快速写 routes/middleware。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2023 Summer Q2(ii) 小题：为什么会用 Node.js 做 web project？”。标准答案里的“Node 适合 I/O-heavy Web API，JavaScript 前后端统一，生态丰富，Express 能快速写 routes/middleware。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 Summer Q3(b) 小题：有人说永远不该用 React，你至少要反驳哪两点？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>React 用 component/props/state 管复杂交互，适合动态 UI；但也承认 tooling、SEO、initial load 和学习成本。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 Summer Q3(b) 小题：有人说永远不该用 React，你至少要反驳哪两点？”。标准答案里的“React 用 component/props/state 管复杂交互，适合动态 UI；但也承认 tooling、SEO、initial load 和学习成本。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：Sample Rails controller 怎样指出问题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：Sample Rails controller 怎样指出问题？”。标准答案里的“指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？”。标准答案里的“CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#node-react">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="quality" class="section">
@@ -615,6 +1090,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Accessibility 题要避免什么空话？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>不要只写“让更多人使用”。要给具体 CSS/HTML/交互做法。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Accessibility 题要避免什么空话？”。标准答案里的“不要只写“让更多人使用”。要给具体 CSS/HTML/交互做法。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. SEO 的 white-hat 和 black-hat 差别是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>White-hat 让内容结构真实清楚；black-hat 欺骗搜索引擎，长期可能被惩罚。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. SEO 的 white-hat 和 black-hat 差别是什么？”。标准答案里的“White-hat 让内容结构真实清楚；black-hat 欺骗搜索引擎，长期可能被惩罚。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. XSS 防御常写哪几项？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Output encoding、sanitization、CSP、避免危险 HTML 插入、使用 HttpOnly cookie 降低 token 泄露风险。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. XSS 防御常写哪几项？”。标准答案里的“Output encoding、sanitization、CSP、避免危险 HTML 插入、使用 HttpOnly cookie 降低 token 泄露风险。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 安全题要解释攻击为什么发生：程序把用户输入当成 SQL、HTML 或脚本执行，攻击者就能改变原本语义。防御的价值是把数据和代码分开，并限制错误造成的损害。</p>
+          <p><strong>题目语境怎么用：</strong>SQL injection 用登录框、搜索框或表单输入说明拼接 SQL 的风险；XSS 用评论、用户名或 profile 字段说明输出到页面时为何要转义。</p>
+          <p><strong>卷面写法：</strong>卷面写三段：定义攻击；给贴题例子；写防御并解释理由。prepared statements/parameterized queries 让输入只作为 value，ORM 安全 API 避免手拼 SQL，server-side validation 和最小权限负责兜底。</p>
+          <p><strong>常见失分点：</strong>只写 sanitize 不够。sanitize 没有说明上下文，也不能替代参数化查询、输出转义和最小数据库权限。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2023 Summer Q3(a) 小题：accessible website 用 CSS 能写哪三个具体做法？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>足够颜色对比、可见 focus outline、响应式/可缩放字号布局；还可避免只靠颜色表达状态。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2023 Summer Q3(a) 小题：accessible website 用 CSS 能写哪三个具体做法？”。标准答案里的“足够颜色对比、可见 focus outline、响应式/可缩放字号布局；还可避免只靠颜色表达状态。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2023 Summer Q4(a) 小题：white-hat SEO 给 client 的两条建议是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>清楚标题和语义结构、真实高质量内容、可读 URL、alt text、合理性能和内部链接。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2023 Summer Q4(a) 小题：white-hat SEO 给 client 的两条建议是什么？”。标准答案里的“清楚标题和语义结构、真实高质量内容、可读 URL、alt text、合理性能和内部链接。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2023 Summer Q4(b) 小题：SQL injection 防御不能只写 sanitize，还要写什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>写 parameterized queries/prepared statements、ORM 安全 API、输入验证和最小数据库权限。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2023 Summer Q4(b) 小题：SQL injection 防御不能只写 sanitize，还要写什么？”。标准答案里的“写 parameterized queries/prepared statements、ORM 安全 API、输入验证和最小数据库权限。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 安全题要解释攻击为什么发生：程序把用户输入当成 SQL、HTML 或脚本执行，攻击者就能改变原本语义。防御的价值是把数据和代码分开，并限制错误造成的损害。</p>
+          <p><strong>题目语境怎么用：</strong>SQL injection 用登录框、搜索框或表单输入说明拼接 SQL 的风险；XSS 用评论、用户名或 profile 字段说明输出到页面时为何要转义。</p>
+          <p><strong>卷面写法：</strong>卷面写三段：定义攻击；给贴题例子；写防御并解释理由。prepared statements/parameterized queries 让输入只作为 value，ORM 安全 API 避免手拼 SQL，server-side validation 和最小权限负责兜底。</p>
+          <p><strong>常见失分点：</strong>只写 sanitize 不够。sanitize 没有说明上下文，也不能替代参数化查询、输出转义和最小数据库权限。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？”。标准答案里的“CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：2023 SQL injection 防御写什么例子？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>不要拼接 <code>'...'+userInput</code>；用 parameterized query/prepared statement、输入验证和最小数据库权限。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：2023 SQL injection 防御写什么例子？”。标准答案里的“不要拼接 '...'+userInput；用 parameterized query/prepared statement、输入验证和最小数据库权限。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 安全题要解释攻击为什么发生：程序把用户输入当成 SQL、HTML 或脚本执行，攻击者就能改变原本语义。防御的价值是把数据和代码分开，并限制错误造成的损害。</p>
+          <p><strong>题目语境怎么用：</strong>SQL injection 用登录框、搜索框或表单输入说明拼接 SQL 的风险；XSS 用评论、用户名或 profile 字段说明输出到页面时为何要转义。</p>
+          <p><strong>卷面写法：</strong>卷面写三段：定义攻击；给贴题例子；写防御并解释理由。prepared statements/parameterized queries 让输入只作为 value，ORM 安全 API 避免手拼 SQL，server-side validation 和最小权限负责兜底。</p>
+          <p><strong>常见失分点：</strong>只写 sanitize 不够。sanitize 没有说明上下文，也不能替代参数化查询、输出转义和最小数据库权限。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#quality">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="http-cloud" class="section">
@@ -682,6 +1252,101 @@
               <p>PaaS lets the team deploy their own application while the provider handles much of the runtime, scaling, patching, and deployment infrastructure. This reduces operational work and helps the team focus on the course subscription features.</p>
               <p>For security, privacy, and data ownership, the team must still consider where student data is stored, access control, backups, compliance, and vendor lock-in. For cost efficiency, PaaS can be cheaper early because it avoids hiring infrastructure specialists, but costs can grow with usage and platform-specific services.</p>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. HTTP evolution 题看什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>看多个 request/response 如何更高效地共享连接和减少阻塞。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. HTTP evolution 题看什么？”。标准答案里的“看多个 request/response 如何更高效地共享连接和减少阻塞。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Cloud model 题为什么常推荐 PaaS？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>自定义 app 需要自己写功能，但不一定要自己管理 VM 和 runtime，PaaS 平衡自由度和运维成本。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Cloud model 题为什么常推荐 PaaS？”。标准答案里的“自定义 app 需要自己写功能，但不一定要自己管理 VM 和 runtime，PaaS 平衡自由度和运维成本。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. IaaS、PaaS、SaaS 的区分关键是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>看你自己管理多少东西：IaaS 管最多，PaaS 管代码和配置，SaaS 主要使用现成软件。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. IaaS、PaaS、SaaS 的区分关键是什么？”。标准答案里的“看你自己管理多少东西：IaaS 管最多，PaaS 管代码和配置，SaaS 主要使用现成软件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2023 Summer Q1(a) 小题：HTTP/1.1 相比 HTTP/1.0 处理多个请求的关键改进是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>HTTP/1.1 支持 persistent connections/keep-alive，减少每个资源都新建连接的开销。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2023 Summer Q1(a) 小题：HTTP/1.1 相比 HTTP/1.0 处理多个请求的关键改进是什么？”。标准答案里的“HTTP/1.1 支持 persistent connections/keep-alive，减少每个资源都新建连接的开销。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2023 Summer Q1(a) 小题：HTTP/2 的 multiplexing 要解决什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>让多个 streams 在一个连接上交错传输，减少 HTTP 层面的 head-of-line blocking。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2023 Summer Q1(a) 小题：HTTP/2 的 multiplexing 要解决什么？”。标准答案里的“让多个 streams 在一个连接上交错传输，减少 HTTP 层面的 head-of-line blocking。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2023 Summer Q3(c) 小题：course subscriptions tool 为什么推荐 PaaS 而不是 SaaS？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>题目要自建订阅工具，SaaS 太固定；PaaS 能部署自定义 app，又少管底层服务器。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2023 Summer Q3(c) 小题：course subscriptions tool 为什么推荐 PaaS 而不是 SaaS？”。标准答案里的“题目要自建订阅工具，SaaS 太固定；PaaS 能部署自定义 app，又少管底层服务器。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：2025 Q1(b) shopping habits 为什么默认 SQL？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>因为 <code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code> 要用 key/join/transaction 保持 receipt number、items、total 一致。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：2025 Q1(b) shopping habits 为什么默认 SQL？”。标准答案里的“因为 Customers、Receipts、ReceiptItems 要用 key/join/transaction 保持 receipt number、items、total 一致。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：2023 HTTP evolution 写哪条主线？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>HTTP/1.1 用 persistent connection，HTTP/2 用 multiplexing，HTTP/3 基于 QUIC 减少连接和传输阻塞。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：2023 HTTP evolution 写哪条主线？”。标准答案里的“HTTP/1.1 用 persistent connection，HTTP/2 用 multiplexing，HTTP/3 基于 QUIC 减少连接和传输阻塞。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#http-cloud">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="sample-topics" class="section">
@@ -771,6 +1436,101 @@
             <p>
               协同点：CI 阶段防止明显错误进入主干；CD 支持小批量发布和快速回滚；observability 发现真实用户环境中的延迟、错误和异常路径，再把这些信息反馈到下一轮测试和开发中。挑战包括工具成本、数据量、隐私、安全、团队 DevOps 能力和告警疲劳。
             </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Monolith 和 microservices 比较要看哪些维度？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>Scalability、consistency、resilience、development velocity、operational complexity。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Monolith 和 microservices 比较要看哪些维度？”。标准答案里的“Scalability、consistency、resilience、development velocity、operational complexity。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. AI agents 题的平衡答案是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>能加速代码、测试和文档，但必须配合 PR review、测试、安全扫描和人工架构判断。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. AI agents 题的平衡答案是什么？”。标准答案里的“能加速代码、测试和文档，但必须配合 PR review、测试、安全扫描和人工架构判断。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. CI/CD 和 observability 如何协同？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>CI/CD 让发布可靠可回滚，observability 把生产问题反馈到下一轮测试和开发。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. CI/CD 和 observability 如何协同？”。标准答案里的“CI/CD 让发布可靠可回滚，observability 把生产问题反馈到下一轮测试和开发。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample Q1 FinTrack 小题：高频价格更新更支持 microservices 的哪一面？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>可以单独扩展价格/streaming 服务，提高 scalability；但会增加网络、部署和数据一致性复杂度。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample Q1 FinTrack 小题：高频价格更新更支持 microservices 的哪一面？”。标准答案里的“可以单独扩展价格/streaming 服务，提高 scalability；但会增加网络、部署和数据一致性复杂度。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample Q2 AI Agents 小题：列一个 advantage 和一个 risk，必须贴 e-commerce。</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Advantage：快速生成 login/cart tests 或 deployment scripts；risk：误处理支付/隐私逻辑或生成难审查代码。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample Q2 AI Agents 小题：列一个 advantage 和一个 risk，必须贴 e-commerce。”。标准答案里的“Advantage：快速生成 login/cart tests 或 deployment scripts；risk：误处理支付/隐私逻辑或生成难审查代码。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample Q4 CI/CD 小题：full observability stack 的 trade-off 写哪两类？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>收益是更快定位生产问题；代价是工具成本、数据量、隐私风险、团队学习成本和告警疲劳。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample Q4 CI/CD 小题：full observability stack 的 trade-off 写哪两类？”。标准答案里的“收益是更快定位生产问题；代价是工具成本、数据量、隐私风险、团队学习成本和告警疲劳。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？”。标准答案里的“CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：2023 SQL injection 防御写什么例子？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>不要拼接 <code>'...'+userInput</code>；用 parameterized query/prepared statement、输入验证和最小数据库权限。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：2023 SQL injection 防御写什么例子？”。标准答案里的“不要拼接 '...'+userInput；用 parameterized query/prepared statement、输入验证和最小数据库权限。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 安全题要解释攻击为什么发生：程序把用户输入当成 SQL、HTML 或脚本执行，攻击者就能改变原本语义。防御的价值是把数据和代码分开，并限制错误造成的损害。</p>
+          <p><strong>题目语境怎么用：</strong>SQL injection 用登录框、搜索框或表单输入说明拼接 SQL 的风险；XSS 用评论、用户名或 profile 字段说明输出到页面时为何要转义。</p>
+          <p><strong>卷面写法：</strong>卷面写三段：定义攻击；给贴题例子；写防御并解释理由。prepared statements/parameterized queries 让输入只作为 value，ORM 安全 API 避免手拼 SQL，server-side validation 和最小权限负责兜底。</p>
+          <p><strong>常见失分点：</strong>只写 sanitize 不够。sanitize 没有说明上下文，也不能替代参数化查询、输出转义和最小数据库权限。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#sample-topics">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="triage" class="section">
@@ -797,6 +1557,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 看到题面关键词后第一步是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>先归类题型，再套对应答案结构，不要想到什么写什么。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 看到题面关键词后第一步是什么？”。标准答案里的“先归类题型，再套对应答案结构，不要想到什么写什么。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 比较题的固定骨架是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>定义两个方案，按维度比较，写 trade-off，最后 recommendation。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 比较题的固定骨架是什么？”。标准答案里的“定义两个方案，按维度比较，写 trade-off，最后 recommendation。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. 安全题的固定骨架是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>定义攻击，给例子，写具体防御措施。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 安全题的固定骨架是什么？”。标准答案里的“定义攻击，给例子，写具体防御措施。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q1(b) 看到 receipt number、items、price、date，应归到哪类答案结构？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>SQL/NoSQL database choice：先把它画成 Customers、Receipts、ReceiptItems，再说明 receipt number 唯一、total 和 items 要一致，所以默认 SQL；最后补 clickstream 才可能 NoSQL。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q1(b) 看到 receipt number、items、price、date，应归到哪类答案结构？”。标准答案里的“SQL/NoSQL database choice：先把它画成 Customers、Receipts、ReceiptItems，再说明 receipt number 唯一、total 和 items 要一致，所以默认 SQL；最后补 clickstream 才可能 NoSQL。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2023 Summer Q2(iv) 看到嵌套 <code>setTimeout</code>，应归到哪类答案结构？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Node event loop 输出题：先列同步输出，再解释 callback 排队和延迟。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2023 Summer Q2(iv) 看到嵌套 setTimeout，应归到哪类答案结构？”。标准答案里的“Node event loop 输出题：先列同步输出，再解释 callback 排队和延迟。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample Q1 看到 FinTrack 和两种 architecture，应归到哪类答案结构？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Architecture comparison：映射 3-tier，再按 scalability/performance/resilience/deployment 比较并推荐。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample Q1 看到 FinTrack 和两种 architecture，应归到哪类答案结构？”。标准答案里的“Architecture comparison：映射 3-tier，再按 scalability/performance/resilience/deployment 比较并推荐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：Sample Rails controller 怎样指出问题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：Sample Rails controller 怎样指出问题？”。标准答案里的“指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？”。标准答案里的“CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#triage">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="exam-map" class="section">
@@ -844,6 +1699,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 考法地图的用法是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>用来识别重复题型和新增 sample 主题，决定哪些模板必须熟练。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 考法地图的用法是什么？”。标准答案里的“用来识别重复题型和新增 sample 主题，决定哪些模板必须熟练。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 2023-2025 最稳定的主题有哪些？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>MVC、SQL/NoSQL、Node/React、Accessibility/SEO/Security、HTTP/Cloud。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 2023-2025 最稳定的主题有哪些？”。标准答案里的“MVC、SQL/NoSQL、Node/React、Accessibility/SEO/Security、HTTP/Cloud。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Sample 新题型说明什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>考试可能从传统 Web 基础扩到 microservices、AI agents、CI/CD 和 observability。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Sample 新题型说明什么？”。标准答案里的“考试可能从传统 Web 基础扩到 microservices、AI agents、CI/CD 和 observability。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 从 2023 到 2025，MVC 在 CS615 里出现过几种问法？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>2023 要解释 MVC 并给 web/other environment；2025 是 25 分 essay；Sample Q3 用 Rails controller 检查 MVC/SRP。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 从 2023 到 2025，MVC 在 CS615 里出现过几种问法？”。标准答案里的“2023 要解释 MVC 并给 web/other environment；2025 是 25 分 essay；Sample Q3 用 Rails controller 检查 MVC/SRP。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 从 2023 到 2025，Node/React 出题怎样变化？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>2023 偏 Node callback/output 和 React merits；2024/2025 继续考 Node/Express/React 与 componentization。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 从 2023 到 2025，Node/React 出题怎样变化？”。标准答案里的“2023 偏 Node callback/output 和 React merits；2024/2025 继续考 Node/Express/React 与 componentization。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample 相比 past paper 新增了哪些工程主题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>FinTrack architecture、AI agents、Rails controller refactor、CI/CD 和 observability。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample 相比 past paper 新增了哪些工程主题？”。标准答案里的“FinTrack architecture、AI agents、Rails controller refactor、CI/CD 和 observability。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：2023 SQL injection 防御写什么例子？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>不要拼接 <code>'...'+userInput</code>；用 parameterized query/prepared statement、输入验证和最小数据库权限。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：2023 SQL injection 防御写什么例子？”。标准答案里的“不要拼接 '...'+userInput；用 parameterized query/prepared statement、输入验证和最小数据库权限。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 安全题要解释攻击为什么发生：程序把用户输入当成 SQL、HTML 或脚本执行，攻击者就能改变原本语义。防御的价值是把数据和代码分开，并限制错误造成的损害。</p>
+          <p><strong>题目语境怎么用：</strong>SQL injection 用登录框、搜索框或表单输入说明拼接 SQL 的风险；XSS 用评论、用户名或 profile 字段说明输出到页面时为何要转义。</p>
+          <p><strong>卷面写法：</strong>卷面写三段：定义攻击；给贴题例子；写防御并解释理由。prepared statements/parameterized queries 让输入只作为 value，ORM 安全 API 避免手拼 SQL，server-side validation 和最小权限负责兜底。</p>
+          <p><strong>常见失分点：</strong>只写 sanitize 不够。sanitize 没有说明上下文，也不能替代参数化查询、输出转义和最小数据库权限。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：2025 Q1(a) full-stack 题如何举例？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>用用户查看 receipt：browser 发 <code>GET /receipts/7</code>，server 查数据库并执行业务规则，database 返回收据和 items。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：2025 Q1(a) full-stack 题如何举例？”。标准答案里的“用用户查看 receipt：browser 发 GET /receipts/7，server 查数据库并执行业务规则，database 返回收据和 items。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#exam-map">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="templates" class="section">
@@ -871,6 +1821,101 @@
               <li>给一个简短例子。</li>
               <li>写清楚防御：SQL injection 用 parameterized queries；XSS 用 output encoding、sanitization、CSP、HttpOnly cookies。</li>
             </ol>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. MVC 25 分题第一段写什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>定义 Model、View、Controller 的职责，并说明它们分离关注点。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. MVC 25 分题第一段写什么？”。标准答案里的“定义 Model、View、Controller 的职责，并说明它们分离关注点。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 方案比较题最怕漏什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>漏 trade-off 和 recommendation。只写优点通常不够。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 方案比较题最怕漏什么？”。标准答案里的“漏 trade-off 和 recommendation。只写优点通常不够。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Security 题为什么要给例子？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>例子能证明你知道攻击如何发生，也方便自然引出防御措施。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Security 题为什么要给例子？”。标准答案里的“例子能证明你知道攻击如何发生，也方便自然引出防御措施。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 MVC 25 分题：模板第一段不要写什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>不要直接堆 Rails 名词；先定义 Model/View/Controller，然后再放 request flow 和 concrete example。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 MVC 25 分题：模板第一段不要写什么？”。标准答案里的“不要直接堆 Rails 名词；先定义 Model/View/Controller，然后再放 request flow 和 concrete example。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample FinTrack 比较题：recommendation 不能只选 microservices，为什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>要看团队能力、transaction consistency 和 operational complexity；可推荐 modular monolith 或逐步拆分。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample FinTrack 比较题：recommendation 不能只选 microservices，为什么？”。标准答案里的“要看团队能力、transaction consistency 和 operational complexity；可推荐 modular monolith 或逐步拆分。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2023 security 题：SQL injection/XSS 模板都要有哪三段？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>定义攻击、给一个简短攻击例子、写具体防御。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2023 security 题：SQL injection/XSS 模板都要有哪三段？”。标准答案里的“定义攻击、给一个简短攻击例子、写具体防御。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 安全题要解释攻击为什么发生：程序把用户输入当成 SQL、HTML 或脚本执行，攻击者就能改变原本语义。防御的价值是把数据和代码分开，并限制错误造成的损害。</p>
+          <p><strong>题目语境怎么用：</strong>SQL injection 用登录框、搜索框或表单输入说明拼接 SQL 的风险；XSS 用评论、用户名或 profile 字段说明输出到页面时为何要转义。</p>
+          <p><strong>卷面写法：</strong>卷面写三段：定义攻击；给贴题例子；写防御并解释理由。prepared statements/parameterized queries 让输入只作为 value，ORM 安全 API 避免手拼 SQL，server-side validation 和最小权限负责兜底。</p>
+          <p><strong>常见失分点：</strong>只写 sanitize 不够。sanitize 没有说明上下文，也不能替代参数化查询、输出转义和最小数据库权限。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：2025 Q1(a) full-stack 题如何举例？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>用用户查看 receipt：browser 发 <code>GET /receipts/7</code>，server 查数据库并执行业务规则，database 返回收据和 items。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：2025 Q1(a) full-stack 题如何举例？”。标准答案里的“用用户查看 receipt：browser 发 GET /receipts/7，server 查数据库并执行业务规则，database 返回收据和 items。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：2025 Q1(b) shopping habits 为什么默认 SQL？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>因为 <code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code> 要用 key/join/transaction 保持 receipt number、items、total 一致。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：2025 Q1(b) shopping habits 为什么默认 SQL？”。标准答案里的“因为 Customers、Receipts、ReceiptItems 要用 key/join/transaction 保持 receipt number、items、total 一致。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#templates">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="summary" class="section">
@@ -885,6 +1930,101 @@
               <li>Accessibility/SEO/security 题要给具体做法，不要只写价值观。</li>
               <li>Sample 新题型要给 recommendation，并说明 human oversight 是人类审查和把关，observability feedback 是从生产日志/指标/链路中学到的信息，deployment trade-offs 是发布速度、风险和成本之间的取舍。</li>
             </ol>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. CS615 答案最常见扣分点是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>只背定义，不落回 Web 场景和题目条件。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. CS615 答案最常见扣分点是什么？”。标准答案里的“只背定义，不落回 Web 场景和题目条件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 比较题怎样显得像工程答案？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>按维度评估成本、风险、扩展性、维护性、安全性，而不是简单选新技术。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 比较题怎样显得像工程答案？”。标准答案里的“按维度评估成本、风险、扩展性、维护性、安全性，而不是简单选新技术。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. 最后检查答案时问自己什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>我有没有定义、例子、trade-off、recommendation 或具体防御措施。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 最后检查答案时问自己什么？”。标准答案里的“我有没有定义、例子、trade-off、recommendation 或具体防御措施。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 做 2025 shopping database 题时，答案最后用哪一句收束？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>For receipt records, SQL is the stronger default because Customers, Receipts and ReceiptItems need keys, joins and transactions; NoSQL would fit better only if the data were flexible high-volume clickstream events.</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 做 2025 shopping database 题时，答案最后用哪一句收束？”。标准答案里的“For receipt records, SQL is the stronger default because Customers, Receipts and ReceiptItems need keys, joins and transactions; NoSQL would fit bett…”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
+          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
+          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 做 2023 HTTP evolution 题时，答案最后用哪条主线收束？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>每一代都在减少连接开销、阻塞和等待，提高多个 requests/responses 的传输效率。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 做 2023 HTTP evolution 题时，答案最后用哪条主线收束？”。标准答案里的“每一代都在减少连接开销、阻塞和等待，提高多个 requests/responses 的传输效率。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 做 Sample AI agents 题时，答案最后要落在哪个立场？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>AI agents can accelerate SDLC tasks, but human oversight, tests, review and security checks remain necessary.</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 做 Sample AI agents 题时，答案最后要落在哪个立场？”。标准答案里的“AI agents can accelerate SDLC tasks, but human oversight, tests, review and security checks remain necessary.”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS615 考试补题：Sample Rails controller 怎样指出问题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS615 考试补题：Sample Rails controller 怎样指出问题？”。标准答案里的“指出 controller 同时算折扣、存订单、发邮件、记 analytics，违反 SRP，应拆 service、model/repository、job/mailer。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS615 考试补题：Sample CI/CD 与 observability 怎么区分？”。标准答案里的“CI/CD 管 build/test/deploy；observability 用 logs/metrics/traces 定位哪次 deploy、哪个 service、哪条 request 出错。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
+          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
+          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
+          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs615.html#summary">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
         </article>
 

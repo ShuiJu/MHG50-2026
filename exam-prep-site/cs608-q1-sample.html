@@ -177,6 +177,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Q1 为什么不能穷举测试？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>输入空间通常太大甚至无限，穷举在时间和成本上不可行，所以要系统挑代表性测试。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Q1 为什么不能穷举测试？”。标准答案里的“输入空间通常太大甚至无限，穷举在时间和成本上不可行，所以要系统挑代表性测试。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS608 的判断要落到测试产物：TCI、data values、test cases、expected result 或 coverage item。</p>
+          <p><strong>题目语境怎么用：</strong>把题面给的输入、条件、代码行或类状态拆成可测试目标，再给具体调用和期望结果。</p>
+          <p><strong>卷面写法：</strong>卷面至少写覆盖目标、具体数据/调用、expected result，并说明为什么这个测试覆盖目标。</p>
+          <p><strong>常见失分点：</strong>不要只写“add tests”。没有 expected result 和覆盖目标，答案不可评分。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. BVA 的核心风险是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>边界附近最容易写错，例如 <code>&lt;</code> 和 <code>&lt;=</code> 搞反。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. BVA 的核心风险是什么？”。标准答案里的“边界附近最容易写错，例如 < 和 <= 搞反。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. TCI、Data Values、Test Cases 的顺序是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>先定 coverage item，再选具体数据值，最后写包含 expected result 的 test case。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. TCI、Data Values、Test Cases 的顺序是什么？”。标准答案里的“先定 coverage item，再选具体数据值，最后写包含 expected result 的 test case。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
+          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
+          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
+          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2023 Summer maxv 小题：为什么 Java 最大数组长度这个数字能支持 infeasible？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>因为数组长度和每个元素取值组合极大，设计 expected result 和执行所有组合都不可行。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2023 Summer maxv 小题：为什么 Java 最大数组长度这个数字能支持 infeasible？”。标准答案里的“因为数组长度和每个元素取值组合极大，设计 expected result 和执行所有组合都不可行。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS608 的判断要落到测试产物：TCI、data values、test cases、expected result 或 coverage item。</p>
+          <p><strong>题目语境怎么用：</strong>把题面给的输入、条件、代码行或类状态拆成可测试目标，再给具体调用和期望结果。</p>
+          <p><strong>卷面写法：</strong>卷面至少写覆盖目标、具体数据/调用、expected result，并说明为什么这个测试覆盖目标。</p>
+          <p><strong>常见失分点：</strong>不要只写“add tests”。没有 expected result 和覆盖目标，答案不可评分。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Climate.determine 小题：HEAT_AND_AC 何时出现？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong><code>temp&lt;16</code> 且 <code>humidity&gt;60</code> 同时成立时。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Climate.determine 小题：HEAT_AND_AC 何时出现？”。标准答案里的“temp<16 且 humidity>60 同时成立时。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2023 boilerSetting 小题：<code>isOn=false</code> 对 effects 有什么影响？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>即使温度低，也应返回 NONE/off，因为系统开关关闭。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2023 boilerSetting 小题：isOn=false 对 effects 有什么影响？”。标准答案里的“即使温度低，也应返回 NONE/off，因为系统开关关闭。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS608 考试补题：2025 optimized line 51 为什么有 4 branches？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS608 考试补题：2025 optimized line 51 为什么有 4 branches？”。标准答案里的“短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
+          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
+          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
+          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS608 考试补题：2025 Numbers static vs instance 怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Static 直接 <code>Numbers.isNeg(-1)</code>；instance 要 create object、set value、call method、get result。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS608 考试补题：2025 Numbers static vs instance 怎么写？”。标准答案里的“Static 直接 Numbers.isNeg(-1)；instance 要 create object、set value、call method、get result。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 对象测试的关键是 state 和调用序列。Instance method 的结果可能依赖 private field、setter 历史或 getter 观察。</p>
+          <p><strong>题目语境怎么用：</strong>static method 可直接调用；class context 要 create object -> set state -> call method -> observe return/getter。</p>
+          <p><strong>卷面写法：</strong>卷面写完整 method sequence，并说明每步如何设置或观察状态。若问 accessor methods，先列能读写状态的 public API。</p>
+          <p><strong>常见失分点：</strong>不要直接改 private field，也不要只写一个输入值。测试必须通过公开接口形成状态。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs608-q1-sample.html#knowledge">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="judge" class="section">
@@ -221,6 +316,101 @@
             <p>
               BVA 问的是“边界附近有没有错”；DT 问的是“这些条件组合起来输出对不对”。如果你先问清楚这句话，后面的表格就不会跑偏。
             </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 题面有数值范围时优先想什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>优先想 BVA，找 lower/upper boundary 和 just below/on/just above。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 题面有数值范围时优先想什么？”。标准答案里的“优先想 BVA，找 lower/upper boundary 和 just below/on/just above。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 题面有多个条件组合时优先想什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>优先想 Decision Table，列 causes、effects、rules 和 infeasible combinations。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 题面有多个条件组合时优先想什么？”。标准答案里的“优先想 Decision Table，列 causes、effects、rules 和 infeasible combinations。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. EP 和 BVA 的关系是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>EP 先分行为相同的区域，BVA 再重点检查区域边界附近的值。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. EP 和 BVA 的关系是什么？”。标准答案里的“EP 先分行为相同的区域，BVA 再重点检查区域边界附近的值。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Climate.determine 小题：为什么这是 BVA 而不是 DT 主题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>核心是 temp=16、humidity=60 这类数值边界附近的错误风险。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Climate.determine 小题：为什么这是 BVA 而不是 DT 主题？”。标准答案里的“核心是 temp=16、humidity=60 这类数值边界附近的错误风险。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2023 boilerSetting 小题：为什么这是 Decision Table？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>它有温度区间和 <code>isOn</code> 多个 causes 组合，对应 LOW/HIGH/NONE effects。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2023 boilerSetting 小题：为什么这是 Decision Table？”。标准答案里的“它有温度区间和 isOn 多个 causes 组合，对应 LOW/HIGH/NONE effects。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 PV.exportPower 小题：为什么 random tests 基于 Decision Table？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>题目直接给 enabled/nettPower 的 DT rules；随机只负责在每条 rule 内取具体值，例如 true rule 取 nettPower=37，false rule 取 nettPower=0。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 PV.exportPower 小题：为什么 random tests 基于 Decision Table？”。标准答案里的“题目直接给 enabled/nettPower 的 DT rules；随机只负责在每条 rule 内取具体值，例如 true rule 取 nettPower=37，false rule 取 nettPower=0。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS608 考试补题：2025 Numbers static vs instance 怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Static 直接 <code>Numbers.isNeg(-1)</code>；instance 要 create object、set value、call method、get result。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS608 考试补题：2025 Numbers static vs instance 怎么写？”。标准答案里的“Static 直接 Numbers.isNeg(-1)；instance 要 create object、set value、call method、get result。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 对象测试的关键是 state 和调用序列。Instance method 的结果可能依赖 private field、setter 历史或 getter 观察。</p>
+          <p><strong>题目语境怎么用：</strong>static method 可直接调用；class context 要 create object -> set state -> call method -> observe return/getter。</p>
+          <p><strong>卷面写法：</strong>卷面写完整 method sequence，并说明每步如何设置或观察状态。若问 accessor methods，先列能读写状态的 public API。</p>
+          <p><strong>常见失分点：</strong>不要直接改 private field，也不要只写一个输入值。测试必须通过公开接口形成状态。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS608 考试补题：2023 Lighting.decide class context 怎么落地？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>用 public setter/constructor 设置 brightness 和 override，调用 <code>decide()</code>，再用 getter 检查 power state。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS608 考试补题：2023 Lighting.decide class context 怎么落地？”。标准答案里的“用 public setter/constructor 设置 brightness 和 override，调用 decide()，再用 getter 检查 power state。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 对象测试的关键是 state 和调用序列。Instance method 的结果可能依赖 private field、setter 历史或 getter 观察。</p>
+          <p><strong>题目语境怎么用：</strong>static method 可直接调用；class context 要 create object -> set state -> call method -> observe return/getter。</p>
+          <p><strong>卷面写法：</strong>卷面写完整 method sequence，并说明每步如何设置或观察状态。若问 accessor methods，先列能读写状态的 public API。</p>
+          <p><strong>常见失分点：</strong>不要直接改 private field，也不要只写一个输入值。测试必须通过公开接口形成状态。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs608-q1-sample.html#judge">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="exam-patterns" class="section">
@@ -266,6 +456,101 @@
                 </tbody>
               </table>
             </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 考法变化表应该怎么用？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>用来判断 Q1 在不同年份更偏 BVA、DT 还是 exhaustive explanation，并准备对应表格。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 考法变化表应该怎么用？”。标准答案里的“用来判断 Q1 在不同年份更偏 BVA、DT 还是 exhaustive explanation，并准备对应表格。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 为什么样章要看 2023-2025？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>它能显示 Q1 不是单一模板，而是在黑盒方法之间切换。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 为什么样章要看 2023-2025？”。标准答案里的“它能显示 Q1 不是单一模板，而是在黑盒方法之间切换。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS608 的判断要落到测试产物：TCI、data values、test cases、expected result 或 coverage item。</p>
+          <p><strong>题目语境怎么用：</strong>把题面给的输入、条件、代码行或类状态拆成可测试目标，再给具体调用和期望结果。</p>
+          <p><strong>卷面写法：</strong>卷面至少写覆盖目标、具体数据/调用、expected result，并说明为什么这个测试覆盖目标。</p>
+          <p><strong>常见失分点：</strong>不要只写“add tests”。没有 expected result 和覆盖目标，答案不可评分。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. 看到旧题时要抽取什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>抽取题型关键词、输出表格结构和 expected result 写法，而不是死背数据。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 看到旧题时要抽取什么？”。标准答案里的“抽取题型关键词、输出表格结构和 expected result 写法，而不是死背数据。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS608 的判断要落到测试产物：TCI、data values、test cases、expected result 或 coverage item。</p>
+          <p><strong>题目语境怎么用：</strong>把题面给的输入、条件、代码行或类状态拆成可测试目标，再给具体调用和期望结果。</p>
+          <p><strong>卷面写法：</strong>卷面至少写覆盖目标、具体数据/调用、expected result，并说明为什么这个测试覆盖目标。</p>
+          <p><strong>常见失分点：</strong>不要只写“add tests”。没有 expected result 和覆盖目标，答案不可评分。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2023 Q1 与 2025 Q1 的差异是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>2023 偏 exhaustive + boilerSetting DT；2025 偏 exhaustive/input-output partitions + Climate.determine BVA。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2023 Q1 与 2025 Q1 的差异是什么？”。标准答案里的“2023 偏 exhaustive + boilerSetting DT；2025 偏 exhaustive/input-output partitions + Climate.determine BVA。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Autumn Q1 database exhaustive + BVA 说明什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>BVA 不只出在气候控制，也会出在数据库/业务规则方法上；关键仍是边界和 partitions。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Autumn Q1 database exhaustive + BVA 说明什么？”。标准答案里的“BVA 不只出在气候控制，也会出在数据库/业务规则方法上；关键仍是边界和 partitions。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 样章复习时要把 2023 boilerSetting 和 2025 Climate.determine 对照什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>对照题面关键词：组合条件走 DT，数值阈值边界走 BVA。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 样章复习时要把 2023 boilerSetting 和 2025 Climate.determine 对照什么？”。标准答案里的“对照题面关键词：组合条件走 DT，数值阈值边界走 BVA。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS608 考试补题：2025 PV.exportPower random rule 怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>enabled=true 且 nettPower>0 时随机取正数 expected true；enabled=false 或 nettPower<=0 expected false。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS608 考试补题：2025 PV.exportPower random rule 怎么写？”。标准答案里的“enabled=true 且 nettPower>0 时随机取正数 expected true；enabled=false 或 nettPower<=0 expected false。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS608 考试补题：2023 isSquare oracle 怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>随机给 <code>x</code> 后，用整数平方根反算验证 <code>r*r==x</code>，不能用被测函数输出当 expected。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS608 考试补题：2023 isSquare oracle 怎么写？”。标准答案里的“随机给 x 后，用整数平方根反算验证 r*r==x，不能用被测函数输出当 expected。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Random testing 必须解决 data、oracle、completion 三个问题；随机运行本身不能判断对错。</p>
+          <p><strong>题目语境怎么用：</strong>oracle 可来自 specification、decision table、equivalence partitions 或数学性质；completion 可按每个 partition/rule 覆盖次数定义。</p>
+          <p><strong>卷面写法：</strong>卷面分三段写：随机生成范围，expected result/oracle，停止条件。伪代码里每次随机调用后都要 assert。</p>
+          <p><strong>常见失分点：</strong>只写 loop many times 不够。没有 oracle 的随机测试只能发现 crash，不能证明功能正确。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs608-q1-sample.html#exam-patterns">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
 
           <section id="classic" class="section">
@@ -291,6 +576,101 @@
                   <p>Therefore exhaustive testing is not practical; we need systematic sampling techniques such as BVA or Decision Table testing.</p>
                 </div>
               </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Worked example 的学习重点是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>看题面如何转成 TCI、data values、test cases 和 expected results。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Worked example 的学习重点是什么？”。标准答案里的“看题面如何转成 TCI、data values、test cases 和 expected results。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS608 的判断要落到测试产物：TCI、data values、test cases、expected result 或 coverage item。</p>
+          <p><strong>题目语境怎么用：</strong>把题面给的输入、条件、代码行或类状态拆成可测试目标，再给具体调用和期望结果。</p>
+          <p><strong>卷面写法：</strong>卷面至少写覆盖目标、具体数据/调用、expected result，并说明为什么这个测试覆盖目标。</p>
+          <p><strong>常见失分点：</strong>不要只写“add tests”。没有 expected result 和覆盖目标，答案不可评分。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. BVA worked example 最该观察什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>每个 boundary 为什么选这些值，以及 nominal value 怎样避免组合爆炸。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. BVA worked example 最该观察什么？”。标准答案里的“每个 boundary 为什么选这些值，以及 nominal value 怎样避免组合爆炸。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. DT worked example 最该观察什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>conditions/actions 怎样变成 rules，哪些组合 infeasible，哪些 rule 需要 test case。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. DT worked example 最该观察什么？”。标准答案里的“conditions/actions 怎样变成 rules，哪些组合 infeasible，哪些 rule 需要 test case。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Climate.determine worked example：选择 temp=15/16/17 是为了覆盖什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>覆盖 heating boundary just below/on/above 16。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Climate.determine worked example：选择 temp=15/16/17 是为了覆盖什么？”。标准答案里的“覆盖 heating boundary just below/on/above 16。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2023 boilerSetting worked example：为什么 -50 和 +50 是 sensible data values？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>它们代表 very low 和 very high 温度，方便覆盖 HIGH/NONE 这类极端区间。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2023 boilerSetting worked example：为什么 -50 和 +50 是 sensible data values？”。标准答案里的“它们代表 very low 和 very high 温度，方便覆盖 HIGH/NONE 这类极端区间。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 decideWrite 类题的 worked mindset 是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>不要从规格开始，而是从 JaCoCo 未覆盖 line/branch 反推 additional inputs。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 decideWrite 类题的 worked mindset 是什么？”。标准答案里的“不要从规格开始，而是从 JaCoCo 未覆盖 line/branch 反推 additional inputs。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
+          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
+          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
+          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS608 考试补题：2023 isSquare oracle 怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>随机给 <code>x</code> 后，用整数平方根反算验证 <code>r*r==x</code>，不能用被测函数输出当 expected。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS608 考试补题：2023 isSquare oracle 怎么写？”。标准答案里的“随机给 x 后，用整数平方根反算验证 r*r==x，不能用被测函数输出当 expected。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Random testing 必须解决 data、oracle、completion 三个问题；随机运行本身不能判断对错。</p>
+          <p><strong>题目语境怎么用：</strong>oracle 可来自 specification、decision table、equivalence partitions 或数学性质；completion 可按每个 partition/rule 覆盖次数定义。</p>
+          <p><strong>卷面写法：</strong>卷面分三段写：随机生成范围，expected result/oracle，停止条件。伪代码里每次随机调用后都要 assert。</p>
+          <p><strong>常见失分点：</strong>只写 loop many times 不够。没有 oracle 的随机测试只能发现 crash，不能证明功能正确。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS608 考试补题：2025 Climate.determine BVA 具体值是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>围绕 <code>temp=16</code> 取 15/16/17，围绕 <code>humidity=60</code> 取 59/60/61，并写 expected enum。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS608 考试补题：2025 Climate.determine BVA 具体值是什么？”。标准答案里的“围绕 temp=16 取 15/16/17，围绕 humidity=60 取 59/60/61，并写 expected enum。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs608-q1-sample.html#classic">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
             </section>
 
             <section id="worked-bva" class="worked-example" style="margin-top: 18px;">
@@ -403,6 +783,101 @@
               <p>
                 The completed TCI table shows that every non-error boundary value and every non-error expected output is covered by at least one test case. Each test case contributes at least one new TCI, so there is no unnecessary duplicate test case.
               </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. BVA worked example 的第一步是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>先从 specification 找输入变量和边界，不要直接猜测试数据。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. BVA worked example 的第一步是什么？”。标准答案里的“先从 specification 找输入变量和边界，不要直接猜测试数据。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 为什么 nominal value 很重要？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>它让其他变量保持普通有效值，帮助你把失败原因定位到当前边界。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 为什么 nominal value 很重要？”。标准答案里的“它让其他变量保持普通有效值，帮助你把失败原因定位到当前边界。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. BVA 表格里的 expected result 从哪里来？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>只能从题目 specification 推出，不能从代码运行结果反推。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. BVA 表格里的 expected result 从哪里来？”。标准答案里的“只能从题目 specification 推出，不能从代码运行结果反推。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Climate.determine 小题：humidity=59/60/61 分别服务哪个 BVA 目标？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>分别是 just below/on/above air-conditioning boundary 60。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Climate.determine 小题：humidity=59/60/61 分别服务哪个 BVA 目标？”。标准答案里的“分别是 just below/on/above air-conditioning boundary 60。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Climate.determine 小题：如果 temp 测边界，humidity 应取什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>取 nominal valid value，避免同时触发另一个边界，让测试目标清楚。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Climate.determine 小题：如果 temp 测边界，humidity 应取什么？”。标准答案里的“取 nominal valid value，避免同时触发另一个边界，让测试目标清楚。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Climate.determine 小题：为什么题目要求 identify expected output TCIs？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>因为输出 NONE/HEAT_ONLY/AC_ONLY/HEAT_AND_AC 也要被覆盖，不能只覆盖输入边界。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Climate.determine 小题：为什么题目要求 identify expected output TCIs？”。标准答案里的“因为输出 NONE/HEAT_ONLY/AC_ONLY/HEAT_AND_AC 也要被覆盖，不能只覆盖输入边界。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS608 考试补题：2025 optimized line 51 为什么有 4 branches？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS608 考试补题：2025 optimized line 51 为什么有 4 branches？”。标准答案里的“短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
+          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
+          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
+          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS608 考试补题：2025 Numbers static vs instance 怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Static 直接 <code>Numbers.isNeg(-1)</code>；instance 要 create object、set value、call method、get result。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS608 考试补题：2025 Numbers static vs instance 怎么写？”。标准答案里的“Static 直接 Numbers.isNeg(-1)；instance 要 create object、set value、call method、get result。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 对象测试的关键是 state 和调用序列。Instance method 的结果可能依赖 private field、setter 历史或 getter 观察。</p>
+          <p><strong>题目语境怎么用：</strong>static method 可直接调用；class context 要 create object -> set state -> call method -> observe return/getter。</p>
+          <p><strong>卷面写法：</strong>卷面写完整 method sequence，并说明每步如何设置或观察状态。若问 accessor methods，先列能读写状态的 public API。</p>
+          <p><strong>常见失分点：</strong>不要直接改 private field，也不要只写一个输入值。测试必须通过公开接口形成状态。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs608-q1-sample.html#worked-bva">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
             </section>
 
             <section id="worked-dt" class="worked-example" style="margin-top: 18px;">
@@ -434,6 +909,101 @@
               <p>
                 讲题时要解释不可行组合：<code>t&lt;1</code>、<code>1<=t<25</code>、<code>t>=25</code> 是互斥温度区间，不可能同时为真。每个可行 rule 都是一个 TCI，也对应一个 test case。
               </p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Decision Table worked example 先列什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>先列 causes 和 effects，再组合 rules。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Decision Table worked example 先列什么？”。标准答案里的“先列 causes 和 effects，再组合 rules。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 为什么要标 infeasible combinations？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>有些条件组合现实或规格上不可能，不应该硬凑 test case。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 为什么要标 infeasible combinations？”。标准答案里的“有些条件组合现实或规格上不可能，不应该硬凑 test case。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS608 的判断要落到测试产物：TCI、data values、test cases、expected result 或 coverage item。</p>
+          <p><strong>题目语境怎么用：</strong>把题面给的输入、条件、代码行或类状态拆成可测试目标，再给具体调用和期望结果。</p>
+          <p><strong>卷面写法：</strong>卷面至少写覆盖目标、具体数据/调用、expected result，并说明为什么这个测试覆盖目标。</p>
+          <p><strong>常见失分点：</strong>不要只写“add tests”。没有 expected result 和覆盖目标，答案不可评分。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. 每条可行 rule 至少需要什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>至少一个具体 test case，并写出 expected effect。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 每条可行 rule 至少需要什么？”。标准答案里的“至少一个具体 test case，并写出 expected effect。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. boilerSetting 小题：causes 至少包括哪两类？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>温度区间 causes 和 <code>isOn</code> cause。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. boilerSetting 小题：causes 至少包括哪两类？”。标准答案里的“温度区间 causes 和 isOn cause。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. boilerSetting 小题：effects 对应哪三个 enum？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong><code>NONE</code>、<code>LOW</code>、<code>HIGH</code>。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. boilerSetting 小题：effects 对应哪三个 enum？”。标准答案里的“NONE、LOW、HIGH。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. boilerSetting 小题：interpret each rule 是让你做什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>用一句话解释每条可行组合为什么返回对应 boiler setting，确认 DT 没填错。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. boilerSetting 小题：interpret each rule 是让你做什么？”。标准答案里的“用一句话解释每条可行组合为什么返回对应 boiler setting，确认 DT 没填错。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS608 考试补题：2025 decideWrite line 33 red 要怎么补？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>给一个能走到 line 33 的 concrete input，写 expected result，并说明它补 statement coverage。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS608 考试补题：2025 decideWrite line 33 red 要怎么补？”。标准答案里的“给一个能走到 line 33 的 concrete input，写 expected result，并说明它补 statement coverage。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
+          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
+          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
+          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS608 考试补题：2025 optimized line 51 为什么有 4 branches？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS608 考试补题：2025 optimized line 51 为什么有 4 branches？”。标准答案里的“短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
+          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
+          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
+          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs608-q1-sample.html#worked-dt">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
             </section>
           </section>
 
@@ -448,6 +1018,101 @@
               <li>题目说 <code>without errors</code> 时，测试用例不要使用非法输入；但分析中仍可说明错误分区。</li>
               <li>最后加 review 句：full TCI coverage achieved, no unnecessary duplicate test cases。</li>
             </ol>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. Q1 答案必须包含什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>方法选择理由、TCI、data values、test cases、expected result 和必要的 infeasible 说明。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Q1 答案必须包含什么？”。标准答案里的“方法选择理由、TCI、data values、test cases、expected result 和必要的 infeasible 说明。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS608 的判断要落到测试产物：TCI、data values、test cases、expected result 或 coverage item。</p>
+          <p><strong>题目语境怎么用：</strong>把题面给的输入、条件、代码行或类状态拆成可测试目标，再给具体调用和期望结果。</p>
+          <p><strong>卷面写法：</strong>卷面至少写覆盖目标、具体数据/调用、expected result，并说明为什么这个测试覆盖目标。</p>
+          <p><strong>常见失分点：</strong>不要只写“add tests”。没有 expected result 和覆盖目标，答案不可评分。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. BVA 表格最后检查什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>每个边界是否有 below/on/above，expected result 是否来自 specification。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. BVA 表格最后检查什么？”。标准答案里的“每个边界是否有 below/on/above，expected result 是否来自 specification。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. DT 表格最后检查什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>每条可行 rule 是否有 test case，infeasible combination 是否说明理由。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. DT 表格最后检查什么？”。标准答案里的“每条可行 rule 是否有 test case，infeasible combination 是否说明理由。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Climate.determine 检查清单：BVA 答案少哪张表会扣大分？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>少 TCI、selected equivalence values 或 Test Cases 任一表都会让设计不完整。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Climate.determine 检查清单：BVA 答案少哪张表会扣大分？”。标准答案里的“少 TCI、selected equivalence values 或 Test Cases 任一表都会让设计不完整。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
+          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
+          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 decideWrite 检查清单：additional tests 少哪句话不够？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>少解释该 test 触发哪个 untaken branch/statement，不只是给输入。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 decideWrite 检查清单：additional tests 少哪句话不够？”。标准答案里的“少解释该 test 触发哪个 untaken branch/statement，不只是给输入。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
+          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
+          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
+          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 PV.exportPower 检查清单：random tests 少哪一项不够？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>少 random value generation criteria 或 oracle/expected result，就不能说明随机测试有效。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 PV.exportPower 检查清单：random tests 少哪一项不够？”。标准答案里的“少 random value generation criteria 或 oracle/expected result，就不能说明随机测试有效。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
+          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
+          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
+          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS608 考试补题：2025 optimized line 51 为什么有 4 branches？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS608 考试补题：2025 optimized line 51 为什么有 4 branches？”。标准答案里的“短路条件编译成 bytecode-level branches；additional test 要让之前没 evaluated 的子条件被 evaluated。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
+          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
+          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
+          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS608 考试补题：2025 Numbers static vs instance 怎么写？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Static 直接 <code>Numbers.isNeg(-1)</code>；instance 要 create object、set value、call method、get result。</p>
+          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS608 考试补题：2025 Numbers static vs instance 怎么写？”。标准答案里的“Static 直接 Numbers.isNeg(-1)；instance 要 create object、set value、call method、get result。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 对象测试的关键是 state 和调用序列。Instance method 的结果可能依赖 private field、setter 历史或 getter 观察。</p>
+          <p><strong>题目语境怎么用：</strong>static method 可直接调用；class context 要 create object -> set state -> call method -> observe return/getter。</p>
+          <p><strong>卷面写法：</strong>卷面写完整 method sequence，并说明每步如何设置或观察状态。若问 accessor methods，先列能读写状态的 public API。</p>
+          <p><strong>常见失分点：</strong>不要直接改 private field，也不要只写一个输入值。测试必须通过公开接口形成状态。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs608-q1-sample.html#summary">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
           </section>
         </article>
 
