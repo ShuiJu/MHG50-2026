@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-10 00:23
+更新时间：2026-05-12 17:53
 
 ## 项目目标
 
@@ -373,6 +373,24 @@
   - `exam-prep-site/assets/app.js` 在每个 section 的 QA 后自动注入 `本节过关门槛`：`内容理解过关` 和 `考试题目过关` 两个 checkbox。
   - 勾选状态使用 `localStorage` 按页面和 section 保存，刷新后不会丢失。
   - `exam-prep-site/assets/styles.css` 增加 `.qa-gate` 系列样式，让过关门槛在桌面和移动端都清楚可用。
+
+### 2026-05-12 17:53
+
+- 用户要求：再看考题，思考更多准备考试的内容。
+- 已重新抽查更多 past paper：
+  - CS615 2024：SQL/NoSQL shopping habits、SQL injection/XSS、React/componentization、Node/chaining/Express/output。
+  - CS605 2025 Summer：not regular、FA accepts `011` decidable、Java property T-r、HALT reductions、in NP、3-SAT reduction。
+  - CS608 2025 Autumn：evaluate() BVA、JaCoCo additional SC、TestNG pseudo-code、Scrum/testing、Percentages class context、Aircon EP、Windfarm random DT/MTBF。
+  - CS603 2025 Autumn：ComputeFib Hoare、Ack decreases、CopyArray invariants/variants、Point2 Dafny、FRET、CDCL、Spin temporal properties、CTL/LTL。
+- 已新增 `exam-prep-site/exam-war-room.html`：
+  - 作为“考前作战页”，不讲新知识，而是训练读题分流、最后三轮复习、四门课整题包、开头句、漏分点。
+  - 把考题压成“题面信号 -> 立刻归类 -> 必须交付 -> 第一检查点”。
+  - 为四门课列出最后一轮优先练的整题包。
+- 已更新 `exam-prep-site/index.html`：
+  - 顶部导航、hero 标签、过关闭环 section、关键词跳转都新增 `考前作战页` 入口。
+- 已更新 `exam-prep-site/assets/app.js`：
+  - 为 `exam-war-room.html` 增加内容理解题。
+  - 为考前作战页增加 section-specific past paper QA，并允许考试补题池补满 5 道考试题。
 
 ## 制作记录
 

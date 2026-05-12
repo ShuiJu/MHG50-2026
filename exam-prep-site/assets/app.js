@@ -45,6 +45,31 @@
       q("搜到多个结果怎么办？", "先看线性页结果补理解，再看题型页结果学考试写法。"),
       q("关键词跳转不能替代什么？", "不能替代完整学习流程。它解决局部卡点，不负责建立整门课的顺序感。")
     ],
+    "exam-war-room.html#triage": [
+      q("读题分流的第一问是什么？", "先问这题要我交付什么：解释、比较、证明、测试表、代码覆盖、Dafny annotation，还是 temporal formula。"),
+      q("为什么不能先回忆全部知识？", "因为考场时间有限，先确定产物才能避免把证明题写成概念解释、把测试题写成术语背诵。"),
+      q("分流后下一步是什么？", "给题面对象命名，例如 receipt、HALT input、Climate boundary、Find invariant，再把答案围绕这些对象写。")
+    ],
+    "exam-war-room.html#final-round": [
+      q("最后三轮为什么要从整题识别开始？", "整题识别能发现自己是否会把题面归到正确题型；方向错了，后面写得再细也容易丢分。"),
+      q("答案骨架为什么只写五行？", "五行骨架训练考场速度：题型、对象、产物、例子、检查点。先把方向写正，再补细节。"),
+      q("第三轮为什么只补漏分点？", "最后阶段最值钱的是修正会直接扣分的缺口，例如 expected result、iff、variant、trade-off。")
+    ],
+    "exam-war-room.html#course-mocks": [
+      q("整题包怎么使用？", "每门课挑一组高频真题，先写答案骨架，再打开对应题型页补模板，最后用 QA 过关门槛检查。"),
+      q("为什么整题包比随机复习更有效？", "它覆盖一门课真正会交卷的产物：CS605 证明、CS608 表格、CS603 公式、CS615 场景取舍。"),
+      q("写完整题后先查什么？", "先查是否交付了题目要求的表格、证明、公式或例子，再查定义是否准确。")
+    ],
+    "exam-war-room.html#answer-starters": [
+      q("开头句的作用是什么？", "它把答案方向写正，让后面的例子和细节有落点，而不是一开始就散开背知识点。"),
+      q("什么时候不能照抄开头句？", "题面对象不同的时候要换对象，例如 receipt 题写 SQL，clickstream 题才写 NoSQL。"),
+      q("开头句之后必须接什么？", "必须接题面里的具体对象、数值、公式、代码行或 proof construction，否则仍然像泛泛背诵。")
+    ],
+    "exam-war-room.html#mark-loss": [
+      q("漏分点表最该怎么用？", "写完答案后用它反向检查：有没有 expected result、iff、variant、trade-off、operator meaning。"),
+      q("为什么危险写法常看起来也对？", "因为它们通常是概念正确但不可评分，例如只说 add tests、reduce from HALT、React is useful。"),
+      q("修漏分点的原则是什么？", "把抽象词换成可检查产物：具体 test case、具体 construction、具体 formula、具体 web scenario。")
+    ],
 
     "cs615-linear.html#textbook-audit": [
       q("CS615 为什么不能从 React 或 AI 开始？", "React 和 AI 很显眼，但它们依赖 request、API、数据库和分层架构这些地基。先学它们会变成背名词。"),
@@ -851,7 +876,36 @@
       ]
     };
 
+    const warRoomDrills = {
+      triage: [
+        q("考场读到 2025 CS608 Autumn evaluate() BVA 题，第一步写什么？", "先列 boundaries 和 TCIs，不要直接写 test case；题目明确要求 TCI table 和 test cases，而且要求 no unnecessary duplication。"),
+        q("考场读到 2025 CS605 L3/L5 reduction template，第一步填什么？", "先填目标语言名并假设它 decidable，再写从 HALT 输入 <code>&lt;M,w&gt;</code> 到新 Java program 的 computable mapping。"),
+        q("考场读到 2025 CS603 Spin temporal properties，第一步写什么？", "先说 system model 是 states/transitions/labels，再把性质写成 LTL 或 CTL formula，并解释 operator。")
+      ],
+      "final-round": [
+        q("最后一轮练 2024 CS615 Node 题时，应该先写哪三个点？", "Node 用于 I/O-heavy Web project；chaining 是连续调用返回对象/结果；Express 里 routes、controllers、models 分工不同。"),
+        q("最后一轮练 2025 CS605 Q6/Q7 时，应该连哪两题？", "先用 Q6 证明 L6A in NP，certificate/verifier 写清；再用 Q7 从 3-SAT reduction 证明 NP-complete。"),
+        q("最后一轮练 2025 CS608 Autumn Q3 时，应该对比什么？", "对比 static method conventional testing 和 instance method class context testing，必须写 method call order 和 expected comparison。")
+      ],
+      "course-mocks": [
+        q("CS615 整题包最该先做哪类题？", "先做 2024/2025 SQL-NoSQL shopping habits，因为它训练定义、场景选择、详细讨论和 trade-off，是 CS615 很稳定的得分动作。"),
+        q("CS608 整题包为什么要加入 TestNG pseudo-code？", "2025 Autumn 明确要求 TestNG keywords、test data 和 test class structure，所以不能只会手工表格。"),
+        q("CS603 整题包为什么加入 CopyArray？", "2025 Autumn 要 loop invariants 和 variants，能检查你是否真的会把数组循环证明写成 Dafny/Hoare 可验证结构。")
+      ],
+      "answer-starters": [
+        q("CS605 reduction 开头句之后必须接什么？", "必须接构造 <code>N</code> 的伪代码：N 如何模拟 <code>M(w)</code>，以及停机后怎样触发题目 property。"),
+        q("CS608 BVA 开头句之后必须接什么？", "必须接具体 boundary values，例如 just below/on/above，而不是只写 boundary testing is useful。"),
+        q("CS603 model checking 开头句之后必须接什么？", "必须接具体 formula，例如 <code>G(request -> F response)</code> 或 CTL 的 <code>AG safe</code>，并解释 operator。")
+      ],
+      "mark-loss": [
+        q("CS615 最危险的漏分是什么？", "只列技术名不贴题面。比如 React 题要写 componentization 和 stack 各技术职责；SQL/NoSQL 要写 receipt/clickstream 对照。"),
+        q("CS605 最危险的漏分是什么？", "证明里没有 iff。Reduction、NP-hardness、pumping contradiction 都要让 yes/no 或矛盾关系精确对齐。"),
+        q("CS608 最危险的漏分是什么？", "没有 expected result。测试题只给 input 不够，必须从 specification、DT、EP 或 oracle 推出 expected output。")
+      ]
+    };
+
     if (pageKey === "index") return indexDrills[id] || indexDrills["exam-system"];
+    if (pageKey === "exam-war-room") return warRoomDrills[id] || warRoomDrills.triage;
     if (pageKey.startsWith("cs615")) return cs615[id] || cs615.foundation;
     if (pageKey.startsWith("cs605")) return cs605[id] || cs605.language;
     if (pageKey.startsWith("cs608")) return cs608[id] || cs608.terms;
@@ -875,7 +929,7 @@
   };
 
   const examSupplementPool = (pageKey) => {
-    if (pageKey === "index") {
+    if (pageKey === "index" || pageKey === "exam-war-room") {
       return [
         q("首页考试补题：CS615 2025 Q1 第一轮应能写哪句话？", "写清 frontend 收集输入、server 执行业务规则、database 保存收据/用户/订单，再用 CRUD 和 SQL/NoSQL 选择收束。"),
         q("首页考试补题：CS608 2025 Q1 第一轮应能产出什么表？", "Climate.determine 的 input/output partitions、围绕 16 和 60 的 BVA data values、以及带 expected output 的 test cases。"),

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>考前作战页 | 2026 May Exam Prep</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html">
+          <span>2026 May Exam Prep</span>
+          <small>考前作战页</small>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">首页</a>
+          <a href="#triage">读题分流</a>
+          <a href="#course-mocks">整题包</a>
+          <a href="#answer-starters">开头句</a>
+          <a href="#mark-loss">漏分点</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">exam war room</p>
+        <h1>考前最后一轮：把题面直接变成可交卷答案。</h1>
+        <p class="lead">这一页不是重新学课。它专门训练考场动作：读题后先判断题型、确定要交付的产物、写出第一段、检查有没有漏掉能拿分的表格、公式、证明或例子。</p>
+        <div class="tag-list">
+          <span class="status">基于 2023-2025 past papers 与 sample papers</span>
+          <a class="tag" href="#triage">题面触发词</a>
+          <a class="tag" href="#final-round">最后三轮</a>
+          <a class="tag" href="#course-mocks">整题包</a>
+          <a class="tag" href="#mark-loss">漏分点</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+          <section id="triage" class="section">
+            <h2>1. 读题分流：先判断要交付什么</h2>
+            <p>考题的第一步不是回忆所有知识，而是识别这道题要你交付什么。CS615 常交付解释和取舍；CS605 交付证明；CS608 交付测试表和 expected result；CS603 交付公式、invariant、annotation 或 temporal property。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题面信号</th><th>立刻归类</th><th>必须交付</th><th>第一检查点</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>shopping habits、receipt number、SQL/NoSQL</td><td>CS615 database choice</td><td>选择 + 收据系统例子 + trade-off</td><td>有没有写 Customers/Receipts/ReceiptItems 和 transaction。</td></tr>
+                  <tr><td>ReactJS、componentization、stack</td><td>CS615 frontend/framework explanation</td><td>定义 + component/props/state + stack 各层职责</td><td>有没有只写“React 更快”。</td></tr>
+                  <tr><td>Prove not regular / not CFL</td><td>CS605 pumping proof</td><td>选 word、任意 split、pump 后矛盾</td><td>有没有覆盖所有合法切法。</td></tr>
+                  <tr><td>Java program property、HALT、mapping reduction</td><td>CS605 undecidability</td><td>构造 N + iff + contradiction</td><td>有没有说明 property 如何被 halting 控制。</td></tr>
+                  <tr><td>BVA、TCI、test cases、without errors</td><td>CS608 black-box testing</td><td>TCI table、data values、test cases、expected result</td><td>有没有重复覆盖、有没有 expected output。</td></tr>
+                  <tr><td>JaCoCo yellow/red、SC/BC、additional tests</td><td>CS608 white-box testing</td><td>缺口说明 + additional tests + coverage explanation</td><td>有没有说明新测试补哪条 line/branch。</td></tr>
+                  <tr><td>Hoare logic、partial/total correctness</td><td>CS603 program proof</td><td>pre/post、invariant、rule use、variant if total</td><td>有没有把 invariant 和 exit condition 接到 postcondition。</td></tr>
+                  <tr><td>Spin、NuSMV、LTL、CTL、temporal</td><td>CS603 model checking</td><td>state model + formula + verification/counterexample</td><td>有没有给具体 formula，例如 <code>G(request -> F response)</code>。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="final-round" class="section">
+            <h2>2. 最后三轮复习法</h2>
+            <p>最后一轮不要平均用力。按题目产物复习，比按章节标题复习更接近试卷。每一轮都要写一点东西，不能只看。</p>
+            <div class="three-col">
+              <article class="card">
+                <h3>第一轮：整题识别</h3>
+                <p>拿一份 past/sample paper，只看题面关键词，不写完整答案。给每题标出：解释题、比较题、证明题、测试表、代码覆盖、Dafny、model checking。</p>
+              </article>
+              <article class="card">
+                <h3>第二轮：答案骨架</h3>
+                <p>每题只写 5 行骨架：定义、题面对象、交付产物、例子、最后检查点。目标是速度和方向，不追求完整段落。</p>
+              </article>
+              <article class="card">
+                <h3>第三轮：补高频漏分</h3>
+                <p>回看自己漏掉的内容：CS605 的 iff、CS608 的 expected result、CS603 的 variant、CS615 的 trade-off。只补这些会直接丢分的点。</p>
+              </article>
+            </div>
+            <div class="answer-box">
+              <p><strong>推进规则：</strong>一道题如果 60 秒内说不出“题型 + 交付产物 + 一个具体例子”，就回到对应题型页；如果能说出但写不细，再回线性页补该 section。</p>
+            </div>
+          </section>
+
+          <section id="course-mocks" class="section">
+            <h2>3. 四门课整题包：最后一轮优先练这些</h2>
+            <p>下面不是新题，而是从 past/sample papers 里挑出的高回报训练包。每个包都覆盖一门课的主要得分动作。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>科目</th><th>优先整题</th><th>训练目标</th><th>写完后检查</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>CS615</td><td>2024/2025 SQL vs NoSQL shopping habits；2024 React/Node；Sample FinTrack、Rails controller、CI/CD/observability</td><td>解释概念、贴业务场景、比较取舍、给 recommendation</td><td>有没有具体例子：receipt/clickstream、component、route/controller/model、logs/metrics/traces。</td></tr>
+                  <tr><td>CS605</td><td>2025 not regular <code>0^m+0^n=0^p</code>；FA accepts <code>011</code> decidable；Java property T-r；HALT reductions；Q6/Q7 NP 与 3-SAT</td><td>证明结构、构造、iff、certificate/verifier、NP-complete 方向</td><td>有没有写清输入编码、yes 条件、构造是否 computable、polynomial time。</td></tr>
+                  <tr><td>CS608</td><td>2025 Autumn evaluate() BVA；JaCoCo additional SC；TestNG pseudo-code；Percentages class context；Aircon EP；Windfarm random DT</td><td>表格、具体测试数据、expected result、代码覆盖解释、随机测试 oracle</td><td>有没有 TCI/data/test cases 三件套；有没有说明 TestNG dataProvider/test structure。</td></tr>
+                  <tr><td>CS603</td><td>2025 Autumn ComputeFib Hoare；Ack decreases；CopyArray invariants/variants；Point2 Dafny；FRET；CDCL；Spin temporal properties；CTL/LTL</td><td>公式化、proof obligation、Dafny annotation、temporal formula、solver reasoning</td><td>有没有写 invariant/variant、decreases、state/transition/label、operator 含义。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="answer-starters" class="section">
+            <h2>4. 开头句：先把方向写正</h2>
+            <p>开头句不是背范文，而是防止第一段写偏。先写对方向，后面才有空间展开。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题型</th><th>可直接使用的开头</th><th>下一句必须接什么</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>SQL / NoSQL</td><td>For this scenario I would choose SQL because the data is structured purchase/receipt data rather than independent event logs.</td><td>接 Customers、Receipts、ReceiptItems、receipt number、transaction。</td></tr>
+                  <tr><td>Microservices vs monolith</td><td>The choice is a trade-off between independent scalability and operational complexity.</td><td>接 FinTrack 的 real-time prices、transaction history、team/deployment risk。</td></tr>
+                  <tr><td>Pumping proof</td><td>Assume for contradiction that the language is regular. Let <code>p</code> be the pumping length.</td><td>接自己选择的 <code>w</code>，并说明任意合法 split 的限制。</td></tr>
+                  <tr><td>HALT reduction</td><td>Assume the target language is decidable. I will use its decider to decide HALT.</td><td>接从 <code>&lt;M,w&gt;</code> 构造 <code>N</code> 的步骤。</td></tr>
+                  <tr><td>BVA</td><td>The key boundaries in the specification are ...</td><td>接 just below/on/above 的具体值和 expected result。</td></tr>
+                  <tr><td>JaCoCo additional tests</td><td>The current suite misses the following coverage items...</td><td>接 red/yellow line、触发条件、test case、expected result。</td></tr>
+                  <tr><td>Hoare loop proof</td><td>The loop invariant should describe the part of the data already processed.</td><td>接 establishment、preservation、exit use；total correctness 再接 variant。</td></tr>
+                  <tr><td>Model checking</td><td>The system is represented as states and transitions, and the requirement is represented as a temporal formula.</td><td>接具体 LTL/CTL 公式和 counterexample 的意义。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="mark-loss" class="section">
+            <h2>5. 最常见漏分点</h2>
+            <p>这些不是小错误，是真题里经常让答案从“懂”掉到“不给分”的位置。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>科目</th><th>危险写法</th><th>改成这样</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>CS615</td><td>只列 React、Node、SQL、NoSQL 名词。</td><td>写每层职责、request flow、数据一致性、安全/部署 trade-off。</td></tr>
+                  <tr><td>CS615</td><td>Security 只写 sanitize。</td><td>SQL injection 写 parameterized queries；XSS 写 output encoding、sanitization、CSP、HttpOnly cookies。</td></tr>
+                  <tr><td>CS605</td><td>Pumping proof 只展示一个切法。</td><td>写任意合法 split，并用条件限制被 pump 的段在哪里。</td></tr>
+                  <tr><td>CS605</td><td>Reduction 只写“reduce from HALT”。</td><td>写构造、computable mapping、iff、contradiction。</td></tr>
+                  <tr><td>CS608</td><td>Test case 只有输入，没有 expected result。</td><td>每个 test case 都写 call、inputs、expected output，并说明覆盖哪个 TCI。</td></tr>
+                  <tr><td>CS608</td><td>White-box 只说“add tests”。</td><td>指出未覆盖 line/branch，给触发条件和 expected result。</td></tr>
+                  <tr><td>CS603</td><td>Invariant 只写自然语言“it works”。</td><td>写范围 invariant、已处理部分性质、退出时如何推出 postcondition。</td></tr>
+                  <tr><td>CS603</td><td>LTL/CTL 只写工具名。</td><td>写状态模型、公式、operator 含义和 counterexample 解释。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="考前作战目录">
+          <h2>作战目录</h2>
+          <ol>
+            <li><a href="#triage">读题分流</a></li>
+            <li><a href="#final-round">最后三轮</a></li>
+            <li><a href="#course-mocks">整题包</a></li>
+            <li><a href="#answer-starters">开头句</a></li>
+            <li><a href="#mark-loss">漏分点</a></li>
+          </ol>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>本页用于考前最后一轮，把四门课的 past/sample paper 题面压成考场动作。</p>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>
