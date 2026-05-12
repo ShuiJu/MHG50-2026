@@ -1021,123 +1021,171 @@
     return "index";
   };
 
+  const courseReasoningFallback = (groupLabel) => {
+    const course = courseKey();
+    const detailByCourse = {
+      cs615: [
+        ["标准分析（为什么）", "CS615 的判断题本质上不是背技术名，而是看题面里谁负责界面、谁处理规则、谁保存数据、哪里需要扩展、哪里怕出错。技术选择要从这些责任和风险推出，而不是先喊 React、Spring、MongoDB 或 microservices。"],
+        ["题目语境怎么用", "先把题面对象落到一条 Web 主线：browser 发 request，server/controller 接住请求，service/model 执行业务规则，database 保存或读取对象，最后返回 HTML/JSON。题目给的 receipt、course subscription、FinTrack transaction、stock price update 都是用来判断边界和 trade-off 的证据。"],
+        ["卷面写法", "写成四步：先给结论；再解释题面对象为什么支持这个结论；接着给一个具体例子，例如 API route、table、component 或 deployment 场景；最后补 trade-off，说明什么时候另一个选择会更合理。"],
+        ["常见失分点", "只列技术清单最容易失分。比如只写“用 React、Node、MongoDB”没有说明每层职责；只写“microservices scalable”没有说明 transaction consistency、部署复杂度和团队维护成本。"]
+      ],
+      cs605: [
+        ["标准分析（为什么）", "CS605 的核心是把题目翻成形式对象：输入编码是什么，yes instance 条件是什么，机器能力边界在哪里。题目只是给一个具体语言或程序性质，引导你选择 pumping、decider、recogniser、HALT reduction、NP verifier 或 NP-hard reduction。"],
+        ["题目语境怎么用", "看到字符串块和相等关系，就想 pumping 的 split 限制；看到 Java program eventually/throughout，就想模拟或 HALT 归约；看到 graph、set、certificate，就想 in NP 和 verifier；看到 3-SAT，就想从已知 NP-complete 问题构造。"],
+        ["卷面写法", "证明题不要跳结论。按“假设/构造/检查/iff/结论”写：先说明假设或 certificate，再构造机器/程序/图，再证明两个方向都对，最后说这会导致 contradiction 或 polynomial verification。"],
+        ["常见失分点", "只写直觉通常不给足分。比如“FA 记不住”要变成 pumping proof；“reduce to HALT”要写清从 <code>&lt;M,w&gt;</code> 到新程序的 computable mapping；“guess solution”要写 certificate 和 verifier 循环。"]
+      ],
+      cs608: [
+        ["标准分析（为什么）", "CS608 的答案要落到测试产物。题目里的边界、分支、类状态或随机输入只是语境，真正得分点是说明这个测试为什么覆盖某个 partition、boundary、rule、statement、branch 或 oracle requirement。"],
+        ["题目语境怎么用", "把题面数据拆成 TCI、data values、test cases 和 expected result。比如 Climate 的 <code>temp=16</code>/<code>humidity=60</code> 触发 BVA；JaCoCo 红黄线触发 missing statement/branch；PV.exportPower 的 enabled/nettPower 触发 decision table 和 random oracle。"],
+        ["卷面写法", "每个测试都写三件事：覆盖目标是什么，具体输入/调用序列是什么，expected result 为什么来自 specification。白盒题再补它覆盖哪条 line/branch；随机题再补 data/oracle/completion 三个问题。"],
+        ["常见失分点", "只有 input 没有 expected result 是大失分；只说“add tests”不说明 coverage item 也不够；random testing 如果没有 oracle，只是随机运行程序，不能判断对错。"]
+      ],
+      cs603: [
+        ["标准分析（为什么）", "CS603 的题目给的是自然语言或代码片段，但答案要把它变成可检查的形式结构：pre/postcondition、invariant、variant、decreases、temporal formula、SAT/SMT constraint 或 counterexample。"],
+        ["题目语境怎么用", "看到 loop 就问 invariant 保持什么、variant 怎么下降；看到 Dafny recursion 就问 decreases；看到 request/response 就问 LTL eventuality；看到 mutual exclusion/error state 就问 safety；看到 SAT/SMT 就问 model 或 unsat reason。"],
+        ["卷面写法", "先写形式化对象，再解释它为什么表达题意。比如 Hoare 题写 invariant 和 proof obligation；Dafny 题写 annotation；Spin/NuSMV 题写 LTL/CTL；solver 题写 formula、sat/unsat 和 model/counterexample。"],
+        ["常见失分点", "只写自然语言“程序会正确”太空。要让 examiner 能检查公式、变量范围、循环边界和 temporal operator；如果公式方向写反，例如把 request/response 的 implication 反过来，会直接改变性质。"]
+      ],
+      index: [
+        ["标准分析（为什么）", "总入口 QA 的作用是把复习流程讲清楚：内容题确认概念，考试题确认能不能把概念变成卷面产物。小题短只是为了降低入口台阶，不代表答案只写一句。"],
+        ["题目语境怎么用", "每个小题都要连接到某门课的真实交付物：CS615 是场景取舍，CS605 是证明结构，CS608 是测试表和 expected result，CS603 是形式化性质。"],
+        ["卷面写法", "回答时先给结论，再说明为什么这个结论由题面推出，最后给一个可检查例子。这个顺序比先背定义更稳，因为考试题通常按场景扣分。"],
+        ["常见失分点", "只记关键词会造成“看到词会解释，看到题不会写”。复习时每个关键词都要配一个 past/sample paper 语境和一段可交卷答案。"]
+      ]
+    };
+
+    return detailByCourse[course] || detailByCourse.index;
+  };
+
   const specificAnswerDetails = (item, groupLabel) => {
     const text = `${item.question} ${item.answer}`;
 
+    if (/SQL injection|XSS|sanitize|parameterized|prepared|ORM|input validation|least privilege|注入|输出转义|转义|最小数据库权限/i.test(text)) {
+      return [
+        ["标准分析（为什么）", "安全题的核心不是背防御清单，而是解释攻击为什么成立：程序把用户输入当成 SQL 代码、HTML/JS 内容或可信业务数据执行了。Parameterized query 的价值在于把 SQL 结构和用户数据分开；输出转义的价值在于让用户内容不能变成浏览器可执行脚本；最小权限则把一次漏洞能造成的损害压低。"],
+        ["题目语境怎么用", "如果题目问 SQL injection，就举登录或搜索框例子：攻击者输入 <code>' OR '1'='1</code> 这类内容，拼接 SQL 时会改变 WHERE 条件。防御要写 prepared statements/parameterized queries、ORM 安全 API、输入验证和最小数据库权限。若题目问 XSS，就把同一逻辑换成评论框或 profile name 被当成 HTML 输出，防御写 output encoding、template auto-escaping 和 CSP。"],
+        ["卷面写法", "先定义攻击：untrusted input is interpreted as code/query。再给一个贴题例子：登录框、搜索框、评论框或课程注册表单。最后写防御并解释原因：parameterized queries 让输入只作为 value；validation 拒绝不合规格的数据；least privilege 即使出错也不能 drop tables 或读全库。"],
+        ["常见失分点", "只写 sanitize 太空，因为 sanitize 不说明规则，也容易漏掉上下文。卷面上要写具体 API 或机制，例如 prepared statement、safe ORM method、server-side validation、output escaping、least privilege。"]
+      ];
+    }
+
     if (/SQL|NoSQL|receipt|shopping|收据|购物|数据库|clickstream/i.test(text)) {
       return [
-        ["为什么", "判断不是背“结构化/非结构化”这组词，而是看题面对象能不能画成关系。2025 shopping habits 里的 <code>customer</code>、<code>receipt number</code>、<code>items</code>、<code>price</code>、<code>date</code> 可以画成 <code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code>，所以 SQL 的 key、join、transaction 都有用。"],
-        ["卷面写法", "先说本题数据是 purchase/receipt records，所以选 SQL；再说 receipt number 要唯一、total 要和 items 对上、收据头和明细要一起保存；最后补一句：如果题目改成 high-volume clickstream events，每条记录像 JSON document，NoSQL 才更好辩护。"]
+        ["标准分析（为什么）", "判断不是背“结构化/非结构化”这组词，而是看题面对象能不能画成关系、关系是否需要一致保存、写错的代价高不高。2025 shopping habits 里的 <code>customer</code>、<code>receipt number</code>、<code>items</code>、<code>price</code>、<code>date</code> 可以画成 <code>Customers</code>、<code>Receipts</code>、<code>ReceiptItems</code>，所以 SQL 的 primary key、foreign key、join、transaction 都有实际作用。"],
+        ["题目语境怎么用", "receipt number 说明每张收据要唯一；items 和 price 说明一张收据有多行明细；date/customer 说明之后可能按顾客或时间查询购物习惯。这些都支持 SQL。NoSQL 不是不能存，而是如果收据头保存成功、明细失败，或总价和明细不一致，业务风险更高。"],
+        ["卷面写法", "先写：本题是 purchase/receipt records，所以默认选 SQL。再写：收据头和明细要一起保存，receipt number 要唯一，total 要和 items 对上，之后还要 join customer、receipt、item 做分析。最后补对照：如果题目改成 high-volume clickstream events，每条记录像 JSON document，字段经常变化且主要是追加写入，NoSQL 才更好辩护。"],
+        ["常见失分点", "不要只写“SQL 结构化，NoSQL 非结构化”。这句话太薄，不能解释为什么本题该选 SQL。也不要看到“shopping habits”就自动写 big data/NoSQL；这道题给的是 receipt records，不是海量点击流。"]
       ];
     }
 
     if (/HALT|reduction|exception|line number|never executed|recognisable|decidable|Turing|停机|归约/i.test(text)) {
       return [
-        ["为什么", "CS605 这类题的分数在“构造”和“iff 对齐”。不能只写 HALT 很难；要说明从 <code>&lt;M,w&gt;</code> 怎样机械地产生新程序或新机器。"],
-        ["卷面写法", "写三步：假设目标语言有 decider；给定 HALT 输入 <code>&lt;M,w&gt;</code>，构造程序 <code>N</code> 先模拟 <code>M(w)</code>；证明 <code>M(w)</code> halts iff <code>N</code> 具有题目 property，例如抛 exception、执行 line、或让某个变量关系成立/破坏。"]
+        ["标准分析（为什么）", "CS605 这类题的分数在“构造”和“iff 对齐”。题目里的 Java exception、line never executed、变量关系 throughout execution 只是语境；真正要证明的是：如果这个新性质可判定，我们就能拿它解决 HALT，而 HALT 已知不可判定。"],
+        ["题目语境怎么用", "把题目 property 设计成由 <code>M(w)</code> 是否停机来控制。例如 <code>N</code> 先模拟 <code>M(w)</code>；如果停机，就抛 exception 21、执行指定 line，或破坏 <code>b &lt; mean(c)</code>；如果不停机，property 永远不会被触发或一直保持。这样题面 property 就变成 HALT 的开关。"],
+        ["卷面写法", "写四步：假设目标语言有 decider <code>D</code>；给定 HALT 输入 <code>&lt;M,w&gt;</code>，有效构造新程序 <code>N</code>；调用 <code>D(N)</code>；证明 <code>M(w)</code> halts iff <code>N</code> 具有题目 property。最后说这会构造出 HALT decider，矛盾。"],
+        ["常见失分点", "只写“reduce to HALT”不够。必须写 mapping 怎么造、为什么 computable、两个方向为什么都成立。尤其是 iff 少一个方向，decider 的 yes/no 就不能可靠转回原问题。"]
       ];
     }
 
     if (/CARA|clique|vertex cover|certificate|NP-complete|NP-hard|3-SAT|verifier/i.test(text)) {
       return [
-        ["为什么", "NP 题不要只写“guess a solution”。题目要看你能不能指出 certificate 是什么，以及 verifier 如何在 polynomial time 检查它。"],
-        ["卷面写法", "CARA clique 写 certificate 是 <code>k</code> 个学生集合 <code>S</code>，verifier 检查 <code>|S|=k</code>，再检查 <code>S</code> 中每一对学生都有 friend edge。NP-complete 题再补：已在 NP，并从 3-SAT 构造实例，证明 satisfiable iff clique exists。"]
+        ["标准分析（为什么）", "NP 题不要只写“guess a solution”。NP 的关键是：如果有人给你一份候选答案，能不能在 polynomial time 检查它。题目里的 CARA friends、phone network、3-SAT clauses 都只是把 certificate 具体化。"],
+        ["题目语境怎么用", "CARA clique 的 certificate 是 <code>k</code> 个学生集合 <code>S</code>；phone vertex cover 的 certificate 是 <code>k</code> 个 phone 节点集合；3-SAT reduction 的语境是每个 clause/literal 变成图里的点或边，保证 satisfiable 和 clique/cover 存在一一对应。"],
+        ["卷面写法", "in NP 写 verifier：检查大小，再用二重循环或遍历边来验证关系，因此时间是 polynomial。NP-complete 写两半：先引用或证明 in NP，再从 3-SAT 构造目标实例，证明 formula satisfiable iff 目标实例 yes。"],
+        ["常见失分点", "不要把“我能猜到集合”当成证明。卷面上必须说 certificate 长度是 polynomial、检查过程是 polynomial，并且 reduction 的正确性要写两个方向。"]
       ];
     }
 
     if (/Climate|BVA|temp|humidity|boundary|边界/i.test(text)) {
       return [
-        ["为什么", "BVA 的关键是把抽象边界变成具体值。2025 Climate.determine 不是只写“测边界”，而是围绕 <code>temp=16</code> 和 <code>humidity=60</code> 取 just below/on/above。"],
-        ["卷面写法", "表里可以写 <code>temp=15,16,17</code>，<code>humidity=59,60,61</code>。每个 test case 要有 expected enum，例如只触发 heating 是 HEAT_ONLY，只触发 AC 是 AC_ONLY，两者都触发是 HEAT_AND_AC。"]
+        ["标准分析（为什么）", "BVA 的理由是很多 fault 出现在条件刚刚跨过阈值的位置，而不是随机中间值。2025 Climate.determine 题给 <code>temp=16</code> 和 <code>humidity=60</code>，就是在提示你围绕判断条件取 just below/on/above。"],
+        ["题目语境怎么用", "把 <code>temp &lt; 16</code> 变成 <code>15,16,17</code>，把 <code>humidity &gt; 60</code> 变成 <code>59,60,61</code>。这些值不是随便选的：15 刚满足 heating，16 刚不满足 heating；61 刚满足 AC，60 刚不满足 AC。"],
+        ["卷面写法", "表格里每行写 TCI、data value、test case 和 expected result。expected enum 要来自 specification，例如只触发 heating 是 HEAT_ONLY，只触发 AC 是 AC_ONLY，两者都触发是 HEAT_AND_AC，都不触发是 NONE。"],
+        ["常见失分点", "只写“test boundary”没有分数厚度；只列输入没有 expected result 也不完整。题目若说 do not include error values，就不要把无效输入混进正常 BVA 表。"]
       ];
     }
 
     if (/boilerSetting|Decision Table|DT|PV\.exportPower|enabled|nettPower/i.test(text)) {
       return [
-        ["为什么", "Decision Table 题考的是条件组合，不是单个边界。你要把 causes、effects、rules、infeasible combinations 分开。"],
-        ["卷面写法", "例如 <code>PV.exportPower()</code>：enabled=true 且 nettPower>0 时 expected true；enabled=false 或 nettPower<=0 时 expected false。随机测试也必须受这些 rules 限制，不能随便生成值后再猜结果。"]
+        ["标准分析（为什么）", "Decision Table 的理由是输出由多个条件组合决定，单独测一个边界不能证明组合逻辑正确。题目中的 enabled、nettPower、boiler isOn、temperature 区间都要放进 causes，再组合成 rules。"],
+        ["题目语境怎么用", "例如 <code>PV.exportPower()</code>：enabled=true 且 nettPower>0 才 expected true；enabled=false 或 nettPower<=0 都 expected false。boilerSetting 则要把温度区间和开关状态组合起来，同时划掉互斥区间造成的 infeasible rules。"],
+        ["卷面写法", "先列 causes 和 effects，再列 rules，最后为每条 feasible rule 给 test case。每个 test case 都要说明它覆盖哪条 rule，并写 expected result；如果是 random testing，也要让随机生成服从这些 rules。"],
+        ["常见失分点", "不要把 DT 写成普通输入列表。没有 effects、没有 infeasible 说明、没有 expected result 的表都不够像考试答案。"]
       ];
     }
 
     if (/decideWrite|JaCoCo|branch|statement|line 33|short-circuit|coverage|黄色|红色/i.test(text)) {
       return [
-        ["为什么", "白盒题的答案必须从 coverage 缺口反推测试。红色通常是 statement 没执行，黄色通常是 branch 只走了一边。"],
-        ["卷面写法", "不要只给 input。写：这个 test 会让控制流到达哪一行或哪一边 branch，expected result 是什么，以及它把 JaCoCo 中哪条 red/yellow coverage item 补上。short-circuit 题还要说明缺口可能来自 bytecode-level branch。"]
+        ["标准分析（为什么）", "白盒题不是让你随便加测试，而是从 coverage 缺口反推必须执行的控制流。JaCoCo 红色通常表示 statement 没执行，黄色表示 branch 没覆盖全；short-circuit 条件还可能在 bytecode 层拆出多个 branch。"],
+        ["题目语境怎么用", "看到 line 33 red，就问什么输入能让程序到达这条 statement；看到 line 28/32 yellow，就问哪个 true/false branch 没走；看到 '1 of 4 branches missed'，就要解释复合条件被编译成多个短路分支。"],
+        ["卷面写法", "答案要写 coverage item、test input/call、expected result 三列。比如“此测试让 line 33 的 else return 执行，expected false，因此补上 red statement”。不要只给 input，因为 input 本身不说明覆盖了什么。"],
+        ["常见失分点", "把 coverage item 写成“yellow line”太粗。要具体到 missing branch/statement；另外 expected result 仍然必须从 specification 推出，不能因为想覆盖某行就忽略正确性。"]
       ];
     }
 
     if (/Numbers|Lighting|Braking|class context|static|instance|getter|setter|accessor|private field/i.test(text)) {
       return [
-        ["为什么", "对象题不是只喂一个参数。instance method 可能依赖对象字段和之前调用历史，所以 test case 必须包含调用序列。"],
-        ["卷面写法", "Static method 可以直接 call，例如 <code>Numbers.isNeg(-1)</code>。Instance/class context 要写：create object -> set state through public API -> call method under test -> observe via getter/return value -> assert expected result。"]
+        ["标准分析（为什么）", "对象测试题的关键是 state。static method 通常只看参数；instance method 可能依赖 private fields、setter 调用历史和 getter 观察结果，所以同一个输入在不同对象状态下可能有不同结果。"],
+        ["题目语境怎么用", "Numbers 题里 static <code>isNeg(x)</code> 可以直接调用；Lighting/Braking/Aircon 这类 class context 要先用 public API 设置 brightness、override、dangerLevel、enabled 等状态，再调用目标方法。"],
+        ["卷面写法", "写完整调用序列：create object -> set state through setter/constructor -> call method under test -> observe return value/getter -> assert expected result。若题目问 accessor methods，先列哪些方法能设置或读取 private field。"],
+        ["常见失分点", "不要直接修改 private field，也不要只写一个数值输入。卷面上必须显示怎样通过类的公开接口达到该状态。"]
       ];
     }
 
     if (/random|isSquare|whatSpeed|oracle|completion/i.test(text)) {
       return [
-        ["为什么", "Random testing 不是“跑很多次”。它必须回答 data problem、oracle problem、completion problem，否则无法证明测试有意义。"],
-        ["卷面写法", "写清随机值从哪些 partitions/rules 生成；oracle 从 specification、DT、EP 或数学性质来。例如 <code>isSquare(x)</code> 可用整数平方根反算验证；completion 可以是每个 partition 至少 N 次或覆盖所有 rules。"]
+        ["标准分析（为什么）", "Random testing 不是“跑很多次”。如果随机数据不覆盖目标区域，测试没有针对性；如果没有 oracle，程序输出对错无法判断；如果没有 completion rule，测试何时停止也没有依据。"],
+        ["题目语境怎么用", "isSquare 的 oracle 可以来自数学性质：计算整数平方根再平方检查；whatSpeed 或 PV.exportPower 的 oracle 可以来自 EP/DT rules；limits 题要注意随机整数范围的 inclusive/exclusive 和 overflow。"],
+        ["卷面写法", "按 data problem、oracle problem、completion problem 三段写。说明随机值从哪些 partitions/rules 生成；expected result 怎样由 specification 算出；测试什么时候结束，例如每个 partition 至少 N 次或覆盖所有 decision table rules。"],
+        ["常见失分点", "只写 for-loop 生成随机数不够。没有 oracle 的 random test 只能发现 crash，不能验证功能正确。"]
       ];
     }
 
     if (/Find|Hoare|invariant|partial correctness|min|variant|total correctness/i.test(text)) {
       return [
-        ["为什么", "Hoare 题要把“程序正确”拆成可证明义务。Find 题里 postcondition 不是一句 find minimum，而是 <code>forall i :: min <= a[i]</code>。"],
-        ["卷面写法", "写 invariant：已扫描区间 <code>a[0..i)</code> 内，<code>min</code> 不大于每个已扫描元素，并保持 <code>1<=i<=a.Length</code>。若问 total correctness，再写 variant <code>a.Length - i</code> 每轮严格减少。"]
+        ["标准分析（为什么）", "Hoare 题要把“程序看起来对”变成 proof obligations。partial correctness 问的是如果程序终止，postcondition 为什么成立；total correctness 还要证明循环或递归一定结束。"],
+        ["题目语境怎么用", "Find/minimum 题里，变量 <code>min</code> 必须和已经扫描过的数组前缀绑定。CopyArray 题里，invariant 要说明已经复制的区间相等，未处理部分还没承诺。Ack 或循环终止题则要找严格下降的 variant。"],
+        ["卷面写法", "写 invariant 时包含范围和语义两部分：例如 <code>1 <= i <= a.Length</code>，并且对所有 <code>j < i</code>，<code>min <= a[j]</code>。循环结束时用 <code>i == a.Length</code> 把 invariant 推到 postcondition；若问 total correctness，再写 <code>a.Length - i</code> 下降。"],
+        ["常见失分点", "只写 postcondition 不等于证明。invariant 不能只描述最终目标，也不能忘记变量范围，否则 verifier 或人工证明都接不上。"]
       ];
     }
 
     if (/Ack|decreases|Dafny|method M|BankAccount|Valid|Balance|ghost/i.test(text)) {
       return [
-        ["为什么", "Dafny 题不仅问代码跑不跑，还问 verifier 需要哪些证明线索。递归要 decreases，循环要 invariant/variant，对象要 class invariant 或 ghost predicate。"],
-        ["卷面写法", "Ack 可写 tuple decreases，例如 <code>decreases m, n</code>。BankAccount 可把 <code>Balance == deposits.total - withdrawals.total</code> 放进 <code>Valid()</code>，并说明 constructor、deposit、withdraw 后都要保持。"]
+        ["标准分析（为什么）", "Dafny 题不仅问代码会不会跑，还问 verifier 为什么能相信它。递归需要 decreases 证明终止；循环需要 invariant 连接每一轮和 postcondition；对象需要 Valid/class invariant 说明状态始终合法。"],
+        ["题目语境怎么用", "Ackermann 题的递归参数不是单个简单下降，要用 lexicographic tuple 解释；BankAccount 题的核心不是存两个 list，而是 <code>Balance</code> 必须等于 deposits 总和减 withdrawals 总和；Point2 或 method M 题则要让 requires/ensures 足够强。"],
+        ["卷面写法", "写 annotation 并解释它：<code>decreases m, n</code> 表示先比 m，m 相同再比 n；<code>Valid()</code> 写对象一致性，并在 constructor、deposit、withdraw 的 postcondition 中保持。"],
+        ["常见失分点", "不要只贴代码。考试要看 annotation 为什么足够；如果 decreases 方向不严格下降，或 Valid() 没被每个 public method 保持，答案就不完整。"]
       ];
     }
 
-    if (/Spin|NuSMV|LTL|CTL|model checking|state explosion|temporal|request|response|safety/i.test(text)) {
+    if (/Spin|NuSMV|LTL|CTL|model checking|state explosion|temporal|safety|liveness/i.test(text)) {
       return [
-        ["为什么", "Model checking 题要有模型和性质两部分。只写工具名不够，要说明 states、transitions、labels，以及要检查的 temporal formula。"],
-        ["卷面写法", "请求最终响应可写 <code>G(request -> F response)</code>；安全性质可写 <code>G !error</code>。若性质不成立，counterexample 是一条具体状态路径，说明系统如何违反公式。"]
+        ["标准分析（为什么）", "Model checking 题要有模型和性质两部分。题目中的 request/response、mutual exclusion、error state 只是语境；真正的答案要说明 state space 怎样被搜索，以及 temporal formula 为什么表达题意。"],
+        ["题目语境怎么用", "请求最终响应是 liveness，可写 <code>G(request -> F response)</code>；永远不进入错误状态是 safety，可写 <code>G !error</code>。如果问 Spin/NuSMV，要说明模型由 states、transitions、labels 组成。"],
+        ["卷面写法", "先写 property 类型，再写公式，再解释 operator：<code>G</code> 表示所有未来状态，<code>F</code> 表示最终某状态会发生。若性质不成立，counterexample 是一条具体执行路径，说明系统怎样违反公式。"],
+        ["常见失分点", "只写“use Spin”不是答案。公式方向也不能反，例如 <code>G(response -> F request)</code> 表达的不是 request 后必须 response。"]
       ];
     }
 
     if (/logic|predicate|tautology|satisfiable|unsatisfiable|John|person|Walking|Talking|SAT|SMT|Z3|CDCL/i.test(text)) {
       return [
-        ["为什么", "逻辑题要先定对象、predicate 和变量范围。不要只翻译关键词，要把量词和 implication 的方向写对。"],
-        ["卷面写法", "例如 “Every person is walking and talking” 写 <code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>；unsatisfiable 例子可以写 <code>P ∧ ¬P</code>；Z3 返回 sat 后要用 model 展示具体赋值。"]
+        ["标准分析（为什么）", "逻辑题要先定对象、predicate 和变量范围。自然语言只是引子，得分点是量词、连接词和 implication 方向是否准确。SAT/SMT 题还要说明 sat/unsat/model 为什么跟公式含义对应。"],
+        ["题目语境怎么用", "“Every person is walking and talking” 中对象是 people，predicate 是 <code>Person</code>、<code>Walking</code>、<code>Talking</code>；“there exists” 和 “for all” 不能混。CDCL 题的语境是 solver 怎样从 conflict 学 clause，而不是随机试值。"],
+        ["卷面写法", "例如写 <code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>。unsatisfiable 可用 <code>P ∧ ¬P</code> 解释没有任何 assignment 满足；Z3 返回 sat 时，要给 model 中变量的具体赋值并代回公式说明成立。"],
+        ["常见失分点", "不要只逐词翻译英文。量词范围漏掉、implication 方向写反、把 satisfiable 和 tautology 混用，都会让答案含义变掉。"]
       ];
     }
 
-    const course = courseKey();
-    const detailByCourse = {
-      cs615: [
-        ["展开理解", "把答案接回一条 Web 主线：browser 发 request，server/controller 处理规则，service/model/database 保存或读取数据，最后返回 HTML/JSON。"],
-        ["卷面写法", "至少写 definition、题目场景例子、trade-off 或风险。避免只堆技术名，例如 React、Rails、Spring、Node、MongoDB。"]
-      ],
-      cs605: [
-        ["展开理解", "先把题面翻成输入编码和 yes condition，再决定工具：pumping、decider/recogniser、HALT reduction、in NP 或 NP-hard reduction。"],
-        ["卷面写法", "证明题要写清假设、构造、关键限制、iff 正确性和结论。只写直觉通常不够给分。"]
-      ],
-      cs608: [
-        ["展开理解", "把答案落到测试产物：TCI、data values、test cases、expected result、coverage explanation 或 oracle。"],
-        ["卷面写法", "每个测试都要说明为什么覆盖该 partition/boundary/rule/statement/branch，并写 expected result。"]
-      ],
-      cs603: [
-        ["展开理解", "把自然语言变成 property、pre/postcondition、invariant、variant、temporal formula 或 SAT/SMT constraints。"],
-        ["卷面写法", "写出可检查结构：公式、Hoare proof obligation、Dafny annotation、LTL/CTL formula、counterexample 或 solver model。"]
-      ],
-      index: [
-        ["展开理解", "先用内容题确认概念，再用考试题确认能不能把概念写成表格、证明、公式、流程或 trade-off。"],
-        ["卷面写法", "回答时必须落到某门课的真实题型：CS615 写场景取舍，CS605 写证明结构，CS608 写测试表，CS603 写形式化性质。"]
-      ]
-    };
-
-    return groupLabel === "考试" ? detailByCourse[course] : detailByCourse[course].slice(0, 1);
+    return courseReasoningFallback(groupLabel);
   };
 
   const renderAnswerHtml = (item, groupLabel) => {
     const details = specificAnswerDetails(item, groupLabel);
-    const paragraphs = [[groupLabel === "考试" ? "直接答案" : "核心答案", item.answer], ...details];
+    const primaryLabel = groupLabel === "考试" ? "标准答案（先写结论）" : "核心答案（先确认概念）";
+    const paragraphs = [[primaryLabel, item.answer], ...details];
     return paragraphs.map(([label, value]) => `<p><strong>${label}：</strong>${value}</p>`).join("");
   };
 

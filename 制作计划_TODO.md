@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-12 17:53
+更新时间：2026-05-12 18:05
 
 ## 项目目标
 
@@ -391,6 +391,17 @@
 - 已更新 `exam-prep-site/assets/app.js`：
   - 为 `exam-war-room.html` 增加内容理解题。
   - 为考前作战页增加 section-specific past paper QA，并允许考试补题池补满 5 道考试题。
+
+### 2026-05-12 18:05
+
+- 用户进一步指出：小题只是提供语境或案例，标准答案和标准分析反而要详细，最重要的是解释“为什么”。
+- 已更新 `exam-prep-site/assets/app.js`：
+  - 把所有 hover QA 的答案结构强化为“标准答案（先写结论）/核心答案（先确认概念） + 标准分析（为什么） + 题目语境怎么用 + 卷面写法 + 常见失分点”。
+  - 新增课程级 fallback 详细分析：即使某道小题没有命中特定关键词，也会按 CS615/CS605/CS608/CS603 的考试产物解释为什么这样答。
+  - 重点扩写 SQL/NoSQL、SQL injection/XSS、HALT reduction、NP verifier、BVA、Decision Table、JaCoCo coverage、class context、random testing、Hoare/Dafny、model checking、logic/SAT/SMT 等类别的“为什么”。
+  - 修正 model checking 的匹配范围，避免 CS615 普通 request/response 小题误套 Spin/LTL 分析。
+- 已更新 `exam-prep-site/assets/styles.css`：
+  - 再次增大 `.qa-answer` 展开高度，避免更长的标准分析被截断。
 
 ## 制作记录
 
