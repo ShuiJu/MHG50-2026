@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS603 模拟战：题型预测与标准答案</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS603 Mock Battle</small></a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="cs603-linear.html">CS603 线性精讲</a>
+          <a href="cs603.html">CS603 题型页</a>
+          <a href="#section1">几乎必出</a>
+          <a href="#section2">很有可能</a>
+          <a href="#section3">如果换考法</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS603 mock battle</p>
+        <h1>CS603 模拟战：题型预测与标准答案</h1>
+        <p class="lead">CS603 Formal Verification 共 4 道大题，每道 25 分。Q1 = Logic + Hoare；Q2 = Dafny；Q3 = Requirements / Refinement / SAT；Q4 = Model Checking。本页按"几乎必出 → 很有可能 → 如果换考法"三级预测，每道题给出完整 model answer。建议先独立做题（每题 35 分钟），再对照答案批改。</p>
+        <div class="tag-list">
+          <a class="tag" href="#section1">几乎必出 (80%+)</a>
+          <a class="tag" href="#s1-q1">Q1 Logic+Hoare</a>
+          <a class="tag" href="#s1-q2">Q2 Dafny</a>
+          <a class="tag" href="#s1-q3">Q3 Req/SAT</a>
+          <a class="tag" href="#s1-q4">Q4 Model Checking</a>
+          <a class="tag" href="#section2">很有可能 (50-80%)</a>
+          <a class="tag" href="#section3">如果换考法 (30-50%)</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+
+          <section class="section">
+            <h2>模拟战使用说明</h2>
+            <ol class="rung-list">
+              <li><strong>先独立做题。</strong>每道 Q 计时 35 分钟，合上书和笔记，在白纸上写完整答案。</li>
+              <li><strong>再对照批改。</strong>对完答案后，用荧光笔圈出自己遗漏的点——这些是考前最后 48 小时重点复习的内容。</li>
+              <li><strong>交叉对比。</strong>把本页模型答案和 <a href="cs603-linear.html">线性精讲</a> 中对应小节对比看，确保理解"为什么这样答"而不只是"答什么"。</li>
+              <li><strong>计时模拟。</strong>建议在考前 3 天做一次完整的 2 小时模拟（四道题连做），训练时间分配。</li>
+            </ol>
+            <div class="note">
+              <p><strong>阅卷人视角：</strong>CS603 阅卷看重结构清晰（分点写、标 (a)(b)(c)(d)），公式准确（量词、implication、temporal operators 不写错），解释到位（不只写"定义"还要写"为什么这个例子属于这个类别"）。本页所有 model answer 都按这个标准组织。</p>
+            </div>
+          </section>
+
+          <!-- ===== Section 1: 几乎必出 ===== -->
+          <section id="section1" class="section">
+            <h2>Section 1：几乎必出（&gt;80% 命中率）</h2>
+            <p>基于 2025 Summer 和 2025 Autumn 真题结构，以下四道题的题型框架是 CS603 最稳定的出题模式。变化通常只在具体程序名（Find → ComputeFib → LinearSearch）或具体场景（BankAccount → Stack → Queue），但子题结构和得分点完全相同。</p>
+          </section>
+
+          <!-- Q1 -->
+          <section id="s1-q1" class="section">
+            <h2>Q1: Predicate Logic + Hoare Logic — Find Method (25 marks)</h2>
+            <p><strong>预测子题结构：</strong>(a)[4] 英语译谓词逻辑（两小题）；(b)[3] tautology / satisfiable / unsatisfiable 定义与例子；(c)[5] 逻辑等价性检查；(d)[9] Find(a:array&lt;int&gt;) 的 Hoare 证明 (partial correctness)；(e)[4] Partial vs total correctness，补充 variant 并解释。</p>
+
+            <h3>Model Answer — (a) 英语译谓词逻辑 [4 marks]</h3>
+            <p><strong>(i) "If John is right, somebody took his pen"</strong></p>
+            <div class="answer-box">
+              <p><strong>Formula:</strong> <code>Right(John) → ∃x Took(x, PenOfJohn)</code></p>
+              <p>如果题面要求 domain 限定为人：<code>Right(John) → ∃x (Person(x) ∧ Took(x, PenOfJohn))</code></p>
+              <p><strong>Key:</strong> <code>if</code> → <code>→</code> (implication)；<code>somebody</code> → <code>∃</code> (existential quantifier)。John 和 PenOfJohn 是常量（constant），不需要量化。Predicates 建议：<code>Right(p)</code> 表示 p 是对的；<code>Took(x, item)</code> 表示 x 拿了 item。</p>
+              <p><strong>Why not ∀x?</strong> "somebody" = 存在至少一个人，不是所有人。写成 ∀x 意思全变。</p>
+              <p><strong>Why not ∧ for the main connective?</strong> <code>Right(John) ∧ ∃x ...</code> 表达两个并列事实，不是条件关系。原句是 if-then 结构。</p>
+            </div>
+            <p><strong>(ii) "Every person is walking and talking"</strong></p>
+            <div class="answer-box">
+              <p><strong>Formula:</strong> <code>∀x (Person(x) → Walking(x) ∧ Talking(x))</code></p>
+              <p><strong>Key:</strong> <code>every</code> → <code>∀</code> + <code>→</code>；<code>and</code> → <code>∧</code>。predicates: <code>Person(x)</code>, <code>Walking(x)</code>, <code>Talking(x)</code>。</p>
+              <p><strong>Why ∀ with →?</strong> x 遍历所有事物，只有 Person(x) 为真时才需检查 Walking 和 Talking。不加 Person(x) 筛选，∀x (Walking(x) ∧ Talking(x)) 要求宇宙中一切都既走又说 — 假得离谱。</p>
+            </div>
+            <div class="warning">
+              <p><strong>致命口诀 (必背)：</strong>∀ 一定配 →（全称量词 + implication）；∃ 一定配 ∧（存在量词 + conjunction）。写反了整句话意思全错。∀x (Person(x) ∧ Walking(x)) → "所有东西都是人且都在走路"（假的）。∃x (Person(x) → Walking(x)) → 随手找一只猫不是人，左边 false，整句 true，表达不了"存在一个人在走路"。</p>
+            </div>
+
+            <h3>Model Answer — (b) Tautology, Satisfiable, Unsatisfiable [3 marks]</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>术语 (Term)</th><th>定义</th><th>公式例子</th><th>为什么这个例子符合定义</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Tautology</strong> (永真式)</td><td>true under ALL assignments — 无论变量取什么值，整句都为真</td><td><code>P ∨ ¬P</code></td><td>P 取 true: true∨false=true；P 取 false: false∨true=true。全部为真。</td></tr>
+                <tr><td><strong>Satisfiable</strong> (可满足)</td><td>true under AT LEAST ONE assignment — 存在至少一种赋值为真</td><td><code>P ∧ Q</code></td><td>P=true, Q=true 时为 true；P=true, Q=false 时为 false。至少一种赋值为真。</td></tr>
+                <tr><td><strong>Unsatisfiable</strong> (不可满足)</td><td>true under NO assignment — 无论怎么赋值都为假</td><td><code>P ∧ ¬P</code></td><td>P=true: false；P=false: false。无解。</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>卷面注意事项：</strong>(1) 给例子用命题逻辑最简单的公式 — 越简单阅卷人越容易判断对错。(2) satisfiable 的例子不能同时也是 tautology — 每个术语互斥。(3) 每个术语两行：一行定义 + 一行公式和解释。</p>
+
+            <h3>Model Answer — (c) 逻辑等价性检查 [5 marks]</h3>
+            <p>方法一：真值表（truth table）— 列出所有变量组合，检查两公式是否同列。方法二：等价变换 — 用已知等价式逐步推导。</p>
+            <div class="term-grid">
+              <div class="term"><strong>常用等价式：</strong><code>P → Q ≡ ¬P ∨ Q</code></div>
+              <div class="term"><strong>De Morgan:</strong><code>¬(P ∧ Q) ≡ ¬P ∨ ¬Q</code><code>¬(P ∨ Q) ≡ ¬P ∧ ¬Q</code></div>
+              <div class="term"><strong>Double negation:</strong> <code>¬¬P ≡ P</code></div>
+              <div class="term"><strong>Distribution:</strong> <code>P ∧ (Q ∨ R) ≡ (P∧Q) ∨ (P∧R)</code></div>
+            </div>
+
+            <h3>Model Answer — (d) Find 方法 Hoare 证明 (Partial Correctness) [9 marks]</h3>
+            <p><strong>Program:</strong></p>
+            <pre><code>// returns the minimum value in array a
+min := a[0];
+i := 1;
+while (i &lt; a.Length) {
+  if (a[i] &lt; min) { min := a[i]; }
+  i := i + 1;
+}</code></pre>
+            <p><strong>Precondition:</strong> <code>a.Length &gt; 0</code> — 确保 a[0] 不越界。这是调用者的义务（design by contract）。</p>
+            <p><strong>Postcondition:</strong></p>
+            <ul>
+              <li><code>∀k (0 ≤ k &lt; a.Length → min ≤ a[k])</code> — min 不大于任意数组元素（min 是最小值）</li>
+              <li><code>∃k (0 ≤ k &lt; a.Length ∧ min = a[k])</code> — min 来自数组（防止 trivial 解：永远返回 -∞）</li>
+            </ul>
+            <p><strong>Loop Invariant:</strong></p>
+            <ol>
+              <li><code>1 ≤ i ≤ a.Length</code> — 范围约束（数组访问安全 + 退出推导）</li>
+              <li><code>∀k (0 ≤ k &lt; i → min ≤ a[k])</code> — 在已扫描前缀 a[0..i) 中，min 是最小值</li>
+              <li><code>∃k (0 ≤ k &lt; i ∧ min = a[k])</code> — min 来自已扫描前缀</li>
+            </ol>
+
+            <div class="answer-box">
+              <p><strong>(1) Establishment (建立) — 循环前 invariant 成立：</strong></p>
+              <p>初始化后 min = a[0], i = 1。已扫描前缀 a[0..1) 只含 a[0]。</p>
+              <p>- 范围: 1 ≤ 1 ≤ a.Length，由 precondition a.Length > 0 保证。</p>
+              <p>- 语义: ∀k (0≤k&lt;1 → min≤a[k]) 即 min ≤ a[0]，成立 (min = a[0])。</p>
+              <p>- 来源: ∃k (0≤k&lt;1 ∧ min=a[k])，取 k=0，成立 (min = a[0])。</p>
+              <p><strong>(2) Preservation (保持) — 一次迭代后 invariant 仍成立：</strong></p>
+              <p>假设迭代前 invariant 成立 (i < a.Length)。分两种情况：</p>
+              <p>- 若 a[i] &lt; min: min := a[i]。新 min = a[i] ≤ 所有旧已扫描元素 (原 min ≤ 它们)，也 ≤ a[i]。所以 ∀k (0≤k&lt;i+1 → min≤a[k]) 成立。</p>
+              <p>- 若 a[i] ≥ min: min 不变。旧已扫描部分性质保持，加上 a[i] ≥ min → ∀k (0≤k&lt;i+1 → min≤a[k]) 仍成立。</p>
+              <p>i := i+1: 范围变为 1 ≤ i+1 ≤ a.Length (循环条件 i < a.Length 保证)。来源性质：取新元素 a[i] 或旧 k 值为证。</p>
+              <p><strong>(3) Exit use (退出推导) — invariant + ¬guard → postcondition：</strong></p>
+              <p>¬guard: i ≥ a.Length。Invariant 范围: i ≤ a.Length。结合得 i = a.Length。</p>
+              <p>代入 invariant 语义: ∀k (0≤k&lt;a.Length → min≤a[k]) ∧ ∃k (0≤k&lt;a.Length ∧ min=a[k])，正是 postcondition。QED。</p>
+            </div>
+
+            <h3>Model Answer — (e) Partial vs Total Correctness [4 marks]</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th></th><th>Partial Correctness (部分正确性)</th><th>Total Correctness (完全正确性)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Proves</td><td>If the program terminates, the result satisfies the postcondition.</td><td>The program ALWAYS terminates AND the result satisfies the postcondition.</td></tr>
+                <tr><td>Proof obligation</td><td>Invariant + 三步法 (establishment, preservation, exit use)</td><td>Invariant 三步法 + Variant (ranking function) 证明终止</td></tr>
+                <tr><td>What's missing</td><td>Termination proof — 循环可能跑 forever，partial correctness 不关心</td><td>Nothing missing — 完整保证</td></tr>
+                <tr><td>Variant 要求</td><td>不需要</td><td>必须：non-negative (非负) + strictly decreasing each iteration (严格递减) + integer (基于良基序 well-founded ordering)</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>Variant for Find:</strong> <code>V = a.Length - i</code></p>
+            <p>(1) Non-negative: 由 invariant i ≤ a.Length 保证 V ≥ 0。</p>
+            <p>(2) Strictly decreasing: 每次迭代 i := i+1，V' = a.Length - (i+1) = V - 1 &lt; V。</p>
+            <p>(3) Well-founded: 自然数不能无限递减 → 循环必然终止。</p>
+            <p><strong>Dafny 写法:</strong> <code>decreases a.Length - i</code>。</p>
+          </section>
+
+          <!-- Q2 -->
+          <section id="s1-q2" class="section">
+            <h2>Q2: Dafny — Ackermann + BankAccount (25 marks)</h2>
+            <p><strong>预测子题结构：</strong>(a)[6] Ackermann decreases clause — 为什么用 tuple（词典序 / lexicographic ordering）而不用单参数？(b)[5] 找出 Dafny 代码中的错误，并给出正确的 invariant + variant。(c)[8] BankAccount 类：定义 ghost predicate Valid()，写 constructor / deposit / withdraw 的完整 contracts。(d)[6] Deductive verifier（Dafny verifier + Z3）如何检查 class invariants。</p>
+
+            <h3>Model Answer — (a) Ackermann decreases with tuple [6 marks]</h3>
+            <p><strong>Ackermann 函数递归调用：</strong></p>
+            <pre><code>function Ackermann(m: nat, n: nat): nat
+  decreases m, n   // lexicographic tuple
+{
+  if m == 0 then n + 1
+  else if n == 0 then Ackermann(m - 1, 1)         // Branch 1: m decreases
+  else Ackermann(m - 1, Ackermann(m, n - 1))       // Branch 2: outer m decreases; inner n decreases
+}</code></pre>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>decreases 写法</th><th>Branch 1<br>Ackermann(m-1, 1)</th><th>Branch 2 (inner call)<br>Ackermann(m, n-1)</th><th>是否通过？</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>decreases m</code></td><td>m-1 &lt; m ✅</td><td>m = m ❌ (不变)</td><td>❌ Fail</td></tr>
+                <tr><td><code>decreases m + n</code></td><td>(m-1)+1 = m ❌ (可能不变)</td><td>m+(n-1) &lt; m+n ✅</td><td>❌ Fail</td></tr>
+                <tr><td><code>decreases m, n</code></td><td>m-1 &lt; m → 第一分量 ↓ ✅</td><td>m=m, n-1&lt;n → 第二分量 ↓ ✅</td><td>✅ Pass</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>词典序 (lexicographic ordering) 比较规则：</strong>
+            先比较第一个分量。如果第一个分量严格小于，整个 tuple 就小 — 通过。
+            如果第一个分量相等，再比较第二个分量。如果第二个分量严格小于，通过。
+            这恰好覆盖 Ackermann 的所有递归分支：Branch 1 靠 m 减；Branch 2 外层靠 m 减，内层靠 n 减。</p>
+
+            <h3>Model Answer — (b) 找 Dafny 代码错误 + 给出 invariant 和 variant [5 marks]</h3>
+            <p><strong>常见代码错误 (Code Errors)：</strong></p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>错误类型</th><th>具体表现</th><th>如何修复</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>循环条件写反</td><td><code>while (i &gt;= n)</code> 应该递减却用递增条件</td><td>改为 <code>while (i &lt; n)</code></td></tr>
+                <tr><td>变量未初始化</td><td>循环累加变量没有初始赋值</td><td>在循环前 <code>result := 0</code></td></tr>
+                <tr><td>循环体未更新关键变量</td><td>循环体内忘了写 <code>i := i + 1</code></td><td>补上更新语句</td></tr>
+                <tr><td>循环体更新错变量</td><td><code>i := i + 1</code> 写成了 <code>x := x + 1</code></td><td>更正变量名</td></tr>
+                <tr><td>用 <code>while</code> 写递归逻辑</td><td>该用 recursion 却硬写 loop 导致逻辑错</td><td>看题目要求：若题目给递归框架直接用 recursion</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>Invariant 模板 (任意循环):</strong></p>
+            <ol>
+              <li><strong>范围 invariant:</strong> <code>0 ≤ i ≤ n</code> 或 <code>1 ≤ i ≤ a.Length</code> — 保证数组访问安全</li>
+              <li><strong>语义 invariant:</strong> 描述 <code>a[0..i)</code>（已处理部分）满足什么性质，例如 <code>∀k (0 ≤ k &lt; i → property(a[k], result))</code></li>
+              <li><strong>结果变量 invariant:</strong> 描述 result 变量与已处理部分的关系</li>
+            </ol>
+            <p><strong>Variant:</strong> <code>decreases n - i</code> 或 <code>decreases a.Length - i</code>。</p>
+
+            <h3>Model Answer — (c) BankAccount ghost predicate Valid() [8 marks]</h3>
+            <p>BankAccount 类的核心 challenge：Balance 是汇总字段，但要保证它总是等于 deposits 总和减去 withdrawals 总和。用 ghost sequences 记录明细，用 ghost predicate Valid() 把一致性变成可验证的规则。</p>
+            <pre><code>class BankAccount {
+  var Balance: int
+  ghost var deposits: seq&lt;int&gt;
+  ghost var withdrawals: seq&lt;int&gt;
+
+  ghost predicate Valid() reads this {
+    Balance == deposits.total - withdrawals.total && Balance &gt;= 0
+  }
+
+  constructor ()
+    ensures Valid()
+    ensures Balance == 0
+    ensures deposits == []
+    ensures withdrawals == []
+  {
+    Balance := 0;
+    deposits := [];
+    withdrawals := [];
+  }
+
+  method Deposit(amount: int)
+    requires amount &gt; 0
+    modifies deposits
+    ensures Valid()
+    ensures Balance == old(Balance) + amount
+  {
+    Balance := Balance + amount;
+    deposits := deposits + [amount];
+  }
+
+  method Withdraw(amount: int)
+    requires amount &gt; 0
+    requires amount &lt;= Balance
+    modifies withdrawals
+    ensures Valid()
+    ensures Balance == old(Balance) - amount
+  {
+    Balance := Balance - amount;
+    withdrawals := withdrawals + [amount];
+  }
+}</code></pre>
+            <div class="note">
+              <p><strong>关键得分点 (逐条检查)：</strong></p>
+              <ol>
+                <li><code>Valid()</code> 的核心等式：<code>Balance == deposits.total - withdrawals.total</code>（一致性）+ <code>Balance &gt;= 0</code>（非负性，可选但加了更完整）。</li>
+                <li><strong>Constructor MUST establish Valid():</strong> 初始 0 == 0 - 0 成立。这是 class invariant 的建立义务。漏了这条 constructor 后对象处于未验证状态。</li>
+                <li><strong>Every public method MUST re-establish Valid()</strong> in its ensures clause. Deposit 和 Withdraw 都要 <code>ensures Valid()</code>。漏任何一个方法 verifier 会报该 method might break the invariant。</li>
+                <li><strong>Withdraw 的额外 precondition:</strong> <code>amount &lt;= Balance</code> 防止余额变负（破坏 Balance &gt;= 0）。如果没有这条，verifier 无法证明 Valid() 中的 Balance &gt;= 0。</li>
+                <li><strong>modifies clauses:</strong> Deposit 只 modifies deposits，Withdraw 只 modifies withdrawals。帮助 verifier 做 framing（知道哪些变量可能变化）。</li>
+                <li><strong>ghost 关键字:</strong> deposits 和 withdrawals 声明为 ghost — 只为证明存在，编译后不占运行时内存。</li>
+              </ol>
+            </div>
+
+            <h3>Model Answer — (d) Deductive verifier 如何检查 class invariants [6 marks]</h3>
+            <ol class="rung-list">
+              <li><strong>Translate to VCs (Verification Conditions).</strong> Dafny verifier 把方法体、contracts、invariant 翻译成一阶逻辑公式 (first-order logic formulas)。每条 VC 形如：如果 requires 和 invariant 都成立，执行方法体后 ensures 也成立。</li>
+              <li><strong>Send to Z3 SMT solver.</strong> VCs 交给 Microsoft Z3（一个 Satisfiability Modulo Theories solver）。Z3 尝试证明每条 VC 是 valid（在所有整数/数组等背景理论下恒真）。</li>
+              <li><strong>Check Valid() lifecycle.</strong> Constructor 后: verifier 检查 Valid() 是否成立（initial establishment）。每个 public method 的 ensures 列有 Valid() → verifier 检查方法体执行后 Valid() 是否仍成立（preservation）。若某方法有 <code>requires Valid()</code>，verifier 以此为前提。</li>
+              <li><strong>Report results.</strong> 所有 VCs 都 valid → 方法满足 contract。任一 VC invalid → Z3 返回 counterexample，Dafny 报告错误位置和原因。</li>
+            </ol>
+            <p><strong>类比：</strong>Dafny verifier 做的事情和 Hoare logic 手工证明完全一样，区别在于 Dafny 靠 Z3 自动推导而不需要人手工推 proof tree。你写的 requires/ensures/invariant 就是 Hoare triple 的 P、Q、I。</p>
+          </section>
+
+          <!-- Q3 -->
+          <section id="s1-q3" class="section">
+            <h2>Q3: Event-B + Data Refinement + CDCL SAT (25 marks)</h2>
+            <p><strong>预测子题结构：</strong>(a)[8] Event-B 系统建模 — contexts、machines、invariants、events、proof obligations；(b)[6] Data Refinement — 抽象到具体的映射，gluing invariant，coded example；(c)[5] FRET — 如何将 natural language requirements 转化为 temporal logic 支持 model checking；(d)[6] CDCL SAT solver — 算法流程 + 相比 stochastic search 的本质优势。</p>
+
+            <h3>Model Answer — (a) Event-B 系统建模 [8 marks]</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>组件</th><th>英文</th><th>内容</th><th>作用</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Context</td><td>上下文</td><td>Carrier Sets（载体集合）、Constants（常量）、Axioms（公理）</td><td>定义系统的静态背景知识，不涉及状态变化</td></tr>
+                <tr><td>Machine</td><td>机器</td><td>Variables（变量）、Invariants（不变量）、Events（事件）</td><td>定义系统的动态部分：状态 + 状态变迁</td></tr>
+                <tr><td>Invariant</td><td>不变量</td><td>一阶逻辑公式，描述所有合法状态的公共性质</td><td>约束状态空间 — 任何 event 执行后都不能违反</td></tr>
+                <tr><td>Event</td><td>事件</td><td>含 guards（守卫条件）和 actions（动作）。Guard 为真时 event 可触发</td><td>定义状态如何变化。每个 event 类似 Hoare triple 中的一个命令</td></tr>
+                <tr><td>Proof Obligation</td><td>证明义务</td><td>自动生成的数学命题</td><td>必须证明：(1) 每个 event 保持 invariant；(2) refinement 保持抽象行为；(3) guards 不会变弱（refinement 不引入死锁）</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>Event-B 和 Hoare Logic / Dafny 的关系：</strong>三者都是 formal verification 的核心技术。Hoare logic 证明单个程序片段的正确性；Dafny 把 Hoare proof 自动化；Event-B 处理更高层的系统级模型 — 关注"系统整体行为"，而非单行代码。Event-B 常用于需求阶段和架构设计阶段，早于编码。</p>
+
+            <h3>Model Answer — (b) Data Refinement with coded example [6 marks]</h3>
+            <p><strong>什么是 Data Refinement：</strong>把抽象数据类型（例如数学集合 Set）替换为更具体的数据结构（例如数组 Array），同时证明具体实现保持了抽象模型的所有行为。这保证了"实现可以更 detail，但不能违反抽象承诺"。</p>
+            <p><strong>关键概念：</strong></p>
+            <ul>
+              <li><strong>Abstract state (抽象状态):</strong> 用数学类型描述，如 <code>contents: set of T</code></li>
+              <li><strong>Concrete state (具体状态):</strong> 用编程语言类型描述，如 <code>arr: array of T; size: int</code></li>
+              <li><strong>Gluing invariant (胶合不变量):</strong> 联系抽象和具体的桥梁。例如 <code>contents = {arr[0], ..., arr[size-1]}</code> — 说明了数组的前 size 个元素恰好构成集合 contents</li>
+              <li><strong>Refinement proof obligation:</strong> 对每个 abstract event，存在一个对应的 concrete event 序列，其 net effect 在抽象观察层面等价</li>
+            </ul>
+            <div class="answer-box">
+              <p><strong>Simple coded example — Set refined to Array:</strong></p>
+              <p>Abstract: <code>add(x)</code> — <code>contents := contents ∪ {x}</code></p>
+              <p>Concrete: <code>addConcrete(x)</code> — <code>arr[size] := x; size := size + 1</code>，前提 <code>size &lt; arr.Length</code> (guard)</p>
+              <p>Gluing invariant: <code>contents = set of arr[0..size)</code> — 保证 <code>addConcrete</code> 的效果等于 <code>add</code> 的效果（集合中多了一个元素 x）。</p>
+            </div>
+
+            <h3>Model Answer — (c) FRET — Formal Requirements Elicitation Tool [5 marks]</h3>
+            <p><strong>FRET 做什么：</strong>将自然语言需求（natural language requirements）转换为时间逻辑公式（temporal logic — LTL 或 CTL）。用户输入 controlled natural language（受控自然语言，如 "When X happens, the system shall eventually do Y"），FRET 解析语义结构 → 自动生成如 <code>G(request → F response)</code> 的 LTL 公式。</p>
+            <p><strong>FRET 的工作流：</strong></p>
+            <ol>
+              <li><strong>Parse.</strong> 用户用模板化的自然语言写需求（trigger、condition、response、timing）。</li>
+              <li><strong>Semantic mapping.</strong> FRET 把关键词映射为 temporal logic 结构：when → condition；shall → always；eventually → F；within → bounded temporal operator。</li>
+              <li><strong>Output.</strong> 生成 LTL 或 FRET-ish temporal logic formula。该输出可直接导入 Spin / NuSMV 做 model checking。</li>
+            </ol>
+            <p><strong>为什么重要：</strong>从需求到模型检查的最薄环节一直是"把需求正确表达成公式"。FRET 降低了这个门槛 — 不用手工写 LTL，减少了人为翻译错误。</p>
+
+            <h3>Model Answer — (d) CDCL SAT Solver — algorithm + advantage [6 marks]</h3>
+            <p><strong>CDCL = Conflict-Driven Clause Learning</strong>（冲突驱动的子句学习算法）。</p>
+            <p><strong>Algorithm steps:</strong></p>
+            <ol class="rung-list">
+              <li><strong>Decide (决策).</strong> 选一个未赋值的布尔变量，任意赋值 (true/false)。记录决策级别 (decision level)。</li>
+              <li><strong>BCP — Boolean Constraint Propagation (布尔约束传播).</strong> 扫描所有 clause：若某 clause 只剩一个未赋值 literal，强制赋能使该 clause 成立的值。反复传播直到无 unit clause 或发现冲突。</li>
+              <li><strong>Conflict Analysis (冲突分析).</strong> 若 BCP 导致某 clause 所有 literal 为 false → 冲突。分析冲突原因：回溯 implication graph，找出哪些 decisions 导致了冲突 → 学到一条新 clause（learned clause）— 表示"这组赋值组合不能同时出现"。</li>
+              <li><strong>Backjump (非时序回溯).</strong> 不简单退回上一个 decision level，而是跳回真正导致冲突的那个决策级别（可能回调多层）。</li>
+              <li><strong>Restart (可选).</strong> 定期清空赋值但保留 learned clauses，给 solver 探索新顺序的机会。</li>
+              <li><strong>Termination.</strong> 所有变量赋值后无冲突 → SAT（return model）。回溯到 level 0 仍冲突 → UNSAT（return empty）。</li>
+            </ol>
+
+            <p><strong>CDCL vs Stochastic Search (e.g. WalkSAT) — 本质优势：</strong></p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>方面</th><th>Stochastic Search (WalkSAT)</th><th>CDCL</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>搜索策略</td><td>随机翻转一个变量的赋值；偶尔随机重启</td><td>系统化搜索 + 冲突分析 + 学习 clause</td></tr>
+                <tr><td>记忆</td><td>无记忆 — 不会记录之前走过哪些死胡同</td><td>有记忆 — learned clauses 是永久的剪枝规则</td></tr>
+                <tr><td>重复冲突</td><td>可能无限次重复相同的冲突模式</td><td>learned clause 一劳永逸地剪掉该模式</td></tr>
+                <tr><td>完整性</td><td>Incomplete — 可能永远找不到解即使解存在</td><td>Complete — 一定能在有限步内判定 SAT/UNSAT</td></tr>
+                <tr><td>适用场景</td><td>大规模随机公式（random k-SAT）有时更快</td><td>结构化工业问题 (hardware verification, scheduling) — 快几个数量级</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>CDCL vs DPLL:</strong> DPLL 是 CDCL 的前身。DPLL 也做 Decide + BCP + Backtrack，但 backtrack 是时序的（只退一层），没有 conflict analysis 和 clause learning。在含对称冲突模式的公式上，DPLL 可能指数级慢于 CDCL。</p>
+          </section>
+
+          <!-- Q4 -->
+          <section id="s1-q4" class="section">
+            <h2>Q4: Spin Model Checking + LTL Formulae (25 marks)</h2>
+            <p><strong>预测子题结构：</strong>(a)[7] Spin 如何验证 temporal properties — 从 system model 到 counterexample 的完整流程；(b)[6] NuSMV vs Spin — 至少 4 个差异维度；(c)[4] 两种应对 state explosion 的方法（解释原理）；(d)[8] 给出 4 条自然语言性质，写出对应的 LTL formula 并解释每个 operator 的含义。</p>
+
+            <h3>Model Answer — (a) Spin 验证 temporal properties 的流程 [7 marks]</h3>
+            <ol class="rung-list">
+              <li><strong>Write Promela model.</strong> 用 Promela 语言描述系统：processes（进程）、channels（通道，用于进程通信）、variables（变量）。每个 process 是一段描述行为的代码。例如两个并发的进程交替执行、通过 channel 发消息。</li>
+              <li><strong>Specify LTL property.</strong> 把要验证的性质写成 LTL formula。例如 <code>G !(p1_critical && p2_critical)</code> 表示两个进程永远不会同时进入临界区。</li>
+              <li><strong>Build state space.</strong> Spin 穷举所有可能的交错执行 (interleavings)，构建完整的 state graph（Kripke structure）。每个状态 = 所有进程的 program counter + 所有变量的值。</li>
+              <li><strong>Negate LTL → Büchi automaton.</strong> 将 LTL formula 取反 (negation)，转换成 Büchi automaton — 一种接受无限字 (infinite words) 的有限状态自动机。取反的原理：如果原性质在所有路径上成立，那么取反后的自动机应该接受不到任何路径。</li>
+              <li><strong>Synchronous product.</strong> 计算 state graph × Büchi automaton 的同步积。积的每个状态 = (系统状态, 自动机状态)。如果积中存在 accepting cycle（可接受循环）→ 原性质被违反 → 继续找 counterexample。</li>
+              <li><strong>Counterexample output.</strong> Spin 输出一条从初始状态出发的有限路径 trace + 一个可无限重复的 cycle，展示了性质在哪个时刻被违反。你可以单步执行这个 trace 来 debug。</li>
+              <li><strong>Safety vs Fairness.</strong> Safety: 检查坏状态是否可达。Fairness: 只考虑所有 enabled process 最终都会被执行到的调度（排除 starvation 导致的假性 violation）。</li>
+            </ol>
+
+            <h3>Model Answer — (b) NuSMV vs Spin 差异 [6 marks]</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>维度</th><th>Spin</th><th>NuSMV</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>建模语言</td><td><strong>Promela</strong> — C-like process language，面向通信协议和异步并发</td><td><strong>SMV</strong> — module-based，面向同步有限状态机</td></tr>
+                <tr><td>State representation</td><td><strong>Explicit-state</strong> (显式状态) — 每个状态单独存储在内存中</td><td><strong>Symbolic (BDD-based)</strong> — 用 BDD (Binary Decision Diagrams) 压缩表示大量状态</td></tr>
+                <tr><td>验证算法</td><td>Explicit-state model checking — 逐状态枚举 + DFS/BFS</td><td>Symbolic model checking — BDD 上的不动点计算 (fixpoint computation)</td></tr>
+                <tr><td>支持逻辑</td><td><strong>LTL only</strong></td><td><strong>LTL + CTL</strong> (Computation Tree Logic，含路径量词 A 和 E)</td></tr>
+                <tr><td>擅长场景</td><td>异步并发、通信协议、分布式算法</td><td>同步硬件电路、clock-driven 系统</td></tr>
+                <tr><td>State capacity</td><td>受内存限制（百万级状态）</td><td>BDD 压缩后可处理 10<sup>20</sup>+ 状态的硬件电路</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>Spin 用 explicit-state 的 trade-off:</strong> 状态多了内存不够（state explosion），但算法简单直观。NuSMV 用 BDD 做 symbolic 可以处理更多状态，但 BDD 大小对变量顺序 (variable ordering) 敏感 — 找到好的 ordering 是 NP-hard。</p>
+
+            <h3>Model Answer — (c) 应对 State Explosion 的两种方法 [4 marks]</h3>
+            <div class="term-grid">
+              <div class="term"><strong>1. Abstraction (抽象).</strong>
+              用更小的 abstract model 代替 concrete model，忽略验证目标不关心的细节。例如把整数变量替换为 {negative, zero, positive} 三个抽象值。关键保证：如果 abstract model 满足性质，concrete model 一定满足（conservative / sound abstraction）。常见的如 predicate abstraction、Cegar (CounterExample-Guided Abstraction Refinement)。</div>
+              <div class="term"><strong>2. Partial Order Reduction (偏序归约).</strong>
+              识别独立的并发操作：如果两个操作交换执行顺序不影响最终状态，只探索其中一种顺序。在 N 个并发进程各自执行 M 步的场景中，朴素探索有 (N·M)!/(M!)<sup>N</sup> 种交错；POR 可以降到多项式级。</div>
+              <div class="term"><strong>3. Symmetry Reduction (对称性归约).</strong>
+              如果系统有 N 个同构的组件（如多台同型号服务器），利用对称性只探索一个代表性组件的状态，其余推到对称等价类。</div>
+              <div class="term"><strong>4. Bounded Model Checking (有界模型检查).</strong>
+              只检查长度 ≤ k 的执行路径，不构建完整状态空间。用 SAT/SMT solver 逐步检查不同 k 值。如果找到反例就报告；找不到则逐步增大 k。不能完全证明无 bug（除非 k 达到 completeness threshold）。</div>
+            </div>
+
+            <h3>Model Answer — (d) 写 LTL Formulae [8 marks]</h3>
+            <p><strong>必背 Temporal Operators:</strong></p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Operator</th><th>全称</th><th>含义</th><th>读法</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>G φ</code></td><td>Globally / Always</td><td>φ 在当前及之后的所有状态都成立</td><td>"henceforth φ"</td></tr>
+                <tr><td><code>F φ</code></td><td>Finally / Eventually</td><td>φ 在现在或未来某个状态成立</td><td>"eventually φ"</td></tr>
+                <tr><td><code>X φ</code></td><td>Next</td><td>φ 在下一个状态成立</td><td>"next φ"</td></tr>
+                <tr><td><code>φ U ψ</code></td><td>Strong Until</td><td>φ 一直成立直到 ψ 成立，且 ψ 必须最终成立</td><td>"φ until ψ"</td></tr>
+                <tr><td><code>φ W ψ</code></td><td>Weak Until</td><td>φ 一直成立直到 ψ 成立，但 ψ 可以不成立（此时 φ 永远成立）</td><td>"φ unless ψ"</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>8 条自然语言 → LTL Formula (含解释):</strong></p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>#</th><th>自然语言</th><th>LTL Formula</th><th>分析</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>"The light is always on." (灯始终亮)</td><td><code>G light_on</code></td><td><code>G</code>: 所有状态。Simple safety — 单一命题在每时每刻都成立。</td></tr>
+                <tr><td>2</td><td>"If a door opens, it will eventually close." (门开了最终会关)</td><td><code>G (door_open → F door_closed)</code></td><td><code>G</code>: 所有时刻。<code>→</code>: 条件。<code>F</code>: 最终。Liveness — 每次触发都最终得到响应。</td></tr>
+                <tr><td>3</td><td>"Train never enters crossing while gate is up." (栏杆抬起时火车绝不进入道口)</td><td><code>G ¬(train_in_crossing ∧ gate_up)</code></td><td><code>G</code> + <code>¬</code>: 在所有状态，坏组合永不出现。经典 Safety property。</td></tr>
+                <tr><td>4</td><td>"Car must stop before brake releases." (刹车松开之前车必须停)</td><td><code>¬brake_released W car_stopped</code></td><td><code>W</code> (weak until): 在刹车松开之前，车一直处于停止状态。如果刹车一直不松开，<code>car_stopped</code> 永远成立也没问题。</td></tr>
+                <tr><td>5</td><td>"After request, server stays busy until response." (请求后服务器忙直到响应)</td><td><code>G (request → (server_busy U response_sent))</code></td><td><code>U</code> (strong until): server_busy 一直成立直到 response_sent 成立。response_sent <strong>必须</strong>最终成立 (U 的 right operand 终须满足)。Liveness。</td></tr>
+                <tr><td>6</td><td>"The light alternates red and green forever." (红绿灯交替)</td><td><code>G (red → X green) ∧ G (green → X red)</code></td><td><code>X</code> (next): 红后下一个状态必绿；绿后下一个状态必红。两方向都覆盖保证无限交替。</td></tr>
+                <tr><td>7</td><td>"High temperature → eventually cool down." (高温最终会降温)</td><td><code>G (high_temp → F cool_down)</code></td><td>同第 2 条模板。每次高温都必须最终降温。Liveness。</td></tr>
+                <tr><td>8</td><td>"User stays logged in from authentication onward." (认证后一直登录)</td><td><code>G (authenticate → G logged_in)</code></td><td>嵌套 <code>G</code>: 一旦认证发生，从那个时刻起往后的所有状态都 logged_in。</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <div class="answer-box">
+              <p><strong>Safety vs Liveness 区分口诀：</strong></p>
+              <p>Safety = "something bad never happens" → <code>G ¬bad</code> 或 <code>W</code> (weak until)</p>
+              <p>Liveness = "something good eventually happens" → <code>G (trigger → F effect)</code> 或 <code>U</code> (strong until)</p>
+              <p><strong>卷面写法：</strong>每条公式写三行：(1) 自然语言描述；(2) LTL formula；(3) 逐 operator 解释 + Safety/Liveness 标签。</p>
+            </div>
+          </section>
+
+          <!-- ===== Section 2: 很有可能 ===== -->
+          <section id="section2" class="section">
+            <h2>Section 2：很有可能（50–80% 命中率）</h2>
+            <p>以下变体在 2025 Autumn 考试中已经出现或极有可能出现。它们与 Section 1 题型框架完全相同，只是换了具体程序名或具体场景。掌握 Section 1 的模板后，这些应该能快速作答。</p>
+
+            <section class="section">
+              <h3>Q1 Variant: ComputeFib(n) Hoare Proof</h3>
+              <p>Same template as Find. ComputeFib 计算第 n 个斐波那契数。</p>
+              <pre><code>a := 0; b := 1; i := 1;
+while (i &lt; n) {
+  tmp := a + b;
+  a := b;
+  b := tmp;
+  i := i + 1;
+}</code></pre>
+              <p><strong>Precondition:</strong> <code>n ≥ 1</code>（或 n ≥ 0 根据 fib 定义调整）</p>
+              <p><strong>Invariant:</strong> <code>a = fib(i-1) ∧ b = fib(i) ∧ 1 ≤ i ≤ n</code>（范围 + 语义合为一体）</p>
+              <p><strong>Postcondition:</strong> <code>b = fib(n)</code></p>
+              <p><strong>Variant:</strong> <code>n - i</code>（非负、严格递减）</p>
+              <p><strong>Proof 三步法：</strong>(1) Establishment: i=1, a=0=fib(0), b=1=fib(1) → invariant holds。(2) Preservation: tmp = a+b = fib(i-1)+fib(i) = fib(i+1); a:=fib(i); b:=fib(i+1); i:=i+1 → invariant for new i。(3) Exit: i=n → b=fib(n)。</p>
+            </section>
+
+            <section class="section">
+              <h3>Q2 Variant: CopyArray / LinearSearch Dafny</h3>
+              <p>两种最常见的 Dafny 数组循环题。</p>
+              <p><strong>CopyArray:</strong></p>
+              <pre><code>method CopyArray(src: array&lt;int&gt;, dst: array&lt;int&gt;)
+  requires src.Length == dst.Length
+  ensures forall i :: 0 &lt;= i &lt; src.Length ==&gt; dst[i] == src[i]
+{
+  var i := 0;
+  while (i &lt; src.Length)
+    invariant 0 &lt;= i &lt;= src.Length
+    invariant forall k :: 0 &lt;= k &lt; i ==&gt; dst[k] == src[k]
+    decreases src.Length - i
+  {
+    dst[i] := src[i];
+    i := i + 1;
+  }
+}</code></pre>
+              <p><strong>LinearSearch:</strong></p>
+              <pre><code>method LinearSearch(a: array&lt;int&gt;, key: int) returns (pos: int)
+  ensures pos == -1 || (0 &lt;= pos &lt; a.Length && a[pos] == key)
+  ensures pos == -1 &lt;==&gt; forall k :: 0 &lt;= k &lt; a.Length ==&gt; a[k] != key
+{
+  var i := 0;
+  while (i &lt; a.Length)
+    invariant 0 &lt;= i &lt;= a.Length
+    invariant forall k :: 0 &lt;= k &lt; i ==&gt; a[k] != key
+    decreases a.Length - i
+  {
+    if (a[i] == key) { return i; }
+    i := i + 1;
+  }
+  return -1;
+}</code></pre>
+            </section>
+
+            <section class="section">
+              <h3>Q3 Variant: CDCL vs DPLL — 为什么 DPLL 在某些公式上指数爆炸</h3>
+              <p><strong>DPLL:</strong> Decide → BCP → 若冲突则时序回溯（chronological backtracking，只退一层）→ 尝试另一分支。没有 clause learning 机制。</p>
+              <p><strong>为什么 DPLL 在某些公式上指数慢：</strong>考虑一个含大量对称冲突路径的公式。DPLL 每次回溯只退一层，相当于顺序试探每条死胡同。每次重新走到同一个冲突模式时，DPLL 无记忆 — 必须重新推理一遍相同的 BCP 链。导致搜索树呈指数级大小。</p>
+              <p><strong>CDCL 为什么快：</strong>第一次冲突后，conflict analysis 产生一条 learned clause 精确刻画了冲突原因。后续搜索中，这条 clause 在 BCP 阶段就能提前触发冲突，无需深层探索。效果相当于"一刀剪掉搜索树的整个子树"。</p>
+              <p><strong>卷面写法：</strong>对比表格：(1) Backtrack 方式：时序 vs 非时序；(2) 学习能力：无 vs clause learning；(3) 重复冲突：会 vs 不会；(4) 工业公式性能：差 vs 极好。</p>
+            </section>
+
+            <section class="section">
+              <h3>Q4 Variant: CTL instead of LTL</h3>
+              <p>CTL (Computation Tree Logic) 比 LTL 多了 <strong>path quantifiers</strong>（路径量词）：</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>CTL 符号</th><th>含义</th><th>LTL 等价?</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>A</code></td><td>"for All paths" — 从该状态出发的所有执行路径</td><td>LTL 默认量化所有路径</td></tr>
+                <tr><td><code>E</code></td><td>"there Exists a path" — 存在至少一条执行路径</td><td>LTL <strong>不能</strong> 表达</td></tr>
+                <tr><td><code>AG φ</code></td><td>In All paths, Globally φ</td><td>≈ <code>G φ</code></td></tr>
+                <tr><td><code>AF φ</code></td><td>In All paths, Finally φ</td><td>≈ <code>F φ</code></td></tr>
+                <tr><td><code>EG φ</code></td><td>there Exists a path where Globally φ</td><td><strong>LTL 无法表达</strong></td></tr>
+                <tr><td><code>AG(request → AF response)</code></td><td>All paths: every request eventually gets response</td><td>≈ <code>G(request → F response)</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>CTL expressible but NOT LTL:</strong> <code>EG p</code> — "there exists a path where p always holds"。这在 LTL 中不可表达，因为 LTL 假定对所有路径量化。考试中常见问："Give an example expressible in CTL but not LTL" — 答案就是 <code>EG p</code> 或 <code>AG EF reset</code>（在所有路径上总能回到 reset 状态 — 这其实是可表达的，更标准的不可表达例子是 <code>AF AG p</code> 等。</p>
+            <p><strong>简单不可表达例子：</strong><code>EG p</code> — "存在一条路径 p 始终成立" — LTL 中写不出对应的公式，因为 LTL 是 path formula，没有 path quantifier。</p>
+          </section>
+          </section>
+
+          <!-- ===== Section 3: 如果换考法 ===== -->
+          <section id="section3" class="section">
+            <h2>Section 3：如果换考法（30–50% 可能）</h2>
+            <p>以下三种替代题型虽不如 Section 1 高频，但在 2025 Autumn 和 Sample Paper 中都出现过片段。建议快速浏览，考场遇到时能立刻归类对症。</p>
+
+            <section class="section">
+              <h3>若 Q1(e) 换 Hoare problem</h3>
+              <p>同一套模板适用任何 while-loop 程序。核心不变：</p>
+              <ol class="rung-list">
+                <li><strong>写 invariant。</strong>三步公式：范围 (0 ≤ i ≤ n) + 已处理部分性质 (∀k &lt; i: ...) + 结果变量关系 (result = f(processed))。</li>
+                <li><strong>Establishment。</strong>循环第一次开始前 invariant 成立 — 通常依赖初始化代码。</li>
+                <li><strong>Preservation。</strong>一次迭代后 invariant 仍成立 — 需要 case analysis（if-then 的分支出不同修订路径）。</li>
+                <li><strong>Exit use。</strong>¬guard + invariant → postcondition — 通常把 i = n 代入 invariant 的语义部分。</li>
+                <li><strong>Total correctness:</strong> 追加 variant — non-negative、strictly decreasing integer expression。常见 variant: <code>n - i</code>、<code>a.Length - i</code>、<code>remaining elements count</code>。</li>
+              </ol>
+              <p>这个模板覆盖：array copy、array sum、linear search、find max/min、binary search、fibonacci 等所有可迭代程序。</p>
+            </section>
+
+            <section class="section">
+              <h3>若 Q3 换 Z3 Exercises</h3>
+              <p>Given constraints in SMT-LIB syntax or Z3 Python API, determine sat/unsat. If sat, provide a model.</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Constraints</th><th>判定</th><th>Model (if sat)</th><th>Reasoning</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>x &gt; 0, y &gt; 0, x + y &lt; 0</code></td><td><strong>unsat</strong></td><td>N/A</td><td>两个正数之和不可能小于 0 — 违反了 integer arithmetic 的背景公理</td></tr>
+                <tr><td><code>x &gt; 0, y &gt; 0, z = x + y, z &lt; 5</code></td><td><strong>sat</strong></td><td>x=1, y=2, z=3</td><td>多种解 — Z3 返回任意一种。取最小正整数满足即可。</td></tr>
+                <tr><td><code>P ∨ Q, ¬P, ¬Q</code></td><td><strong>unsat</strong></td><td>N/A</td><td>P∨Q 要求至少一个为真，但 ¬P ∧ ¬Q 要求两者都为假 — 矛盾</td></tr>
+                <tr><td><code>P ∧ (Q ∨ R), ¬P</code></td><td><strong>unsat</strong></td><td>N/A</td><td>P∧(...) 要求 P 为真，但 ¬P 要求 P 为假 — 直接矛盾</td></tr>
+                <tr><td><code>x == 2*y, y == 3, x &gt; 0</code></td><td><strong>sat</strong></td><td>x=6, y=3</td><td>y=3 → x=6 → x>0 satisfied</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>Z3 Python API 核心交互：</strong></p>
+            <pre><code>from z3 import *
+s = Solver()
+x = Int('x'); y = Int('y')
+s.add(x > 0); s.add(y > 0); s.add(x + y < 5)
+result = s.check()      # returns sat
+if result == sat:
+    m = s.model()       # Get model
+    print(m[x], m[y])   # e.g. 1, 2</code></pre>
+            <p><strong>SMT-LIB 语法基础：</strong><code>(assert (&gt; x 0))</code>；<code>(declare-const x Int)</code>；<code>(check-sat)</code>；<code>(get-model)</code>。返回 <code>sat</code> / <code>unsat</code> / <code>unknown</code>。</p>
+          </section>
+
+            <section class="section">
+              <h3>若 Q4 换 Runtime Verification (2025 Autumn Q4b 风格)</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>方面</th><th>Model Checking (模型检查)</th><th>Runtime Verification (运行时验证)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>When</td><td><strong>Offline</strong> — 程序运行之前</td><td><strong>Online</strong> — 程序运行之中</td></tr>
+                <tr><td>Coverage</td><td><strong>Exhaustive</strong> — 检查所有可能路径</td><td><strong>Partial</strong> — 只监视实际执行的 one trace</td></tr>
+                <tr><td>Guarantee</td><td>Complete — 如果 MC passes，所有路径安全</td><td>No guarantee — 未观察到的路径可能不安全</td></tr>
+                <tr><td>Scalability</td><td>State explosion — 状态数随组件数指数增长</td><td>Lightweight — 随系统规模线性增长（只追一条 trace）</td></tr>
+                <tr><td>Use case</td><td>安全关键系统离线全验证（航空、医疗）</td><td>生产系统持续监控、异常检测、审计日志分析</td></tr>
+                <tr><td>Monitor</td><td>不需要</td><td>需要一个 monitor 组件：拦截事件、更新 monitor state、检查性质、报告 violation</td></tr>
+                <tr><td>Overhead</td><td>验证花费时间，但不影响运行时</td><td>运行时 overhead — monitor 消耗 CPU 和内存，需 trade-off</td></tr>
+              </tbody>
+            </table>
+          </div>
+            <p><strong>Trade-off 总结：</strong>MC gives mathematical guarantees but suffers state explosion; RV is lightweight but only checks observed behaviors — 你无法保证系统在未监控的路径上不出错。实践中两者互补：MC 用于设计阶段完整验证，RV 用于部署后持续监控。</p>
+        </section>
+      </section>
+
+          <!-- ===== 快速自查清单 ===== -->
+          <section class="section">
+            <h2>考前 24 小时快速自查清单</h2>
+            <p>以下是 CS603 考试中最容易丢分的 10 个点。逐条检查，确保每条都能在 30 秒内说出正确答案。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>#</th><th>检查点</th><th>正确答案速记</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>∀ 配什么连接词？∃ 配什么？</td><td>∀ → → ；∃ → ∧</td></tr>
+                <tr><td>2</td><td>Tautology vs Satisfiable 区别</td><td>Tautology = 所有赋值为真；Satisfiable = 至少一个赋值为真</td></tr>
+                <tr><td>3</td><td>Loop invariant 三步法</td><td>Establishment → Preservation → Exit use</td></tr>
+                <tr><td>4</td><td>Total correctness 额外需要什么？</td><td>Variant — non-negative + strictly decreasing on each iteration</td></tr>
+                <tr><td>5</td><td>Ackermann decreases 为什么用 tuple？</td><td>词典序：先比 m，m 相等再比 n — 覆盖所有递归分支</td></tr>
+                <tr><td>6</td><td>BankAccount Valid() 核心等式</td><td><code>Balance == deposits.total - withdrawals.total</code></td></tr>
+                <tr><td>7</td><td>CDCL 比 DPLL 多了什么？</td><td>Conflict analysis + Clause learning + Non-chronological backjump</td></tr>
+                <tr><td>8</td><td>Safety vs Liveness 公式模板</td><td>Safety: <code>G ¬bad</code>；Liveness: <code>G(trigger → F effect)</code></td></tr>
+                <tr><td>9</td><td>State explosion 缓解方法 (任写两种)</td><td>Abstraction、Partial Order Reduction、Symmetry Reduction、Bounded MC</td></tr>
+                <tr><td>10</td><td>CTL 比 LTL 多什么？</td><td>Path quantifiers: A (all paths), E (exists a path)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        </article>
+
+        <aside class="toc" aria-label="CS603 模拟战目录">
+          <h2>CS603 模拟战目录</h2>
+          <ol>
+            <li><a href="#section1">Section 1: 几乎必出</a>
+              <ol>
+                <li><a href="#s1-q1">Q1 Logic + Hoare</a></li>
+                <li><a href="#s1-q2">Q2 Dafny</a></li>
+                <li><a href="#s1-q3">Q3 Req / SAT</a></li>
+                <li><a href="#s1-q4">Q4 Model Checking</a></li>
+              </ol>
+            </li>
+            <li><a href="#section2">Section 2: 很有可能</a></li>
+            <li><a href="#section3">Section 3: 如果换考法</a></li>
+          </ol>
+        </aside>
+      </div>
+    </main>
+    <footer class="footer"><p>模拟战页按 CS603 2025 Summer + 2025 Autumn 真题命题规律整理；理论来源见 <a href="cs603-linear.html">CS603 线性精讲</a>，题型模板见 <a href="cs603.html">CS603 题型页</a>。</p></footer>
+    <script src="assets/app.js"></script>
+  </body>
+</html>

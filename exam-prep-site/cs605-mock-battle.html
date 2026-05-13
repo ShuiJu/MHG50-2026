@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS605 模拟战：题型预测与标准答案</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS605 Mock Battle</small></a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="cs605-linear.html">CS605 线性页</a>
+          <a href="cs605.html">CS605 题型页</a>
+          <a href="#section1">几乎必出</a>
+          <a href="#section2">很有可能</a>
+          <a href="#section3">如果换考法</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS605 mock battle · predicted questions</p>
+        <h1>CS605 模拟战：题型预测与标准答案</h1>
+        <p class="lead">CS605 考试有固定的 7 题格式（Q1–Q7，每题 10 marks），题型高度规律。本页按概率从高到低排列最可能出现的题型，每道题提供可直接交卷的完整标准答案框架——不是零散要点，而是可背诵并在考场上展开的证明模板。</p>
+        <div class="tag-list">
+          <a class="tag" href="#section1">Section 1 · 几乎必出</a>
+          <a class="tag" href="#section2">Section 2 · 很有可能</a>
+          <a class="tag" href="#section3">Section 3 · 如果换考法</a>
+          <span class="tag">Pumping Lemma</span>
+          <span class="tag">Decidable / T-r</span>
+          <span class="tag">HALT Reduction</span>
+          <span class="tag">NP / NP-complete</span>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+
+          <section id="section1" class="section">
+            <h2>Section 1：几乎必出（CS605 固定 7 题格式）</h2>
+            <p>CS605 考卷遵循固定的 7 题结构——每题 10 marks，题型从不偏离以下七个位置：Q1=not regular, Q1b=not CFL, Q2=decidable+T-r, Q3=undecidable reduction, Q4=TR/co-TR, Q5=second reduction, Q6=in NP ×2, Q7=NP-complete。即使语言定义换了，证明骨架完全不变。以下每题给出<b>最可能出现的语言</b>和完整标准答案。</p>
+
+            <!-- Q1: Not Regular -->
+            <h3>Q1: Prove Language NOT Regular (10 marks)</h3>
+            <div class="note">
+              <p><strong>题面预测：</strong>L = {w<sub>1</sub>#w<sub>2</sub>#...#w<sub>2n</sub> : w<sub>i</sub> ∈ {a}*, n &gt; 0, exists odd i where w<sub>i</sub>=w<sub>i+1</sub>}</p>
+              <p><strong>题目定位：</strong>Q1(a) — 使用 Regular Pumping Lemma 证明语言不是 regular。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（完整交卷版）：</strong></p>
+              <p><strong>Step 1 — Assume regular (反证法开头):</strong> Assume, for contradiction, that L is regular. By the pumping lemma, there exists a pumping length p &gt; 0 such that for all strings w ∈ L with |w| ≥ p, there exists a split w = xyz satisfying (1) |xy| ≤ p, (2) |y| &gt; 0, and (3) xy<sup>i</sup>z ∈ L for all i ≥ 0.</p>
+              <p><strong>Step 2 — Choose witness word (选串):</strong> Choose w = a<sup>p</sup>#a<sup>p</sup>#a<sup>p</sup>#a<sup>p</sup>. This word has 4 unary blocks (n = 2, i = 1 is odd and w<sub>1</sub> = w<sub>2</sub> = a<sup>p</sup> ✓). Thus w ∈ L and |w| ≥ p.</p>
+              <p><strong>Step 3 — Constrain y using |xy| ≤ p (锁定泵段位置):</strong> Since |xy| ≤ p, the substring xy lies entirely within the first a<sup>p</sup> block (before the first #). Therefore y consists only of a's from the first block, and |y| &gt; 0.</p>
+              <p><strong>Step 4 — Pump and break (破坏语言条件):</strong> Take i = 2. Then xy<sup>2</sup>z = a<sup>p+|y|</sup>#a<sup>p</sup>#a<sup>p</sup>#a<sup>p</sup>. The first block now has length p + |y| &gt; p, while the second block still has length p. Thus w<sub>1</sub> ≠ w<sub>2</sub>. Since w<sub>1</sub> is the only odd-index block that originally equalled its neighbour, and all other block pairs have unequal lengths, the pumped word has no odd i with w<sub>i</sub> = w<sub>i+1</sub>. Hence xy<sup>2</sup>z ∉ L.</p>
+              <p><strong>Step 5 — Contradiction (矛盾收尾):</strong> This contradicts the pumping lemma, which requires xy<sup>i</sup>z ∈ L for all i ≥ 0. Therefore, our assumption that L is regular is false. Thus L is NOT regular. ∎</p>
+              <p><strong>得分关键总结：</strong></p>
+              <ol class="rung-list">
+                <li><strong>必须写 "assume for contradiction"</strong> —— 这是反证法骨架的第一句，漏了阅卷人不知道你的假设。</li>
+                <li><strong>必须用 |xy| ≤ p 锁死 y 的位置</strong> —— 这是 pumping lemma 给你的最强武器。因为 |xy| ≤ p 且 w 的前 p 个字符全是最前面 a<sup>p</sup> 里的 a，所以 y 只由 a 组成，绝不可能跨越 #。</li>
+                <li><strong>必须解释为什么 pumped word 违反语言条件</strong> —— 不能只说 "not in L"；要说清楚它违反了哪个具体条件（w<sub>i</sub> = w<sub>i+1</sub> 被破坏）。</li>
+                <li><strong>必须明确点出矛盾对象</strong> —— "this contradicts the pumping lemma" 而不是泛泛的 "this is a contradiction"。</li>
+              </ol>
+            </div>
+
+            <!-- Q1b: Not CFL -->
+            <h3>Q1b: Prove NOT Context-Free (10 marks)</h3>
+            <div class="note">
+              <p><strong>题面预测：</strong>L = {u#v : u, v ∈ {a,b}*, |u| = |v|, u differs from v by exactly one symbol}</p>
+              <p><strong>题目定位：</strong>Q1(b) — 使用 CFL Pumping Lemma 证明语言不是 context-free。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（完整交卷版）：</strong></p>
+              <p><strong>Step 1 — Assume CFL:</strong> Assume, for contradiction, that L is context-free. By the CFL pumping lemma, there exists a pumping length p &gt; 0 such that for all strings w ∈ L with |w| ≥ p, there exists a split w = uvxyz satisfying (1) |vxy| ≤ p, (2) |vy| &gt; 0, and (3) uv<sup>i</sup>xy<sup>i</sup>z ∈ L for all i ≥ 0.</p>
+              <p><strong>Step 2 — Choose witness word:</strong> Choose w = a<sup>p</sup>b<sup>p</sup>#a<sup>p</sup>b<sup>p-1</sup>a. Verify: |u| = p + p = 2p, |v| = p + (p-1) + 1 = 2p, so |u| = |v| ✓. u = a<sup>p</sup>b<sup>p</sup>, v = a<sup>p</sup>b<sup>p-1</sup>a — they differ at exactly one position (the last character of v is 'a' instead of 'b'), so w ∈ L. Also |w| ≥ p.</p>
+              <p><strong>Step 3 — Case analysis on vxy (用 |vxy| ≤ p 分情况):</strong> Since |vxy| ≤ p, the substring vxy can span at most p characters. Consider all possible placements of vxy in w:</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Case</th><th>vxy location</th><th>Why uv<sup>2</sup>xy<sup>2</sup>z ∉ L</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Case 1</td><td>vxy entirely within first a<sup>p</sup> (before first b)</td><td>Pumping changes |u|'s a-count but leaves |v| unchanged → |u| ≠ |v| → not in L.</td></tr>
+                    <tr><td>Case 2</td><td>vxy entirely within first b<sup>p</sup></td><td>Pumping changes |u|'s b-count → |u| ≠ |v| → not in L.</td></tr>
+                    <tr><td>Case 3</td><td>vxy spans the # separator</td><td>Pumping with i = 0 removes # → the resulting string has no # → not in L (format violation). Pumping with i = 2 duplicates # → two #'s → not in L.</td></tr>
+                    <tr><td>Case 4</td><td>vxy entirely within second a<sup>p</sup></td><td>Pumping changes |v|'s a-count → |u| ≠ |v| → not in L.</td></tr>
+                    <tr><td>Case 5</td><td>vxy within second b<sup>p-1</sup>a region</td><td>Pumping changes the tail of v — u and v now differ in more than one position or unequal length → not in L.</td></tr>
+                    <tr><td>Case 6</td><td>vxy crosses a<sup>p</sup>/b<sup>p</sup> boundary within u or v</td><td>Pumping disrupts the structure (e.g. creates a<sup>p+|vy|</sup>b<sup>p-|vy|</sup> if vxy spans a-b boundary) → |u| ≠ |v| or more than one difference → not in L.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>In every possible case, uv<sup>2</sup>xy<sup>2</sup>z ∉ L (for cross-# case, i = 0 also works).</p>
+              <p><strong>Step 4 — Contradiction:</strong> This contradicts the CFL pumping lemma. Therefore L is NOT context-free. ∎</p>
+              <p><strong>得分关键：</strong>CFL pumping 必须用五段切法 uvxyz 而非三段 xyz。必须分情况讨论 vxy 的所有可能位置。|vxy| ≤ p 是分情况的依据——它保证 vxy 无法横跨超过 p 个字符的距离。</p>
+            </div>
+
+            <!-- Q2: Decidable -->
+            <h3>Q2: Prove DECIDABLE — FA language (10 marks)</h3>
+            <div class="note">
+              <p><strong>题面预测：</strong>L = {&lt;M&gt; : M is FA with alphabet {0,1}, 011 ∈ L(M)}</p>
+              <p><strong>题目定位：</strong>Q2(a) — 证明语言是 decidable。关键：FA 状态有限，保证搜索/模拟必然终止。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（完整交卷版）：</strong></p>
+              <p><strong>Decider D:</strong> "On input &lt;M&gt;:</p>
+              <ol class="rung-list">
+                <li><strong>Validate encoding.</strong> Check that &lt;M&gt; is a valid encoding of a finite automaton. If not, reject.</li>
+                <li><strong>Simulate M on "011".</strong> Since the input word has exactly 3 characters ({0,1} alphabet), the FA reads them one by one, transitioning through states. Because an FA always halts on finite input (3 steps, each consuming one symbol), the simulation always terminates.</li>
+                <li><strong>Accept if M accepts, reject if M rejects.</strong> After reading all 3 symbols, M is either in an accepting state or not. If yes → accept &lt;M&gt;; if no → reject &lt;M&gt;.</li>
+              </ol>
+              <p><strong>Termination guarantee (decidable 的生命线):</strong> An FA on a fixed-length input string always halts — it reads exactly |w| symbols, each triggering exactly one deterministic transition. With 3 symbols, the simulation takes exactly 3 steps. Therefore D halts on every input. Hence L is DECIDABLE. ∎</p>
+              <p><strong>得分关键：</strong>必须明确说明 "halts on every input"。证明 decidable 的最后一句永远是论证终止——如果忘记说，最高只能拿到 recognisable 的分数。FA 的有限性（finite states + finite input = finite simulation）是终止保证的来源。</p>
+            </div>
+
+            <!-- Q2b: Turing-recognisable -->
+            <h3>Q2b: Prove Turing-RECOGNISABLE (10 marks)</h3>
+            <div class="note">
+              <p><strong>题面预测：</strong>L = {&lt;J,a,b&gt; : J is Java program, at some point a and b are both zero simultaneously}</p>
+              <p><strong>题目定位：</strong>Q2(b) — 证明语言是 Turing-recognisable。关键：simulate J，一旦条件满足就 accept；no instance 上可能永远循环。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（完整交卷版）：</strong></p>
+              <p><strong>Recogniser R:</strong> "On input &lt;J, a, b&gt;:</p>
+              <ol class="rung-list">
+                <li><strong>Validate encoding.</strong> Check that &lt;J, a, b&gt; encodes a valid Java program with variables named a and b. If not, reject.</li>
+                <li><strong>Simulate J step by step.</strong> Maintain the current values of variables a and b. After each execution step (each bytecode or statement), check whether a == 0 and b == 0 simultaneously.</li>
+                <li><strong>If a == 0 and b == 0 at any step → accept.</strong> The recogniser immediately halts and accepts.</li>
+                <li><strong>If J terminates without ever satisfying a == 0 && b == 0 → reject.</strong></li>
+                <li><strong>If J runs forever and never satisfies the condition → R runs forever.</strong> This is acceptable for a recogniser.</li>
+              </ol>
+              <p><strong>Why recognisable but NOT decidable:</strong> Determining whether a Java program EVER reaches a particular state (both variables zero) during its execution is undecidable by Rice's theorem — it is a non-trivial semantic property of the program's runtime behaviour. No algorithm can, in finite time, decide for all &lt;J, a, b&gt; whether J will eventually make both variables zero. The best we can do is simulate and hope — which is exactly what a recogniser does.</p>
+              <p>Therefore L is Turing-RECOGNISABLE. ∎</p>
+              <p><strong>得分关键：</strong>必须明确区分 yes instance (accept) 和 no instance (可能 loop forever)。不能说 "always halts" —— 那样就声称了 decidable，会扣分。对比 Q2(a)：FA 题 decidable because finite states；Java/TM 题 recognisable because infinite state space / unbounded execution。</p>
+            </div>
+
+            <!-- Q3: Undecidable Reduction -->
+            <h3>Q3: Prove UNDECIDABLE via Mapping Reduction (10 marks)</h3>
+            <div class="note">
+              <p><strong>题面预测：</strong>L<sub>3</sub> = {&lt;J&gt; : J is a Java program that takes no input, and J never throws Exception21}</p>
+              <p><strong>题目定位：</strong>Q3 — 从 HALT (或 HALT complement) 做 mapping reduction 证明 undecidable。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（完整交卷版）：</strong></p>
+              <p><strong>Strategy:</strong> Reduce from HALT<sub>complement</sub> = {&lt;M,w&gt; : M does NOT halt on w}. HALT<sub>complement</sub> is known undecidable (if it were decidable, HALT would be decidable by flipping the answer).</p>
+              <p><strong>Construct computable mapping f:</strong> f(&lt;M,w&gt;) = &lt;N&gt; where N is the following Java program (taking no input):</p>
+              <pre><code>void main() {
+    simulate M on input w;
+    // If simulation ever halts:
+    throw new Exception21();
+}</code></pre>
+              <p>N ignores its own input (takes no arguments), simulates M on w internally. If the simulation of M(w) terminates (M halts), N throws Exception21(). If M(w) runs forever, N's simulation runs forever and the exception is never thrown.</p>
+              <p><strong>Prove iff — BOTH directions (双向证明):</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Direction</th><th>Proof</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>(⇒) &lt;M,w&gt; ∈ HALT<sub>complement</sub></td><td>M does NOT halt on w → N's simulation runs forever → N never throws Exception21 → &lt;N&gt; ∈ L<sub>3</sub>.</td></tr>
+                    <tr><td>(⇐) &lt;N&gt; ∈ L<sub>3</sub></td><td>N never throws Exception21 → by construction of N, this can only happen if the simulation of M(w) never terminates (otherwise the throw would fire). Therefore M does not halt on w → &lt;M,w&gt; ∈ HALT<sub>complement</sub>.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Conclusion:</strong> &lt;M,w&gt; ∈ HALT<sub>complement</sub> iff f(&lt;M,w&gt;) = &lt;N&gt; ∈ L<sub>3</sub>. The mapping f is clearly computable (it just writes the code of N with M and w embedded). If L<sub>3</sub> were decidable by some decider D, then we could decide HALT<sub>complement</sub> by: on input &lt;M,w&gt;, construct &lt;N&gt; = f(&lt;M,w&gt;), run D on &lt;N&gt;, and output D's answer. This would make HALT<sub>complement</sub> decidable — contradiction. Therefore L<sub>3</sub> is UNDECIDABLE. ∎</p>
+              <p><strong>得分关键：</strong></p>
+              <ol class="rung-list">
+                <li><strong>必须声明 f 是 computable</strong> —— 归约函数必须是可有效计算的，不能依赖神谕。</li>
+                <li><strong>iff 必须两个方向都写</strong> —— (⇒) 和 (⇐) 分别在卷面上明确标出，每个方向的推理链要完整。</li>
+                <li><strong>归约方向不能反</strong> —— 从已知 undecidable 问题 (HALT or HALT<sub>complement</sub>) 归约到目标 L<sub>3</sub>。方向是 HALT<sub>complement</sub> ≤<sub>m</sub> L<sub>3</sub>。</li>
+                <li><strong>构造 N 的逻辑必须清晰</strong> —— "先模拟 M(w)" → "模拟结束后触发/不触发 property" 是标准后置触发模式。</li>
+              </ol>
+            </div>
+
+            <!-- Q4: TR/co-TR -->
+            <h3>Q4: TR / co-TR Analysis (10 marks)</h3>
+            <div class="note">
+              <p><strong>题面预测：</strong>针对 Q3 的语言 L<sub>3</sub> = {&lt;J&gt; : J never throws Exception21}，分析它是 Turing-recognisable、co-Turing-recognisable、还是两者皆非。</p>
+              <p><strong>题目定位：</strong>Q4 — 使用 "L and L̄ both T-r ⇒ L decidable" 的定理，结合 Q3 的 undecidable 结论。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（完整交卷版）：</strong></p>
+              <p><strong>Analysis of L<sub>3</sub> = {&lt;J&gt; : J never throws Exception21}:</strong></p>
+              <p><strong>1. L<sub>3</sub> complement (L̄<sub>3</sub>) = {&lt;J&gt; : J DOES throw Exception21}.</strong> This language IS Turing-recognisable. Reason: construct a recogniser that simulates J step by step. If at any point J throws Exception21, the recogniser catches it and accepts. If J never throws Exception21 (and loops forever), the recogniser runs forever — which is acceptable for a recogniser. Thus L̄<sub>3</sub> ∈ T-r.</p>
+              <p><strong>2. Is L<sub>3</sub> itself Turing-recognisable?</strong> Use the theorem: if both L and L̄ are Turing-recognisable, then L is decidable. From Q3, we proved L<sub>3</sub> is undecidable. Since L̄<sub>3</sub> IS Turing-recognisable (proved above), L<sub>3</sub> CANNOT be Turing-recognisable. Otherwise, if L<sub>3</sub> were also T-r, running the recognisers for L<sub>3</sub> and L̄<sub>3</sub> in parallel would give a decider — contradiction to L<sub>3</sub> being undecidable.</p>
+              <p><strong>Conclusion:</strong> L̄<sub>3</sub> is Turing-recognisable (T-r). L<sub>3</sub> is co-Turing-recognisable (co-T-r). L<sub>3</sub> is NOT Turing-recognisable itself. ∎</p>
+              <p><strong>得分关键：</strong></p>
+              <ol class="rung-list">
+                <li><strong>必须先确定 complement 是什么</strong> —— L̄<sub>3</sub> = "J throws Exception21"。</li>
+                <li><strong>必须引用 Q3 的结论</strong> —— L<sub>3</sub> is undecidable (from Q3)。</li>
+                <li><strong>必须用定理 "both T-r ⇒ decidable"</strong> —— 这是 Q4 的核心。因为 L<sub>3</sub> undecidable，所以不能两边都是 T-r。一边已验证 T-r，因此另一边必定不是。</li>
+                <li><strong>结论要说清楚哪个是 T-r、哪个是 co-T-r</strong>，不要搞反。</li>
+              </ol>
+            </div>
+
+            <!-- Q5: Second Reduction -->
+            <h3>Q5: Second Undecidability Reduction (10 marks)</h3>
+            <div class="note">
+              <p><strong>题面预测：</strong>L<sub>5</sub> = {&lt;J,n&gt; : J is Java program, line n is never executed during any run of J}</p>
+              <p><strong>题目定位：</strong>Q5 — 第二个 HALT mapping reduction，使用 "后置触发" 模式，将目标代码行放在模拟 M(w) 之后。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（完整交卷版）：</strong></p>
+              <p><strong>Strategy:</strong> Reduce from HALT = {&lt;M,w&gt; : M halts on w} (known undecidable).</p>
+              <p><strong>Construct computable mapping f:</strong> f(&lt;M,w&gt;) = &lt;N, n&gt; where N is a Java program with a distinguished line number n, constructed as follows:</p>
+              <pre><code>void main() {                        // line 1
+    simulate M on input w;            // line 2
+    /* line n — placed here */        // line n: int dummy = 0;
+}</code></pre>
+              <p>N ignores its own input. It first simulates M on w internally. The target line n is placed <strong>after</strong> the simulation. Therefore:</p>
+              <ul>
+                <li>If M halts on w → simulation finishes → execution proceeds to line n → line n IS executed.</li>
+                <li>If M does NOT halt on w → simulation runs forever → execution never reaches line n → line n is NEVER executed.</li>
+              </ul>
+              <p><strong>Prove iff — BOTH directions:</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Direction</th><th>Proof</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>(⇒) &lt;M,w&gt; ∈ HALT</td><td>M halts on w → N's simulation finishes → N executes line n → &lt;N,n&gt; ∉ L<sub>5</sub> (the line IS executed, so NOT "never executed").</td></tr>
+                    <tr><td>(⇐) &lt;N,n&gt; ∉ L<sub>5</sub></td><td>Line n is executed at some point → by N's structure, execution can only reach line n after the simulation of M(w) completes → M halts on w → &lt;M,w&gt; ∈ HALT.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Equivalently: &lt;M,w&gt; ∈ HALT iff &lt;N,n&gt; ∉ L<sub>5</sub>. This shows HALT ≤<sub>m</sub> L̄<sub>5</sub>. Since HALT is undecidable, L̄<sub>5</sub> is undecidable, and therefore L<sub>5</sub> is undecidable. ∎</p>
+              <p><strong>得分关键：</strong></p>
+              <ol class="rung-list">
+                <li><strong>目标行的位置是核心</strong> —— 必须放在模拟之后。放在模拟之前，行总是执行，与 HALT 无关。</li>
+                <li><strong>注意归约的 complement 方向</strong> —— M halts ⇔ line n IS executed ⇔ &lt;N,n&gt; ∉ L<sub>5</sub>。所以映射到的是 L<sub>5</sub> 的补。这不影响证明——补也是 undecidable。</li>
+                <li><strong>iff 两个方向都要写清楚</strong> —— 每个方向要说明 "N 的结构导致..." 的推理链。</li>
+              </ol>
+            </div>
+
+            <!-- Q6: In NP -->
+            <h3>Q6: Prove in NP — Two Sub-problems (10 marks × 2)</h3>
+            <div class="note">
+              <p><strong>题面预测 Q6a: CARA clique</strong> — G = (V,E) student friendship graph, ∃ k students all pairwise friends.</p>
+              <p><strong>题面预测 Q6b: Phone vertex cover</strong> — Phones = vertices, communication pairs = edges, ∃ k phones covering all pairs.</p>
+            </div>
+
+            <div class="answer-box">
+              <p><strong>Q6a — CARA Clique ∈ NP (标准答案)：</strong></p>
+              <p><strong>Language:</strong> L<sub>6A</sub> = {&lt;G,k&gt; : G is an undirected graph of student friendships, and G contains a clique of size at least k}.</p>
+              <p><strong>Certificate:</strong> A set S ⊆ V of k students.</p>
+              <p><strong>Verifier V:</strong> "On input (&lt;G,k&gt;, S):</p>
+              <ol class="rung-list">
+                <li><strong>Check size:</strong> Verify that |S| = k. If not, reject.</li>
+                <li><strong>Check membership:</strong> Verify that all vertices in S are in V. If not, reject.</li>
+                <li><strong>Check pairwise edges:</strong> For every pair of distinct vertices u, v ∈ S, check that (u,v) ∈ E. If any pair lacks an edge, reject.</li>
+                <li><strong>Accept</strong> if all checks pass.</li>
+              </ol>
+              <p><strong>Runtime analysis:</strong> Step 1: O(1). Step 2: O(k). Step 3: there are C(k,2) = k(k-1)/2 pairs. Each edge lookup is O(1) with an adjacency matrix, or O(log|V|) with a hash set. Total: O(k²) ≤ O(|V|²). Since the input size is polynomial in |V| + |E|, the verifier runs in polynomial time. Therefore L<sub>6A</sub> ∈ NP. ∎</p>
+
+              <p><strong>Q6b — Phone Vertex Cover ∈ NP (标准答案)：</strong></p>
+              <p><strong>Language:</strong> L<sub>6B</sub> = {&lt;G,k&gt; : G = (V,E) where V = phones, E = communication pairs, and ∃ k phones such that every communication pair involves at least one of those phones}.</p>
+              <p><strong>Certificate:</strong> A set S ⊆ V of k phones.</p>
+              <p><strong>Verifier V:</strong> "On input (&lt;G,k&gt;, S):</p>
+              <ol class="rung-list">
+                <li><strong>Check size:</strong> Verify that |S| = k.</li>
+                <li><strong>Check coverage:</strong> For each edge (u,v) ∈ E, check that u ∈ S or v ∈ S (at least one endpoint must be in S). If any edge has neither endpoint in S, reject.</li>
+                <li><strong>Accept</strong> if all edges are covered.</li>
+              </ol>
+              <p><strong>Runtime analysis:</strong> Step 1: O(1). Step 2: iterate over all |E| edges, each membership check O(1) using a hash set for S. Total: O(|E|) ≤ O(|V|²). Polynomial time. Therefore L<sub>6B</sub> ∈ NP. ∎</p>
+
+              <p><strong>得分关键（两张证 in NP 通用）：</strong>三要素不可缺一 — (1) certificate 精确定义，(2) verifier 步骤逐条写，(3) 多项式时间分析。不能只说 "guess a solution and verify"。Vertex cover 的验证条件是 "至少一个端点在 S" 而非 "两个都在"——这块写反直接零分。</p>
+            </div>
+
+            <!-- Q7: NP-complete -->
+            <h3>Q7: Prove NP-Complete — 3-SAT ≤<sub>p</sub> CARA Clique (10 marks)</h3>
+            <div class="note">
+              <p><strong>题面预测：</strong>证明 CARA clique 是 NP-complete。已知 3-SAT is NP-complete，要求从 3-SAT 做多项式归约。</p>
+              <p><strong>题目定位：</strong>Q7 — 两半证明：引用 Q6 的 NP membership + 从已知 NPC 做 polynomial reduction。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（完整交卷版）：</strong></p>
+              <p><strong>Part 1 — Membership in NP:</strong> By Q6a (or direct proof), L<sub>6A</sub> ∈ NP — certificate = set of k vertices, verifier checks pairwise edges in O(k²) time. This establishes the first requirement for NP-completeness.</p>
+              <p><strong>Part 2 — NP-hardness: Reduction from 3-SAT to CARA Clique</strong></p>
+              <p><strong>Reduction construction (多项式时间):</strong> Given a 3-CNF formula φ with m clauses C<sub>1</sub>, C<sub>2</sub>, ..., C<sub>m</sub>, where each clause C<sub>j</sub> = (ℓ<sub>j1</sub> ∨ ℓ<sub>j2</sub> ∨ ℓ<sub>j3</sub>) and each literal ℓ is either a variable x or its negation ¬x. Construct a graph G = (V,E) and integer k as follows:</p>
+              <ol class="rung-list">
+                <li><strong>Vertices:</strong> For each literal occurrence in φ, create a vertex labelled by (literal, clause_number). There are exactly 3m vertices — 3 per clause.</li>
+                <li><strong>Edges:</strong> Connect two vertices (ℓ<sub>i</sub>, C<sub>p</sub>) and (ℓ<sub>j</sub>, C<sub>q</sub>) if and only if:
+                  <ul>
+                    <li>They are from <strong>different clauses</strong> (p ≠ q), AND</li>
+                    <li>Their literals are <strong>NOT complementary</strong> — i.e., it is NOT the case that one is x and the other is ¬x for the same variable x.</li>
+                  </ul>
+                </li>
+                <li><strong>k:</strong> Set k = m (the number of clauses).</li>
+              </ol>
+              <p><strong>Polynomial size:</strong> |V| = 3m, |E| ≤ (3m)² = 9m². The construction is clearly polynomial in the size of φ.</p>
+              <p><strong>Correctness proof — iff BOTH directions:</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Direction</th><th>Proof</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>(⇒) φ satisfiable ⇒ G has k-clique</td><td>Let τ be a satisfying assignment. In each clause C<sub>j</sub>, at least one literal is true under τ. Pick ONE such true literal per clause. The corresponding k = m vertices form a clique: (1) they come from different clauses, so the different-clause condition holds; (2) if two selected literals were complementary (x and ¬x), they couldn't both be true under τ — contradiction. So all edges exist.</td></tr>
+                    <tr><td>(⇐) G has k-clique ⇒ φ satisfiable</td><td>Let the k-clique be S. Since vertices from the SAME clause have NO edges between them (by construction — clause condition fails the "different clauses" requirement), the clique can contain at most one vertex per clause. With |S| = k = m clauses, the clique must contain <strong>exactly one</strong> vertex from each clause. Let τ be the assignment that makes all selected literals true (set x = true if literal is x, x = false if literal is ¬x). This assignment is consistent: if two selected literals were complementary (x and ¬x), there would be no edge between them by construction, contradicting that S is a clique. Thus every clause has at least one true literal — φ is satisfiable.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Conclusion:</strong> Since 3-SAT ≤<sub>p</sub> CARA Clique and 3-SAT is NP-complete, CARA Clique is NP-hard. Combined with membership in NP, CARA Clique is NP-COMPLETE. ∎</p>
+              <p><strong>得分关键：</strong></p>
+              <ol class="rung-list">
+                <li><strong>必须引用 Q6 的 NP membership</strong> —— "From Q6a, L<sub>6A</sub> ∈ NP." 这告诉阅卷人你知道 NP-complete 需要两半。</li>
+                <li><strong>构造必须明确：</strong>每 clause 3 个 vertex；同一 clause 内不加边；不同 clause 的 vertex 仅在 literal 不冲突（非互补）时加边；k = clause 数。</li>
+                <li><strong>iff 两个方向都需要解释 clique 和 satisfying assignment 之间的对应</strong> —— (⇒) 从赋值选 literal 构成 clique；(⇐) 从 clique 的 literal 读出赋值。</li>
+                <li><strong>(⇐) 方向要论证 "每 clause 恰好一个 vertex"</strong> —— 这需要用到 clause 内无边 + clique 大小 = clause 数。</li>
+                <li><strong>多项式时间</strong> —— 需要说明构造规模（|V| = 3m, |E| ≤ 9m²，多项式）。</li>
+              </ol>
+            </div>
+
+          </section>
+
+          <section id="section2" class="section">
+            <h2>Section 2：很有可能（语言定义换但证明骨架不变）</h2>
+            <p>Section 1 的语言是最可能的版本。但如果考试换了语言定义，证明骨架完全不变——只是 witness word、构造程序的具体动作会变。以下是最可能的三种 "variant" 场景，以及标准答案的调整方式。</p>
+
+            <!-- Alternative Q1 -->
+            <h3>Alternative Q1: Not Regular — u,v same start symbol</h3>
+            <div class="note">
+              <p><strong>题面预测（如果 Q1 不是 unary block）：</strong>L = {uv : u,v ∈ {0,1}*, |u| = |v|, u and v start with the same symbol}</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案骨架（witness word 变了，其他不变）：</strong></p>
+              <p><strong>Assume regular → pumping length p.</strong> Choose w = 0<sup>p</sup>1 0<sup>p</sup>1. Verify: |u| = p+1, |v| = p+1, both start with '0' ✓, so w ∈ L and |w| ≥ p.</p>
+              <p><strong>Since |xy| ≤ p,</strong> xy is entirely within the first 0<sup>p</sup> block. Thus y consists only of 0's from u's prefix.</p>
+              <p><strong>Pump with i = 2:</strong> xy<sup>2</sup>z = 0<sup>p+|y|</sup>1 0<sup>p</sup>1. Now u = 0<sup>p+|y|</sup>1 and v = 0<sup>p</sup>1. Since |u| ≠ |v|, the string ∉ L.</p>
+              <p><strong>Contradiction.</strong> L is NOT regular. ∎</p>
+              <p><strong>变体要点：</strong>witness word 的设计是关键——让 |xy| ≤ p 把 y 锁在前 p 个字符的单一区域，pump 后破坏 |u| = |v| 或起始符号条件。</p>
+            </div>
+
+            <!-- Alternative Q3: TM nonempty -->
+            <h3>Alternative Q3: TM language nonempty is undecidable</h3>
+            <div class="note">
+              <p><strong>题面预测（如果 Q3 不考 Exception21）：</strong>L = {&lt;M&gt; : M is a TM, L(M) ≠ ∅} — 即 TM 是否接受至少一个字符串。</p>
+              <p><strong>对比 FA version (Sample B Q2a):</strong> FA language nonempty 是 decidable（状态有限，图搜索终止）；TM language nonempty 是 undecidable（TM 可能无限循环，你无法在有限时间内确定 M 是否接受任何字符串）。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案（从 HALT 归约）：</strong></p>
+              <p><strong>f(&lt;M,w&gt;) = &lt;N&gt;</strong> where N is a TM that, on any input x:</p>
+              <ol class="rung-list">
+                <li>Ignores its own input x.</li>
+                <li>Simulates M on w.</li>
+                <li>If the simulation of M(w) halts (whether accept or reject), N<strong>accepts</strong> its input x.</li>
+                <li>If M(w) never halts, N never halts (so N accepts nothing).</li>
+              </ol>
+              <p><strong>iff:</strong> M halts on w ⇔ N accepts at least one string (in fact, all strings) ⇔ L(N) ≠ ∅ ⇔ &lt;N&gt; ∈ L. Therefore HALT ≤<sub>m</sub> L. Since HALT is undecidable, L is undecidable. ∎</p>
+              <p><strong>关键对比：</strong>为什么 Sample B Q2(a) 的 FA 版本是 decidable？因为 FA 状态有限 → 可达性搜索必然终止。TM 状态和纸带无界 → 没有搜索终止的保证 → 必须用 HALT 归约证 undecidable。这个对比是考试最爱考的区分点。</p>
+            </div>
+
+            <!-- Alternative Q5: throughout execution -->
+            <h3>Alternative Q5: Throughout-execution property</h3>
+            <div class="note">
+              <p><strong>题面预测（如果 Q5 不考 "line never executed"）：</strong>L = {&lt;J,b,c&gt; : J is Java program, float b, int[] c, throughout execution b &lt; mean(c)}</p>
+              <p><strong>关键区别：</strong>这是 "throughout execution"（贯穿运行全程）类的 property——程序运行的每一步都必须满足不变量。构造思路是：让 N 在模拟 M(w) 期间保持不变量，模拟停机后破坏不变量。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>标准答案：</strong></p>
+              <p><strong>Construct f(&lt;M,w&gt;) = &lt;N, b, c&gt;</strong> where N is a Java program that:</p>
+              <ol class="rung-list">
+                <li><strong>Initialises:</strong> Set b = 0.0, c = {1, 2, 3} — so that mean(c) = 2.0 and b &lt; mean(c) holds (0.0 &lt; 2.0).</li>
+                <li><strong>Simulates M on w:</strong> During simulation, N does not modify b or c — the invariant b &lt; mean(c) is maintained throughout.</li>
+                <li><strong>After simulation halts:</strong> N deliberately sets b = 100.0 (or modifies c to {0}) — this breaks b &lt; mean(c).</li>
+              </ol>
+              <p><strong>iff:</strong> M(w) does NOT halt ⇒ N's simulation runs forever, b &lt; mean(c) maintained throughout ⇒ &lt;N,b,c&gt; ∈ L. M(w) halts ⇒ after halting, N breaks the invariant ⇒ &lt;N,b,c&gt; ∉ L. Therefore HALT<sub>complement</sub> ≤<sub>m</sub> L, so L is undecidable. ∎</p>
+              <p><strong>"throughout" 类题的通用构造模板：</strong>(1) 在模拟前建立不变量（设置初始值使条件成立）；(2) 在模拟期间不碰不变量（让它自然成立）；(3) 模拟停机后故意破坏不变量。这样 M halts ⇔ 不变量被破坏 ⇔ 程序不满足 property。</p>
+            </div>
+
+          </section>
+
+          <section id="section3" class="section">
+            <h2>Section 3：如果换考法——不同语言，同一模板</h2>
+            <p>考试不会完全重复往年题。但如果题型位置被替换，证明结构完全不变——只是 witness word、构造程序的具体动作会变化。以下是最可能的三种 "换法"，以及如何用现有模板应对。</p>
+
+            <!-- Swap Q1/Q1b -->
+            <h3>If Q1/Q1b swap — Different language, same pumping template</h3>
+            <div class="note">
+              <p><strong>情况：</strong>Q1(a) 变成了 not CFL 而非 not regular，或者语言定义完全换了（如换成 {w#w : w ∈ {a,b}*} 或 {a<sup>n</sup>b<sup>n</sup>c<sup>n</sup>}）。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>应对原则 — 模板不变，只换 witness：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>模板步骤</th><th>Regular Pumping (Q1a)</th><th>CFL Pumping (Q1b)</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>假设</td><td>Assume L is regular</td><td>Assume L is context-free</td></tr>
+                    <tr><td>切法</td><td>w = xyz, |xy| ≤ p, |y| &gt; 0</td><td>w = uvxyz, |vxy| ≤ p, |vy| &gt; 0</td></tr>
+                    <tr><td>选 witness</td><td>选 w 使 |xy| ≤ p 把 y 锁在单一字符区域</td><td>选 w 使 |vxy| ≤ p 限制 vxy 只能覆盖局部（最多两个区域）</td></tr>
+                    <tr><td>Pump 方式</td><td>i = 0 或 i = 2，只重复/删除 y</td><td>i = 0 或 i = 2，同时重复/删除 v 和 y</td></tr>
+                    <tr><td>破坏什么</td><td>数量相等、block 长度、格式</td><td>三段等长、分隔符数量、格式</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>常见 witness 选择速查：</strong></p>
+              <ul>
+                <li><strong>a<sup>n</sup>b<sup>n</sup> (not regular):</strong> w = a<sup>p</sup>b<sup>p</sup> — y locked in a's by |xy| ≤ p.</li>
+                <li><strong>a<sup>n</sup>b<sup>n</sup>c<sup>n</sup> (not CFL):</strong> w = a<sup>p</sup>b<sup>p</sup>c<sup>p</sup> — vxy can span at most 2 regions.</li>
+                <li><strong>w#w (not CFL):</strong> w = a<sup>p</sup>b<sup>p</sup>#a<sup>p</sup>b<sup>p</sup> — vxy may cross #, pump with i = 0 to remove #.</li>
+                <li><strong>ww (not CFL):</strong> w = a<sup>p</sup>b<sup>p</sup>a<sup>p</sup>b<sup>p</sup> — vxy may disrupt symmetry.</li>
+              </ul>
+              <p><strong>核心原则：</strong>无论语言定义怎么变，证明骨架永远是 "假设 → 泵长 → 选 witness → 约束泵段位置 → pump → 破坏条件 → 矛盾"。变的只是 witness word 的选择和 "为什么破坏" 的解释。</p>
+            </div>
+
+            <!-- Swap Q2 decidable/recognisable -->
+            <h3>If Q2 swaps decidable / recognisable proof</h3>
+            <div class="note">
+              <p><strong>情况：</strong>Q2(a) 和 Q2(b) 的题目类型互换——比如 (a) 变成 Java 程序题需要证 recognisable，(b) 变成 FA 题需要证 decidable。或者两个子题都是同一方向。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>判定规则速查表：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>输入对象</th><th>条件类型</th><th>结论</th><th>证明方法</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>FA / DFA</td><td>任何 property（accepts some word, word length &gt; n, language empty, language infinite）</td><td><strong>DECIDABLE</strong></td><td>构造算法，利用 FA 有限状态论证搜索必然终止。例如：图搜索可达性、检查所有长度 ≤ n 的路径、BFS 标记状态。</td></tr>
+                    <tr><td>PDA</td><td>Language emptiness, finiteness</td><td><strong>DECIDABLE</strong></td><td>将 PDA 转 CFG，检查 CFG 是否生成任何字符串（存在多项式算法）。</td></tr>
+                    <tr><td>TM / Java program</td><td>"eventually does X" / "at least once"</td><td><strong>Turing-RECOGNISABLE</strong> (not decidable)</td><td>构造 simulator：模拟程序，一旦检测到条件满足就 accept。No instance 上 simulator 可能 loop forever。引用 Rice's theorem 说明不是 decidable。</td></tr>
+                    <tr><td>TM / Java program</td><td>"always does X" / "every run" / "throughout execution"</td><td><strong>Usually UNDECIDABLE</strong> (not even recognisable often)</td><td>用 HALT reduction（从 HALT complement）证明 undecidable。通常构造程序在模拟 M(w) 时保持 property，模拟停机后破坏它。</td></tr>
+                    <tr><td>TM / Java program</td><td>"halts on all inputs", "accepts Σ*"</td><td><strong>UNDECIDABLE</strong> (not T-r)</td><td>用 HALT reduction。Rice's theorem：any non-trivial semantic property of TM languages is undecidable。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>核心区分：</strong>输入对象是有限对象（FA）→ decidable；输入对象是程序/TM + 条件涉及运行时行为 → recognisable (best case) 或 undecidable。FA 永远是 decidable 因为状态有限保证搜索终止。</p>
+            </div>
+
+            <!-- Swap NP-complete source -->
+            <h3>If Q6/Q7 swap NP-complete source problem</h3>
+            <div class="note">
+              <p><strong>情况：</strong>Q7 不再从 3-SAT 归约，而要求从 Vertex Cover、Set Cover 或其他已知 NPC 问题归约。Q6 的语言也可能不是 clique/vertex cover。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>通用 in NP 证明模板（适用任何语言）：</strong></p>
+              <ol class="rung-list">
+                <li><strong>Certificate:</strong> 精确定义证书是什么数据结构——通常是一组顶点、一个赋值、一个子集、一个排列。</li>
+                <li><strong>Verifier steps:</strong> (a) 检查证书格式和大小，(b) 按语言定义逐条检查 yes 条件，(c) 全部通过则 accept。</li>
+                <li><strong>Runtime:</strong> 分析每步的复杂度，证明总体是多项式。常用：O(k²) 对选顶点集、O(|E|) 遍历边、O(n) 线性扫描。</li>
+                <li><strong>Conclusion:</strong> L ∈ NP.</li>
+              </ol>
+              <p><strong>通用 NP-hard reduction 模板（从已知 NPC 问题 A）：</strong></p>
+              <ol class="rung-list">
+                <li><strong>Reduction source:</strong> 明确声明从哪个已知 NP-complete 问题归约（如 "Reduce from 3-SAT, which is known NP-complete"）。</li>
+                <li><strong>Construction:</strong> 将 A 的每个实例部件（variable, clause, edge, vertex, set element）映射到目标问题的对应结构。每个 mapping 要说清楚。</li>
+                <li><strong>Polynomial:</strong> 论证构造的大小是原实例大小的多项式（如 |V| = 3m, |E| ≤ 9m²）。</li>
+                <li><strong>Correctness (⇒):</strong> A 的 yes instance → 构造出目标问题的 yes instance。从 A 的解构造目标解。</li>
+                <li><strong>Correctness (⇐):</strong> 目标问题的 yes instance → 原 A 的 yes instance。从目标解反推 A 的解。</li>
+                <li><strong>Conclusion:</strong> A ≤<sub>p</sub> L, so L is NP-hard. Combined with NP membership, L is NP-complete.</li>
+              </ol>
+              <p><strong>常见 NPC source problems 的构造方法速查：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>From</th><th>To</th><th>核心构造思路</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>3-SAT</td><td>Clique</td><td>每 clause 3 个 literal vertex；不同 clause 的非互补 literal 连边；k = 从句数。</td></tr>
+                    <tr><td>3-SAT</td><td>Vertex Cover</td><td>每个 variable 建 True/False gadget（两个 vertex 一条 edge）；每个 clause 建三角形；variable-clause 之间连边对应 literal 出现。k = |variables| + 2|clauses|。</td></tr>
+                    <tr><td>3-SAT</td><td>Independent Set</td><td>和 Clique 互补：在 reduction graph 的 complement（补图）上找 independent set。</td></tr>
+                    <tr><td>3-SAT</td><td>Set Cover / Hitting Set</td><td>每个 clause 对应一个 set（包含其 3 个 literal）；universe = 所有 literal；找 hitting set 覆盖所有 clause。</td></tr>
+                    <tr><td>Clique</td><td>Vertex Cover</td><td>直接 complement reduction：G has k-clique iff Ḡ (complement graph) has (|V|-k)-vertex cover。</td></tr>
+                    <tr><td>Vertex Cover</td><td>Clique</td><td>同上的对偶——互补图归约。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>考试中，题目通常会明确告诉你 "You may assume 3-SAT / Vertex Cover / ...  is NP-complete"，你只需要从这个指定问题出发做 reduction。不要自己凭空选 source problem——用题目给的。</strong></p>
+            </div>
+
+          </section>
+
+          <section class="section">
+            <h2>如何使用本页（考前冲刺指南）</h2>
+            <p>本页是 <strong>背诵级参考答案汇编</strong>，不是学习材料。前提假设你已通过 <a href="cs605-linear.html">CS605 线性页</a> 学完了所有概念和证明工具。</p>
+            <ol class="rung-list">
+              <li><strong>Section 1 逐题闭卷默写。</strong> 遮住答案，拿出草稿纸，从 Q1 写到 Q7。每题 10 分钟限时——考试中每道题也只有约 10 分钟时间。写完对比本页，漏了得分点就标红补上。</li>
+              <li><strong>重点练 pumping 的 witness 选择和 reduction 的 iff 双向证明。</strong> 这两类题的失分都在于 "只写了一个方向" 或 "witness 选得不够脆弱"。</li>
+              <li><strong>Section 2 做变体练习。</strong> 给自己换一个语言定义，用相同的证明骨架重新写一遍。这锻炼你 "换 witness 不换模板" 的能力。</li>
+              <li><strong>Section 3 读一遍，理解答题手法的映射。</strong> 不需要逐字背。关键是理解 "不同语言，同一模板" 和 "不同 source problem，同一 reduction 结构"。</li>
+              <li><strong>考前 48 小时再默写 Section 1 的全部 7 题。</strong> 这 7 题是固定格式的底盘——拿全它们的分，总分已经过安全线。</li>
+            </ol>
+            <div class="answer-box">
+              <p><strong>关键提醒：</strong>所有答案里的构造必须贴回题面。不能说 "simulate then trigger property"——要说清楚 property 具体是什么、触发条件怎么和 HALT 对齐。不能说 "pump breaks the condition"——要具体说出 pump 后字符串长什么样、违反了语言定义的哪一条。空话不得分，具体才得分。</p>
+            </div>
+            <div class="micro-check">
+              <p><strong>考前自检清单：</strong>□ 能闭卷写完整 pumping proof (Q1a + Q1b) □ 能闭卷写 decider (Q2a) + recogniser (Q2b) □ 能闭卷写 HALT reduction 含 iff 双向 (Q3 + Q5) □ 能闭卷写 TR/co-TR 分析 (Q4) □ 能闭卷写 in NP 证明含 certificate + verifier + runtime (Q6a + Q6b) □ 能闭卷写 NP-complete 含 reduction construction + iff 双向 + polynomial 论证 (Q7)</p>
+            </div>
+          </section>
+
+        </article>
+
+        <aside class="toc">
+          <h2>概率排序</h2>
+          <ol>
+            <li><a href="#section1">Section 1：几乎必出</a>
+              <ol>
+                <li>Q1: Not Regular (Pumping)</li>
+                <li>Q1b: Not CFL (CFL Pumping)</li>
+                <li>Q2: Decidable (FA)</li>
+                <li>Q2b: Turing-Recognisable (Java)</li>
+                <li>Q3: Undecidable (HALT Reduction)</li>
+                <li>Q4: TR / co-TR Analysis</li>
+                <li>Q5: Second Reduction</li>
+                <li>Q6: In NP × 2</li>
+                <li>Q7: NP-Complete (3-SAT → Clique)</li>
+              </ol>
+            </li>
+            <li><a href="#section2">Section 2：很有可能</a>
+              <ol>
+                <li>Alt Q1: Different witness word</li>
+                <li>Alt Q3: TM nonempty (FA vs TM contrast)</li>
+                <li>Alt Q5: Throughout-execution property</li>
+              </ol>
+            </li>
+            <li><a href="#section3">Section 3：如果换考法</a>
+              <ol>
+                <li>Q1/Q1b swap — Same template</li>
+                <li>Q2 swap — Decidable/R-r rules</li>
+                <li>Q6/Q7 swap — Different NPC source</li>
+              </ol>
+            </li>
+          </ol>
+          <p style="margin-top:14px;font-size:0.9rem;color:var(--muted)">本页是背诵级参考答案汇编。先学 <a href="cs605-linear.html">CS605 线性页</a> 再背这里。配合 <a href="cs605.html">CS605 题型页</a> 做专项练习。</p>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>CS605 Theory of Computer Science · Mock Battle · 题型预测与标准答案 · 7 题固定格式 (10 marks each)</p>
+    </footer>
+  </body>
+</html>

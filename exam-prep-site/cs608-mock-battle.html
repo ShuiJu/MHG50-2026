@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS608 模拟战：题型预测与标准答案</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS608 模拟战</small></a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="index.html">总入口</a>
+          <a href="cs608-linear.html">CS608 线性教材</a>
+          <a href="cs608.html">CS608 题型页</a>
+          <a href="#s1">几乎必出</a>
+          <a href="#s2">很有可能</a>
+          <a href="#s3">如果换考法</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <p class="eyebrow">CS608 Mock Battle — 概率排序预测</p>
+        <h1>CS608 模拟战：题型预测与标准答案</h1>
+        <p class="lead">CS608 考试固定四道题（各 25 marks）：Q1 黑盒（穷举 + BVA/DT）、Q2 白盒（JaCoCo 覆盖率补测）、Q3 类上下文（static vs instance、EP）、Q4 随机测试（数据/oracle/完成条件）。以下按出题概率从高到低给出每道题的预测题型和可直接交卷的标准答案结构。</p>
+        <div class="tag-list">
+          <a class="tag" href="#s1">几乎必出</a>
+          <a class="tag" href="#s2">很有可能</a>
+          <a class="tag" href="#s3">如果换考法</a>
+        </div>
+      </section>
+
+      <div class="layout">
+        <article class="content">
+
+          <!-- ===== SECTION 1: 几乎必出 ===== -->
+          <section id="s1" class="section">
+            <h2>Section 1：几乎必出（&ge;90%）</h2>
+            <p>CS608 有四个固定考题位，以下四题的预测基于 2023 Summer、2025 Summer 的交替出题模式和教材核心知识点布局。每题 25 marks，内部子题分值已标注。</p>
+
+            <!-- Q1 -->
+            <section id="s1-q1" class="section">
+              <h3>Q1: Climate.determine() BVA（25 marks）</h3>
+              <p><strong>预测：</strong><code>Climate.determine(int temp, int humidity)</code>。Spec: temp 范围 -130..60，&lt;16 需 HEAT；humidity 范围 0..100，&gt;60 需 AC；超出范围 &rarr; ERROR。</p>
+              <p><strong>子题：</strong>(a) [5] 为什么穷举测试不可行？ (b) [5] Value lines + input/output partitions。 (c) [15] BVA 测试用例（不含 error values）：TCI 表、selected equivalence values、test cases。</p>
+
+              <h4>(a) 模型答案：穷举测试不可行</h4>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>变量</th><th>可能取值数</th><th>计算</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>temp</td><td>191</td><td>-130 到 60 共 191 个整数</td></tr>
+                    <tr><td>humidity</td><td>101</td><td>0 到 100 共 101 个整数</td></tr>
+                    <tr><td>组合总数</td><td>19,291</td><td>191 &times; 101</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>不可行原因分两层：</p>
+              <ol class="rung-list">
+                <li><strong>Test design time 不可行：</strong>近 2 万个组合，每个都需人工写出 expected result，工作量不可能在有限时间内完成。</li>
+                <li><strong>Test execution time 不可行：</strong>即使设计完毕，执行近 2 万个测试用例所需的运行时间远超合理范围。必须使用 systematic methods（如 BVA、EP、DT）来选择代表性测试。</li>
+              </ol>
+
+              <h4>(b) 模型答案：Value Lines &amp; Partitions</h4>
+              <p><strong>temp value line：</strong></p>
+              <pre>-130 ──────────── 16 ──────────── 60</pre>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Partition</th><th>范围</th><th>行为</th></tr></thead>
+                  <tbody>
+                    <tr><td>ERROR (below)</td><td>temp &lt; -130</td><td>输出 ERROR</td></tr>
+                    <tr><td>HEATING</td><td>-130 &le; temp &lt; 16</td><td>触发 HEAT</td></tr>
+                    <tr><td>NO_HEATING</td><td>16 &le; temp &le; 60</td><td>不触发 HEAT</td></tr>
+                    <tr><td>ERROR (above)</td><td>temp &gt; 60</td><td>输出 ERROR</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>humidity value line：</strong></p>
+              <pre>0 ──────────── 60 ──────────── 100</pre>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Partition</th><th>范围</th><th>行为</th></tr></thead>
+                  <tbody>
+                    <tr><td>ERROR (below)</td><td>humidity &lt; 0</td><td>输出 ERROR</td></tr>
+                    <tr><td>NO_AC</td><td>0 &le; humidity &le; 60</td><td>不触发 AC</td></tr>
+                    <tr><td>AC</td><td>61 &le; humidity &le; 100</td><td>触发 AC</td></tr>
+                    <tr><td>ERROR (above)</td><td>humidity &gt; 100</td><td>输出 ERROR</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Output partitions（两种条件组合产生的输出枚举）：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>HEAT 条件</th><th>AC 条件</th><th>输出</th></tr></thead>
+                  <tbody>
+                    <tr><td>false (temp &ge; 16)</td><td>false (humidity &le; 60)</td><td>NONE</td></tr>
+                    <tr><td>true (temp &lt; 16)</td><td>false (humidity &le; 60)</td><td>HEAT_ONLY</td></tr>
+                    <tr><td>false (temp &ge; 16)</td><td>true (humidity &gt; 60)</td><td>AC_ONLY</td></tr>
+                    <tr><td>true (temp &lt; 16)</td><td>true (humidity &gt; 60)</td><td>HEAT_AND_AC</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h4>(c) 模型答案：BVA 测试用例</h4>
+              <p><strong>TCI Table（Test Coverage Items）：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>TCI ID</th><th>描述</th><th>类型</th></tr></thead>
+                  <tbody>
+                    <tr><td>BV1</td><td>temp just above valid min (-130)</td><td>Input TCI</td></tr>
+                    <tr><td>BV2</td><td>temp just below threshold (15)</td><td>Input TCI</td></tr>
+                    <tr><td>BV3</td><td>temp on threshold (16)</td><td>Input TCI</td></tr>
+                    <tr><td>BV4</td><td>temp just above threshold (17)</td><td>Input TCI</td></tr>
+                    <tr><td>BV5</td><td>temp just below valid max (60)</td><td>Input TCI</td></tr>
+                    <tr><td>BV6</td><td>humidity just above valid min (0)</td><td>Input TCI</td></tr>
+                    <tr><td>BV7</td><td>humidity just below threshold (59)</td><td>Input TCI</td></tr>
+                    <tr><td>BV8</td><td>humidity on threshold (60)</td><td>Input TCI</td></tr>
+                    <tr><td>BV9</td><td>humidity just above threshold (61)</td><td>Input TCI</td></tr>
+                    <tr><td>BV10</td><td>humidity just below valid max (100)</td><td>Input TCI</td></tr>
+                    <tr><td>OUT1</td><td>NONE output</td><td>Output TCI</td></tr>
+                    <tr><td>OUT2</td><td>HEAT_ONLY output</td><td>Output TCI</td></tr>
+                    <tr><td>OUT3</td><td>AC_ONLY output</td><td>Output TCI</td></tr>
+                    <tr><td>OUT4</td><td>HEAT_AND_AC output</td><td>Output TCI</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>Selected Equivalence Values（基于 one fault assumption）：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>变量被测试</th><th>temp</th><th>humidity</th><th>理由</th></tr></thead>
+                  <tbody>
+                    <tr><td>temp 边界</td><td>变化</td><td>50 (nominal)</td><td>humidity=50 处于 NO_AC 区，排除 AC 干扰</td></tr>
+                    <tr><td>humidity 边界</td><td>20 (nominal)</td><td>变化</td><td>temp=20 处于 NO_HEATING 区，排除 HEAT 干扰</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>Test Cases：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>TC#</th><th>TCI Covered</th><th>temp</th><th>humidity</th><th>Test Call</th><th>Expected Result</th></tr></thead>
+                  <tbody>
+                    <tr><td>TC1</td><td>BV1, OUT2</td><td>-130</td><td>50</td><td>determine(-130, 50)</td><td>HEAT_ONLY</td></tr>
+                    <tr><td>TC2</td><td>BV2, OUT2</td><td>15</td><td>50</td><td>determine(15, 50)</td><td>HEAT_ONLY</td></tr>
+                    <tr><td>TC3</td><td>BV3, OUT1</td><td>16</td><td>50</td><td>determine(16, 50)</td><td>NONE</td></tr>
+                    <tr><td>TC4</td><td>BV4, OUT1</td><td>17</td><td>50</td><td>determine(17, 50)</td><td>NONE</td></tr>
+                    <tr><td>TC5</td><td>BV5, OUT1</td><td>60</td><td>50</td><td>determine(60, 50)</td><td>NONE</td></tr>
+                    <tr><td>TC6</td><td>BV6, OUT1</td><td>20</td><td>0</td><td>determine(20, 0)</td><td>NONE</td></tr>
+                    <tr><td>TC7</td><td>BV7, OUT1</td><td>20</td><td>59</td><td>determine(20, 59)</td><td>NONE</td></tr>
+                    <tr><td>TC8</td><td>BV8, OUT1</td><td>20</td><td>60</td><td>determine(20, 60)</td><td>NONE</td></tr>
+                    <tr><td>TC9</td><td>BV9, OUT3</td><td>20</td><td>61</td><td>determine(20, 61)</td><td>AC_ONLY</td></tr>
+                    <tr><td>TC10</td><td>BV10, OUT3</td><td>20</td><td>100</td><td>determine(20, 100)</td><td>AC_ONLY</td></tr>
+                    <tr><td>TC11</td><td>OUT4</td><td>15</td><td>61</td><td>determine(15, 61)</td><td>HEAT_AND_AC</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>说明：</strong>TC1-TC10 遵循 one fault assumption——每次只让一个变量靠边界、另一个取 nominal；TC11 故意打破 one fault assumption，同时让两个变量取边界附近值，专门覆盖 HEAT_AND_AC 这个输出 partition（OUT4）。</p>
+              <div class="micro-check">
+                <p><strong>判分关键：</strong>不要漏掉 temp 的有效最小值 (-130) 和有效最大值 (60) 两个端点；不要漏掉湿度端点 0 和 100；TC11 必须给出以覆盖所有四种输出。</p>
+              </div>
+            </section>
+
+            <!-- Q2 -->
+            <section id="s1-q2" class="section">
+              <h3>Q2: decideWrite() JaCoCo White-box（25 marks）</h3>
+              <p><strong>预测：</strong><code>Filestore.decideWrite(boolean enabled, boolean exists, boolean overwrite)</code>。JaCoCo 报告：line 28 yellow、line 32 yellow、line 33 red。</p>
+              <p><strong>子题：</strong>(a) [15] Additional tests 实现 full BRANCH coverage。 (b) [5] 解释 "1 of 4 branches missed"（short-circuit）。 (c) [5] Black-box vs white-box 四点区别。</p>
+
+              <h4>(a) 模型答案：Additional Tests for Full Branch Coverage</h4>
+              <p><strong>Coverage gaps 分析：</strong></p>
+              <ul>
+                <li><strong>Line 28 yellow：</strong><code>if (enabled && exists)</code> — 其中一个 branch 方向未被覆盖（例如 enabled&&exists 为 true 的分支已被测，但对应 false 的分支未走）。</li>
+                <li><strong>Line 32 yellow：</strong><code>else if (overwrite)</code> — 同理，某个 branch 方向缺失。</li>
+                <li><strong>Line 33 red：</strong>该行从未被执行（statement coverage 0%），位于 else 链末端。</li>
+              </ul>
+
+              <p><strong>TCI Table：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>TCI ID</th><th>Coverage Item</th></tr></thead>
+                  <tbody>
+                    <tr><td>TCI1</td><td>enabled && exists &rarr; true branch (line 28)</td></tr>
+                    <tr><td>TCI2</td><td>enabled && exists &rarr; false branch (line 28)</td></tr>
+                    <tr><td>TCI3</td><td>!enabled && overwrite &rarr; true branch (line 32)</td></tr>
+                    <tr><td>TCI4</td><td>!enabled && overwrite &rarr; false branch &rarr; line 33</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>Additional Tests：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Test</th><th>Covered TCI</th><th>Input</th><th>Expected Result</th><th>Explanation</th></tr></thead>
+                  <tbody>
+                    <tr><td>AT1</td><td>TCI1</td><td>decideWrite(true, true, false)</td><td>从 spec 推导</td><td>enabled&&exists 为 true，进入 if-block</td></tr>
+                    <tr><td>AT2</td><td>TCI2</td><td>decideWrite(true, false, false)</td><td>从 spec 推导</td><td>enabled&&exists 为 false，走 false 分支到 line 32</td></tr>
+                    <tr><td>AT3</td><td>TCI3</td><td>decideWrite(false, false, true)</td><td>从 spec 推导</td><td>!enabled && overwrite 为 true，进入 else-if-block</td></tr>
+                    <tr><td>AT4</td><td>TCI4</td><td>decideWrite(false, false, false)</td><td>false</td><td>所有条件为 false，运行到 line 33 执行 return false，使红线变绿</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="answer-box">
+                <p><strong>注意：</strong>每题 expected result 仍必须从 specification 推导，不能因为"这是补 coverage 的"就只写 input。每个 additional test 都要有 TCI + Input + Expected + Explanation 四要素。</p>
+              </div>
+
+              <h4>(b) 模型答案：Short-circuit &amp; "1 of 4 branches missed"</h4>
+              <p><code>&&</code> 在 bytecode 层面产生多个 conditional jump 指令，JaCoCo 按字节码插桩计数：</p>
+              <ol class="rung-list">
+                <li><strong>Branch 1：</strong>!enabled &rarr; 跳转到 L1（不评估 exists）</li>
+                <li><strong>Branch 2：</strong>enabled && !exists &rarr; 跳转到 L1</li>
+                <li><strong>Branch 3：</strong>enabled && exists &rarr; 进入 true 体</li>
+                <li><strong>Branch 4：</strong>控制流从 L1 继续（隐式 branch）</li>
+              </ol>
+              <p>如果现有测试只击中了部分 branch（例如 enabled=false 时 exists 从未被 evaluated），JaCoCo 就报 "1 of 4 branches missed"。补测的方法：提供让 missing branch 被触发的输入，使得被短路的子条件得到 evaluation。</p>
+
+              <h4>(c) 模型答案：Black-box vs White-box 四点对比</h4>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>维度</th><th>Black-box</th><th>White-box</th></tr></thead>
+                  <tbody>
+                    <tr><td>1. 发现的错误类型</td><td>规格理解错误、缺失功能、边界/组合遗漏</td><td>未执行代码中的逻辑错误、遗漏分支 bug</td></tr>
+                    <tr><td>2. 代码变更影响</td><td>不受内部重构影响，只要规格不变测试仍有效</td><td>代码改一行可能导致测试失效，需维护</td></tr>
+                    <tr><td>3. 能否先于代码编写</td><td>可以——从 spec 即可设计测试（支持 TDD）</td><td>必须已有代码才能分析覆盖和执行测试</td></tr>
+                    <tr><td>4. Coverage 可测量性</td><td>基于 spec 覆盖，较难量化（需人工判断）</td><td>基于代码覆盖，工具可直接出数字（如 JaCoCo 百分比）</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Q3 -->
+            <section id="s1-q3" class="section">
+              <h3>Q3: Numbers Class Context（25 marks）</h3>
+              <p><strong>预测：</strong>Numbers 类有 static method <code>isNeg(int x)</code> 和 instance methods <code>setValue(int v)</code>、<code>isNegative()</code>、<code>getResult()</code>。</p>
+              <p><strong>子题：</strong>(a) [10] 比较 static 与 instance method 的测试写法。 (b) [15] Braking.decide() 在 class context 中的 EP 测试。</p>
+
+              <h4>(a) 模型答案：Static vs Instance Testing</h4>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th></th><th>Static Method (isNeg)</th><th>Instance Method (isNegative)</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>调用方式</strong></td><td><code>Numbers.isNeg(-1)</code> — 直接一行调用</td><td>需四步序列创建对象并设状态再调用</td></tr>
+                    <tr><td><strong>测试步骤</strong></td><td>1 步：调用 static method 并 assert 返回值</td><td>4 步：new &rarr; setValue &rarr; call &rarr; observe/assert</td></tr>
+                    <tr><td><strong>行为依赖</strong></td><td>仅依赖传入参数（pure function）</td><td>依赖对象内部 state（value 字段），由之前 setValue 设定</td></tr>
+                    <tr><td><strong>实例代码</strong></td><td><code>assertEquals(true, Numbers.isNeg(-1))</code></td><td><code>Numbers n = new Numbers(); n.setValue(-1); n.checkValue(); assertTrue(n.isNegative())</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>核心区别：</strong>static method 是纯函数——输入直接决定输出，不涉及对象状态；instance method 是有状态方法——结果取决于对象字段的当前值，必须先通过序列调用将对象置于目标状态。</p>
+
+              <h4>(b) 模型答案：Braking.decide() EP Testing in Class Context</h4>
+              <p><strong>Step 1 — 识别 accessor methods：</strong></p>
+              <ul>
+                <li><strong>Mutators：</strong><code>setOverride(boolean)</code>、<code>setDangerLevel(int)</code>（或 constructor）</li>
+                <li><strong>Accessors：</strong><code>getDangerLevel()</code>、<code>isEmergencyBrake()</code>、<code>decide()</code> 返回值</li>
+              </ul>
+
+              <p><strong>Step 2 — dangerLevel value line &amp; partitions：</strong></p>
+              <pre>0 ────── 5 ────── 10</pre>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Partition</th><th>范围</th><th>语义</th></tr></thead>
+                  <tbody>
+                    <tr><td>DL1</td><td>0–4</td><td>SAFE</td></tr>
+                    <tr><td>DL2</td><td>5–9</td><td>CAUTION</td></tr>
+                    <tr><td>DL3</td><td>10+</td><td>DANGER</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>Step 3 — EP 覆盖项：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>EP ID</th><th>Partition</th><th>Override</th><th>Emergency Brake</th><th>Expected Effect</th></tr></thead>
+                  <tbody>
+                    <tr><td>EP1</td><td>DL1 (SAFE)</td><td>false</td><td>false</td><td>No brake</td></tr>
+                    <tr><td>EP2</td><td>DL2 (CAUTION)</td><td>false</td><td>false</td><td>Caution brake</td></tr>
+                    <tr><td>EP3</td><td>DL3 (DANGER)</td><td>false</td><td>false</td><td>Hard brake</td></tr>
+                    <tr><td>EP4</td><td>Any DL</td><td>true</td><td>false</td><td>Override disables braking</td></tr>
+                    <tr><td>EP5</td><td>Any DL</td><td>false</td><td>true</td><td>Emergency brake always</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>Step 4 — Test Cases（class context 调用序列）：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>TC#</th><th>Covered EP</th><th>调用序列</th><th>Expected Result</th></tr></thead>
+                  <tbody>
+                    <tr><td>TC1</td><td>EP1</td><td><code>new Braking(2); b.setOverride(false); b.decide()</code></td><td>No brake action</td></tr>
+                    <tr><td>TC2</td><td>EP2</td><td><code>new Braking(7); b.setOverride(false); b.decide()</code></td><td>Caution brake</td></tr>
+                    <tr><td>TC3</td><td>EP3</td><td><code>new Braking(12); b.setOverride(false); b.decide()</code></td><td>Hard brake</td></tr>
+                    <tr><td>TC4</td><td>EP4</td><td><code>new Braking(12); b.setOverride(true); b.decide()</code></td><td>No brake (overridden)</td></tr>
+                    <tr><td>TC5</td><td>EP5</td><td><code>new Braking(2); b.setEmergencyBrake(true); b.decide()</code></td><td>Emergency brake</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="answer-box">
+                <p><strong>卷面要点：</strong>每个 test case 必须写出完整的 create-set-call-observe 序列。不能只写 "输入 dangerLevel=12"——instance method 的行为取决于对象状态，必须通过 public API 设定再调用。</p>
+              </div>
+            </section>
+
+            <!-- Q4 -->
+            <section id="s1-q4" class="section">
+              <h3>Q4: PV.exportPower() Random Testing（25 marks）</h3>
+              <p><strong>预测：</strong><code>PV.exportPower(boolean enabled, int nettPower)</code>。enabled && nettPower &gt; 0 &rarr; true，否则 &rarr; false。</p>
+              <p><strong>子题：</strong>(a) [9] 从 spec 推导 Decision Table rules + 每条 rule 的随机数据生成标准。 (b) [10] Automated test pseudo-code。 (c) [6] 随机测试三大问题（data/oracle/completion）及解决方案。</p>
+
+              <h4>(a) 模型答案：DT Rules &amp; Random Criteria</h4>
+              <p><strong>Decision Table：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Rule</th><th>enabled</th><th>nettPower</th><th>Expected Result</th></tr></thead>
+                  <tbody>
+                    <tr><td>R1</td><td>T</td><td>&gt; 0</td><td>true</td></tr>
+                    <tr><td>R2</td><td>T</td><td>&le; 0</td><td>false</td></tr>
+                    <tr><td>R3</td><td>F</td><td>&gt; 0</td><td>false</td></tr>
+                    <tr><td>R4</td><td>F</td><td>&le; 0</td><td>false</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Random criteria per rule：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Rule</th><th>fixed cause</th><th>nettPower random range</th><th>Expected</th></tr></thead>
+                  <tbody>
+                    <tr><td>R1</td><td>enabled = true</td><td>1 .. Integer.MAX_VALUE</td><td>assertTrue</td></tr>
+                    <tr><td>R2</td><td>enabled = true</td><td>Integer.MIN_VALUE .. 0</td><td>assertFalse</td></tr>
+                    <tr><td>R3</td><td>enabled = false</td><td>1 .. Integer.MAX_VALUE</td><td>assertFalse</td></tr>
+                    <tr><td>R4</td><td>enabled = false</td><td>Integer.MIN_VALUE .. 0</td><td>assertFalse</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>Completion criterion：每条 rule 命中 100 次，而非固定总次数（coverage-based completion）。</p>
+
+              <h4>(b) 模型答案：Automated Test Pseudo-code</h4>
+              <pre><code>Random rand = new Random();
+
+// R1: enabled=true, nettPower > 0, expect true
+for (int i = 0; i &lt; 100; i++) {
+    int np = rand.nextInt(Integer.MAX_VALUE - 1) + 1;
+    assertTrue("R1 failed for np=" + np, PV.exportPower(true, np));
+}
+
+// R2: enabled=true, nettPower &le; 0, expect false
+for (int i = 0; i &lt; 100; i++) {
+    int np = rand.nextInt(Integer.MAX_VALUE) * (rand.nextBoolean() ? -1 : 1);
+    if (np &gt; 0) np = 0;  // ensure &le; 0
+    assertFalse("R2 failed", PV.exportPower(true, np));
+}
+
+// R3: enabled=false, nettPower > 0, expect false
+for (int i = 0; i &lt; 100; i++) {
+    int np = rand.nextInt(Integer.MAX_VALUE - 1) + 1;
+    assertFalse("R3 failed", PV.exportPower(false, np));
+}
+
+// R4: enabled=false, nettPower &le; 0, expect false
+for (int i = 0; i &lt; 100; i++) {
+    int np = rand.nextInt(Integer.MAX_VALUE) * (rand.nextBoolean() ? -1 : 1);
+    if (np &gt; 0) np = 0;
+    assertFalse("R4 failed", PV.exportPower(false, np));
+}</code></pre>
+
+              <h4>(c) 模型答案：三大问题及解决方案</h4>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>问题</th><th>描述</th><th>解决方案</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>1. Test Data</strong></td><td>随机生成什么范围的数据？不能完全无界随机</td><td>根据 DT rules 限制每个 rule 的 nettPower 生成区间（R1: 正数, R2: &le;0），boolean cause 固定不变</td></tr>
+                    <tr><td><strong>2. Oracle</strong></td><td>如何判断随机输入的输出是否正确？不能调用被测函数自身</td><td>DT 表作为 oracle——每条 rule 的 expected effect 预先确定（R1&rarr;true, R2-R4&rarr;false），不依赖 exportPower() 自身输出</td></tr>
+                    <tr><td><strong>3. Completion</strong></td><td>何时停止随机测试？跑多少算够？</td><td>Coverage-based completion：每条 DT rule 命中 100 次后停止，而非固定总循环次数</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <!-- ===== SECTION 2: 很有可能 ===== -->
+          <section id="s2" class="section">
+            <h2>Section 2：很有可能（70–89%）</h2>
+            <p>以下题目虽然不在"几乎必出"的固定四个位子上，但历年交替出现频率很高，属于第二梯队重点准备内容。</p>
+
+            <section id="s2-dt" class="section">
+              <h3>boilerSetting() Decision Table（Q1 变体）</h3>
+              <p><strong>触发条件：</strong>如果 Q1 不考 BVA 而考 Decision Table。</p>
+              <p><strong>Spec：</strong><code>boilerSetting(int t, boolean isOn)</code>。输出 NONE / LOW / HIGH。</p>
+
+              <h4>标准答案结构</h4>
+              <p><strong>Step 1 — 定义 Causes &amp; Effects：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>类型</th><th>项目</th><th>含义</th></tr></thead>
+                  <tbody>
+                    <tr><td>Cause C1</td><td>t &lt; 1 ?</td><td>温度极低</td></tr>
+                    <tr><td>Cause C2</td><td>1 &le; t &lt; 25 ?</td><td>温度在低温区间</td></tr>
+                    <tr><td>Cause C3</td><td>t &ge; 25 ?</td><td>温度达到高温</td></tr>
+                    <tr><td>Cause C4</td><td>isOn ?</td><td>开关是否开启</td></tr>
+                    <tr><td>Effect E1</td><td>NONE</td><td>不加热</td></tr>
+                    <tr><td>Effect E2</td><td>LOW</td><td>低功率加热</td></tr>
+                    <tr><td>Effect E3</td><td>HIGH</td><td>高功率加热</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>Step 2 — 识别互斥条件：</strong>C1、C2、C3 是互斥的（同一时刻 t 只能落在一个温度区间），因此 16 个候选组合中所有让 &ge;2 个温度 cause 同时为 T 的列都标记为 <strong>INFEASIBLE</strong> 并划掉。</p>
+
+              <p><strong>Step 3 — Decision Table（仅 feasible rules）：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th></th><th>Rule 1</th><th>Rule 2</th><th>Rule 3</th><th>Rule 4</th><th>Rule 5</th><th>Rule 6</th></tr></thead>
+                  <tbody>
+                    <tr><td>C1: t&lt;1</td><td>T</td><td>T</td><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+                    <tr><td>C2: 1&le;t&lt;25</td><td>F</td><td>F</td><td>T</td><td>T</td><td>F</td><td>F</td></tr>
+                    <tr><td>C3: t&ge;25</td><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>T</td></tr>
+                    <tr><td>C4: isOn</td><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td><td>F</td></tr>
+                    <tr><td>E1: NONE</td><td></td><td>&#10003;</td><td></td><td>&#10003;</td><td></td><td>&#10003;</td></tr>
+                    <tr><td>E2: LOW</td><td>&#10003;</td><td></td><td>&#10003;</td><td></td><td></td><td></td></tr>
+                    <tr><td>E3: HIGH</td><td></td><td></td><td></td><td></td><td>&#10003;</td><td></td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>Step 4 — Test Cases（每规则一个）：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Rule</th><th>t</th><th>isOn</th><th>Expected Effect</th><th>Note</th></tr></thead>
+                  <tbody>
+                    <tr><td>R1</td><td>-50</td><td>true</td><td>LOW</td><td>极低温 + 开启</td></tr>
+                    <tr><td>R2</td><td>-50</td><td>false</td><td>NONE</td><td>极低温 + 关闭</td></tr>
+                    <tr><td>R3</td><td>10</td><td>true</td><td>LOW</td><td>低温 + 开启</td></tr>
+                    <tr><td>R4</td><td>10</td><td>false</td><td>NONE</td><td>低温 + 关闭</td></tr>
+                    <tr><td>R5</td><td>50</td><td>true</td><td>HIGH</td><td>高温 + 开启</td></tr>
+                    <tr><td>R6</td><td>50</td><td>false</td><td>NONE</td><td>高温 + 关闭</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="micro-check">
+                <p><strong>判分关键：</strong>必须标注 C1/C2/C3 互斥并划线 infeasible；每 feasible rule 给一个具体 t 值和 expected effect；-50 和 +50 来源于 very low / very high 的代表值选取。</p>
+              </div>
+            </section>
+
+            <section id="s2-oracle" class="section">
+              <h3>isSquare() Oracle + whatSpeed() Random EP</h3>
+              <p><strong>触发条件：</strong>Q4 考 oracle 设计或随机 EP，而非 PV.exportPower。</p>
+
+              <h4>isSquare(int x) Oracle</h4>
+              <p><strong>题目：</strong>对随机 x 判断是否为完全平方数，如何设计 oracle？</p>
+              <p><strong>答案（不能用被测函数自身当 oracle）：</strong></p>
+              <pre><code>int x = rand.nextInt(0, 1000);
+int r = (int) Math.sqrt(x);
+boolean expected = (r * r == x) || ((r + 1) * (r + 1) == x);
+assertEquals(expected, isSquare(x));</code></pre>
+              <p>原理：用 <code>Math.sqrt(x)</code>（独立于被测函数的数学库）计算平方根，取整后反算验证 r&sup2; == x。同时检查 (r+1)&sup2; 以处理浮点截断问题（sqrt(25) 可能返回 4.999999）。此 oracle 完全不依赖被测 isSquare() 函数的输出。</p>
+
+              <h4>whatSpeed(int temp) Random EP</h4>
+              <p><strong>Spec：</strong>temp 分区 — OFF (0–50)、LOW (51–70)、HIGH (71–100)、ERROR (&lt;0 或 &gt;100)。</p>
+              <p><strong>测试方案：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Partition</th><th>随机范围</th><th>Expected</th><th>循环次数</th></tr></thead>
+                  <tbody>
+                    <tr><td>OFF</td><td>rand(0, 50)</td><td>OFF</td><td>50</td></tr>
+                    <tr><td>LOW</td><td>rand(51, 70)</td><td>LOW</td><td>50</td></tr>
+                    <tr><td>HIGH</td><td>rand(71, 100)</td><td>HIGH</td><td>50</td></tr>
+                    <tr><td>ERROR (below)</td><td>rand(MIN, -1)</td><td>ERROR</td><td>50</td></tr>
+                    <tr><td>ERROR (above)</td><td>rand(101, MAX)</td><td>ERROR</td><td>50</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>每个 partition 随机生成 50 个值。Oracle 来自 spec 的分区定义——区间到输出的映射关系不依赖被测函数。</p>
+            </section>
+
+            <section id="s2-ai" class="section">
+              <h3>AI-Generated Tests（可能的新考点）</h3>
+              <p><strong>触发条件：</strong>近年 AI 工具流行，教材可能新增 AI 辅助测试设计的内容。</p>
+
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>方面</th><th>内容</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Advantages</strong></td><td>(1) 更快识别边界值和分区——AI 从 spec 文本中自动提取数值阈值。(2) 自动生成 coverage-gap tests——AI 分析 JaCoCo 报告并生成补测用例。(3) 大量重复劳动可自动化。</td></tr>
+                    <tr><td><strong>Risks</strong></td><td>(1) 可能 misinterpret specification——AI 不懂业务语义，误读条件导致错误 expected result。(2) Oracle 不可靠——AI 的 expected result 可能是"编"的而非从 spec 推导。(3) 遗漏罕见 edge case——AI 倾向于覆盖常见路径，不保证边界完备性。</td></tr>
+                    <tr><td><strong>Human Review 必须检查</strong></td><td>(1) Expected result 正确性——每条 AI 生成的 expected result 必须人工对照 spec 验证。(2) 边界完整性——检查所有阈值是否都被覆盖（just below/on/above）。(3) DT rule 覆盖率——确认 decision table 每条 feasible rule 都有对应 test case。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <!-- ===== SECTION 3: 如果换考法 ===== -->
+          <section id="s3" class="section">
+            <h2>Section 3：如果换考法（50–69%）</h2>
+            <p>以下情况在 2025 Autumn 样本中出现过，如果出题人轮换考法，以下预测提供快速切换的答案框架。</p>
+
+            <section id="s3-braking" class="section">
+              <h3>If Q1 changes to Braking.evaluate()（2025 Autumn 风格）</h3>
+              <p><strong>替换逻辑：</strong>同样的 BVA 结构，但 spec 换了对象。battLevel 和 bPressure 各有阈值。</p>
+              <p><strong>快速适配步骤：</strong></p>
+              <ol class="rung-list">
+                <li>从 spec 提取两个变量的所有数值阈值（如 battLevel=20、bPressure=50）。</li>
+                <li>为每个变量画 value line 并标注 partitions（有效区间 + 错误区间）。</li>
+                <li>对每个阈值取 just below / on / just above 三个值。</li>
+                <li>按 one fault assumption 组合：测 battLevel 边界时 bPressure 取 nominal；反之亦然。</li>
+                <li>写 TCI table + Selected Values + Test Cases（格式同 Climate.determine）。</li>
+                <li>每个 test case 的 expected result 必须从 spec 的对应区间的输出 enum 值推出。</li>
+              </ol>
+              <div class="micro-check">
+                <p><strong>关键：</strong>无论 spec 换什么函数，BVA 表格结构不变。核心能力是：从规格文字中找到数字阈值，画出 value line，取 just below/on/above。</p>
+              </div>
+            </section>
+
+            <section id="s3-sc" class="section">
+              <h3>If Q2 changes to Statement Coverage Only（2025 Autumn 风格）</h3>
+              <p><strong>替换逻辑：</strong>题目只要求补红色 line（unexecuted statements），不要求补黄色 branch。</p>
+              <p><strong>简化后的答题流程：</strong></p>
+              <ol class="rung-list">
+                <li>只看 JaCoCo 报告中的红色行（statement coverage = 0%）。</li>
+                <li>每个红色行追溯代码：什么条件能让控制流到达该行？</li>
+                <li>为每个红色行设计一个 input，使该条件成立。</li>
+                <li>写 expected result（依然从 spec 推出，不能省略）。</li>
+                <li>说明执行路径——input 如何让控制流经过该红线。</li>
+              </ol>
+              <div class="answer-box">
+                <p><strong>判分门槛更低：</strong>SC-only 题目比 BC 简单，因为不需要分析 short-circuit 和 bytecode-level branch。但 expected result 仍然不能省略——coverage 不等于 correctness。</p>
+              </div>
+            </section>
+
+            <section id="s3-mtbf" class="section">
+              <h3>If Q4 changes to MTBF Estimation（2025 Autumn Q4c 风格）</h3>
+              <p><strong>替换逻辑：</strong>不考 PV.exportPower 的随机 test case 设计，而考用 random testing 估计 Mean Time Between Failures (MTBF) 并讨论风险管理。</p>
+
+              <h4>模型答案结构</h4>
+              <p><strong>1. 用随机测试估计 MTBF：</strong></p>
+              <p>随机生成符合操作 profile 的输入序列（模拟实际用户行为模式），记录每次 failure 之间的时间/操作次数。MTBF = 总运行时间 / failure 次数。随机统计抽样能逼近真实故障率，前提是输入分布反映真实使用场景。</p>
+
+              <p><strong>2. 风险管理与投资-利润曲线：</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>概念</th><th>解释</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Investment-profit curve</strong></td><td>测试投入（时间/人力/工具）与发现 bug 的价值之间的边际递减关系。初期投入回报高，后期每发现一个 bug 的成本急剧上升。</td></tr>
+                    <tr><td><strong>Risk management 应用</strong></td><td>在曲线上选择"最优停止点"——继续测试的预期价值 &lt; 测试成本时停止。用 MTBF 作为停止标准之一（MTBF 达到目标值即停止）。</td></tr>
+                    <tr><td><strong>Random statistical sampling</strong></td><td>随机采样逼近群体特征。如果随机输入分布与操作 profile 匹配，则统计出的 MTBF 近似于真实 MTBF。采样越大，置信区间越窄。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>3. 卷面写法提示：</strong></p>
+              <ul>
+                <li>先定义 MTBF = 总运行时间 / failure 次数。</li>
+                <li>说明 random testing 如何生成有代表性的输入序列。</li>
+                <li>画出投资-利润曲线（文字描述：X 轴测试投入，Y 轴累计发现 bug 价值，曲线从陡升变为平缓）。</li>
+                <li>结论：当边际收益低于边际成本时停止测试，MTBF 达标可作为停止条件之一。</li>
+              </ul>
+            </section>
+          </section>
+
+          <!-- ===== Strategic Summary ===== -->
+          <section id="strategy" class="section">
+            <h2>考试策略速查</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>题号</th><th>最可能考法</th><th>你需要产出的核心产物</th><th>时间分配建议</th></tr></thead>
+                <tbody>
+                  <tr><td>Q1</td><td>BVA (Climate) / DT (boilerSetting)</td><td>Value line + partitions 表 + TCI 表 + Test Cases 表</td><td>25–30 min</td></tr>
+                  <tr><td>Q2</td><td>JaCoCo 补 BC (decideWrite)</td><td>Coverage gap 分析 + Additional Tests 表 + BB/WB 对比</td><td>25–30 min</td></tr>
+                  <tr><td>Q3</td><td>Class Context (Numbers / Braking)</td><td>Accessor 识别 + EP partitions + 调用序列 + assert</td><td>20–25 min</td></tr>
+                  <tr><td>Q4</td><td>Random Testing (PV) / Oracle / MTBF</td><td>DT rules + random ranges + pseudo-code + 三大问题解答</td><td>20–25 min</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="answer-box">
+              <p><strong>通用原则：</strong>无论哪道题，所有 test case 都必须有 expected result，并且 expected result 必须从 specification 推导（不能从被测代码实际输出倒推）。没有 expected result 的行 = 0 分。</p>
+            </div>
+          </section>
+
+        </article>
+
+        <aside class="toc" aria-label="CS608 模拟战目录">
+          <h2>模拟战目录</h2>
+          <ol>
+            <li><a href="#s1-q1">Q1: Climate BVA</a></li>
+            <li><a href="#s1-q2">Q2: decideWrite JaCoCo</a></li>
+            <li><a href="#s1-q3">Q3: Numbers Class Context</a></li>
+            <li><a href="#s1-q4">Q4: PV.exportPower Random</a></li>
+            <li><a href="#s2-dt">boilerSetting DT</a></li>
+            <li><a href="#s2-oracle">isSquare Oracle + whatSpeed EP</a></li>
+            <li><a href="#s2-ai">AI-Generated Tests</a></li>
+            <li><a href="#s3-braking">Braking.evaluate() 换考</a></li>
+            <li><a href="#s3-sc">Statement Coverage Only</a></li>
+            <li><a href="#s3-mtbf">MTBF Estimation</a></li>
+            <li><a href="#strategy">考试策略速查</a></li>
+          </ol>
+        </aside>
+      </div>
+    </main>
+    <footer class="footer"><p>模拟战基于 2023 Summer + 2025 Summer + 2025 Autumn 试卷规律预测。线性学习见 <a href="cs608-linear.html">CS608 教材线性页</a>，题型模板见 <a href="cs608.html">CS608 题型页</a>。</p></footer>
+    <script src="assets/app.js"></script>
+  </body>
+</html>

@@ -50,7 +50,7 @@
                 </thead>
                 <tbody>
                   <tr><td>shopping habits、receipt number、SQL/NoSQL</td><td>CS615 database choice</td><td>选择 + 收据系统例子 + trade-off</td><td>有没有写 Customers/Receipts/ReceiptItems 和 transaction。</td></tr>
-                  <tr><td>ReactJS、componentization、stack</td><td>CS615 frontend/framework explanation</td><td>定义 + component/props/state + stack 各层职责</td><td>有没有只写“React 更快”。</td></tr>
+                  <tr><td>ReactJS、componentization、stack</td><td>CS615 frontend/framework explanation</td><td>定义 + component/props/state + stack 各层职责</td><td>有没有只写"React 更快"。</td></tr>
                   <tr><td>Prove not regular / not CFL</td><td>CS605 pumping proof</td><td>选 word、任意 split、pump 后矛盾</td><td>有没有覆盖所有合法切法。</td></tr>
                   <tr><td>Java program property、HALT、mapping reduction</td><td>CS605 undecidability</td><td>构造 N + iff + contradiction</td><td>有没有说明 property 如何被 halting 控制。</td></tr>
                   <tr><td>BVA、TCI、test cases、without errors</td><td>CS608 black-box testing</td><td>TCI table、data values、test cases、expected result</td><td>有没有重复覆盖、有没有 expected output。</td></tr>
@@ -68,30 +68,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. 读题分流的第一问是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先问这题要我交付什么：解释、比较、证明、测试表、代码覆盖、Dafny annotation，还是 temporal formula。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 读题分流的第一问是什么？”。标准答案里的“先问这题要我交付什么：解释、比较、证明、测试表、代码覆盖、Dafny annotation，还是 temporal formula。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 triage 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>考场时间有限，如果一上来就回忆所有知识，容易把 pumping proof 写成语法描述、把 BVA 写成术语罗列。先锁定交付产物（是表格、公式还是证明结构），后面每一步才有靶心——要画表格就找阈值，要写证明就取反证法或归约结构。这个判断直接决定答案能不能被评分。</p>
+          <p><strong>题目语境怎么用：</strong>看到题面有 BVA、test cases 就立刻判断要交 TCI 表和 expected result；看到 HALT、reduction 就判断要交构造 N 和 iff。第一句话读完后 10 秒内就应该归类，不要在题面里反复搜寻细节后才做决定。</p>
+          <p><strong>卷面写法：</strong>拿到试卷先用草稿在每道题旁标注"题型→产物"，比如 Q1→BVA 表+test case、Q2→reduction+N 构造+iff。然后按标注顺序动笔，而不是按脑中蹦出的知识动笔。</p>
+          <p><strong>常见失分点：</strong>最危险的是读完题就开始写脑中跳出来的概念，写到一半才发现方向不对——比如 pumping proof 写成 regular expression 语法说明，全文没有 pumping 结构。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 为什么不能先回忆全部知识？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>因为考场时间有限，先确定产物才能避免把证明题写成概念解释、把测试题写成术语背诵。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 为什么不能先回忆全部知识？”。标准答案里的“因为考场时间有限，先确定产物才能避免把证明题写成概念解释、把测试题写成术语背诵。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 triage 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>人脑工作记忆有限，一股脑调出整门课的内容只会互相干扰。评委是按产物给分的——查的是你写了 expected result 没有、写了 iff 没有、写了 invariant 没有，不是查你"懂不懂"这些概念。先定产物相当于给大脑一个精准的检索关键词，比如"写一条 invariant about array prefix"，回忆会自动聚焦到 a[0..i) 的状态描述上，而不会飘到 temporal logic 去。</p>
+          <p><strong>题目语境怎么用：</strong>CS608 白盒题看到 JaCoCo 截图，不要想"CS608 学了哪些技术"，直接想"红色 line 差什么输入、黄色 branch 差哪个方向的取值"。每个答案段都绑定题面给的具体对象。</p>
+          <p><strong>卷面写法：</strong>圈出题面里的动作词——evaluate、prove、construct、compare、write test case——这些词直接定义了你要交到卷面上的产物形态。然后心里问自己："这一题我交的最终形态是什么"。</p>
+          <p><strong>常见失分点：</strong>常把"知道 BVA"误认为"能做 BVA 题"。前者靠回忆，后者靠把 Climate 题面的 temp=16、humidity=60 转成 just below/on/above 的三组具体值。缺了这个翻译，概念背再熟也是零分。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 分流后下一步是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>给题面对象命名，例如 receipt、HALT input、Climate boundary、Find invariant，再把答案围绕这些对象写。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 分流后下一步是什么？”。标准答案里的“给题面对象命名，例如 receipt、HALT input、Climate boundary、Find invariant，再把答案围绕这些对象写。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 triage 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>如果你的答案围绕"CS608 测试方法"这个抽象主题展开，答案就没有锚点。但如果你围绕"Climate.determine 在 temp=16、humidity=60 的边界"去写，每个 test case 就有了具体输入和来自 spec 的 expected result。命名对象就是用这道题的专用语境替代通用模板，证明你读懂了题目而不是在背题库。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits → 对象是 Customers、Receipts、ReceiptItems；climate determination → 对象是 temp 和 humidity 的阈值组合；Find 程序 → 对象是 min 变量和已扫描区间 a[0..i)。每道题面上都有主角，把它找出来当主语写。</p>
+          <p><strong>卷面写法：</strong>答案第一段就把题面对象的名字写出来，后续每一段让这个名字做主语。如"Receipts 表需要 receipt_id 作为主键""N 程序先模拟 M(w)""min 维护了已扫描前缀的最小值"。</p>
+          <p><strong>常见失分点：</strong>全文没出现一个题面对象，读起来像是能在任何同类题下复用的范文。这种答案最多拿基础分，因为没证明你真正读懂了这道题。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -99,50 +99,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. 考场读到 2025 CS608 Autumn evaluate() BVA 题，第一步写什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先列 boundaries 和 TCIs，不要直接写 test case；题目明确要求 TCI table 和 test cases，而且要求 no unnecessary duplication。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 考场读到 2025 CS608 Autumn evaluate() BVA 题，第一步写什么？”。标准答案里的“先列 boundaries 和 TCIs，不要直接写 test case；题目明确要求 TCI table 和 test cases，而且要求 no unnecessary duplication。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
-          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
-          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
-          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+          <p><strong>为什么这是对的：</strong>BVA 的底层逻辑是 fault 常出现在阈值刚跨过的位置。evaluate() 依赖 temp>=16 和 humidity>=60，在 15/16/17、59/60/61 这些值上最容易出错。如果先想 test case 再回头找边界，很容易遗漏某个交叉边界——比如 temp=16 且 humidity=59 这种刚好一维在界上一维在界下的组合。先画 TCI 表能确保每个条件维度独立展开后再做笛卡尔组合，不漏不掉。</p>
+          <p><strong>题目语境怎么用：</strong>evaluate() 有两个输入维度 temp 和 humidity，各自有一个判定阈值。TCI 表先按维度拆：temp 维度有＜16、=16、＞16 三个分区；humidity 维度同理。然后按 spec 判定每个分区组合的 expected outcome，再选 representative value 填 test case。</p>
+          <p><strong>卷面写法：</strong>卷面上先画 TCI 表（条件-输入分区-rep value），再为每个 TCI 组合写完整 test case——具体调用、具体输入值、以及从 specification 推出的 expected result，最后检查不同 TCI 选的 rep value 是否重复。</p>
+          <p><strong>常见失分点：</strong>一是只有输入没有 expected result；二是把 error value（负数温度）混进有效边界表；三是多个 TCI 选了同一个值，违反了 no unnecessary duplication。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 考场读到 2025 CS605 L3/L5 reduction template，第一步填什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先填目标语言名并假设它 decidable，再写从 HALT 输入 <code>&lt;M,w&gt;</code> 到新 Java program 的 computable mapping。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 考场读到 2025 CS605 L3/L5 reduction template，第一步填什么？”。标准答案里的“先填目标语言名并假设它 decidable，再写从 HALT 输入 <M,w> 到新 Java program 的 computable mapping。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>HALT 归约的核心是把题目 property 变成停机问题的开关——如果目标性质可判定，就能用它的 decider 判定 M(w) 是否停机，这与已知 HALT undecidable 矛盾。所以第一步必须明确假设什么可判定、然后构造一个能从 &lt;M,w&gt; 以 computable 方式产出的程序 N。N 的设计原则是"M(w) 停机 → N 触发题目 property，M(w) 不停机 → N 不触发"，这让 decider 对 N 的判断结果直接等价于对 M(w) 停机的判断。</p>
+          <p><strong>题目语境怎么用：</strong>构造 N 时先写"simulate M on w"，再来一个 if：若模拟结束（即 M(w) halts），就执行触发 property 的操作——比如 throw a specified exception、执行某条目标 line、或破坏 throughout 条件。若 M(w) 不停机，N 的模拟也不会结束，因此永远不触发该 property。</p>
+          <p><strong>卷面写法：</strong>卷面四步链条：①假设存在 decider D 能判定目标语言；②从任意 &lt;M,w&gt; 以 computable 方式构造 N；③将 N 传入 D；④证明 M(w) halts iff N ∈ 目标语言，推出 HALT 可判定→矛盾。</p>
+          <p><strong>常见失分点：</strong>不能只写"reduce to HALT"一行完事。mapping 具体怎么造、为什么 computable（不要求 M(w) 实际停机就能产出 N 的代码）、iff 双向各怎么推，每个都要写出来。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 考场读到 2025 CS603 Spin temporal properties，第一步写什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先说 system model 是 states/transitions/labels，再把性质写成 LTL 或 CTL formula，并解释 operator。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 考场读到 2025 CS603 Spin temporal properties，第一步写什么？”。标准答案里的“先说 system model 是 states/transitions/labels，再把性质写成 LTL 或 CTL formula，并解释 operator。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+          <p><strong>为什么这是对的：</strong>Model checking 题的评分点一分为二：一是模型（states 怎么定义、transition 条件是什么、label 标了哪些原子命题），二是性质（写成 LTL/CTL formula 并解释 G/F/X/U/A/E 的含义）。只给 formula 不给 model，评委不知道你在验证什么系统；只给 model 不给 formula，评委不知道你在检查什么性质。两者缺一不可。</p>
+          <p><strong>题目语境怎么用：</strong>区分 safety 和 liveness：request -> response 是 liveness（G(request -> F response)，每一条路径上 request 最终都会被 response 跟随）；永不 error 是 safety（G !error，所有状态下 error 永不为真）；counterexample 是 Spin 反例输出中的一条具体执行路径，要能解释它在哪里违反了公式。</p>
+          <p><strong>卷面写法：</strong>先列 states/transitions/labels，定义每个 state 的原子命题；再写出 LTL/CTL formula；然后逐 operator 解释含义——G 是全局、F 是最终、X 是下一步、U 是直到、A 是所有路径、E 是存在路径。最后说明 counterexample 如何展示违反。</p>
+          <p><strong>常见失分点：</strong>只写工具名 Spin/NuSMV 不写公式；或者公式方向和语义写反——G(request -> F response) 写成 F(request -> G response) 含义完全不同。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS608 2025 Q1 第一轮应能产出什么表？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS608 2025 Summer Q1(c)：Climate.determine BVA 第一轮应产出 partitions 表、TCI 表和 test cases 表，三张表中哪张表的 expected result 列最容易因为不从 spec 推导而写错？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Climate.determine 的 input/output partitions、围绕 16 和 60 的 BVA data values、以及带 expected output 的 test cases。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. 首页考试补题：CS608 2025 Q1 第一轮应能产出什么表？”。标准答案里的“Climate.determine 的 input/output partitions、围绕 16 和 60 的 BVA data values、以及带 expected output 的 test cases。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
-          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
-          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
-          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+          <p><strong>为什么这是对的：</strong>Climate.determine 的 spec 用 temp=16 和 humidity=60 作为判定边界，fault 倾向于在这些阈值的 just below/on/above 位置出现。所以第一轮不是泛泛地"做测试"，而是产出三张具体的表——partition 表把输入域按判定结果分区、BVA 表为每个分区边界选 representative values、test case 表把每个值配上从 spec 推出的 expected output。三张表检查完，这道题的核心分就稳了。</p>
+          <p><strong>题目语境怎么用：</strong>temp 围绕 16 取 15/16/17，humidity 围绕 60 取 59/60/61。然后按 spec 中各区间组合的判定逻辑（例如 temp>=16 and humidity>=60 → Hot and Humid）分别给出 expected result。</p>
+          <p><strong>卷面写法：</strong>三张表顺序不能乱：先做 equivalence partitioning（按输出类别分区），再做 BVA（为每个分区边界取三值），最后写完整 test cases（TCI+selected value+test case+expected result）。每张表都标注它测试的 spec 条款。</p>
+          <p><strong>常见失分点：</strong>跳过 partition 直接写 test case，导致边界值覆盖不系统；或者 expected result 是自己猜的而不是从 specification 逐条推出的。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS605 Sample B CARA 题第一轮应能说出什么 certificate？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS605 Sample B Q6A：CARA clique 第一轮应能说出 certificate 是大小为 k 的学生子集，verifier 检查子集中每对学生是否都有 friend edge——这个验证为什么是 O(k²) 多项式时间？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>一个 size <code>k</code> 的学生集合，verifier 检查任意两人之间都有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. 首页考试补题：CS605 Sample B CARA 题第一轮应能说出什么 certificate？”。标准答案里的“一个 size k 的学生集合，verifier 检查任意两人之间都有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>NP 的定义是"存在多项式时间 verifier"而非"能快速猜出答案"。CARA 问的是有没有 k 人互相是 friend，certificate 就是一个具体的 k 人集合，verifier 对这个集合做两件事：①数集合大小是否等于 k，②对集合中每一对人检查 friend 关系是否在图中存在。两件事都在多项式时间完成——检查所有 pair 是 O(k²)，k ≤ |V|。这个 certificate+verifier 证明问题在 NP。</p>
+          <p><strong>题目语境怎么用：</strong>CARA clique 的 certificate 是一个顶点子集，verifier 检查子集内两两有边；vertex cover 的 certificate 是一个顶点子集，verifier 检查每条边至少有一端点在子集内；3-SAT 的 certificate 是一个 truth assignment，verifier 检查每个 clause 至少有一个 literal 为真。模式相同：certificate 是"证据"，verifier 是"用多项式时间验证证据是否成立的工具"。</p>
+          <p><strong>卷面写法：</strong>in NP 证明写三段：certificate 是什么（具体的数据结构，如大小为 k 的学生集合）、verifier 检查什么（具体的检查步骤和循环）、为什么检查是多项式时间（分析循环次数，如 O(k²) 或 O(n²)）。NP-complete 再加 membership 证明和从已知 NP-complete 问题做 reduction。</p>
+          <p><strong>常见失分点：</strong>写"guess a certificate"但没有说 verifier 怎么检查、检查的循环规模为什么是多项式。以及不要把 NP-complete 的 3-SAT reduction 和 HALT reduction 混淆——前者证 NP-hard，后者证 undecidable。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="exam-war-room.html#triage">
@@ -175,7 +175,7 @@
               </article>
             </div>
             <div class="answer-box">
-              <p><strong>推进规则：</strong>一道题如果 60 秒内说不出“题型 + 交付产物 + 一个具体例子”，就回到对应题型页；如果能说出但写不细，再回线性页补该 section。</p>
+              <p><strong>推进规则：</strong>一道题如果 60 秒内说不出"题型 + 交付产物 + 一个具体例子"，就回到对应题型页；如果能说出但写不细，再回线性页补该 section。</p>
             </div>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">
@@ -185,30 +185,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. 最后三轮为什么要从整题识别开始？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>整题识别能发现自己是否会把题面归到正确题型；方向错了，后面写得再细也容易丢分。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 最后三轮为什么要从整题识别开始？”。标准答案里的“整题识别能发现自己是否会把题面归到正确题型；方向错了，后面写得再细也容易丢分。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 final-round 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>如果第一轮不先纠正题型归类就写答案，相当于蒙着眼睛开车。比如把一道 reduction 题当成"解释 HALT 是什么"来答，写了三段概念描述没有一行构造和 iff，直接丢大半分数。整题识别是最轻量的诊断——只标不写，5 分钟扫完一套卷子就能看出自己在哪类题上识别不准，效率远高于写完整答案后发现方向错了。</p>
+          <p><strong>题目语境怎么用：</strong>拿 2025 CS605 paper，看到 Q6 "show L6A is in NP" → 标"NP membership：certificate+verifier+polytime"；看到 Q7 "NP-complete" → 标"reduction from 3-SAT"。如果发现自己标不出或标错，说明该题型页还没吃透。</p>
+          <p><strong>卷面写法：</strong>第一轮不在卷面上写答案，只用铅笔在题面边上标注 2-3 个关键词：题型缩写（如 PUMP、REDUCE、BVA、HOARE、CTL）+ 产物缩写（如表、构造、公式）。标注完后对照题型页自检。</p>
+          <p><strong>常见失分点：</strong>很多人直接跳过识别开始写答案，把 HALT reduction 写成 pumping proof 的结构，或者把 NP 题写成 undecidability reduction 的模板——两种证法结构完全不同，互换必失分。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 答案骨架为什么只写五行？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>五行骨架训练考场速度：题型、对象、产物、例子、检查点。先把方向写正，再补细节。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 答案骨架为什么只写五行？”。标准答案里的“五行骨架训练考场速度：题型、对象、产物、例子、检查点。先把方向写正，再补细节。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 final-round 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>五行是一个工作记忆的边界。超过五行说明你在试图回忆整章而不是在答题。以 CS605 reduction 为例：五行是①目标语言名和假设、②从 &lt;M,w&gt; 到 N 的构造思路、③iff 的方向、④一个具体例子（如 N 抛 exception 21）、⑤检查有没有遗漏 computable 说明。这五行写成后，90% 的得分结构已经在了，剩下的扩充只是把每行展开成完整句子。</p>
+          <p><strong>题目语境怎么用：</strong>2025 CS608 BVA 题的五行：①列出 temp/humidity 阈值、②各取 below/on/above 三值、③组合成 TCI 表、④为每个 TCI 推 expected result（对照 spec）、⑤查不同 TCI 有无重复值。写完五行，一张完整的 BVA 答案表已经成形。</p>
+          <p><strong>卷面写法：</strong>草稿上每题一行题号+五个 bullet point，每个 bullet 不超过 8 个中文字。写完五行后和题型页模板对照一次，确认方向没偏，然后上卷面展开。</p>
+          <p><strong>常见失分点：</strong>超过五行的骨架往往混入了与这题无关的概念——比如 BVA 题骨架里出现 EP、DT、随机测试的定义，说明没聚焦在这道题要交的产物上。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 第三轮为什么只补漏分点？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>最后阶段最值钱的是修正会直接扣分的缺口，例如 expected result、iff、variant、trade-off。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 第三轮为什么只补漏分点？”。标准答案里的“最后阶段最值钱的是修正会直接扣分的缺口，例如 expected result、iff、variant、trade-off。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 final-round 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>考试评分是减法制——你有概念框架但缺了 expected result，这道测试题直接扣到不及格。第三轮时你已经知道每类题的结构，但总有几个位置反复漏——比如 CS605 每次 reduction 都忘了写 iff 的反向、CS608 每次 test case 都忘了写 expected result。这些是"有框架但缺零件"的 bug，修一个就多拿 2-5 分，性价比远高于从头再学一章。</p>
+          <p><strong>题目语境怎么用：</strong>把自己第二轮写的骨架和答案对照题型页的漏分点清单。比如你的 reduction 答案有"构造 N→模拟 M(w)→D(N) 判定"但缺了"iff 证明→contradiction 总结"，就只补这个缺失段，而不是重写整道题。</p>
+          <p><strong>卷面写法：</strong>第三轮在卷面草稿上只列四个检查项：expected result（CS608 每道题都有）、iff 两个方向（CS605 每道 proof 都有）、variant/范围约束（CS603 每道 Hoare 都有）、具体题面对象+取舍理由（CS615 每道都有）。逐一打勾，缺哪补哪。</p>
+          <p><strong>常见失分点：</strong>第三轮还去重学整个 Pumping Lemma 的推导，等于用补漏分的时间做了第一轮该做的事。第三轮的止损线是"只写缺失的那几句话"，不是"重新理解整章"。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -216,50 +216,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. 最后一轮练 2024 CS615 Node 题时，应该先写哪三个点？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Node 用于 I/O-heavy Web project；chaining 是连续调用返回对象/结果；Express 里 routes、controllers、models 分工不同。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 最后一轮练 2024 CS615 Node 题时，应该先写哪三个点？”。标准答案里的“Node 用于 I/O-heavy Web project；chaining 是连续调用返回对象/结果；Express 里 routes、controllers、models 分工不同。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS615 工程题要从题面压力推出职责分工或架构取舍，而不是背框架名。要问谁接 request、谁执行业务规则、谁保存数据、哪里有扩展或一致性压力。</p>
-          <p><strong>题目语境怎么用：</strong>把题面放回 browser -> route/controller -> service/model -> database -> response。若题面是 FinTrack real-time price，就强调缓存/streaming/polling、吞吐和前端刷新；若是 MVC/Rails/React/HTTP，就强调职责边界和请求流。</p>
-          <p><strong>卷面写法：</strong>卷面先写结论，再贴题解释职责和 trade-off。例如 microservices 可单独扩展某个服务，但增加网络调用、部署、监控和数据一致性复杂度；monolith 简单但扩展边界较粗。</p>
-          <p><strong>常见失分点：</strong>不要只写“scalable”或“handles logic”。必须说明是哪种数据压力、职责边界或失败风险让这个选择合理。</p>
+          <p><strong>为什么这是对的：</strong>CS615 工程题不看"你知道多少技术"，看"你能不能在题面压力下分配职责"。Node 题的核心是三件事：①什么时候选 Node——大量并发 I/O 而非 CPU 密集的场景；②中间件链怎么组织——chaining 让 request 依次穿过 parser→auth→logic→response；③Express 三层怎么分——routes 只做 URL 匹配并转交 controller，controller 只做业务逻辑调用，models 只做数据存取。这三点的每一句都要贴回题面给的场景（如 shopping cart API 还是 real-time dashboard）。</p>
+          <p><strong>题目语境怎么用：</strong>若题面是 FinTrack real-time price，强调 Node 非阻塞 I/O 处理大量并发价格推送、Express 中间件做 auth+logging、models 对接 PostgreSQL/Redis 分别处理交易历史和缓存。若题面是 shopping habits，强调 Node 做 API gateway、Express routes 按 resource 拆分（/customers、/receipts）。</p>
+          <p><strong>卷面写法：</strong>先下一句结论选定 Node，再分三小段写：选型理由（贴合题面数据特征）、架构分层（routes→controllers→models 的请求流）、trade-off（单线程风险、回调复杂度 vs 性能收益）。每段都要用题面的具体对象命名。</p>
+          <p><strong>常见失分点：</strong>只写"Node handles I/O"或"Express is popular"，没有把题面的数据流翻译到具体分层中。比如只说"use MVC"但不说明 shopping receipt 在 model 层怎么定义（Receipt schema）、在 controller 层怎么处理 transaction。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 最后一轮练 2025 CS605 Q6/Q7 时，应该连哪两题？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先用 Q6 证明 L6A in NP，certificate/verifier 写清；再用 Q7 从 3-SAT reduction 证明 NP-complete。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 最后一轮练 2025 CS605 Q6/Q7 时，应该连哪两题？”。标准答案里的“先用 Q6 证明 L6A in NP，certificate/verifier 写清；再用 Q7 从 3-SAT reduction 证明 NP-complete。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Q6 和 Q7 是 NP-completeness 证明的两段论的典范。Q6 证 membership（in NP）：给出 certificate 的形态（例如一个 assignment 或 subset）和 verifier 的多项式检查步骤。Q7 证 hardness（NP-hard）：从已知 NP-complete 问题（如 3-SAT）做 polynomial time reduction，把 3-SAT 的 clause/literal 结构映射到 L6A 的对应结构中，证明 3-SAT instance 可满足 iff L6A instance 有解。两题连做才能形成完整的 NP-complete 证明，单独做任何一题都只拿一半分。</p>
+          <p><strong>题目语境怎么用：</strong>3-SAT reduction 到 L6A 时，每个变量映射到一个 gadget、每个 clause 映射到对应约束。比如 3-SAT 的 variable x 对应 L6A 中选择或排除某元素，clause (x∨¬y∨z) 对应 L6A 中至少满足一个约束。构造完要写两个方向：3-SAT 有解则 L6A 有对应解，L6A 有解则 3-SAT 有满足 assignment。</p>
+          <p><strong>卷面写法：</strong>Q6 答案三段式：certificate 是什么（数据结构）→verifier 执行什么检查（步骤+循环规模）→检查是 polytime（O 分析）。Q7 答案四段式：选择已知 NPC 问题→描述 reduction 构造（每个 clause/literal 映射为何）→证明 yes iff yes（双向）→总结 L6A is NP-complete。</p>
+          <p><strong>常见失分点：</strong>在 Q7 的 reduction 中只写"from 3-SAT"一行，不写出具体怎么把 clause 和 literal 映射到 L6A 的元素/约束上；或者写了构造但少了 iff 的反向证明。这两类缺失都会直接扣到不合分。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 最后一轮练 2025 CS608 Autumn Q3 时，应该对比什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>对比 static method conventional testing 和 instance method class context testing，必须写 method call order 和 expected comparison。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 最后一轮练 2025 CS608 Autumn Q3 时，应该对比什么？”。标准答案里的“对比 static method conventional testing 和 instance method class context testing，必须写 method call order 和 expected comparison。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 对象测试的关键是 state 和调用序列。Instance method 的结果可能依赖 private field、setter 历史或 getter 观察。</p>
-          <p><strong>题目语境怎么用：</strong>static method 可直接调用；class context 要 create object -> set state -> call method -> observe return/getter。</p>
-          <p><strong>卷面写法：</strong>卷面写完整 method sequence，并说明每步如何设置或观察状态。若问 accessor methods，先列能读写状态的 public API。</p>
-          <p><strong>常见失分点：</strong>不要直接改 private field，也不要只写一个输入值。测试必须通过公开接口形成状态。</p>
+          <p><strong>为什么这是对的：</strong>Static method 和 instance method 的根本区别不是关键词 static，而是测试时要不要管理对象状态。Static method 像一个纯函数——给定输入，预期输出，测试只需一次调用。Instance method 的结果可能依赖对象内部状态：constructor 设了什么初值、之前调过什么 setter、private field 被什么操作改过。所以 instance method 的 class context testing 必须写成状态序列——先 create、再 set state、再 call target method、再 observe return value（或通过 getter 观察状态变化）。漏掉任何一个序列步骤，状态就可能不对，expected result 也就不可靠。</p>
+          <p><strong>题目语境怎么用：</strong>如果题面给了一个类有 constructor、setX()、getX() 和 compute()，static 测试只需 call compute(input) 看 output；class context 测试则要先 new→setX(val)→compute()→assert getX() 符合预期 / assert return value 符合预期。对比的要点是显示状态依赖——static 不需要前置状态，instance 需要。</p>
+          <p><strong>卷面写法：</strong>卷面上用两个并排表格：左边写 conventional static testing 的单一调用+expected result，右边写 class context testing 的完整 method sequence（create→set→call→observe）。每步标注这一步在修改或观察什么状态。最后说明 instance method 测试必须通过公开接口形成状态，不能直接操作 private field。</p>
+          <p><strong>常见失分点：</strong>instance method 测试中直接修改 private field 设置状态；或者只给了一个输入值但没有展示状态的完整生命周期（构造→修改→调用→观察）。这两种都是不可执行的测试，评卷时直接判定为不完整。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS605 Sample B CARA 题第一轮应能说出什么 certificate？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS605 Sample B Q6A：CARA clique 第一轮应能说出 certificate 是大小为 k 的学生子集，verifier 检查子集中每对学生是否都有 friend edge——这个验证为什么是 O(k²) 多项式时间？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>一个 size <code>k</code> 的学生集合，verifier 检查任意两人之间都有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. 首页考试补题：CS605 Sample B CARA 题第一轮应能说出什么 certificate？”。标准答案里的“一个 size k 的学生集合，verifier 检查任意两人之间都有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>CARA 是 clique 问题的变体——问的是社交网络中是否存在大小为 k 的完全子图（任意两人互为朋友）。certificate 就是这个大小为 k 的学生名字集合，verifier 做两层检查：① |certificate| == k；② 对证书中每一对学生 pair(a,b)，查邻接矩阵或边表中是否存在 (a,b) ∈ E。两层检查均为 O(k²)，k ≤ n，整体多项式。这个简洁的 certificate+verifier 组合直接证明 CARA ∈ NP。</p>
+          <p><strong>题目语境怎么用：</strong>CARA 的 certificate 是一组人（学生名列表），不是一条路径或一个数字。vertex cover 的 certificate 是一组顶点；3-SAT 的 certificate 是一个 variable-to-truth 的映射。三者在各自图/公式中有各自的"证据形态"，但 verifier 的检查逻辑都是：遍历证据中的元素，验证满足定义条件，验证时间为多项式。</p>
+          <p><strong>卷面写法：</strong>写 certificate 时给出具体数据类型——"一个学生 ID 的集合 S，|S|=k"。写 verifier 时给出伪代码：for each pair in S，check friend[p][q]==true；check |S|==k。写多项式分析：pairs 数量 = k(k-1)/2，每个 look-up O(1)，总 O(k²)。</p>
+          <p><strong>常见失分点：</strong>证书描述模糊（如"a solution"），verifier 没有具体检查步骤，或者没有分析为什么检查是多项式时间。另外注意这是 NP 证明不是 undecidability，不要写成 HALT reduction 的结构。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS603 2025 Find 题第一轮应能写哪条 invariant？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS603 2025 Summer Q1(d)：Find 方法第一轮应能写出 loop invariant：min 不大于已扫描区间 a[0..i) 中每个元素，且 1≤i≤a.Length。这条 invariant 的两部分各自保证了什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong><code>min</code> 不大于已扫描区间 <code>a[0..i)</code> 中每个元素，并且 <code>1<=i<=a.Length</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. 首页考试补题：CS603 2025 Find 题第一轮应能写哪条 invariant？”。标准答案里的“min 不大于已扫描区间 a[0..i) 中每个元素，并且 1<=i<=a.Length。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+          <p><strong>为什么这是对的：</strong>Find 程序逐元素扫描数组并用 min 维护当前最小值。invariant 必须连接"已经扫过什么"和"min 当前等于什么"两者——不是只说"min is the minimum"，而是精确到区间：∀j ∈ [0..i), min ≤ a[j]，且范围 1≤i≤a.Length 确保索引不出界。这个 invariant 在初始化时 i=1 且 min=a[0] 成立（前缀只有一个元素）；在循环体 if a[i] < min then min=a[i]; i++ 后仍成立（新元素被纳入比较）；退出时 i=a.Length，结合 invariant 直接推出 min 是全局最小值——刚好是 postcondition。</p>
+          <p><strong>题目语境怎么用：</strong>Find 题绑的是 min 与已扫描前缀 a[0..i) 的关系；CopyArray 题绑的是 b[0..i) == a[0..i) 的已复制区间；total correctness 再在 invariant 基础上找一个严格递减且 non-negative 的 variant（如 a.Length - i）。每个循环程序的核心 invariant 都围绕"循环变量 i 把数据分成已处理前缀和未处理后缀"这一模式。</p>
+          <p><strong>卷面写法：</strong>写 precondition（a.Length >= 1），再写 invariant 的三步验证：①establishment——i=1 且 min=a[0]，∀j∈[0..1), min≤a[j] 显然成立；②preservation——循环体保持 invariant；③exit use——i=a.Length 时 invariant 退化为 ∀j∈[0..a.Length), min≤a[j]，即 min 是全局最小，达成 postcondition。</p>
+          <p><strong>常见失分点：</strong>只写自然语言"min is the minimum so far"而没有量词和区间边界，或者缺了 i 的范围约束（1≤i≤a.Length），导致超出数组边界的证明无法闭合。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="exam-war-room.html#final-round">
@@ -298,30 +298,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. 整题包怎么使用？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>每门课挑一组高频真题，先写答案骨架，再打开对应题型页补模板，最后用 QA 过关门槛检查。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 整题包怎么使用？”。标准答案里的“每门课挑一组高频真题，先写答案骨架，再打开对应题型页补模板，最后用 QA 过关门槛检查。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 course-mocks 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>整题包不是新内容，是你已经见过的 past/sample 题重新编组。直接上手写可以暴露你到底会不会在时间压力下产出可评分答案。先写骨架测试速度——5 分钟内能不能把一道题的 proof structure 或 test table 框架搭出来；再翻题型页检查自己的框架缺不缺关键段（如 iff、expected result、variant）；最后用 QA 过关门槛逐条对照。三步走完，这道题就从中等熟练度提到了考场可用状态。</p>
+          <p><strong>题目语境怎么用：</strong>如果你选了 CS608 包，先拿 evaluate() 那道 BVA 题只写三表框架（partition、BVA values、test case），限时 8 分钟；然后翻到 CS608 题型页对比自己的表是否缺 expected result 列或 TCI 编号；最后在 QA 过关门槛上打勾确认。</p>
+          <p><strong>卷面写法：</strong>整题包练习不要求写出满分答案，要求在纸上产出"可交卷骨架"——每道题一页草稿，左边写题面关键词，右边写骨架答案。练完三道同类型题后，你会发现自己缺的总是同一类东西（如 BVA 总忘 expected result），再集中补。</p>
+          <p><strong>常见失分点：</strong>把整题包当阅读材料翻看而不动笔写。整题包的唯一价值在于让你在模拟考场压力下产出答案，只看不写和没练一样。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 为什么整题包比随机复习更有效？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>它覆盖一门课真正会交卷的产物：CS605 证明、CS608 表格、CS603 公式、CS615 场景取舍。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 为什么整题包比随机复习更有效？”。标准答案里的“它覆盖一门课真正会交卷的产物：CS605 证明、CS608 表格、CS603 公式、CS615 场景取舍。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>随机复习（翻课件、读 slides、看定义）是输入型学习，整题包是输出型训练。考试要你执行的是输出——在限定时间内把题面翻译成证明、表格、公式或 trade-off 分析。整题包里的每道题都是一次完整的输出演练：你面对的不再是"Pumping Lemma 的陈述是什么"，而是"证明 0^m+0^n=0^p 非正则"这种直接要求你选 w、分析 split、pump 出矛盾的实战。输出训练积累的肌肉记忆会直接带到考场上。</p>
+          <p><strong>题目语境怎么用：</strong>对比两种复习路径：A 路径花 1 小时读 CS605 Pumping Lemma 的 slides→能做概念题但遇到"prove not regular"仍然卡壳。B 路径花 1 小时用整题包练两道 pumping proof（0^m+0^n=0^p 和 0^n1^n）→每题都产出完整 proof structure→考场上见到同类题直接套结构。B 路径的每 1 分钟都在做考场上要做的事。</p>
+          <p><strong>卷面写法：</strong>整题包练习时，把每道题的答题当成一次 mini-mock exam：限时、不许翻书、必须写出完整答案（哪怕粗糙）。写完后再翻题型页对照缺漏，修改答案直到能评分。这个过程模拟了考场上的真实认知流程。</p>
+          <p><strong>常见失分点：</strong>练整题包时遇到卡壳就去翻定义、翻 slides、翻 notes，然后回来看答案觉得"我懂了"就跳过。这种跳过等于没练——你没练习到"在不知答案的情况下从零建构"这一步。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 写完整题后先查什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先查是否交付了题目要求的表格、证明、公式或例子，再查定义是否准确。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 写完整题后先查什么？”。标准答案里的“先查是否交付了题目要求的表格、证明、公式或例子，再查定义是否准确。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 course-mocks 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>多数评分扣分不是因为概念错误，而是因为"你写了但缺了评分点"。题目明确要求 TCI table + test cases，你只交了 test cases 没交 TCI table——前面的内容就算全对也要扣。所以写完后第一查的不是定义准不准，而是"题目要求的交付物列表我每一项都交了吗"。比如 reduction 题要求构造+iff+contradiction，你写了构造但少了一行 contradiction 总结——这就是白丢分。</p>
+          <p><strong>题目语境怎么用：</strong>CS608 BVA 题交的三件套是 TCI 表 + BVA data values + test cases with expected result。写完依次 ticking——TCI 表有吗？BVA 值有 below/on/above 三组吗？每个 test case 都有 expected result 且来自 spec 吗？三个 tick 打完才算交付完整。</p>
+          <p><strong>卷面写法：</strong>草稿上为每道题列一个 mini-checklist，不超 4 项。比如 reduction 题：[ ] 假设 decider 存在 [ ] 构造 N [ ] iff 双向 [ ] contradiction。写完一个勾一个，缺项的立刻补上再检查下一题。</p>
+          <p><strong>常见失分点：</strong>写完答案后做"心理检查"而不是"逐项 ticking"——觉得"写得挺多应该够了"，但实际上缺了题目明确要求的一项交付物（如 expected result 或 iff 反向）。心理检查不可靠，必须列清单逐项打勾。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -329,50 +329,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. CS615 整题包最该先做哪类题？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先做 2024/2025 SQL-NoSQL shopping habits，因为它训练定义、场景选择、详细讨论和 trade-off，是 CS615 很稳定的得分动作。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. CS615 整题包最该先做哪类题？”。标准答案里的“先做 2024/2025 SQL-NoSQL shopping habits，因为它训练定义、场景选择、详细讨论和 trade-off，是 CS615 很稳定的得分动作。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
-          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
-          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
-          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+          <p><strong>为什么这是对的：</strong>SQL/NoSQL 选择题在 CS615 考试中几乎必出，且它的得分逻辑可迁移到所有 CS615 解释题上——先给选择结论、再从题面拆出数据对象和它们的关系（如 receipt 对象有 id/items/total 且需要 consistency across items）、再说选型的哪些特性服务了这些关系（如 transaction 保一致性、foreign key 强关联、document schema 处理可变字段）、最后诚实地给一个 trade-off（如 SQL 在这场景的代价是 schema 变更成本较高，但 receipt 场景 schema 稳定所以可接受）。这套"结论→对象→特性→trade-off"四步走通了，后面做 Monolith vs Microservices、React componentization 都能复用。</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景拆成三表：Customers（name、email）、Receipts（receipt_id PK、customer_id FK、date、total）、ReceiptItems（receipt_id FK、item_name、price、quantity）。receipt number 需唯一且与 items total 对上——这需要 transaction。而 clickstream/web analytics 场景更需要字段灵活（每条事件字段可能不同）、追加写入（时间序列）、横向扩展（分片）——选 NoSQL document store。</p>
+          <p><strong>卷面写法：</strong>先写选择结论及 one-line 理由；再列题面数据对象并用 ER 或 document schema 展开；然后逐条说明选择的服务——primary key、foreign key、constraint、transaction（选 SQL）或 flexible schema、horizontal scaling、append-heavy writes（选 NoSQL）；最后用"虽然 X 也有 Y 优势，但在本题场景下 Z 才是决定因素"收束。</p>
+          <p><strong>常见失分点：</strong>看到 shopping/data 就自动选 NoSQL 而不看题面到底是 structured receipts 还是 unstructured clickstream；或者只写一句 SQL=table、NoSQL=document 没有进一步展开 object-to-table mapping 或 document embedding pattern。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. CS608 整题包为什么要加入 TestNG pseudo-code？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>2025 Autumn 明确要求 TestNG keywords、test data 和 test class structure，所以不能只会手工表格。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. CS608 整题包为什么要加入 TestNG pseudo-code？”。标准答案里的“2025 Autumn 明确要求 TestNG keywords、test data 和 test class structure，所以不能只会手工表格。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS608 的判断要落到测试产物：TCI、data values、test cases、expected result 或 coverage item。</p>
-          <p><strong>题目语境怎么用：</strong>把题面给的输入、条件、代码行或类状态拆成可测试目标，再给具体调用和期望结果。</p>
-          <p><strong>卷面写法：</strong>卷面至少写覆盖目标、具体数据/调用、expected result，并说明为什么这个测试覆盖目标。</p>
-          <p><strong>常见失分点：</strong>不要只写“add tests”。没有 expected result 和覆盖目标，答案不可评分。</p>
+          <p><strong>为什么这是对的：</strong>CS608 不只考手工测试设计，2025 真题明确要求把测试写成可执行代码——TestNG annotations（@Test、@BeforeMethod、@DataProvider）、test class 结构、data-driven 的输入输出、assert 语句。如果你只会画三张表但写不出伪代码，这类题直接拿不到分。反过来，如果你能写出一个完整的 TestNG test class，里面 already 包含了 TCI、data values、test cases 和 expected result——手工表的内容被转化成了可执行形式。所以练 TestNG 不是"多练一个技能"，而是练"把所有测试设计翻译成考场要求的交付格式"。</p>
+          <p><strong>题目语境怎么用：</strong>比如 evaluate() BVA 题，手工表交的是 TCI+值+expected result；伪代码题则要求写成 @Test + @DataProvider 提供 boundary values + 调用 evaluate() + Assert.assertEquals(actual, expected)。两题的底层数据是一样的，但交付格式不同——你需要在脑中完成从表格到代码的翻译。</p>
+          <p><strong>卷面写法：</strong>伪代码格式：先写 class Setup（@BeforeMethod 创建被测对象），再写 @DataProvider 返回边界值数组（如 new Object[][]{{15,16,...},{59,60,...}}），再写 @Test(dataprovider=...) 取参数、调用方法、Assert 比较 actual 与 expected。最后注明每项 expected result 来自 specification 的哪一条。</p>
+          <p><strong>常见失分点：</strong>只写一行"Use TestNG to run tests"但没有 @Test / @DataProvider / assert 的具体结构；或者 expected result 写在表格里没体现在 assert 语句中。伪代码不完整等同于手工表格缺 expected result。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. CS603 整题包为什么加入 CopyArray？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>2025 Autumn 要 loop invariants 和 variants，能检查你是否真的会把数组循环证明写成 Dafny/Hoare 可验证结构。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. CS603 整题包为什么加入 CopyArray？”。标准答案里的“2025 Autumn 要 loop invariants 和 variants，能检查你是否真的会把数组循环证明写成 Dafny/Hoare 可验证结构。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+          <p><strong>为什么这是对的：</strong>CopyArray 是一道完美的"invariant + variant"双检验题。invariant 是 b[0..i) == a[0..i)，说明已复制的区间和源数组一致；variant 是 a.Length - i（或 n-i），说明循环每次逼近终点且非负。这道题之所以加入整题包，是因为如果你能在 CopyArray 上写出完整的 establishment→preservation→exit use 三步验证再加上 variant 的递减证明，你就能在所有数组循环题（Find、Sort、ComputeFib）上复用同一套结构。反之，如果 CopyArray 写不完整，说明你还没真正理解 invariant 如何从循环体中推导出来。</p>
+          <p><strong>题目语境怎么用：</strong>CopyArray：invariant 描述的是"已复制前缀的相等性"（b[0..i) == a[0..i)），variant 是"剩余待复制元素数"（a.Length - i）。Find：invariant 是"min 不大于已扫描前缀"，variant 同是 a.Length - i。两者模式完全一致——invariant 比 variant 多了语义内容，但 variant 都用了同一类递减表达式。</p>
+          <p><strong>卷面写法：</strong>写 precondition（a.Length == b.Length），再写 invariant 的三段验证：establish→i=0 时 b[0..0) 和 a[0..0) 都是空，invariant 成立；preserve→循环体内 b[i]=a[i] 后 i++，新前缀仍满足 b[0..i)==a[0..i)；exit→i=a.Length 时 b[0..a.Length)==a[0..a.Length)，即完全相等。variant 写 a.Length - i ≥ 0 且每轮减 1。</p>
+          <p><strong>常见失分点：</strong>只写了 invariant 的语义描述但没写 establishment→preservation→exit 三段的符号推导；或者 invariant 写对了但 variant 忘写了（总分 correctness 问就丢全分）；或者 invariant 的范围约束缺失导致索引越界。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS608 2025 decideWrite 卡住时搜什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS608 2025 Summer Q2(a)：做 decideWrite() 白盒覆盖题卡住时，应该搜 JaCoCo 红/黄色标记的哪个概念来理解为什么 line 33 是红色？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>搜 JaCoCo、branch coverage、short-circuit，再回到 Q2 题型页写 additional test + expected result + coverage explanation。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. 首页考试补题：CS608 2025 decideWrite 卡住时搜什么？”。标准答案里的“搜 JaCoCo、branch coverage、short-circuit，再回到 Q2 题型页写 additional test + expected result + coverage explanation。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 白盒题要从 coverage 缺口反推测试。红色通常是 statement 未执行，黄色通常是 branch 未全覆盖。</p>
-          <p><strong>题目语境怎么用：</strong>看到 line red/yellow，要问什么输入能到达这条 statement 或走到缺失 branch；short-circuit 条件还可能产生 bytecode-level branch。</p>
-          <p><strong>卷面写法：</strong>卷面写 coverage item、input/call、expected result、补上的 line/branch。不要只给 input。</p>
-          <p><strong>常见失分点：</strong>覆盖率不是正确性的替代品。每个新测试仍要有 specification 推出的 expected result。</p>
+          <p><strong>为什么这是对的：</strong>decideWrite 题的 JaCoCo 截图给的是 coverage level 视图——红色是未执行的 statement、黄色是部分覆盖的 branch。卡住通常是因为你只看懂了颜色但分析不出"哪个输入能到达那条语句/分支"。红色 statement 要分析它的前置条件链：从方法入口到这行代码，每一步条件（if、while、逻辑运算符）需要什么值才能走过去。黄色 branch 则要分析哪个方向没被执行——if(a && b) 可能走了 a=true 没走 a=false，或者 short-circuit 导致 b 没被单独覆盖。这些分析必须追溯到具体 line number 和 condition。</p>
+          <p><strong>题目语境怎么用：</strong>decideWrite 里如果有 if(isValid && hasAccess)，红色 line 在 if 体内说明 isValid && hasAccess 从未为 true——需要输入让两个条件同时为 true。黄色 branch 则说明其中一个条件为 false 的分支没被覆盖。此外 Java bytecode 的 short-circuit 可能会生成额外的 branch coverage 项，需要结合 JaCoCo 的行色和 branch 统计一起分析。</p>
+          <p><strong>卷面写法：</strong>写 answer 时三要素：①指出具体缺失的 coverage item（line X is red / branch Y is yellow）和它代表的代码路径；②给出能触发这条路径的具体输入和代码调用；③写出该输入对应的 expected result（必须来自 specification），并解释新测试如何提升 statement/branch coverage。</p>
+          <p><strong>常见失分点：</strong>只给输入但没有 expected result（白盒也要有 expected result！）；或者只说"add test for line 5"但没有说明什么输入能到达 line 5 以及为什么到达后预期输出是什么；或者混淆 statement coverage 和 branch coverage 的解释。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS605 HALT 卡住时练哪两道？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS605：HALT mapping reduction 证明卡住时，优先练 Sample A Q3（exception 21）和 Q5（line never executed）这两道，因为它们覆盖了哪两种最常见的 property 触发模式？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Sample A Q3 exception 21 和 Sample A Q5 line number <code>n</code> never executed，二者都要写 HALT mapping reduction。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. 首页考试补题：CS605 HALT 卡住时练哪两道？”。标准答案里的“Sample A Q3 exception 21 和 Sample A Q5 line number n never executed，二者都要写 HALT mapping reduction。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>这两道题覆盖了 HALT reduction 最常见的两种变体——"某 exception 是否会被抛出"和"某条 line 是否会被执行"。前者构造 N：模拟 M(w)，若 M(w) halts 则 throw exception 21，否则不抛出。后者构造 N：模拟 M(w)，若 halts 则执行 line n（或让 line n 一定被执行到），否则跳过。两者共享同一个构造逻辑——把 M(w) 的停机状态作为开关，控制一个可观察的 program property 的发生与否。练会这两道，你会掌握 HALT reduction 的核心设计原则：property 的真假取决于 M(w) 是否 halt，所以 property decidable → HALT decidable。</p>
+          <p><strong>题目语境怎么用：</strong>exception 21 题：N 就是一段 Java 代码——先调用 M(w) 的模拟器（可以是 universal TM 的 Java 实现），如果模拟返回"halted"则 throw new Exception("21")，否则正常结束。line n never executed 题：N 在 M(w) 模拟返回后才放 line n 的代码——如果模拟永不停，line n 永远执行不到。两个 N 都是 computable（代码不依赖 M(w) 的实际停机结果）。</p>
+          <p><strong>卷面写法：</strong>每道题按四段写：①假设存在 decider D（判定目标性质的 TM）；②从任意 &lt;M,w&gt; 构造 N（给出伪代码，5-8 行）；③D(N) 返回 true iff N 有目标性质 iff M(w) halts——写清两个方向的理由；④因此 HALT 可判定→矛盾→目标语言不可判定。</p>
+          <p><strong>常见失分点：</strong>缺了"为什么 N 的构造是 computable"一句——必须说明 N 可从 &lt;M,w&gt; 以算法方式生成，不要求 M(w) 实际停机。以及缺了 iff 的第二个方向（只证明 halts→property holds，没证 property holds→must have halted）。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="exam-war-room.html#course-mocks">
@@ -415,30 +415,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. 开头句的作用是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>它把答案方向写正，让后面的例子和细节有落点，而不是一开始就散开背知识点。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 开头句的作用是什么？”。标准答案里的“它把答案方向写正，让后面的例子和细节有落点，而不是一开始就散开背知识点。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 answer-starters 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>人的写作惯性是"先想到什么先写下什么"，这在考试里非常危险——看到一道 reduction 题，脑中先蹦出的是"Turing Machine 的定义"或"HALT is undecidable"，然后第一段就写了这些，结果全篇变成概念复述而非证明。开头句的作用就是用一句预制的方向句强行把笔尖指向正确路径——比如"Assume the target language is decidable"之后，你的大脑就自动进入"接下来要构造 N、要写 iff、要推矛盾"的证明流，不会飘走。</p>
+          <p><strong>题目语境怎么用：</strong>每类题型预制一句开头，考场直接写，然后把题面的具体对象填入。比如 receipt 题把开头句里的"purchase/receipt data"改成题面给的"shopping habits receipt system with receipt number and line items"。</p>
+          <p><strong>卷面写法：</strong>开头句写在答题第一行的位置，不缩进、不加前置解释。写完立刻接题面对象的具体展开——不留"概念铺垫"的空行。整个第一段不超过三句：1 句方向、1 句对象、1 句 will show/explain/prove 预告。</p>
+          <p><strong>常见失分点：</strong>把开头句当范文逐字背，题面对象不同时还是照抄原句中的"purchase/receipt"而没换成题面的实际场景词，评卷人一眼看出你在套模板而非答题。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 什么时候不能照抄开头句？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>题面对象不同的时候要换对象，例如 receipt 题写 SQL，clickstream 题才写 NoSQL。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 什么时候不能照抄开头句？”。标准答案里的“题面对象不同的时候要换对象，例如 receipt 题写 SQL，clickstream 题才写 NoSQL。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 answer-starters 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>开头句提供了方向和结构，但不提供具体的判定结果。比如"SQL or NoSQL"的开头句里有"because the data is structured purchase/receipt data"——如果题面给的是 web clickstream logs（每条事件字段不固定、高写入量、需要水平扩展），你照抄这句去选 SQL 就错了。所以判断"能不能照抄"的标准只有一个：题面数据特征和开头句里的特征是否匹配。如果不匹配就要改结论和理由，但保留句式结构——"For this scenario I would choose NoSQL because the data is independent event logs with variable fields rather than structured records."</p>
+          <p><strong>题目语境怎么用：</strong>receipt/shopping（结构化、强一致性）→ 选 SQL，开头句用 structured purchase/receipt 方向。clickstream/event log（字段灵活、高写入）→ 选 NoSQL，开头句改方向但保留句式。Pumping proof 开头基本不变（语言种类变化但 proof structure 相同），但 HALT reduction 开头句里的目标语言名必须换成题面的具体 property。</p>
+          <p><strong>卷面写法：</strong>每句开头句里有三个填空位置：结论（Choose SQL/NoSQL/other）、理由关键词（structured/unstructured / I/O-heavy / state-dependent）、题面对象名。每次用之前确认这三个位置是否匹配眼前的题面，不匹配就替换。</p>
+          <p><strong>常见失分点：</strong>两个极端：一是完全照抄开头句不换任何词，导致选择与题面矛盾；二是觉得开头句不够自由就弃用，然后自己写了一段没有方向的泛泛介绍——如"This essay will discuss databases"——方向模糊，后面全散。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 开头句之后必须接什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>必须接题面里的具体对象、数值、公式、代码行或 proof construction，否则仍然像泛泛背诵。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 开头句之后必须接什么？”。标准答案里的“必须接题面里的具体对象、数值、公式、代码行或 proof construction，否则仍然像泛泛背诵。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 answer-starters 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>开头句给了方向，但如果第二句不贴题面对象，评卷人会判定你只是在展示"知道这类题的概念"而非"在答这道题"。比如 reduction 开头说"Assume target language is decidable"，下一句如果是"this means we can use its decider"——这仍然是概念陈述没有进入题目。正确的下一句是"Construct N as follows: given input x, first simulate M on w..."——直接把题面的 &lt;M,w&gt; 拉进构造里。题面对象（&lt;M,w&gt;、temp=16、receipt_id）必须在开头句之后的三句话内出现。</p>
+          <p><strong>题目语境怎么用：</strong>Pumping proof 开头后必须列出自己选择的 w（如 w = 0^p 1^p），并声明 w ∈ L 且 |w| ≥ p；BVA 开头后必须写具体的阈值和值（temp boundary at 16 → values 15,16,17）；Model checking 开头后必须写具体的 formula（G(request → F response)）和状态定义。</p>
+          <p><strong>卷面写法：</strong>开头句写完不打回车，同一段内接题面对象的展开句——中间用逗号或分号连接。第一段收束时预告下一段要做什么："I will analyze each object in the following sections" 或 "The construction proceeds in three steps"。然后分段落展开。</p>
+          <p><strong>常见失分点：</strong>开头句正确但后续3-4句全在解释概念定义，到第5句才第一次出现题面对象。这相当于前1/3的答案在"热身"而不是在答题。评卷人通常在读到第3句还没看到题面对象时就已经开始扣分了。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -446,50 +446,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. CS605 reduction 开头句之后必须接什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>必须接构造 <code>N</code> 的伪代码：N 如何模拟 <code>M(w)</code>，以及停机后怎样触发题目 property。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. CS605 reduction 开头句之后必须接什么？”。标准答案里的“必须接构造 N 的伪代码：N 如何模拟 M(w)，以及停机后怎样触发题目 property。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>Reduction proof 的整个评分重心在构造上——评委最想看的是"你到底会不会从 &lt;M,w&gt; 造出一个具有目标性质的程序 N"。开头句"Assume target language L is decidable by TM D"只是在搭台，真正的主角是接下来 5-8 行伪代码。伪代码必须回答三个问题：①N 接收什么输入？②N 的哪一步涉及 M 和 w？③N 的什么行为在 M(w) halts 时产生题目要求的 property（如 throw exception、execute a specific line、satisfy a condition），在 M(w) 不 halt 时不产生？回答完这三个问题，构造部才算完整。</p>
+          <p><strong>题目语境怎么用：</strong>以 Sample A Q3 exception 21 为例：N(input x) { simulate M on w; // 使用 universal TM 模拟 if (M halts) { throw new Exception("21"); } }。必须注意 N 的 input x 是题目语言要求的形式参数——可能是 int、String 或任意类型。M(w) 的模拟不依赖 x 的值，只依赖 w（硬编码在 N 里）。</p>
+          <p><strong>卷面写法：</strong>开头句后一段伪代码（5-8 行），用 /* comments */ 解释每一步；紧接一段用自然语言重述 iff 的两个方向：→方向（M(w) halts → N triggers property → D(N) accepts）、←方向（D(N) accepts → property triggered → M(w) must have halted , since if it didn't halt the simulator wouldn't finish）。最后 contradiction 总结。</p>
+          <p><strong>常见失分点：</strong>伪代码里把 simulate M on w 写成"call M(w)"——M 是不保证停机的 TM，直接"call"等于隐含假设它停机，这在逻辑上犯了 begging the question。必须显式写"simulate"（用 universal TM 的模拟语义），让模拟器控制超时或不终止。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. CS608 BVA 开头句之后必须接什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>必须接具体 boundary values，例如 just below/on/above，而不是只写 boundary testing is useful。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. CS608 BVA 开头句之后必须接什么？”。标准答案里的“必须接具体 boundary values，例如 just below/on/above，而不是只写 boundary testing is useful。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 BVA 的理由是 fault 常在阈值刚跨过的位置。具体值要服务 just below/on/above，而不是随机挑数。</p>
-          <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
-          <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
-          <p><strong>常见失分点：</strong>不要只写“测边界”。只列输入没有 expected result 也不完整；题目说不含 error values 时，别把无效值混入有效边界表。</p>
+          <p><strong>为什么这是对的：</strong>BVA 评分最关注的是"你有没有从 specification 中提取出正确的阈值并围绕它取了正确的三值"。开头句"The key boundaries in the specification are temp=16 and humidity=60"给了方向，下一句如果没有具体值（15,16,17；59,60,61），评卷人无法判断你真正理解了 BVA 还是仅仅知道有这个术语。具体值要满足两个条件：①确实是 spec 中的判定边界（不是自己发明的新阈值），②三值的关系确实是 just below / on / just above（15<16<17 且相邻差 1 或 spec 定义的最小增量）。</p>
+          <p><strong>题目语境怎么用：</strong>Climate 题：temp 阈值 16，取值 15/16/17；humidity 阈值 60，取值 59/60/61。组合时注意 spec 可能对不同组合有不同的预期输出（如 temp=16 且 humidity=59 触发"Hot but not Humid"而 temp=15 且 humidity=60 触发"Cold but Humid"）——每个组合的 expected result 都要单独从 spec 推出。</p>
+          <p><strong>卷面写法：</strong>开头句后直接画一张小表：行是各边界变量，列是 below/on/above，单元格填具体值。然后基于这张表构建 TCI 组合表（笛卡尔积），每个组合给出 expected result。最后才写成正式 test case 格式。</p>
+          <p><strong>常见失分点：</strong>选了 boundary 但不是 spec 阈值（如 temp=20 而非 16）；三值不是 below/on/above（如取 14/16/18 缺少 on-value 的 15）；或者多个边界变量没有做组合而只测了单变量变化（如只测 temp 边界没交叉 humidity 边界）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. CS603 model checking 开头句之后必须接什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>必须接具体 formula，例如 <code>G(request -> F response)</code> 或 CTL 的 <code>AG safe</code>，并解释 operator。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. CS603 model checking 开头句之后必须接什么？”。标准答案里的“必须接具体 formula，例如 G(request -> F response) 或 CTL 的 AG safe，并解释 operator。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+          <p><strong>为什么这是对的：</strong>Model checking 的答案里，公式是"性质的可执行版本"——没有公式，评委无从验证你检查的性质是否正确。开头句描述了系统由 states 和 transitions 表示，下一句必须把自然语言的需求翻译成 LTL/CTL。比如"every request is eventually followed by a response"翻译为 G(request → F response)，其中 G 表示在任意时刻、F 表示在未来某时刻。每一个 operator 都要被解释——不解释的话评委无法判断你是"会用符号"还是"蒙对了符号"。</p>
+          <p><strong>题目语境怎么用：</strong>区分 safety（"something bad never happens"→ G !error）和 liveness（"something good eventually happens"→ G(request → F response)）。CTL 比 LTL 多了路径量词 A（所有路径）和 E（存在路径），用于区分"all futures"和"some future"——AG safe 表示在所有路径的所有状态上 safe 为真，EG goal 表示存在一条路径在所有状态上 goal 为真。</p>
+          <p><strong>卷面写法：</strong>开头句后一段写 system model：列出所有 states、定义每个 state 的 label（如 ready, request, waiting, response）、画 transition 图或列 transition 表。再一段写 temporal formula，每个 operator 旁注解释。最后一段说明 verifier 会检查什么、如果违反会产生什么样的 counterexample 路径。</p>
+          <p><strong>常见失分点：</strong>公式方向写反——G(request → F response) 写成 F(request → G response) 含义完全不同（后者说"存在某个时刻，如果那时有 request 则之后永远 response"，这不是 liveness 条件）。或者 CTL 和 LTL 混用——在 LTL 语境下用了 A/E 量词。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS615 Sample FinTrack 卡住时先补什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS615 Sample Q1 FinTrack：卡住时先补 3-Tier Architecture 每层的具体职责——Approach A（单体 Spring Boot+PG+React）的 request 流和 Approach B（微服务 React SPA+Node+NoSQL）的 request 流有什么本质区别？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先补 3-tier monolith、microservices、PostgreSQL/NoSQL、scalability/resilience/deployment trade-off。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. 首页考试补题：CS615 Sample FinTrack 卡住时先补什么？”。标准答案里的“先补 3-tier monolith、microservices、PostgreSQL/NoSQL、scalability/resilience/deployment trade-off。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
-          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
-          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
-          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+          <p><strong>为什么这是对的：</strong>FinTrack 是一道架构综合体题——题面给了 real-time stock prices（实时性要求）、transaction history（一致性要求）、user accounts（安全要求）、和 scaling scenario（用户量增长）。卡住通常是因为你试图用单一技术覆盖所有需求，而实际上这道题要求你分层讨论：数据层（PostgreSQL 存交易历史、Redis 存实时价格缓存）→业务层（monolith 的 simplicity vs microservices 的独立扩展）→前端层（Web/client 的刷新策略如 polling/websocket）→运维层（logging/monitoring/CI/CD）。每层都要基于题面的具体数字来做 trade-off 判断。</p>
+          <p><strong>题目语境怎么用：</strong>real-time prices：需要低延迟刷新——用 Redis 缓存 + WebSocket push（不是 REST polling）。transaction history：每人有多个 transaction，涉及金额——用 PostgreSQL 的 transaction 和 ACID 保证原子写入。user accounts：有 auth 和 role——微服务架构中 auth 服务独立部署，用 JWT 在服务间传递身份。讨论 scalability 时引用题面的 user growth projection（如"预期 10x 增长"→ 选可水平扩展的组件）。</p>
+          <p><strong>卷面写法：</strong>分四段写：data tier（PostgreSQL for transactions + Redis for real-time cache）、application tier（monolith 快速启动 vs microservices 应对增长，结合 team size）、presentation tier（WebSocket for real-time updates）、operations（CI/CD pipeline + structured logging + Prometheus/Grafana metrics）。每段结尾写一个 trade-off。</p>
+          <p><strong>常见失分点：</strong>把 FinTrack 当成单纯的"选数据库"题只讨论 SQL vs NoSQL；或者只写架构名词不写关键 trade-off，如写"use microservices"但不提增加的网络调用、数据一致性问题、部署复杂度。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS603 BankAccount 卡住时先补什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS603 2025 Summer Q2(c)：BankAccount 卡住时先补 class invariant 的三个生命周期点——constructor 如何建立 Valid()、deposit 如何保持 Valid()、withdraw 如何保持 Valid()？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先补 ghost state、class invariant、<code>Valid()</code>，尤其是 <code>Balance == deposits.total - withdrawals.total</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. 首页考试补题：CS603 BankAccount 卡住时先补什么？”。标准答案里的“先补 ghost state、class invariant、Valid()，尤其是 Balance == deposits.total - withdrawals.total。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+          <p><strong>为什么这是对的：</strong>BankAccount 题考的是 Dafny class invariant——不是单个 method 的 Hoare triple，而是整个类的所有 method 在所有状态下都要维护的不变性质。ghost state（如 deposits 和 withdrawals 的 ghost sequence/total）是用来追踪类的外部不可见但逻辑必需的状态——比如 Balance 被 deposit 和 withdraw 两个 method 修改，你需要一个 ghost variable 记录所有存款总额和取款总额，然后 class invariant 就是 Balance == depositsTotal - withdrawalsTotal。这个 invariant 必须在 constructor 建立、在每个 method（Deposit、Withdraw）调用前后保持。</p>
+          <p><strong>题目语境怎么用：</strong>BankAccount 类的四个 method 各有自己的 contract：constructor 保证初始 balance==0 且 ghost 追踪为空；Deposit(amount) 保证 balance==old(balance)+amount 且 ghost deposits 序列追加 amount；Withdraw(amount) 要求 amount<=balance（precondition）且 balance==old(balance)-amount。class invariant 则是跨所有 method 的约束：在任何可见状态上 Balance == deposits.total - withdrawals.total。</p>
+          <p><strong>卷面写法：</strong>先写 class 级 invariant（如 Valid() 谓词：balance >= 0 ∧ balance == deposits.total - withdrawals.total）；再为每个 method 写 precondition + postcondition + modifies clause；constructor 要写 ensures Valid()；每个 method 的 postcondition 最后都要 re-establish Valid()。Ghost variables 声明为 ghost var deposits: seq&lt;int&gt; 或 ghost var depTotal: int。</p>
+          <p><strong>常见失分点：</strong>只写了 method-level 的 pre/post 而没写 class invariant，导致 Deposit 和 Withdraw 各自成立但合起来无法保证 Balance 与历史一致；或者没声明 ghost state 就直接在 postcondition 里引用"所有历史操作"——这在实际验证中不可检查。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="exam-war-room.html#answer-starters">
@@ -506,7 +506,7 @@
 
           <section id="mark-loss" class="section">
             <h2>5. 最常见漏分点</h2>
-            <p>这些不是小错误，是真题里经常让答案从“懂”掉到“不给分”的位置。</p>
+            <p>这些不是小错误，是真题里经常让答案从"懂"掉到"不给分"的位置。</p>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -516,10 +516,10 @@
                   <tr><td>CS615</td><td>只列 React、Node、SQL、NoSQL 名词。</td><td>写每层职责、request flow、数据一致性、安全/部署 trade-off。</td></tr>
                   <tr><td>CS615</td><td>Security 只写 sanitize。</td><td>SQL injection 写 parameterized queries；XSS 写 output encoding、sanitization、CSP、HttpOnly cookies。</td></tr>
                   <tr><td>CS605</td><td>Pumping proof 只展示一个切法。</td><td>写任意合法 split，并用条件限制被 pump 的段在哪里。</td></tr>
-                  <tr><td>CS605</td><td>Reduction 只写“reduce from HALT”。</td><td>写构造、computable mapping、iff、contradiction。</td></tr>
+                  <tr><td>CS605</td><td>Reduction 只写"reduce from HALT"。</td><td>写构造、computable mapping、iff、contradiction。</td></tr>
                   <tr><td>CS608</td><td>Test case 只有输入，没有 expected result。</td><td>每个 test case 都写 call、inputs、expected output，并说明覆盖哪个 TCI。</td></tr>
-                  <tr><td>CS608</td><td>White-box 只说“add tests”。</td><td>指出未覆盖 line/branch，给触发条件和 expected result。</td></tr>
-                  <tr><td>CS603</td><td>Invariant 只写自然语言“it works”。</td><td>写范围 invariant、已处理部分性质、退出时如何推出 postcondition。</td></tr>
+                  <tr><td>CS608</td><td>White-box 只说"add tests"。</td><td>指出未覆盖 line/branch，给触发条件和 expected result。</td></tr>
+                  <tr><td>CS603</td><td>Invariant 只写自然语言"it works"。</td><td>写范围 invariant、已处理部分性质、退出时如何推出 postcondition。</td></tr>
                   <tr><td>CS603</td><td>LTL/CTL 只写工具名。</td><td>写状态模型、公式、operator 含义和 counterexample 解释。</td></tr>
                 </tbody>
               </table>
@@ -532,30 +532,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. 漏分点表最该怎么用？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>写完答案后用它反向检查：有没有 expected result、iff、variant、trade-off、operator meaning。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 漏分点表最该怎么用？”。标准答案里的“写完答案后用它反向检查：有没有 expected result、iff、variant、trade-off、operator meaning。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 mark-loss 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>写完答案后人的认知倾向于"我写得挺全面"，但真实的漏分往往藏在你认为"已经写了"的地方。漏分点表的作用是把隐性检查变成显性的逐项打勾——expected result 写了吗（每道 CS608 题）、iff 两个方向都有吗（每道 CS605 证明题）、variant 在 total correctness 题里写了吗（CS603 Hoare 题）、每个 trade-off 都列出了被选方案的劣势吗（CS615 架构题）。这五项是跨所有题型反复出现的扣分点，每次写完后用 30 秒扫一遍，能把"粗心丢的 5-10 分"稳稳兜住。</p>
+          <p><strong>题目语境怎么用：</strong>写完后把漏分点表当 checklist：每写完一道 CS608 题，眼睛扫过"expected result?"——自己的答案里每个 test case 后面都有 expected output 的来源标注吗？每写完一道 CS605 题，扫过"iff?"——两个方向各有一句话且都包含了原文的变量/条件吗？不必理解新概念，只需检查既有答案的完整性。</p>
+          <p><strong>卷面写法：</strong>在草稿纸背面画一个 5×4 的表格：行是"expected result / iff / variant/范围 / trade-off / operator meaning"，列是"Q1 Q2 Q3 Q4"。每做完一道题在该题对应行打✔或✗。全卷做完后✗的行就是你要回补的内容。</p>
+          <p><strong>常见失分点：</strong>把漏分点表当成"第三轮才用"的工具——实际上应该每写完一道大题立刻就查。延迟检查的代价是你可能要回到几页之前的答案去补写，时间更紧张。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 为什么危险写法常看起来也对？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>因为它们通常是概念正确但不可评分，例如只说 add tests、reduce from HALT、React is useful。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 为什么危险写法常看起来也对？”。标准答案里的“因为它们通常是概念正确但不可评分，例如只说 add tests、reduce from HALT、React is useful。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 mark-loss 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>危险写法的共同特征是"说了方向但没说执行"。如"add tests to improve coverage"——你确实理解了白盒测试的目标，但没说出加什么 test、覆盖哪条 line、expected result 是什么，评卷人无法对"方向"给分只能对"执行"给分。同理"reduce from HALT"是方向，但缺了构造 N 的伪代码和 iff 证明就是空的。这种写法在你自己读的时候因为概念自洽所以看起来没问题，但在评分标准里属于 insufficient detail——有概念分但无执行分，而执行分通常占总分的 70%+。</p>
+          <p><strong>题目语境怎么用：</strong>每个危险写法都有一个"可评分的替代句"：add tests → "Add a test with x=0, y=-1 expecting IllegalArgumentException because spec says negative inputs are invalid"；reduce from HALT → "Construct N that simulates M(w); if it halts, throw exception 21"；React is useful → "React componentizes the receipt form into CustomerForm, ItemList, and TotalDisplay each with its own state and props".</p>
+          <p><strong>卷面写法：</strong>写完一个段落，问自己一个问题："这一段删掉我会丢分吗？"如果答案是"不会，因为后面的段落已经有具体内容了"，那这一段就是概念铺垫，可以删掉（省下时间写更多具体内容）。保留所有"删掉会丢分"的句段——那些就是评分点。</p>
+          <p><strong>常见失分点：</strong>认为"写得多"等于"写得对"——一篇 reduction 答案写了 500 词，但 400 词是背景介绍和概念定义，只有 100 词是构造和 iff。评卷人会快速翻到构造段评分，前面的 400 词不增加任何分数。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 修漏分点的原则是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>把抽象词换成可检查产物：具体 test case、具体 construction、具体 formula、具体 web scenario。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 修漏分点的原则是什么？”。标准答案里的“把抽象词换成可检查产物：具体 test case、具体 construction、具体 formula、具体 web scenario。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里的“为什么”来自复习流程本身：先铺概念台阶，才能看懂题型；先做内容题，才能确认概念没空；再做 past/sample 小题，才能确认能交卷。</p>
-          <p><strong>题目语境怎么用：</strong>把它放回本页 mark-loss 区块：题目不是考某个术语，而是在提醒你下一步该读正文、做题、查关键词，还是回到真题模板。</p>
-          <p><strong>卷面写法：</strong>写法上先说动作，再说目的，再给检查点。比如先看线性页补概念依赖，再用 3 道内容题和 5 道考试题检查能不能输出答案。</p>
-          <p><strong>常见失分点：</strong>不要把网站当词典跳来跳去。只搜关键词但不做题，容易出现“认识术语但不会答题”的假熟练。</p>
+          <p><strong>为什么这是对的：</strong>评分的单位是可检查的产物，不是理解程度。修漏分的唯一有效方法是"用可评分单位替换不可评分单位"——把"boundary testing"替换成"temp=15/16/17, humidity=59/60/61 及对应的 expected result"；把"invariant"替换成"∀j∈[0..i), min≤a[j] ∧ 1≤i≤a.Length"。每次替换都让一个模糊的概念变成一个具体的评分点。如果一件事说不出一组具体的值、一段具体的代码、一条具体的公式，那它就不是可交付物，无法得分。</p>
+          <p><strong>题目语境怎么用：</strong>CS615：把"microservices has loose coupling"换成"OrderService 挂了不影响 PaymentService 继续处理已有订单，因为每个服务有独立数据库和独立部署单元"。CS608：把"test boundary values"换成"temp=15(expected: Cold), temp=16(expected: depends on humidity), temp=17(expected: depends on humidity)"。</p>
+          <p><strong>卷面写法：</strong>改漏分时不做"段落重写"，只做"句子替换"——在现有段落中找到抽象句，用具体句替换它。具体句必须包含这道题的专用数据（数字、变量名、表名、类名），否则不算替换成功。</p>
+          <p><strong>常见失分点：</strong>把"不够具体"理解成"再写一段解释它的含义"——这只会产生更多不可评分的段落。修漏分的方向永远是"更具体的数据"而非"更多的解释"。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -563,50 +563,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. CS615 最危险的漏分是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>只列技术名不贴题面。比如 React 题要写 componentization 和 stack 各技术职责；SQL/NoSQL 要写 receipt/clickstream 对照。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. CS615 最危险的漏分是什么？”。标准答案里的“只列技术名不贴题面。比如 React 题要写 componentization 和 stack 各技术职责；SQL/NoSQL 要写 receipt/clickstream 对照。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
-          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
-          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
-          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+          <p><strong>为什么这是对的：</strong>CS615 的评分逻辑是"解释技术如何服务于场景"，而不是"知道有哪些技术"。比如写到"Choose SQL"，如果下一句不是"because the shopping receipt system requires a unique receipt_number that joins Receipts to ReceiptItems and a transaction to ensure total matches sum of line items"而是"because SQL is good for structured data"，你就是把 90% 的分数留在了桌上。技术名本身 0 分——把技术名和题面对象之间的因果关系写出来才给分。</p>
+          <p><strong>题目语境怎么用：</strong>React 题：不只是写"React uses components"，而是"the receipt form is componentized into CustomerInfo (state: name, email), ItemList (props: items[], state: selectedItems), and TotalDisplay (props: subtotal, tax)"。SQL/NoSQL 题：receipt 场景的 receipts 表有 receipt_id PK, customer_id FK, date, total → 需要 JOIN 查某客户的所有收据 → 需要 transaction 保 receipt 和 receipt_items 同时写入。</p>
+          <p><strong>卷面写法：</strong>每个技术选择后面必须跟"because + 题面对象 + 对象的具体约束"。格式为"Choose [Tech] because [Object] in this scenario requires [Specific Property] which [Tech] provides through [Mechanism]"。例如："Choose SQL because the Receipts table requires a unique receipt_number with referential integrity to ReceiptItems, which SQL provides through primary key and foreign key constraints within a transaction."</p>
+          <p><strong>常见失分点：</strong>把 CS615 当成"技术名词听写"——答案里列了 React、Node、Express、MongoDB 但不说明它们在这道题里如何协作。正确的写法是至少画一个 request flow：browser → React component (state) → fetch() → Express route → controller → MongoDB query → JSON response → React re-render。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. CS605 最危险的漏分是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证明里没有 iff。Reduction、NP-hardness、pumping contradiction 都要让 yes/no 或矛盾关系精确对齐。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. CS605 最危险的漏分是什么？”。标准答案里的“证明里没有 iff。Reduction、NP-hardness、pumping contradiction 都要让 yes/no 或矛盾关系精确对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>iff 是 CS605 证明的灵魂——没有 iff，证明只完成了一半。Reduction 里写"if M(w) halts then N has property P"只做了 → 方向；← 方向"if N has property P then M(w) must have halted"同样需要独立证明——因为 N 可能在 M(w) 不停机的情况下也意外获得了 property P（比如构造本身有 bug）。Pumping proof 虽不用 iff，但有类似的对称性：任意 split 都要被 pump 后推出矛盾，不是只展示一种 split 出错。NP-complete 的 reduction 也需要 yes iff yes 的双向等价。漏了这两个方向的任何一个，扣的都是证明题的核心结构分（通常占该题 40-50%）。</p>
+          <p><strong>题目语境怎么用：</strong>Reduction → 方向：假设 M(w) halts → N 执行到触发 property 的位置 → D(N) accepts。← 方向：假设 D(N) accepts → N 触发了 property → 追溯 N 的代码，触发 property 的唯一途径是 M(w) 的模拟结束 → M(w) halts。Pumping → 对所有 split xyz 满足 |xy|≤p 且 |y|≥1 → 泵 xy^iz 对某个 i 不在 L 中 → 矛盾 → L 非正则。</p>
+          <p><strong>卷面写法：</strong>在每个 CS605 证明题末尾，画一个简单的双向箭头并在两个方向旁分别用一句话总结：M(w) halts ⇒ N has property（因为……）；N has property ⇒ M(w) halts（因为 N 构造中只有 halting 触发此属性）。NP-complete 同理：3-SAT yes ⇒ L6A yes（因为满足 assignment 映射到解）；L6A yes ⇒ 3-SAT yes（因为解反推满足 assignment）。</p>
+          <p><strong>常见失分点：</strong>←方向的论证中假设了"M(w) 不停机但 N 仍可能触发 property"而不排除——必须在构造中设计成 N 触发 property 的唯一路径是 M(w) 的模拟结束。如果描述不清，评卷人会认为构造有漏洞。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. CS608 最危险的漏分是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>没有 expected result。测试题只给 input 不够，必须从 specification、DT、EP 或 oracle 推出 expected output。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. CS608 最危险的漏分是什么？”。标准答案里的“没有 expected result。测试题只给 input 不够，必须从 specification、DT、EP 或 oracle 推出 expected output。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Decision Table 处理条件组合。单独测一个输入不能覆盖多条件共同决定输出的规则，所以要把 causes、effects 和 rules 分开。</p>
-          <p><strong>题目语境怎么用：</strong>先列条件，再列输出，再把 feasible combinations 变成 rules；互斥条件要标 infeasible。</p>
-          <p><strong>卷面写法：</strong>为每条 feasible rule 给 test case，并写 expected result。若做 random test，随机数据也要按这些 rules 生成和判定。</p>
-          <p><strong>常见失分点：</strong>不要把 DT 写成普通输入列表。没有 causes/effects/rules/expected result，表就不完整。</p>
+          <p><strong>为什么这是对的：</strong>测试评分有两个独立的给分轴：①测试数据是否覆盖了要求的 criteria（TCI、BVA、branch 等）；②每个测试的 expected result 是否正确且来自 specification。缺了 expected result，第一条轴再完美也只能拿该题 30-40% 的分——因为你没有完成"测试"的定义（test = 输入 + 执行 + 预期输出比对）。很多学生的 test case 表里"Expected Result"列写着"—"或"output depends"，这在评卷人看来等于没有做测试。</p>
+          <p><strong>题目语境怎么用：</strong>Climate.determine(16, 60) 的 expected result 不是"probably Hot and Humid"而是从 spec 逐条件推出来的"Hot and Humid (temp>=16 → true, humidity>=60 → true)"。Decision Table 的每个 rule 必须有一个明确的 expected output（action/effect），不能只列 conditions 不填 actions。Random testing 的 expected result 通常来自 oracle 或 specification-based derivation，需要在答案里说明 oracle 是什么。</p>
+          <p><strong>卷面写法：</strong>每个 test case 后面 expected result 的格式：<strong>Expected:</strong> [具体值/状态] (per specification section X: [引用 spec 中的判定条件])。如果 expected result 不是一个值而是一组属性（如"throws IllegalArgumentException with message 'X'")，就把属性全列出来。</p>
+          <p><strong>常见失分点：</strong>三种典型的"假 expected result"：①写"as per spec"不写具体值——等于没写；②写了 expected result 但和给的 input 对不上——比如 input=15 却写了 expected "Hot and Humid"（实际 15 不满足 temp>=16）；③expected result 是猜的而非从 specification 推导的——评卷人对照 spec 时发现不一致，直接判错。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS615 Sample FinTrack 卡住时先补什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS615 Sample Q1 FinTrack：卡住时先补 3-Tier Architecture 每层的具体职责——Approach A（单体 Spring Boot+PG+React）的 request 流和 Approach B（微服务 React SPA+Node+NoSQL）的 request 流有什么本质区别？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先补 3-tier monolith、microservices、PostgreSQL/NoSQL、scalability/resilience/deployment trade-off。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. 首页考试补题：CS615 Sample FinTrack 卡住时先补什么？”。标准答案里的“先补 3-tier monolith、microservices、PostgreSQL/NoSQL、scalability/resilience/deployment trade-off。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 数据库选择不是背“结构化/非结构化”，而是看题面对象能否画成关系、是否需要一致保存、写错代价是否高。</p>
-          <p><strong>题目语境怎么用：</strong>receipt/shopping habits 场景可拆成 Customers、Receipts、ReceiptItems；receipt number 要唯一，items 与 total 要对上。clickstream/document 场景才更强调字段灵活、追加写入和横向扩展。</p>
-          <p><strong>卷面写法：</strong>卷面先给选择，再列题面对象和关系，再解释 key、join、constraint、transaction 或 flexible document schema 为什么有用，最后补 trade-off。</p>
-          <p><strong>常见失分点：</strong>不要只写 SQL=table、NoSQL=document。也不要看到 shopping/data 就自动选 NoSQL；要看题面到底是收据记录还是高量行为事件。</p>
+          <p><strong>为什么这是对的：</strong>FinTrack 是一道架构综合体题——题面给了 real-time stock prices（实时性）、transaction history（一致性）、user accounts（安全性）和 scaling scenario（用户增长）。卡住通常是因为你试图用单一技术覆盖所有需求，而实际上这道题要求你分层讨论：数据层（PostgreSQL 存交易历史保证 ACID + Redis 缓存实时价格）、业务层（monolith 易部署 vs microservices 独立扩展的权衡）、前端层（WebSocket 推送而非 REST polling）、运维层（结构化日志+Prometheus 指标+CI/CD）。每层都要基于题面的具体数字来做 trade-off。</p>
+          <p><strong>题目语境怎么用：</strong>real-time prices → 低延迟 → Redis 缓存 + WebSocket push。transaction history → 金钱涉及 → ACID → PostgreSQL。user accounts → auth + role → 微服务中独立 auth 服务 + JWT。scaling → 题面 user growth projection → 选可水平扩展的组件（如 add Redis nodes, add API gateway instances）。</p>
+          <p><strong>卷面写法：</strong>四段结构：data layer（PostgreSQL for transactions + Redis for real-time cache）、application layer（monolith 快速起步 vs microservices 应对增长，结合 team size 和部署风险）、presentation layer（WebSocket for real-time price updates + React components）、operations（CI/CD pipeline + structured logging + metrics/alerts）。每段以 trade-off 收尾。</p>
+          <p><strong>常见失分点：</strong>只讨论 SQL vs NoSQL 当作数据库选择题，漏了架构分层和运维考量；或者写了 microservices 但不提增加的复杂度（网络调用、分布式事务、部署监控成本），评卷人会认为你只理解优点不理解代价。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS603 BankAccount 卡住时先补什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS603 2025 Summer Q2(c)：BankAccount 卡住时先补 class invariant 的三个生命周期点——constructor 如何建立 Valid()、deposit 如何保持 Valid()、withdraw 如何保持 Valid()？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先补 ghost state、class invariant、<code>Valid()</code>，尤其是 <code>Balance == deposits.total - withdrawals.total</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. 首页考试补题：CS603 BankAccount 卡住时先补什么？”。标准答案里的“先补 ghost state、class invariant、Valid()，尤其是 Balance == deposits.total - withdrawals.total。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+          <p><strong>为什么这是对的：</strong>BankAccount 不是写一个 method 的 Hoare logic——它考的是 Dafny class invariant，即一个约束在所有 method 执行前后都要保持。ghost state（ghost var deposits: seq&lt;int&gt;, ghost var withdrawals: seq&lt;int&gt;）用来追踪所有历史操作，这是物理字段 Balance 无法单独表达的——Balance 只存当前值，没有"这个值从哪里来"的完整审计链。class invariant 就是 Balance == sum(deposits) - sum(withdrawals)，加上 Balance >= 0。每个 method（Deposit, Withdraw）的 postcondition 必须在修改 Balance 的同时更新对应的 ghost sequence，确保 invariant 仍然成立。</p>
+          <p><strong>题目语境怎么用：</strong>constructor：ensures Balance==0 ∧ deposits==[] ∧ withdrawals==[] ∧ Valid()。Deposit(amount)：requires amount>0，modifies Balance, deposits，ensures Balance==old(Balance)+amount ∧ deposits==old(deposits)+[amount] ∧ Valid()。Withdraw(amount)：requires 0<amount<=Balance，modifies Balance, withdrawals，ensures Balance==old(Balance)-amount ∧ withdrawals==old(withdrawals)+[amount] ∧ Valid()。</p>
+          <p><strong>卷面写法：</strong>class 级别：先写 predicate Valid() { Balance >= 0 && Balance == Sum(deposits) - Sum(withdrawals) }，再写 ghost var 声明。method 级别：每个 method 写 requires/ensures/modifies，ensures 末尾都加上 Valid()。注意余额不足的情况要在 Withdraw 的 requires 中声明。</p>
+          <p><strong>常见失分点：</strong>只写了 method 的 pre/post 没有 class invariant——这样 Deposit 和 Withdraw 各自能过但合起来无法验证"Balance 永远等于所有存取款之差"；或者没声明 ghost state，试图在 postcondition 中引用"所有历史操作"但没有对应的 ghost 变量存储历史。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="exam-war-room.html#mark-loss">

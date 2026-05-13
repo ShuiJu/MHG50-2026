@@ -73,82 +73,82 @@
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容1. Formal verification 和 testing 的核心区别是什么？</button>
         <div class="qa-answer">
-          <p><strong>核心答案（先确认概念）：</strong>Testing 用有限例子找错误；formal verification 试图证明一类输入或行为都满足性质。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Formal verification 和 testing 的核心区别是什么？”。标准答案里的“Testing 用有限例子找错误；formal verification 试图证明一类输入或行为都满足性质。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>核心答案（先确认概念）：</strong>Testing 用有限例子找错误——你测了 100 个输入没问题，不代表第 101 个也没问题。Formal verification 试图证明一类输入或行为都满足性质——从数学上保证所有输入都不会出错。</p>
+          <p><strong>为什么这是对的：</strong>用排序打个比方。Testing 相当于你手动试了 5 个数组跑排序，输出都递增，于是你觉得"大概没问题"。但你无法确定有没有某个你没试过的数组会让它崩溃。Formal verification 相当于你写了一个数学证明：不管输入是什么数组，算法结束后一定有序，并且没有丢失任何元素。这就是 testing 给 confidence、verification 给 guarantee 的区别。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1 让你用 Dafny 证明 Find 方法——这就是 formal verification。2025 Summer Q4 让你用 Spin 检查所有可能路径——也是 formal verification。考场上遇到"explain the difference"类题，先说 testing 的局限（有限例子），再说 verification 的目标（证明所有情况），然后给一个具体例子。</p>
+          <p><strong>卷面写法：</strong>分两段写。第一段写 testing：runs concrete inputs, checks actual vs expected, finds bugs but cannot prove absence。第二段写 verification：writes mathematical properties, proves for all inputs/states。最后给一句话例子：testing sorts 5 arrays; verification proves sort is correct for any array。</p>
+          <p><strong>常见失分点：</strong>考试里最容易混淆的是：写了 Dafny annotation 不等于做了 testing，反过来跑了一堆测试不等于做了 formal verification。两个概念不要互相替代。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 性质为什么要形式化？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>自然语言容易含糊；形式化后才能被证明、检查或交给工具分析。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 性质为什么要形式化？”。标准答案里的“自然语言容易含糊；形式化后才能被证明、检查或交给工具分析。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>为什么这是对的：</strong>比如你说"余额不能变负数"，听起来很清楚，但写代码时有各种边界：取款时余额刚好够吗？手续费扣完变负数算吗？利息计算中途变负数再回到正数可以吗？用自然语言写出来的要求，不同人会做出不同的解读。写成 <code>balance >= 0</code> 之后，就没有歧义了——任何时候余额小于 0 就是违反性质。工具（如 Dafny verifier、Z3、Spin）也只能检查精确公式，它们读不懂"大概不能出问题"这种话。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(d) 的 Find 方法把 postcondition 写成 <code>ensures forall i :: min <= a[i]</code>，而不是写"保证 min 是最小值"——因为后者可能被误解为"min 来自于数组"（实际上还需要另一个性质：min 是数组里某个元素）。考场上写 specification 时，多问自己：这句话有没有隐藏歧义？工具能不能逐字检查？</p>
+          <p><strong>卷面写法：</strong>先给出自然语言版本（让人看懂），再给形式化版本（让工具能检查），最后解释为什么形式化版本没有歧义。例如"数组不为空"写成 <code>requires a.Length > 0</code>，并说明 Length 属性已经排除了 null 和空数组两种误解。</p>
+          <p><strong>常见失分点：</strong>只写自然语言不写公式、公式写对了但覆盖范围不全（比如只说了有序没说元素集合不变）、把不同的性质混在同一个公式里导致工具报错时你自己也看不懂。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 把“不会崩溃”改成可证明性质应怎么做？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>写成具体条件，例如数组下标始终在范围内，或返回值始终满足某个 postcondition。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 把“不会崩溃”改成可证明性质应怎么做？”。标准答案里的“写成具体条件，例如数组下标始终在范围内，或返回值始终满足某个 postcondition。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>为什么这是对的：</strong>"不会崩溃"有太多种可能：除以零崩溃、数组越界崩溃、空指针崩溃、栈溢出崩溃。每种崩溃的原因和预防方式都不同。改成可证明性质时，要把这个模糊要求拆成一组具体条件：数组越界写成 <code>0 <= i < a.Length</code> 作为循环 invariant；除零写成 precondition <code>denominator != 0</code>；空指针写成 precondition <code>obj != null</code>。这样每类崩溃对应一条可独立检查的条件，工具才能帮你验证。</p>
+          <p><strong>题目语境怎么用：</strong>这道题训练 CS603 的核心思维：把模糊的"程序应该安全"拆成 Dafny 能检查的 requires、ensures、invariant。2025 Summer Q1 Find 题中，precondition <code>a.Length > 0</code> 就是在防止空数组导致 <code>a[0]</code> 越界崩溃。</p>
+          <p><strong>卷面写法：</strong>列出具体崩溃类型，每种对应一条可检查条件，并解释为什么该条件能防止那种崩溃。不要笼统写"程序应该健壮"，要用公式。</p>
+          <p><strong>常见失分点：</strong>漏掉某种崩溃（比如只处理了数组越界没处理除零），或公式覆盖不足（比如 <code>requires a != null</code> 没防住空数组里的索引越界）。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q1(d) Find 小题：<code>ensures forall i :: min <= a[i]</code> 表达什么性质？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>返回的 <code>min</code> 不大于数组中任何元素，是 Find 方法 partial correctness 的核心 postcondition。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q1(d) Find 小题：ensures forall i :: min <= a[i] 表达什么性质？”。标准答案里的“返回的 min 不大于数组中任何元素，是 Find 方法 partial correctness 的核心 postcondition。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+          <p><strong>标准答案（先写结论）：</strong>返回的 <code>min</code> 不大于数组中任何元素——这是 Find 方法 partial correctness 的核心 postcondition。</p>
+          <p><strong>为什么这是对的：</strong>你想找数组最小值，至少需要保证两条：1) 返回的值确实比所有元素都小或等于（即 <code>min <= a[i]</code>）；2) 返回的值确实来自数组（即 <code>exists j :: min == a[j]</code>）。这一条 <code>ensures</code> 只保证了第一条。在 2025 真题中，Find 方法需要同时写下这两条 postcondition 才完整。缺了第二条，你可以写一个方法永远返回 -999，也满足 <code>min <= a[i]</code>，但显然不是数组最小值。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(d) 完整题目给了 Find 方法代码，让你补充 Dafny annotation。你先找方法需要满足什么：循环 invariant 说 <code>min</code> 是已扫描前缀中的最小值，退出循环后扫描完整个数组，postcondition 就应该说 <code>min</code> 是整个数组中的最小值。</p>
+          <p><strong>卷面写法：</strong>卷面上写两条 postcondition：<code>ensures forall i :: 0 <= i < a.Length ==> min <= a[i]</code> 和 <code>ensures exists j :: 0 <= j < a.Length && min == a[j]</code>。然后解释为什么两者缺一不可。</p>
+          <p><strong>常见失分点：</strong>只写了"最小值"性质但没写"来自数组"性质；或者把 <code>forall</code> 写成了 <code>exists</code>（含义完全不同）；忘了写索引范围 <code>0 <= i < a.Length</code> 导致量词范围无界。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q2(c) BankAccount 小题：<code>Balance == deposits.total - withdrawals.total</code> 是什么性质？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>这是 class invariant/ghost predicate <code>Valid()</code> 中的账户一致性性质。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q2(c) BankAccount 小题：Balance == deposits.total - withdrawals.total 是什么性质？”。标准答案里的“这是 class invariant/ghost predicate Valid() 中的账户一致性性质。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+          <p><strong>标准答案（先写结论）：</strong>这是 class invariant（或 ghost predicate <code>Valid()</code>）中声明的账户一致性性质：余额必须等于存入总额减去取出总额。</p>
+          <p><strong>为什么这是对的：</strong>BankAccount 类有两个内部集合 <code>deposits</code> 和 <code>withdrawals</code> 记录所有交易明细，还有一个 <code>Balance</code> 字段显示当前余额。如果没有这个 invariant，随着存钱取钱操作增多，余额字段可能因为编程错误（比如某次取钱忘了更新 Balance）和交易记录脱节。这个等式把"余额是否准确"变成一个机器可检查的性质：每次 deposit 和 withdraw 方法执行后，verifier 都会检查等式是否仍然成立；不成立就报错。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(c) 完整题目给了 BankAccount 类框架（有 deposits、withdrawals 两个 ghost 序列和 Balance 字段），让你设计 <code>Valid()</code> predicate 和每个方法的 contract。你首先要想到的就是这条等式，因为它是类最核心的不变性质。</p>
+          <p><strong>卷面写法：</strong>定义一个 ghost predicate <code>Valid() reads this { Balance == deposits.total - withdrawals.total }</code>。然后在 constructor 的 ensures 里写 <code>ensures Valid()</code>（建立初始一致性），在 deposit/withdraw 的 ensures 里也写 <code>ensures Valid()</code>（保持一致性）。</p>
+          <p><strong>常见失分点：</strong>只写了 invariant 等式但没在 constructor 的 ensures 中建立它（初始状态也要满足）；或者在 deposit/withdraw 中改了 Balance 但忘了同时更新对应的 deposits/withdrawals 序列，导致等式被破坏。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 Summer Q4(a) Spin 小题：safety property 在 model checking 里怎样用例子表达？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>写成坏状态不可达，例如 <code>G !error</code>；若是 mutual exclusion，就写永远不会两个 process 同时在 critical section。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 Summer Q4(a) Spin 小题：safety property 在 model checking 里怎样用例子表达？”。标准答案里的“写成坏状态不可达，例如 G !error；若是 mutual exclusion，就写永远不会两个 process 同时在 critical section。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+          <p><strong>标准答案（先写结论）：</strong>Safety property 写成"坏状态永远不可达"。例如交通灯系统写 <code>G !(NS_green && EW_green)</code>（南北和东西方向永远不会同时绿灯）；银行系统写 <code>G (balance >= 0)</code>（余额永远不会为负）。</p>
+          <p><strong>为什么这是对的：</strong>Safety 的核心直觉是"something bad never happens"。在 model checking 里，你先把所有可能的状态列出来，然后用 temporal logic 公式描述"坏状态"是什么，最后工具检查是否所有执行路径都能避开它。注意 safety 检查的是"每时每刻"，所以用 <code>G</code>（globally / always）。如果工具找到一条能到达坏状态的路径，它就会输出这条 counterexample 给你看。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4(a) 给了你一个并发系统的状态模型（比如两个 process 争资源），让你写 safety property。你要先找到题目中"什么情况算坏了"——比如两个 process 同时进入 critical section、或变量值超出安全范围——然后用 <code>G !bad_condition</code> 表达。</p>
+          <p><strong>卷面写法：</strong>先定义坏状态（用自然语言说清楚），再写 LTL formula，最后解释 G 的含义（in every state of every path, the condition holds）。如果能给一个具体的 counterexample 路径说明 violation 是什么，更好。</p>
+          <p><strong>常见失分点：</strong>把 safety 和 liveness 搞混——safety 用 <code>G !bad</code>（永不变坏），liveness 用 <code>G (request -> F response)</code>（好事最终发生）。或者公式里漏了 negation 导致表达的是相反的意思。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 BankAccount <code>Valid()</code> 写什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q2(c)：BankAccount 類的 ghost predicate <code>Valid()</code> 要寫哪條核心等式來保證 <code>Balance</code> 和 <code>deposits/withdrawals</code> 一致？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>写 <code>Balance == deposits.total - withdrawals.total</code>，并要求 constructor/deposit/withdraw 前后保持。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 BankAccount Valid() 写什么？”。标准答案里的“写 Balance == deposits.total - withdrawals.total，并要求 constructor/deposit/withdraw 前后保持。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+          <p><strong>标准答案（先写结论）：</strong><code>Valid()</code> 写 <code>Balance == deposits.total - withdrawals.total</code>，表明余额必须等于所有存入总和减去所有取出总和。Constructor 要建立 Valid()，每个 public method（deposit、withdraw）要维持 Valid()。</p>
+          <p><strong>为什么这是对的：</strong>BankAccount 类用 ghost 序列 <code>deposits</code> 和 <code>withdrawals</code> 记录每笔交易，<code>Balance</code> 是当前余额。如果代码有 bug——比如某次 deposit 忘了把金额加到 Balance，这个等式就会被破坏。Valid() 把"余额一致性"变成一条可自动检查的规则：Dafny verifier 会在每次方法调用后检查等式是否仍然成立。Constructor 里 ensures Valid() 意味着对象创建时余额是 0，序列是空的，等式成立；deposit 里 ensures Valid() 意味着存钱后等式必须仍然成立——如果代码只更新了 deposits 忘更新 Balance，verifier 就报错。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2 的完整 BankAccount 题要求写 Valid() 和每个方法的 contract。你还需要处理 withdrawal 的 precondition：取款金额不能超过当前余额（否则 <code>Balance</code> 变负虽然等式仍成立，但可能违反了另一条业务规则"余额不能为负"）。</p>
+          <p><strong>卷面写法：</strong>ghost predicate Valid() reads this { Balance == deposits.total - withdrawals.total }。Constructor: ensures Valid() && deposits == [] && withdrawals == []。Deposit(amount): requires amount > 0; modifies deposits; ensures Valid()。Withdraw(amount): requires amount > 0 && amount <= Balance; modifies withdrawals; ensures Valid()。</p>
+          <p><strong>常见失分点：</strong>Valid() 只在 ensures 里提了一次但 constructor 忘了初始建立；或者 deposit/withdraw 里改了 Balance 但忘了同时修改 ghost 序列；或者 withdrawal 缺少"取款金额 <= 余额"的 precondition 导致可取负余额。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 Spin LTL 请求响应怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q4(d)：用 LTL 表達「每次 request 最終都有 response」，<code>G</code>、<code>F</code>、<code>→</code> 各自在公式 <code>G(request → F response)</code> 裡扮演什麼角色？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>用 <code>G(request -> F response)</code> 表示每次 request 后最终出现 response。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 Spin LTL 请求响应怎么写？”。标准答案里的“用 G(request -> F response) 表示每次 request 后最终出现 response。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+          <p><strong>标准答案（先写结论）：</strong>用 <code>G(request -> F response)</code> 表示：在每一条执行路径的每一个状态，如果出现 request，那么最终（现在或未来某个时刻）一定出现 response。这是 liveness property 的标准写法。</p>
+          <p><strong>为什么这是对的：</strong><code>G</code> 是 globally（每时每刻），<code>-></code> 是 implication，<code>F</code> 是 finally（最终）。合起来读作：always, if there is a request, eventually there is a response。这和 safety 不同：safety 关心"坏事永不发生"（<code>G !bad</code>），liveness 关心"好事最终会发生"（<code>G (trigger -> F response)</code>）。Spin 会穷举所有可能的交错执行路径检查这个性质。如果找不到一条路径在某次 request 后永远不 response，性质成立。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4 大概率会让你读一个并发模型（例如 client-server 交互），然后写 LTL 公式表达某个要求。你要先判断题目要求的是 safety（"不会两个同时..."）还是 liveness（"最终会..."），然后选对 temporal operator：safety 用 <code>G !</code>，liveness 用 <code>G (cause -> F effect)</code> 或直接用 <code>F goal</code>。</p>
+          <p><strong>卷面写法：</strong>先写自然语言描述（"每次请求最终都有响应"），再写 LTL formula（<code>G(request -> F response)</code>），然后逐符号解释：G 表示对所有路径的所有状态，-> 表示如果左边成立右边必须成立，F 表示当前或未来某个状态。最后说明这属于 liveness property。</p>
+          <p><strong>常见失分点：</strong>把 <code>G(request -> F response)</code> 写成了 <code>F(response)</code>（后者只要求至少有一次 response，不要求每次 request 都有 response）；或者把 liveness 当成 safety 写了 <code>G !(!response)</code>（这表达的是"永远不会不响应"，含义模糊且不标准）。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#properties">
@@ -218,30 +218,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. Satisfiable 和 tautology 的区别是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>Satisfiable 是至少有一种赋值为真；tautology 是所有赋值都为真。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Satisfiable 和 tautology 的区别是什么？”。标准答案里的“Satisfiable 是至少有一种赋值为真；tautology 是所有赋值都为真。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>为什么这是对的：</strong>想象你在解方程。<code>x > 0</code> 是可满足的，因为 x=5 就能让它为真；但 <code>x > 0 ∧ x < 0</code> 不可满足，因为一个数不能既大于零又小于零。tautology 像 <code>P ∨ ¬P</code>——不管 P 取什么值整句话都为真，不需要"找"具体解。SAT solver 返回 sat 意味着找到了可满足的赋值，返回 unsat 意味着证明不存在任何赋值。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(b) 直接让你解释这三个术语并各举一例。satisfiable 的例子可以写 <code>x > 0 ∧ x < 10</code>（有解 x=5）；unsatisfiable 写 <code>P ∧ ¬P</code>；tautology 写 <code>P ∨ ¬P</code>。注意 satisfiable 的例子不能是 tautology——前者只要求存在一种赋值，后者要求所有赋值都成立。</p>
+          <p><strong>卷面写法：</strong>每个术语分两行：一行写定义（at least one interpretation / all interpretations / no interpretation），一行写公式例子，再用一句话解释该例子为什么属于这类。格式统一，阅卷人一眼看到三个点都答了。</p>
+          <p><strong>常见失分点：</strong>把 satisfiable 和 tautology 搞混——satisfiable 只要存在一种赋值，不需要所有赋值都成立。tautology 的要求强得多。例子和定义不匹配：比如定义说 satisfiable 但又给了一个 tautology 作为例子。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. <code>P ⇒ Q</code> 怎么读才不误解？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>只要 <code>P</code> 成立，<code>Q</code> 必须成立；如果 <code>P</code> 不成立，implication 不被违反。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. P ⇒ Q 怎么读才不误解？”。标准答案里的“只要 P 成立，Q 必须成立；如果 P 不成立，implication 不被违反。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>为什么这是对的：</strong>很多人把 ⇒ 误解为因果或必要条件，但它只是真值表上的一种关系：唯一的反例是 P 为真且 Q 为假。其他三种组合（P 假 Q 真、P 假 Q 假、P 真 Q 真）整句话都为真。"false implies anything" 听起来反直觉但逻辑上成立——你连前提都没满足，就没有违反承诺。在程序验证里，如果 precondition 不成立，方法不用保证 postcondition。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(a) 的 "if John is right then somebody took his pen" 直接对应 <code>Right(John) ⇒ ∃x Took(x, PenOfJohn)</code>。如果 John is right 是假的，整句话自动为真（vacuous truth）。在写 Dafny contract 时，requires ⇒ ensures 的结构也是这个道理。</p>
+          <p><strong>卷面写法：</strong>可以画四行真值表，也可以用自然语言说"唯一的反例是 P true 且 Q false"。重点强调"P 假时整句自动为真"这一点，因为它最容易被质疑。</p>
+          <p><strong>常见失分点：</strong>以为 ⇒ 表示 P 导致 Q（因果），或以为 Q 必须先成立 P 才能成立（方向反了）。⇒ 不是因果操作符，只是对两个布尔值的组合规则。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 从英语到逻辑的第一步是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先找对象和变量，再找范围，最后写性质和连接符。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 从英语到逻辑的第一步是什么？”。标准答案里的“先找对象和变量，再找范围，最后写性质和连接符。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>为什么这是对的：</strong>直接逐词翻译英语通常会丢信息或引入歧义。"Every student passed the exam" 如果写成 <code>∀x Passed(x)</code> 就错了——x 没限制范围，桌子椅子也能满足未通过考试从而让这句话为假。正确写法是 <code>∀x (Student(x) ⇒ Passed(x))</code>。所以第一步永远是：这段话讨论什么类型的对象？它们的取值范围是什么？确定之后再选量词和连接词。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(a) 是典型英译逻辑题。遇到 "every" 用 <code>∀</code> + <code>⇒</code>，遇到 "somebody" / "exists" 用 <code>∃</code> + <code>∧</code>。这个口诀几乎覆盖所有英译逻辑题：全称量词配 implication，存在量词配 conjunction。</p>
+          <p><strong>卷面写法：</strong>三步走：(1) 列出所有 predicate 及其参数含义；(2) 写出 domain of discourse（讨论的全体对象是什么集合）；(3) 写出完整公式。每一步都要在卷面上体现，让阅卷人看到你的推理过程。</p>
+          <p><strong>常见失分点：</strong><code>∀x</code> 后面直接接 ∧ 而不是 ⇒——<code>∀x Person(x) ∧ Walking(x)</code> 要求宇宙中每个东西都是人且都在走路，这显然不对。<code>∃x</code> 后面用 ⇒ 而不是 ∧——随手找个不是人的东西就满足 <code>Person(x) ⇒ Walking(x)</code>，表达不了"存在一个人在走路"。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -249,50 +249,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q1(a) 小题：'If John is right, somebody took his pen' 需要哪些 predicate？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>例如 <code>Right(John)</code>、<code>Took(x, PenOfJohn)</code>，公式可写 <code>Right(John) => ∃x Took(x, PenOfJohn)</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q1(a) 小题：'If John is right, somebody took his pen' 需要哪些 predicate？”。标准答案里的“例如 Right(John)、Took(x, PenOfJohn)，公式可写 Right(John) => ∃x Took(x, PenOfJohn)。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>为什么这是对的：</strong>这句话有两个关键信息：John is right 是条件（if 开头），somebody took his pen 是结论。条件部分只需一个谓词 <code>Right(person)</code>——John 是具体个体不需要量化。结论部分的 somebody 意味着存在至少一个实体拿了笔，所以用 <code>∃x</code>。PenOfJohn 是常量（特指 John 的笔），不需要额外量化。整句是条件关系，用 ⇒ 连接。</p>
+          <p><strong>题目语境怎么用：</strong>识别 if...then 结构 ⇒。somebody 对应 ∃。不需要显式说"x 是人"，因为题面没要求区分人和动物，可以扩大 domain。如果题面要求只讨论人，就加 <code>Person(x) ∧</code>。</p>
+          <p><strong>卷面写法：</strong>列出所有 predicate：<code>Right(p)</code> 表示 p is right；<code>Took(x, item)</code> 表示 x took item；<code>PenOfJohn</code> 是常量。公式：<code>Right(John) ⇒ ∃x Took(x, PenOfJohn)</code>。解释：如果 Right(John) 成立，则存在某个 x 拿了 John 的笔。</p>
+          <p><strong>常见失分点：</strong>把 <code>∃x</code> 误写成 <code>∀x</code>（"所有人都拿了笔"——意思全变）；忘了 implication 结构，写成 <code>Right(John) ∧ ∃x Took(x, PenOfJohn)</code>（表达了两个并列事实而非条件关系）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q1(a) 小题：'Every person is walking and talking' 的量词结构是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong><code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q1(a) 小题：'Every person is walking and talking' 的量词结构是什么？”。标准答案里的“∀x (Person(x) => Walking(x) ∧ Talking(x))。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>为什么这是对的：</strong>"every person" 是典型全称量词。英文说"is walking and talking"意味着每个人同时做两件事，所以用 ∧ 连接两个谓词。关键口诀：∀x 一定配 ⇒，因为 x 遍历所有事物时，只有 Person(x) 为真的那些才需要检查 Walking 和 Talking。如果不加 Person(x) 的筛选，<code>∀x (Walking(x) ∧ Talking(x))</code> 会要求宇宙中每个东西都在走路说话——这显然不是题面意思。</p>
+          <p><strong>题目语境怎么用：</strong>对比：如果题面是"there exists a person who is walking and talking"，量词变成 ∃x，连接用 ∧：<code>∃x (Person(x) ∧ Walking(x) ∧ Talking(x))</code>。全称和存在的连接词选择完全不同——这是考试里最容易搞混的地方。</p>
+          <p><strong>卷面写法：</strong>先定义 <code>Person(x)</code>、<code>Walking(x)</code>、<code>Talking(x)</code> 三个谓词。再写公式 <code>∀x (Person(x) ⇒ Walking(x) ∧ Talking(x))</code>。下方附一句解释：对任意 x，如果 x 是人，则 x 在走路且 x 在说话。</p>
+          <p><strong>常见失分点：</strong>写成 <code>∀x (Person(x) ∧ Walking(x) ∧ Talking(x))</code>——宣称所有事物都是人且都在走路说话，显然是假的。写成 <code>∃x (Person(x) ⇒ Walking(x) ∧ Talking(x))</code>——⇒ 在 P 假时也为真，随手找个不是人的东西就满足，表达不了"存在一个人"。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 Summer Q1(b) 小题：tautology、satisfiable、unsatisfiable 要不要给例子？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>要。题目明确要求 explain terms with example。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 Summer Q1(b) 小题：tautology、satisfiable、unsatisfiable 要不要给例子？”。标准答案里的“要。题目明确要求 explain terms with example。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+          <p><strong>为什么这是对的：</strong>2025 真题 Q1(b) 指令是 "explain the following terms with examples"。只给定义不给例子等于只完成一半要求，一定会丢分。三种术语对应三种公式命运：tautology 永远真（<code>P ∨ ¬P</code>），satisfiable 有时真有时假（<code>P ∧ Q</code>），unsatisfiable 永远假（<code>P ∧ ¬P</code>）。例子越简单越好——阅卷人一眼能判断你理解没理解。</p>
+          <p><strong>题目语境怎么用：</strong>这道题通常 6-8 分，每个术语 2-3 分。定义占 1 分，例子占 1-2 分。不要写复杂公式——越复杂越容易自己出错，而且阅卷人需要花更多时间判断你的例子是否正确。</p>
+          <p><strong>卷面写法：</strong>分三小段，每段：(i) 术语名，(ii) 一句话定义，(iii) 一个命题逻辑公式作为例子，(iv) 一句话解释为什么这个例子符合定义。格式统一让阅卷人一眼看到三个点都答了。</p>
+          <p><strong>常见失分点：</strong>例子和定义不匹配——定义说 satisfiable 是"至少一种赋值为真"，但例子给了 <code>P ∨ ¬P</code>（这是 tautology，不只是 satisfiable）。unsatisfiable 的例子给了一个部分为假的公式但没证明它完全不可满足。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 Ack decreases 为什么用 tuple？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q2(a)：Ackermann 函數有 <code>m,n</code> 兩個遞歸參數，<code>decreases m, n</code> 的元組（詞典序）如何保證每次遞歸調用整體變小？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Ack 有两个递归参数，用 <code>decreases m, n</code> 按词典序证明递归调用整体变小。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 Ack decreases 为什么用 tuple？”。标准答案里的“Ack 有两个递归参数，用 decreases m, n 按词典序证明递归调用整体变小。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+          <p><strong>为什么这是对的：</strong>Ackermann 函数递归调用有两种模式：一种分支 m 变小（m→m-1），另一种分支 m 不变但 n 变小（n→n-1）。单靠一个 decreases 表达式（比如 m+n）在某些分支可能不变。词典序 tuple (m, n) 的规则是：先比第一个分量，如果 m 严格变小就通过；如果 m 相等，再比第二个分量 n。这恰好覆盖 Ackermann 的所有递归路径——没有一个分支会让 (m, n) 在词典序下不减小。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(a) 给 Ackermann 函数骨架，让你补 decreases 并解释为什么单参数不够。你要具体指出：<code>Ack(m-1, Ack(m, n-1))</code> 中 m 变小了，第一个分量下降；<code>Ack(m, n-1)</code> 中 m 不变 n 变小，需要比到第二个分量。</p>
+          <p><strong>卷面写法：</strong>先写 <code>decreases m, n</code>；再分条说明每个递归调用怎样让 tuple 在词典序下减小；最后总结为什么单参数 decreases 不够（内层递归结果可能极大导致 m+n 不一定减小）。</p>
+          <p><strong>常见失分点：</strong>用 <code>decreases m+n</code> 而不是词典序——Ackermann 中 m 减小但内层 n 可能变大时，m+n 不一定变小。漏解释"词典序"的含义和比较规则。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 BankAccount <code>Valid()</code> 写什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q2(c)：BankAccount 類的 ghost predicate <code>Valid()</code> 要寫哪條核心等式來保證 <code>Balance</code> 和 <code>deposits/withdrawals</code> 一致？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>写 <code>Balance == deposits.total - withdrawals.total</code>，并要求 constructor/deposit/withdraw 前后保持。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 BankAccount Valid() 写什么？”。标准答案里的“写 Balance == deposits.total - withdrawals.total，并要求 constructor/deposit/withdraw 前后保持。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+          <p><strong>为什么这是对的：</strong>BankAccount 类核心问题：Balance 是汇总值，deposits 和 withdrawals 是明细。代码bug（比如取钱更新 Balance 忘更新序列）会破坏这个等式，后续操作基于错误余额。Valid() 把一致性变成 verifier 自动检查的规则：constructor 后 0==0-0 成立；deposit 后等式也成立；withdraw 同理。每个方法 ensures Valid() 确保一致性链条不断。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(c) 的 BankAccount 框架题给了 deposits/withdrawals ghost 序列和 Balance 字段。这是 class invariant 典型应用——把对象级一致性条件集中成 predicate，每个公共方法维持。</p>
+          <p><strong>卷面写法：</strong><code>ghost predicate Valid() reads this { Balance == deposits.total - withdrawals.total }</code>。Constructor: <code>ensures Valid() && deposits == [] && withdrawals == []</code>。Deposit: <code>requires amount > 0; modifies deposits; ensures Valid()</code>。Withdraw: <code>requires amount > 0 && amount <= Balance; modifies withdrawals; ensures Valid()</code>。</p>
+          <p><strong>常见失分点：</strong>constructor 忘了 ensures Valid()（初始状态也要满足）；withdraw 缺 amount <= Balance precondition；modifies 子句漏了 ghost 序列。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#logic">
@@ -337,30 +337,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. Precondition 和 postcondition 的责任边界是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>调用者负责满足 precondition；方法在 precondition 成立时负责保证 postcondition。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Precondition 和 postcondition 的责任边界是什么？”。标准答案里的“调用者负责满足 precondition；方法在 precondition 成立时负责保证 postcondition。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>合同（contract）的核心就是分责。就像租房合同里房东负责修水管、租客负责按时交租——谁的责任没履行就是谁的问题。在程序里：调用者如果传了空数组给 max() 方法（违反 requires a.Length > 0），方法返回什么都怪不到方法头上。反过来说，如果调用者传了合法输入，方法就必须兑现 postcondition 的所有承诺。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(d) Find 方法中，requires a.Length > 0 把空数组的责任推给调用者；ensures forall i :: min <= a[i] 是方法的承诺。考试里如果问"要不要在方法里检查空数组"，答案是不需要——已经通过 precondition 排除了。</p>
+          <p><strong>卷面写法：</strong>分两方写。Caller: must satisfy precondition before calling。Method: if precondition holds when called, must guarantee postcondition upon return。然后给一个具体例子说明如果调用者违反 precondition 会怎样。</p>
+          <p><strong>常见失分点：</strong>把 precondition 理解成方法自己检查的条件（防御性编程）——design by contract 里 precondition 是调用者的义务。混淆"方法应该防御所有坏输入"和"contract 已经排除了坏输入"。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. Invariant 是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>在某段过程前后必须保持的性质，例如对象余额始终非负。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Invariant 是什么？”。标准答案里的“在某段过程前后必须保持的性质，例如对象余额始终非负。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>合同（contract）的核心就是分责。就像租房合同里房东负责修水管、租客负责按时交租——谁的责任没履行就是谁的问题。在程序里：调用者如果传了空数组给 max() 方法（违反 requires a.Length > 0），方法返回什么都怪不到方法头上。反过来说，如果调用者传了合法输入，方法就必须兑现 postcondition 的所有承诺。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(d) Find 方法中，requires a.Length > 0 把空数组的责任推给调用者；ensures forall i :: min <= a[i] 是方法的承诺。考试里如果问"要不要在方法里检查空数组"，答案是不需要——已经通过 precondition 排除了。</p>
+          <p><strong>卷面写法：</strong>分两方写。Caller: must satisfy precondition before calling。Method: if precondition holds when called, must guarantee postcondition upon return。然后给一个具体例子说明如果调用者违反 precondition 会怎样。</p>
+          <p><strong>常见失分点：</strong>把 precondition 理解成方法自己检查的条件（防御性编程）——design by contract 里 precondition 是调用者的义务。混淆"方法应该防御所有坏输入"和"contract 已经排除了坏输入"。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Partial correctness 少证明了什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>少证明 termination。它只说如果程序终止，结果正确。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Partial correctness 少证明了什么？”。标准答案里的“少证明 termination。它只说如果程序终止，结果正确。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>Invariant 是系统中不会改变的"定律"。循环 invariant 描述每次迭代前都成立的条件——比如 Find 循环中"min 是已扫描部分的最小值"每轮开始时成立。对象 invariant 描述对象在任何对外可见状态下都必须满足的条件——比如 BankAccount 的余额始终等于存入总额减去取出总额。Invariant 和 postcondition 的区别：postcondition 只要求方法结束时成立，invariant 要求过程中所有中间点都成立。</p>
+          <p><strong>题目语境怎么用：</strong>Find 题里循环 invariant 绑定 min 与已扫描前缀；BankAccount 题里 class invariant（Valid()）绑定余额与交易序列。考试里写 invariant 最容易漏的是索引范围——不仅要说 min 是最小值，还要说 1 <= i <= a.Length。</p>
+          <p><strong>卷面写法：</strong>循环 invariant 按三步骤写：(1) establishment（进入循环前成立）；(2) preservation（每轮迭代后仍成立）；(3) exit use（退出时结合循环条件推出 postcondition）。对象 invariant 写 ghost predicate，每个 public method 的 ensures 里声明保持它。</p>
+          <p><strong>常见失分点：</strong>只写了语义部分（如 min 是最小值）但漏了索引范围（如 0 <= i <= a.Length），导致 verifier 无法证明数组访问安全。Invariant 写得太弱，推不出 postcondition。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -368,50 +368,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Find 小题：<code>requires a.Length > 0</code> 为什么是 precondition？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>因为方法先读 <code>a[0]</code>；空数组会越界，调用者必须保证非空。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Find 小题：requires a.Length > 0 为什么是 precondition？”。标准答案里的“因为方法先读 a[0]；空数组会越界，调用者必须保证非空。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>Partial correctness 和 total correctness 差在一个"total"上。Partial 只关心逻辑正确性：假设循环能停下来，退出时结果满足 postcondition。但实际上循环可能永远跑下去（while true 死循环），partial correctness 对此不置一词。Total correctness 要求同时证明两件事：(1) 如果终止则结果正确（= partial correctness），(2) 程序一定会终止。证明终止需要找一个非负 variant 表达式每次循环严格变小。</p>
+          <p><strong>题目语境怎么用：</strong>Find 方法的 partial correctness 用 invariant 证明——min 在退出时是整个数组的最小值。Total correctness 额外需要 variant：a.Length - i。考试里如果题目问"is the method totally correct?"，你不能只说 invariant，必须给出 variant 并解释为什么非负且严格递减。</p>
+          <p><strong>卷面写法：</strong>先写 partial correctness 部分（precondition、invariant 三步、推出 postcondition），然后单独开一段写 termination：给出 variant 表达式，证明它永远 >=0，每轮循环后严格变小，基于自然数良基性必须终止。</p>
+          <p><strong>常见失分点：</strong>声称 total correctness 但只证明了 partial correctness（没给 variant）；给了 variant 但没证明非负或严格递减；variant 选错——比如选了可能不变量的量。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 BankAccount 小题：constructor contract 要建立什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">CS603 2025 Summer Q2(c)：BankAccount 类 constructor 的 ensures 中需保证哪三件事？Balance=0、deposits/withdrawals 为空序列、且 ghost predicate Valid() 初始成立，各为什么必须写？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>要建立对象初始状态和 class invariant，例如 transactions 初始化、Balance 与 totals 一致。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 BankAccount 小题：constructor contract 要建立什么？”。标准答案里的“要建立对象初始状态和 class invariant，例如 transactions 初始化、Balance 与 totals 一致。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>Constructor 的职责是把对象从"不存在"带到"一个合法状态"。如果不在这里建立 Valid()（即 ensures Valid()），对象创建后可能处于不一致状态——比如 Balance = 0 但 deposits 序列非空（不符合 Valid() 等式）。后续 deposit 和 withdraw 方法都会 ensures Valid()，但它们只能维持已经成立的 invariant，不能修复一个从未成立过的 invariant。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(c) BankAccount 题中，constructor 需要：把 Balance 初始化为 0，把 deposits 和 withdrawals 初始化为空序列，并 ensures Valid()。如果 constructor 漏了 ensures Valid()，就算 deposit 写了 Valid()，verifier 也会在 constructor 之后报错。</p>
+          <p><strong>卷面写法：</strong>Constructor: ensures Valid() && Balance == 0 && deposits == [] && withdrawals == []。解释：对象创建后必须处于一致状态，Valid() 等式 Balance == deposits.total - withdrawals.total 在初始时成立（0 == 0 - 0）。</p>
+          <p><strong>常见失分点：</strong>只写了 Valid() 在 deposit/withdraw 的 ensures 里，但 constructor 忘了 ensures Valid()——像盖楼跳过地基。deposits/withdrawals 初始值设错（没初始化为空序列）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 BankAccount 小题：withdraw 方法的 precondition 应防止什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">CS603 2025 Summer Q2(c)：BankAccount.withdraw(amount) 的 precondition 应包含 amount>0（防止无意义负数取款）和 amount<=Balance（防止余额变负破坏 Valid()），缺了后者会出现什么漏洞？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>防止取款后余额为负，或破坏 <code>Valid()</code> 中 Balance/totals 的关系。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 BankAccount 小题：withdraw 方法的 precondition 应防止什么？”。标准答案里的“防止取款后余额为负，或破坏 Valid() 中 Balance/totals 的关系。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+                    <p><strong>为什么这是对的：</strong>withdraw 至少需要两条 precondition：(1) amount > 0——取款金额必须是正数；(2) amount <= Balance——取款金额不能超过当前余额。如果缺了第二条，调用者可以取出比余额多的钱，虽然 Valid() 等式仍成立（负余额在数学上合法），但业务上"余额不为负"被违反了。如果你还想保证余额非负，需要额外的 class invariant。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(c) 题如果要求"余额不能为负"，你需要两条 invariant：(1) Balance == deposits.total - withdrawals.total（一致性），(2) Balance >= 0（非负）。withdraw 的 precondition amount <= Balance 是保证第二条的关键。</p>
+          <p><strong>卷面写法：</strong>requires amount > 0 && amount <= Balance。解释：amount > 0 确保取款操作有意义；amount <= Balance 确保余额不会变负，维护非负 invariant。</p>
+          <p><strong>常见失分点：</strong>只写了 amount > 0 没写 amount <= Balance，导致 verifier 无法证明余额非负。在 method body 里用 if 判断实现防御而非用 precondition 排除——用 precondition 推给调用者更清晰。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 CDCL 比 stochastic search 强在哪？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q3(d)：CDCL SAT solver 的 conflict-driven clause learning 機制，比純隨機搜索在效率上有什麼本質優勢？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>CDCL 在冲突后学习 clause，避免重复同类失败；stochastic search 更多靠随机移动，缺少这种系统学习。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 CDCL 比 stochastic search 强在哪？”。标准答案里的“CDCL 在冲突后学习 clause，避免重复同类失败；stochastic search 更多靠随机移动，缺少这种系统学习。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>想象你在走迷宫。Stochastic search（随机搜索）像闭着眼睛乱走——某条路撞墙了下次可能又走同一条。CDCL 像会做笔记的人：每次撞墙（conflict），它分析"为什么撞了"，然后写一条新规则（learned clause），以后再也不走那条路。learned clause 本质是简洁的命题逻辑句子，排除了导致冲突的那组赋值。随着搜索推进，learned clauses 越积越多，搜索空间越来越小。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3(d) 问 CDCL 优势，你要对比两种策略的核心机制：stochastic 靠随机游走+偶尔重启碰运气；CDCL 靠冲突分析+学习 clauses+非时序回溯（backjump 到真正导致冲突的决策点）。</p>
+          <p><strong>卷面写法：</strong>对比格式：Stochastic: random walks, local moves, restarts, no memory of failures。CDCL: conflict analysis, clause learning, non-chronological backtracking, learned clauses prune search space。总结：CDCL 从失败中学习，stochastic 不学习。</p>
+          <p><strong>常见失分点：</strong>只说 CDCL "更好"但不解释学习机制；把 CDCL 和 DPLL 搞混（DPLL 是基础回溯框架，CDCL 在 DPLL 上加 conflict learning）；不提 learned clause 或 backjump。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 John/right 谓词逻辑怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q1(a)(i)：「If John is right, somebody took his pen」轉謂詞邏輯時，implication 左邊用什麼 predicate、右邊用什麼量詞？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>选 <code>Right(John)</code> 和 <code>Took(x, PenOfJohn)</code>，写 <code>Right(John) => ∃x Took(x, PenOfJohn)</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 John/right 谓词逻辑怎么写？”。标准答案里的“选 Right(John) 和 Took(x, PenOfJohn)，写 Right(John) => ∃x Took(x, PenOfJohn)。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>这句话是条件句式（if...then），主连接词是 =>。"John is right" 是没有量词的命题——John 是具体个体，直接用 Right(John) 表达。"somebody" 表示存在至少一个实体，用 ∃x。PenOfJohn 是特指物品作为常量，不需要量化。整句读作：如果 Right(John) 为真，则存在某个 x 使得 Took(x, PenOfJohn) 为真。</p>
+          <p><strong>题目语境怎么用：</strong>这道题考的是英语翻译谓词逻辑。先判断句式（条件句）→ =>，再判断量词（somebody）→ ∃，然后确定谓词和常量。任何英译逻辑题都可以按"句式 → 连接词 → 量词 → 谓词"这个顺序来做。</p>
+          <p><strong>卷面写法：</strong>(1) Define predicates: Right(p), Took(x, item)。(2) Constant: PenOfJohn。(3) Formula: Right(John) => ∃x Took(x, PenOfJohn)。(4) Interpretation: If John is right, there exists some x who took John's pen。</p>
+          <p><strong>常见失分点：</strong>忘了 Took 需要两个参数（谁拿了什么）；把 PenOfJohn 误写成函数 PenOf(John)；把 => 写成 ∧（变成两个并列事实而非条件关系）。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#contracts">
@@ -477,81 +477,81 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. Hoare triple <code>{P} C {Q}</code> 怎么读？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>如果执行 <code>C</code> 前 <code>P</code> 成立，并且 <code>C</code> 终止，则执行后 <code>Q</code> 成立。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Hoare triple {P} C {Q} 怎么读？”。标准答案里的“如果执行 C 前 P 成立，并且 C 终止，则执行后 Q 成立。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>Hoare triple 是程序证明的基本单位。它有三个部分：P 是前置条件（要求调用前成立），C 是一段代码，Q 是后置条件（要求执行后成立）。关键理解：它的含义是"如果 P 成立且 C 终止，那么 Q 成立"，不是"P 导致 C 运行并产生 Q"。这被称为 partial correctness——不证终止。把整个程序串成多个 triple，就是从一个 condition 推到下一个 condition 的链条。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(d) Find 题本质上让你写出 Hoare triple 形式的证明：P = 数组非空，C = Find 方法体，Q = min 是最小值。循环部分把 triple 拆成更小的 triple（每次迭代前后）。</p>
+          <p><strong>卷面写法：</strong>开头写 {P} C {Q}。然后按程序结构分解：赋值用 assignment axiom 倒推；序列找中间 assertion R 连接；while 给 invariant I 并用三个证明义务分解。</p>
+          <p><strong>常见失分点：</strong>把 triple 读成"P implies Q"——triple 有程序在中间，P 和 Q 之间隔着一个命令 C。忘了 triple 默认是 partial correctness，题目问 total correctness 时要加 variant。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. Loop invariant 要证明哪三件事？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>Establishment、preservation、exit use。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Loop invariant 要证明哪三件事？”。标准答案里的“Establishment、preservation、exit use。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>这三件事对应循环证明的三个时间点。(1) Establishment：循环开始前 invariant 成立——从 precondition 和初始化代码推导。(2) Preservation：假设 invariant 在循环体执行前成立，证明执行一遍后仍成立——最难的部分，需追踪每步赋值对 invariant 的影响。(3) Exit use：退出时 invariant 成立且循环条件为 false，两者合起来推出 postcondition。缺任何一步证明不完整。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(d) Find 题三步骤：(1) 初始化 min=a[0], i=1 后 invariant 成立；(2) 每次迭代扫描 a[i] 并更新 min 后 invariant 保持；(3) 退出时 i=a.Length，a[0..i) 是全部数组。</p>
+          <p><strong>卷面写法：</strong>用三小段分别写 Establishment、Preservation、Exit use。每段写清用了什么前提和什么操作，推出了什么结论。</p>
+          <p><strong>常见失分点：</strong>只给 invariant 不写三步骤证明；preservation 写得模糊（"显然保持"而不逐行推）；exit use 忘了结合 !guard——光靠 invariant 推不出 postcondition。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Variant 用来证明什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>证明 termination：一个非负量每次循环严格变小，因此不能无限循环。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Variant 用来证明什么？”。标准答案里的“证明 termination：一个非负量每次循环严格变小，因此不能无限循环。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>这三件事对应循环证明的三个时间点。(1) Establishment：循环开始前 invariant 成立——通常从 precondition 和初始化代码推导。(2) Preservation：假设 invariant 在循环体执行前成立，证明执行一遍循环体后它仍然成立——这是最难的部分，需要追踪每一步赋值对 invariant 的影响。(3) Exit use：循环退出时，invariant 成立且循环条件为 false，这两者合起来要能推出 postcondition。缺任何一步，证明就不完整。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(d) Find 题的三步骤：(1) 初始化 min=a[0], i=1 后，invariant "min 是 a[0..i) 的最小值" 成立（a[0..1) 只有 a[0]）；(2) 每次迭代扫描 a[i] 并更新 min 后，invariant 保持；(3) 退出时 i=a.Length，a[0..i) 就是整个数组。</p>
+          <p><strong>卷面写法：</strong>用三小段分别写 Establishment、Preservation、Exit use。每段写清楚使用了什么前提（precondition 或 invariant）和什么操作（赋值、条件判断），推出了什么结论。</p>
+          <p><strong>常见失分点：</strong>只给了 invariant 公式但不写三步骤的证明；preservation 写得模糊（比如只说"显然保持"而不逐行推）；exit use 忘了结合 !guard 这个条件（光靠 invariant 推不出 postcondition，必须用上 guard 为 false 的信息）。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q1(d) Find 小题：while loop 的核心 invariant 应描述什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">CS603 2025 Summer Q1(d)：Find(a:array&lt;int&gt;) 返回数组最小值，while loop 的 invariant 应描述 min 和已扫描前缀 a[0..i) 的什么关系？范围约束 1≤i≤a.Length 的作用是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>已扫描部分 <code>a[0..i)</code> 中，<code>min</code> 不大于每个已扫描元素，并且 <code>1≤i≤a.Length</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q1(d) Find 小题：while loop 的核心 invariant 应描述什么？”。标准答案里的“已扫描部分 a[0..i) 中，min 不大于每个已扫描元素，并且 1≤i≤a.Length。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>Variant（也叫 ranking function）的工作原理是良基序（well-founded ordering）——每个自然数都有有限多个比它小的自然数。如果每次循环 variant 从 5 变到 4 变到 3...最终必然到达 0，而 variant 小于 0 是不可能（非负条件），所以循环必然终止。选 variant 的常见技巧：找循环中单调变化的值——比如 Find 中 i 不断增加，a.Length - i 就不断减小。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(e) Find total correctness：variant 选 a.Length - i。初始时 i=1，variant = a.Length-1（非负）。每次循环 i=i+1，variant 减小 1。当 variant=0 时 i=a.Length，循环条件为 false，退出。Dafny 中用 decreases a.Length - i。</p>
+          <p><strong>卷面写法：</strong>先给出 variant 表达式，然后证明：(1) 每次进入循环体前 variant >= 0（引用 invariant 的范围条件）；(2) 在循环体的每次执行中，variant 的值严格减小；(3) 由于自然数不能无限减小，循环必须终止。</p>
+          <p><strong>常见失分点：</strong>variant 选了但没证明非负——比如 variant 初始为 0 就已经非负了，需要说明；variant 在某些路径下不变（比如 if 分支里没改 variant）；用浮点数或非良基序作为 variant（必须是良基序，最常见的是自然数）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q1(d) Find 小题：退出时 <code>i >= a.Length</code> 如何推出 postcondition？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>结合 invariant 的已扫描范围，当 <code>i==a.Length</code> 时已扫描部分就是整个数组。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q1(d) Find 小题：退出时 i >= a.Length 如何推出 postcondition？”。标准答案里的“结合 invariant 的已扫描范围，当 i==a.Length 时已扫描部分就是整个数组。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>循环条件是 i < a.Length。退出时 guard 为 false 即 i >= a.Length。同时 invariant 告诉我们 i <= a.Length。两者结合推出 i == a.Length。此时 invariant 语义部分 forall j :: 0 <= j < i ==> min <= a[j] 中的 i 替换为 a.Length，得到 forall j :: 0 <= j < a.Length ==> min <= a[j]——正是 postcondition。</p>
+          <p><strong>题目语境怎么用：</strong>这是 exit use 步骤的标准模板。考试里你必须显式写出：(1) guard 取反得 i >= a.Length；(2) invariant 索引范围得 i <= a.Length；(3) 结合得 i == a.Length；(4) 代入 invariant 语义推出 postcondition。不能跳过中间步骤。</p>
+          <p><strong>卷面写法：</strong>分四步推导。Step 1: guard negation -> i >= a.Length。Step 2: from invariant, i <= a.Length。Step 3: combine -> i == a.Length。Step 4: substitute into invariant -> forall j :: 0 <= j < a.Length ==> min <= a[j]。</p>
+          <p><strong>常见失分点：</strong>跳过推导步骤直接写结论——阅卷人看不出推理链条。忘了 invariant 索引上界是 i <= a.Length（如果写成 i < a.Length 则退出时矛盾）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 Summer Q1(e) Find 小题：total correctness 的 variant 可选什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>可选 <code>a.Length - i</code>，每次循环 <code>i := i+1</code> 后严格减少且非负。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 Summer Q1(e) Find 小题：total correctness 的 variant 可选什么？”。标准答案里的“可选 a.Length - i，每次循环 i := i+1 后严格减少且非负。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>选择 variant 的原则：找一个每次循环都单调变化的量。(1) 初始时 i=1，variant = a.Length - 1，由于 a.Length > 0（precondition），variant >= 0。(2) 循环体唯一改变 i 的语句是 i := i + 1，variant 严格减小 1。(3) 循环不会无限进行，因为 a.Length - i 是自然数且每次都减小，最终必定到达 0 或退出条件。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(e) 明确要你证明 total correctness。答完 partial correctness 后单独开一段：(i) 提出 variant；(ii) 证明非负；(iii) 证明严格减小；(iv) 结论：循环必然终止。</p>
+          <p><strong>卷面写法：</strong>Variant: V = a.Length - i。(1) V >= 0 because i <= a.Length (from invariant). (2) After i := i + 1, V' = V - 1 < V. (3) Since V is a natural number and strictly decreases, loop must terminate.</p>
+          <p><strong>常见失分点：</strong>variant 选了但不和 invariant 配合——variant 上下界通常来自 invariant 范围条件。没证明 variant 非负。variant 在某一分支下没减小。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 Find total correctness 的 variant 是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q1(e)：證明 Find 方法 total correctness 時，用哪個表達式作 variant 並證明它非負且每輪嚴格遞減？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>用 <code>a.Length - i</code>；每次循环 <code>i</code> 增加，variant 严格变小且非负。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 Find total correctness 的 variant 是什么？”。标准答案里的“用 a.Length - i；每次循环 i 增加，variant 严格变小且非负。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>variant 选 a.Length - i。三个条件：(1) 非负——a.Length - i >= 0 由 invariant 的 i <= a.Length 保证；(2) 每次循环后严格减小——循环体里只有 i := i + 1，variant 减少 1；(3) 自然数不能无限减小——所以循环必然终止。这是线性扫描的标准模式：看到从起点逐一扫描到终点的循环，variant 就是剩余要扫描的元素个数。</p>
+          <p><strong>题目语境怎么用：</strong>Dafny 里写成 decreases a.Length - i。以后遇到任何逐一扫描数组的循环，variant 就是 a.Length - i。</p>
+          <p><strong>卷面写法：</strong>decreases a.Length - i。Proof: (1) Non-negative: from invariant i <= a.Length; (2) Decrease: i := i + 1 so a.Length - (i+1) < a.Length - i; (3) Well-founded: natural numbers cannot decrease infinitely。</p>
+          <p><strong>常见失分点：</strong>写了 decreases 但没解释为什么每次循环都减小。variant 选了但 invariant 没写 i <= a.Length——没有这个 invariant 证明不了 variant 非负。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 Ack decreases 为什么用 tuple？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q2(a)：Ackermann 函數有 <code>m,n</code> 兩個遞歸參數，<code>decreases m, n</code> 的元組（詞典序）如何保證每次遞歸調用整體變小？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Ack 有两个递归参数，用 <code>decreases m, n</code> 按词典序证明递归调用整体变小。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 Ack decreases 为什么用 tuple？”。标准答案里的“Ack 有两个递归参数，用 decreases m, n 按词典序证明递归调用整体变小。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+                    <p><strong>为什么这是对的：</strong>Ackermann 函数递归调用有两种模式：一种 m 变小（m->m-1），另一种 m 不变 n 变小（n->n-1）。单靠一个 decreases 表达式（如 m+n）在某些分支可能不变。词典序 tuple (m, n) 规则：先比第一个分量，m 变小就通过；m 相等再比 n。这覆盖所有 Ackermann 递归路径。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(a) 给 Ackermann 函数骨架，让你补 decreases 并解释。具体指出：Ack(m-1, ...) 中 m 变小，第一个分量下降；Ack(m, n-1) 中 m 不变 n 变小，需比到第二个分量。</p>
+          <p><strong>卷面写法：</strong>先写 decreases m, n。再分条说明每个递归调用怎样让 tuple 在词典序下减小。最后总结为什么单参数不够（内层递归结果可能极大导致 m+n 不一定减小）。</p>
+          <p><strong>常见失分点：</strong>用 decreases m+n 而非词典序——m 减小但内层 n 可能变大时 m+n 不一定变小。漏解释词典序的比较规则。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#hoare">
@@ -632,81 +632,81 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. <code>requires</code> 和 <code>ensures</code> 对应什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong><code>requires</code> 是 precondition，<code>ensures</code> 是 postcondition。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. requires 和 ensures 对应什么？”。标准答案里的“requires 是 precondition，ensures 是 postcondition。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>Dafny 的 contract 和 Hoare triple {P} C {Q} 一一对应：requires 就是 P，ensures 就是 Q。Dafny verifier 的工作就是证明：如果方法被调用时 requires 成立，那么方法体执行完毕后 ensures 一定成立。这和 Hoare 逻辑中证明 {P} C {Q} 是一模一样的数学义务——区别只是 Dafny 用自动化工具帮你检查，而 Hoare 逻辑需要你自己手工推导。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(d) Find 题中，requires a.Length > 0 对应数组非空 precondition；ensures forall i :: min <= a[i] 对应 min 是最小值 postcondition。写 Dafny contract 就是在写 Hoare triple 的 P 和 Q。</p>
+          <p><strong>卷面写法：</strong>直接写 Dafny 语法：requires <condition>; 和 ensures <condition>;。如果多个条件用 && 连接或分行写多条 requires/ensures。解释每条含义：防止什么错误、保证什么性质。</p>
+          <p><strong>常见失分点：</strong>把 ensures 写在方法调用前检查——ensures 是方法结束后检查，不是进入方法时检查。把 requires 写的太弱（没覆盖所有坏输入）或太强（拒绝了合法输入）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. Dafny 循环 invariant 先写什么最稳？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先写范围 invariant，例如 <code>0 ≤ i ≤ a.Length</code>，再写已处理部分性质。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Dafny 循环 invariant 先写什么最稳？”。标准答案里的“先写范围 invariant，例如 0 ≤ i ≤ a.Length，再写已处理部分性质。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>循环 invariant 就像盖楼——范围 invariant 是地基，语义 invariant 是上层结构。Dafny verifier 首先需要知道 i 在合法范围内才能证明 a[i] 访问不越界。先写 0 <= i <= a.Length，再写 forall j :: 0 <= j < i ==> ...。这个顺序可避免 90% 的"verifier 报错但我不知哪里错"的情况。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Find 循环中，先写 invariant 1 <= i <= a.Length（范围），再写 invariant forall j :: 0 <= j < i ==> min <= a[j]（语义）。Dafny 题里凡是看到数组下标访问，第一反应加范围 invariant。</p>
+          <p><strong>卷面写法：</strong>Invariant 1: range（0 <= i <= a.Length）。Invariant 2: partial result（forall j :: 0 <= j < i ==> property_of(a[j], result)）。必要时加 Invariant 3: relationship between variables。</p>
+          <p><strong>常见失分点：</strong>先写语义 invariant 忘了范围，verifier 大量报索引越界错误；范围上界写错——退出循环时 i 应达到上界，通常是 a.Length 而非 a.Length-1。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. <code>ghost</code> 变量有什么特点？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>它只帮助证明，不影响运行时行为或程序输出。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. ghost 变量有什么特点？”。标准答案里的“它只帮助证明，不影响运行时行为或程序输出。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+                    <p><strong>为什么这是对的：</strong>Ghost 是"证明专用"的概念。比如 BankAccount 类需要 ghost 序列 deposits 和 withdrawals 来记录每笔交易明细，但这些序列在运行时不需要存在（运行时只需要 Balance 一个字段）。Ghost 变量和 ghost 方法只在验证阶段存在，编译器编译时会被完全移除——不影响运行时性能也不占运行时内存。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(c) BankAccount 题中，deposits 和 withdrawals 声明为 ghost var deposits: seq<int>。它们被用于 Valid() 中表达 Balance == deposits.total - withdrawals.total。考试里看到"记录额外信息但运行时不需要"的场景就要想到 ghost。</p>
+          <p><strong>卷面写法：</strong>声明时加 ghost 关键字。如果 ghost 方法/变量访问了非 ghost 状态，需要 reads 子句。解释：this variable/method exists only for verification, erased at compile time。</p>
+          <p><strong>常见失分点：</strong>把运行时代码写在 ghost 方法里——ghost 方法里的代码运行时不会执行，不能有副作用。非 ghost 代码不能依赖 ghost 变量做控制流判断。忘了 reads 子句导致 verifier 报错。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q2(a) Ack 小题：为什么 <code>decreases</code> 可以用 tuple？</button>
+        <button class="qa-question" type="button" aria-expanded="false">CS603 2025 Summer Q2(a)：Ackermann(m,n) 递归中，为什么 <code>decreases m, n</code>（词典序 tuple）必须代替 <code>decreases m</code> 或 <code>decreases m+n</code>？各递归分支 (m-1, n) 和 (m, n-1) 如何分别递减不同分量？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Ack 递归有两个参数，tuple metric 允许按词典序证明递归调用整体变小。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q2(a) Ack 小题：为什么 decreases 可以用 tuple？”。标准答案里的“Ack 递归有两个参数，tuple metric 允许按词典序证明递归调用整体变小。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+                    <p><strong>为什么这是对的：</strong>循环 invariant 就像盖楼——范围 invariant 是地基，语义 invariant 是上层结构。Dafny verifier 首先需要知道 i 在合法范围内才能证明 a[i] 访问不越界。如果你直接写 forall j :: 0 <= j < i ==> a[j] <= max 但忘了 0 <= i <= a.Length，verifier 无法证明 a[i] 访问安全。先写范围再写语义，这个顺序可以避免 90% 的"verifier 报错但我不知道哪里错"的情况。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Find 循环中，先写 invariant 1 <= i <= a.Length（范围），再写 invariant forall j :: 0 <= j < i ==> min <= a[j]（语义）。Dafny 题里凡是看到数组下标访问，第一反应就是加范围 invariant。</p>
+          <p><strong>卷面写法：</strong>Invariant 1: range（0 <= i <= a.Length 或类似）。Invariant 2: partial result（forall j :: 0 <= j < i ==> property_of(a[j], result)）。必要时加 Invariant 3: relationship between variables。</p>
+          <p><strong>常见失分点：</strong>先写语义 invariant 忘了范围，导致 verifier 大量报索引越界错误；范围上界写错了——退出循环时 i 应该达到上界，所以上界通常是 a.Length 而非 a.Length-1。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q2(b) method <code>M(x,y)</code> 小题：找 code errors 后为什么还要给 invariant 和 variant？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>题目要求修复/解释循环正确性和终止性，invariant 证明结果关系，variant 证明循环停止。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q2(b) method M(x,y) 小题：找 code errors 后为什么还要给 invariant 和 variant？”。标准答案里的“题目要求修复/解释循环正确性和终止性，invariant 证明结果关系，variant 证明循环停止。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>method M 题目通常先让你找代码逻辑错误（循环条件写反、变量没初始化、循环体没更新关键变量），修复后还要补 annotation。Invariant 描述循环每轮开始时 result 和 x、y、i 之间的数学关系。Variant 证明循环不会无限运行。两者缺一不可：有 invariant 没 variant = 只证 partial correctness；有 variant 没 invariant = 知道会停但不知道停下来结果对不对。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(b) 的 M(x,y) 循环可能涉及累加、乘幂或其他迭代计算。你要先明确方法的 ensures 要证明什么，然后逆推循环每轮应满足什么中间关系（invariant），最后找一个递减量（variant）。</p>
+          <p><strong>卷面写法：</strong>分三步：(1) Identify bugs with fixes。(2) Invariant: [公式] with establishment/preservation/exit use。(3) Variant: [表达式], proof of non-negativity and decrease。三段逻辑明确分开。</p>
+          <p><strong>常见失分点：</strong>只找 code error 不改 invariant（虽循环写对了但没给 invariant 证明不了正确性）；invariant 写太弱（比如说 i 在范围内没说 result 和输入关系），推不出 ensures。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 Summer Q2(c) BankAccount 小题：ghost predicate <code>Valid()</code> 的作用是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>把对象一致性条件集中成可复用证明义务，方法前后都要维护它。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 Summer Q2(c) BankAccount 小题：ghost predicate Valid() 的作用是什么？”。标准答案里的“把对象一致性条件集中成可复用证明义务，方法前后都要维护它。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+                    <p><strong>为什么这是对的：</strong>如果没有 Valid()，每个方法的 ensures 里都要重复写 Balance == deposits.total - withdrawals.total。代码一长容易漏。Valid() 把一致性条件封装成 named predicate，所有方法只需写 ensures Valid()。如果以后一致性条件变了（如增加"所有单笔交易金额 > 0"要求），只改 Valid() 一处即可。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q2(c) BankAccount 题明确让你定义 ghost predicate Valid()。定义后 constructor 要 ensures Valid()（建），deposit 要 ensures Valid()（维），withdraw 也要 ensures Valid()（维）。</p>
+          <p><strong>卷面写法：</strong>ghost predicate Valid() reads this { Balance == deposits.total - withdrawals.total }。每个方法写 ensures Valid()。Constructor 额外 ensures 初始序列为空、Balance 为 0。解释 reads this 含义。</p>
+          <p><strong>常见失分点：</strong>Valid() 定义了但某个 mutating method 忘了 ensures Valid()——Dafny 报该方法可能破坏 Valid()。reads 子句写错。Valid() 引用的 ghost 变量没声明。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 Find invariant 怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q1(d)：Find 方法的 while loop invariant 要描述 <code>min</code> 和已掃描區間 <code>a[0..i)</code> 的什麼關係？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>在已扫描区间 <code>a[0..i)</code> 内，<code>min</code> 不大于每个已扫描元素，并保持 <code>1<=i<=a.Length</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 Find invariant 怎么写？”。标准答案里的“在已扫描区间 a[0..i) 内，min 不大于每个已扫描元素，并保持 1<=i<=a.Length。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>Find 方法维护两个信息：当前扫描到哪里（i）和当前找到的最小值（min）。Invariant 必须同时约束两者。(1) i 的范围：1 <= i <= a.Length；(2) min 和已扫描部分的关系：forall j :: 0 <= j < i ==> min <= a[j]；(3) min 来自已扫描部分：exists j :: 0 <= j < i && min == a[j]。三条缺一不可。退出时 i == a.Length 则已扫描部分 = 整个数组，postcondition 直接推出。</p>
+          <p><strong>题目语境怎么用：</strong>考试中 Find/线性搜索/最小值这类循环的 invariant 模板都是：范围 + 结果变量与已处理区间关系 + 结果变量来自已处理区间。把 i 想象成"已经处理到哪儿了"的指针。</p>
+          <p><strong>卷面写法：</strong>三条 invariant：(1) invariant 1 <= i <= a.Length；(2) invariant forall j :: 0 <= j < i ==> min <= a[j]；(3) invariant exists j :: 0 <= j < i && min == a[j]。分别证明 establishment/preservation/exit use。</p>
+          <p><strong>常见失分点：</strong>只写了 min <= a[j] 但没写 min 来自数组——verifier 可选 min = -inf 来满足第一条但不是真实最小值。索引从 0 开始写错导致多包含或漏掉元素。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 Find total correctness 的 variant 是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q1(e)：證明 Find 方法 total correctness 時，用哪個表達式作 variant 並證明它非負且每輪嚴格遞減？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>用 <code>a.Length - i</code>；每次循环 <code>i</code> 增加，variant 严格变小且非负。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 Find total correctness 的 variant 是什么？”。标准答案里的“用 a.Length - i；每次循环 i 增加，variant 严格变小且非负。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>variant 选 a.Length - i。三个条件：(1) 非负——a.Length - i >= 0 由 invariant 的 i <= a.Length 保证；(2) 每次循环后严格减小——循环体里只有 i := i + 1，variant 减少 1；(3) 自然数不能无限减小——所以循环必然终止。这是线性扫描的标准模式：看到从起点逐一扫描到终点的循环，variant 就是剩余要扫描的元素个数。</p>
+          <p><strong>题目语境怎么用：</strong>Dafny 里写成 decreases a.Length - i。以后遇到任何逐一扫描数组的循环，variant 就是 a.Length - i。</p>
+          <p><strong>卷面写法：</strong>decreases a.Length - i。Proof: (1) Non-negative: from invariant i <= a.Length; (2) Decrease: i := i + 1 so a.Length - (i+1) < a.Length - i; (3) Well-founded: natural numbers cannot decrease infinitely。</p>
+          <p><strong>常见失分点：</strong>写了 decreases 但没解释为什么每次循环都减小。variant 选了但 invariant 没写 i <= a.Length——没有这个 invariant 证明不了 variant 非负。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#dafny">
@@ -749,30 +749,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. Formalising requirements 解决什么问题？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>解决自然语言需求含糊、缺条件、缺时间界限、缺例外路径的问题。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Formalising requirements 解决什么问题？”。标准答案里的“解决自然语言需求含糊、缺条件、缺时间界限、缺例外路径的问题。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>很多重大软件事故的根因不是代码错误，而是需求文档里的模糊词汇。"The system shall respond quickly"——多快算快？1 秒还是 10 秒？形式化需求的本质是把每个含糊的词换成精确的量：触发条件、系统动作、时间约束、例外处理。这是防止不同人（产品、开发、测试）对同一句话产生不同理解。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3(c) FRET 题让你读一条自然语言需求并用 FRET 范式形式化。先找句子"条件->响应"结构，再补时间约束和异常路径。</p>
+          <p><strong>卷面写法：</strong>先展示原始需求，再逐一分析：trigger condition、required response、timing constraint、exception handling。最后给出形式化版本（structured English 或 temporal formula）。</p>
+          <p><strong>常见失分点：</strong>只把自然语言翻译成公式但不补缺失信息——FRET 核心价值就是逼你补充原来没写清楚的条件、时间和异常。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. FRET 会逼你补哪些信息？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>触发条件、响应、时间范围、持续条件和例外情况。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. FRET 会逼你补哪些信息？”。标准答案里的“触发条件、响应、时间范围、持续条件和例外情况。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>FRET 把需求分析成五个维度：(1) Condition——什么情况下适用；(2) Component——谁负责；(3) Timing——何时完成；(4) Response——做什么；(5) Exceptions——什么情况下可不满足。原始需求通常只有 Response 写了一点，其他全空白。填满每一格的过程本身就是发现遗漏的最好方法。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3(c) 让你用 FRET 支持 model checking：补全后的结构化需求可直接翻译成 temporal formula 交给 Spin/NuSMV 检查。</p>
+          <p><strong>卷面写法：</strong>用 FRET 五个字段逐一分析需求，然后给出等价 temporal formula。解释每个字段缺失会导致什么问题。</p>
+          <p><strong>常见失分点：</strong>只填了 response 字段跳过其他四个。把 timing 写成"尽快"这种同样模糊的词。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Refinement 的核心承诺是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>实现可以更具体，但不能违背抽象模型已经承诺的性质。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Refinement 的核心承诺是什么？”。标准答案里的“实现可以更具体，但不能违背抽象模型已经承诺的性质。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>很多重大软件事故的根因不是代码错误，而是需求文档里的模糊词汇。"The system shall respond quickly"——多快算快？1 秒还是 10 秒？形式化需求的本质是把每个含糊的词换成精确的量：触发条件（when）、系统动作（what）、时间约束（within how long）、例外处理（otherwise what）。这不是咬文嚼字——是防止不同人（产品、开发、测试）对同一句话产生不同理解。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3(c) FRET 题让你读一条自然语言需求并用 FRET 范式形式化。你要先找句子的"条件->响应"结构，再补时间约束和异常路径。</p>
+          <p><strong>卷面写法：</strong>先展示原始需求（natural language），然后逐一分析：trigger condition、required response、timing constraint、exception handling。最后给出形式化版本（可以是 structured English 或 temporal formula）。</p>
+          <p><strong>常见失分点：</strong>只把自然语言翻译成英文公式但不补缺失信息——FRET 的核心价值就是逼你补充原来没写清楚的条件、时间和异常。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -780,50 +780,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q3(c) FRET 小题：FRET 如何支持 model checking temporal formulae？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>把结构化自然语言需求生成 temporal formulae，并进入相应 tool chain 做模型检查。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q3(c) FRET 小题：FRET 如何支持 model checking temporal formulae？”。标准答案里的“把结构化自然语言需求生成 temporal formulae，并进入相应 tool chain 做模型检查。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>FRET 把需求分析成五个维度：(1) Condition——在什么情况下这条需求适用？(2) Component——哪个组件负责满足？(3) Timing——什么时候必须完成？(4) Response——系统必须做什么？(5) Exceptions——什么情况下可以不满足？原始需求通常只有 Response 写了一点，其他维度全空白。FRET 表单逼你填满每一格——这过程本身就是发现遗漏的最好方法。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3(c) 让你用 FRET 支持 model checking：补全后的结构化需求可以直接翻译成 temporal formula（如 G(condition -> F response)），然后交给 Spin/NuSMV 检查。FRET -> formula -> model checker 是一条完整工具链。</p>
+          <p><strong>卷面写法：</strong>用 FRET 的五个字段（condition/component/timing/response/exception）逐一分析需求，然后给出等价 temporal formula。解释每个字段缺失会导致什么问题。</p>
+          <p><strong>常见失分点：</strong>只填了 response 字段跳过了其他四个——FRET 的核心是逼你补全所有维度。把 timing 写成"尽快"这种同样模糊的词——要用具体时间或 temporal operator。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q3(b) Data Refinement 小题：coded example 要体现什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>例如 abstract state 只存 balance，concrete state 存 deposits list 和 withdrawals list；relation 写成 balance = sum(deposits)-sum(withdrawals)。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q3(b) Data Refinement 小题：coded example 要体现什么？”。标准答案里的“例如 abstract state 只存 balance，concrete state 存 deposits list 和 withdrawals list；relation 写成 balance = sum(deposits)-sum(withdrawals)。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+                    <p><strong>为什么这是对的：</strong>抽象模型说"系统有一个账户余额"，具体实现可以说"余额存在数据库某张表的某个字段里"——这是更具体的决定，没有违背抽象承诺。但如果抽象模型说"每次取款后余额 = 原余额 - 取款金额"，具体实现就不能悄悄扣手续费导致等式不成立（除非手续费规则也在抽象模型中明确写出来）。Refinement 证明就是证明：具体模型的每一步操作，在抽象模型中都能找到对应的合法操作。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3(b) Data Refinement 题可能让你给一个 coded example。例如抽象状态只有 balance: int，具体状态有 deposits: seq<int> 和 withdrawals: seq<int>，然后用 coupling invariant balance = sum(deposits) - sum(withdrawals) 连接两者。</p>
+          <p><strong>卷面写法：</strong>给出抽象状态、具体状态、coupling invariant（也叫 retrieve relation），然后说明具体操作如何对应抽象操作——每一步具体操作后 coupling invariant 仍然成立。</p>
+          <p><strong>常见失分点：</strong>耦合关系（coupling invariant）写得太弱——只说了某些情况成立而不是所有情况成立。或者具体操作比抽象操作多做了事情导致 coupling invariant 被破坏。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 2024/2025 FMAS 小题：under-specification 在需求里通常表现为什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>例如需求写 quickly respond，却没说 2 seconds 还是 30 seconds；要补触发条件、时间界限和异常路径。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2024/2025 FMAS 小题：under-specification 在需求里通常表现为什么？”。标准答案里的“例如需求写 quickly respond，却没说 2 seconds 还是 30 seconds；要补触发条件、时间界限和异常路径。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>Under-specification 就是需求写了但没写全。常见表现：(1) 模糊形容词——quickly、reliable、user-friendly、secure，不同人理解差异巨大；(2) 缺触发条件——只说"系统做 X"但没说"什么时候做"；(3) 缺异常路径——只说正常情况不说出错怎么办；(4) 缺时间约束——没说多快或持续多久。FRET 核心价值就是系统地检测并消除这些 under-specification。</p>
+          <p><strong>题目语境怎么用：</strong>2024/2025 FMAS 题给你一或多条需求，让你指出 under-specification 在哪里、为什么危险、如何修复。</p>
+          <p><strong>卷面写法：</strong>逐条分析：(1) 原始需求文本；(2) 指出 under-specification 具体词汇或缺失；(3) 说明不同理解会导致的不同实现；(4) 给出更精确版本（含具体条件、时间、异常）。</p>
+          <p><strong>常见失分点：</strong>只说"需求不够好"但不具体指出哪个词有问题——需精准定位模糊点。给了精确版本但矫枉过正——加了一堆不必要约束把合法行为也排除了。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 Find invariant 怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q1(d)：Find 方法的 while loop invariant 要描述 <code>min</code> 和已掃描區間 <code>a[0..i)</code> 的什麼關係？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>在已扫描区间 <code>a[0..i)</code> 内，<code>min</code> 不大于每个已扫描元素，并保持 <code>1<=i<=a.Length</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 Find invariant 怎么写？”。标准答案里的“在已扫描区间 a[0..i) 内，min 不大于每个已扫描元素，并保持 1<=i<=a.Length。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>Find 方法维护两个信息：当前扫描到哪里（i）和当前找到的最小值（min）。Invariant 必须同时约束两者。(1) i 的范围：1 <= i <= a.Length；(2) min 和已扫描部分的关系：forall j :: 0 <= j < i ==> min <= a[j]；(3) min 来自已扫描部分：exists j :: 0 <= j < i && min == a[j]。三条缺一不可。退出时 i == a.Length 则已扫描部分 = 整个数组，postcondition 直接推出。</p>
+          <p><strong>题目语境怎么用：</strong>考试中 Find/线性搜索/最小值这类循环的 invariant 模板都是：范围 + 结果变量与已处理区间关系 + 结果变量来自已处理区间。把 i 想象成"已经处理到哪儿了"的指针。</p>
+          <p><strong>卷面写法：</strong>三条 invariant：(1) invariant 1 <= i <= a.Length；(2) invariant forall j :: 0 <= j < i ==> min <= a[j]；(3) invariant exists j :: 0 <= j < i && min == a[j]。分别证明 establishment/preservation/exit use。</p>
+          <p><strong>常见失分点：</strong>只写了 min <= a[j] 但没写 min 来自数组——verifier 可选 min = -inf 来满足第一条但不是真实最小值。索引从 0 开始写错导致多包含或漏掉元素。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 Find total correctness 的 variant 是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q1(e)：證明 Find 方法 total correctness 時，用哪個表達式作 variant 並證明它非負且每輪嚴格遞減？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>用 <code>a.Length - i</code>；每次循环 <code>i</code> 增加，variant 严格变小且非负。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 Find total correctness 的 variant 是什么？”。标准答案里的“用 a.Length - i；每次循环 i 增加，variant 严格变小且非负。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>variant 选 a.Length - i。三个条件：(1) 非负——a.Length - i >= 0 由 invariant 的 i <= a.Length 保证；(2) 每次循环后严格减小——循环体里只有 i := i + 1，variant 减少 1；(3) 自然数不能无限减小——所以循环必然终止。这是线性扫描的标准模式：看到从起点逐一扫描到终点的循环，variant 就是剩余要扫描的元素个数。</p>
+          <p><strong>题目语境怎么用：</strong>Dafny 里写成 decreases a.Length - i。以后遇到任何逐一扫描数组的循环，variant 就是 a.Length - i。</p>
+          <p><strong>卷面写法：</strong>decreases a.Length - i。Proof: (1) Non-negative: from invariant i <= a.Length; (2) Decrease: i := i + 1 so a.Length - (i+1) < a.Length - i; (3) Well-founded: natural numbers cannot decrease infinitely。</p>
+          <p><strong>常见失分点：</strong>写了 decreases 但没解释为什么每次循环都减小。variant 选了但 invariant 没写 i <= a.Length——没有这个 invariant 证明不了 variant 非负。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#requirements">
@@ -912,30 +912,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. Kripke structure 的基本部件是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>States、initial states、transitions、labels 和 paths。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Kripke structure 的基本部件是什么？”。标准答案里的“States、initial states、transitions、labels 和 paths。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>Kripke structure 是状态系统的数学模型，五个部件：(1) States——系统可能的所有情况；(2) Initial states——从哪开始；(3) Transitions——状态间怎么跳转；(4) Labels——每个状态下哪些命题为真；(5) Paths——沿 transition 走出的状态序列，代表可能执行路线。这些加起来就是 model checking 的输入模型。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4(a) 让你描述系统模型。明确说出：什么是一个 state，transition 如何发生，label 标注什么属性。</p>
+          <p><strong>卷面写法：</strong>逐项列出：States 是什么（变量取值组合），Initial state 哪个，Transitions 用什么表示（状态图/Promela），Labels 标注哪些原子命题。</p>
+          <p><strong>常见失分点：</strong>漏了 initial state——没初始状态 model checker 无从开始。混淆 state 和 label——state 是完整快照，label 是单个命题。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. LTL 和 CTL 的主要区别是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>LTL 沿路径描述时间；CTL 把路径量词 A/E 和时间操作符组合进公式。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. LTL 和 CTL 的主要区别是什么？”。标准答案里的“LTL 沿路径描述时间；CTL 把路径量词 A/E 和时间操作符组合进公式。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>LTL（Linear Temporal Logic）关心的是每一条单独的执行路径上时间性质怎样展开。公式如 G(request -> F response) 说的是沿着一条路径看每个 request 后面最终有个 response。CTL（Computation Tree Logic）在 LTL 基础上加了路径量词 A（所有路径）和 E（存在某条路径），让你能说"所有路径上永远 safe"（AG safe）或"存在一条路径最终到达 error"（EF error）。简单说：LTL 是单路径视角，CTL 是多路径分支视角。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4(b) 让你比较 NuSMV 和 Spin，通常会涉及 LTL vs CTL。Spin 主要支持 LTL，NuSMV 支持 CTL 和 LTL。</p>
+          <p><strong>卷面写法：</strong>先说明 LTL 核心特征（path-based, linear time），再说明 CTL 核心特征（state-based, branching time, path quantifiers A/E）。然后给双方各一个公式例子并解释。</p>
+          <p><strong>常见失分点：</strong>把 AG p 解释成 LTL 的 G p——AG 要求所有路径的所有状态都满足 p，比 G p（只针对一条路径）更强。把 LTL 和 CTL 的符号直接等价。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Counterexample 在 model checking 里是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>一条违反性质的状态路径，用来说明性质为什么不成立。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Counterexample 在 model checking 里是什么？”。标准答案里的“一条违反性质的状态路径，用来说明性质为什么不成立。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>Counterexample 是 model checker 发现性质不成立时输出的一段具体执行路径。它告诉你：从这个初始状态开始，经过这些 transition，到达这个状态时性质被违反了。这是 model checking 相比于其他验证方法的一大优势——不只是告诉你"错了"，而是给你看"怎样错的"。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4 如果问"模型不满足某个 temporal formula 输出什么"，答案就是 counterexample——一条违反该公式的路径。</p>
+          <p><strong>卷面写法：</strong>说明 counterexample 是一条有限或无限的状态序列，从 initial state 开始，每步都有合法 transition。对 safety 是有限前缀+坏状态；对 liveness 可能是无限循环永远达不到目标。</p>
+          <p><strong>常见失分点：</strong>把 counterexample 当成程序崩溃日志——counterexample 是形式化的，每步状态对应 Kripke state。混淆 safety counterexample（有限前缀）和 liveness counterexample（无限循环）。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -943,50 +943,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q4(a) Spin 小题：答案要说明系统模型怎样表示？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>说明用状态/transition 或 Promela-like model 表示系统行为，并用 temporal formula 表示要检查的性质。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q4(a) Spin 小题：答案要说明系统模型怎样表示？”。标准答案里的“说明用状态/transition 或 Promela-like model 表示系统行为，并用 temporal formula 表示要检查的性质。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>Kripke structure 是状态系统的数学模型，它有五个部件：(1) States——系统可能处于的所有情况；(2) Initial states——系统从哪开始；(3) Transitions——状态之间怎么跳转；(4) Labels——每个状态下哪些命题为真（如"灯亮""门开"）；(5) Paths——沿着 transition 走出来的状态序列，代表系统可能的一条执行路线。这些部件加起来就是 model checking 的"输入模型"。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4(a) 让你描述系统模型。你需要明确说出：什么是一个 state（比如交通灯系统的 {NS=red, EW=green}），transition 如何发生（比如定时器到期触发跳转），label 标注什么属性。</p>
+          <p><strong>卷面写法：</strong>逐项列出：States 是什么（可以用变量取值组合表示），Initial state 是哪个，Transitions 用什么表示（状态图或 Promela 进程），Labels 标注哪些原子命题。</p>
+          <p><strong>常见失分点：</strong>漏了 initial state——没有初始状态 model checker 无从开始探索。混淆 state 和 label——state 是完整快照，label 是单个命题。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q4(b) NuSMV vs Spin 小题：比较时至少提哪一差别？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Spin 常用于 Promela/explicit-state/LTL 并发协议；NuSMV 常用于 symbolic model checking，支持 CTL/LTL。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q4(b) NuSMV vs Spin 小题：比较时至少提哪一差别？”。标准答案里的“Spin 常用于 Promela/explicit-state/LTL 并发协议；NuSMV 常用于 symbolic model checking，支持 CTL/LTL。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>Counterexample 是 model checker 在发现性质不成立时输出的一段具体执行路径。它告诉你：从这个初始状态开始，经过这些 transition，到达这个状态时，你要检查的性质被违反了。这是 model checking 相比于其他验证方法的一大优势——不是只告诉你"错了"，而是给你看"怎样错的"。比如你说 G !(NS_green && EW_green)，但 counterexample 显示了一条路径：NS_green -> EW_green（同时绿灯），你就知道哪里出问题了。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4 如果问你"如果模型不满足某个 temporal formula，输出什么"，答案就是 counterexample——一条违反该公式的路径。</p>
+          <p><strong>卷面写法：</strong>说明 counterexample 是一条有限或无限的状态序列，从 initial state 开始，每一步都有合法的 transition。对 safety property，counterexample 通常是一个有限前缀 + 坏状态；对 liveness property，可能是无限循环里永远达不到目标。</p>
+          <p><strong>常见失分点：</strong>把 counterexample 当成"程序崩溃的日志"——counterexample 是形式化的，每一步状态对应一个 Kripke state，不是运行时的变量值。混淆 safety counterexample（有限前缀）和 liveness counterexample（无限循环）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 Summer Q4(d) LTL 小题：如果题目说“请求最终被响应”，常用哪个 LTL 形状？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>常用 <code>G(request -> F response)</code>：每次 request 后最终 response。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. 2025 Summer Q4(d) LTL 小题：如果题目说“请求最终被响应”，常用哪个 LTL 形状？”。标准答案里的“常用 G(request -> F response)：每次 request 后最终 response。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>用 G(request -> F response) 表示：在所有路径的所有时刻，如果 request 出现，最终一定有 response。G 是 globally（每时每刻），-> 是 implication，F 是 finally（最终）。这属于 liveness property——好事最终会发生。和 safety 不同：safety 用 G !bad 表示坏事永不发生。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4(d) 让你写 temporal formula。先判断需求是 safety 还是 liveness。请求-响应是典型 liveness，用 G(trigger -> F effect) 模式。如果是“两个进程不能同时进临界区”就用 safety 的 G !(both_in_cs)。</p>
+          <p><strong>卷面写法：</strong>先写自然语言描述（每次请求最终都有响应），再写 LTL formula G(request -> F response)，然后逐符号解释：G 对所有路径所有状态，-> 左边成立右边必须成立，F 当前或未来某状态。最后说明属于 liveness property。</p>
+          <p><strong>常见失分点：</strong>把 G(request -> F response) 写成 F(response)——后者只要求至少一次 response，不要求每次 request 都有 response。把 liveness 当 safety 写了 G !(!response)——含义模糊不标准。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 John/right 谓词逻辑怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q1(a)(i)：「If John is right, somebody took his pen」轉謂詞邏輯時，implication 左邊用什麼 predicate、右邊用什麼量詞？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>选 <code>Right(John)</code> 和 <code>Took(x, PenOfJohn)</code>，写 <code>Right(John) => ∃x Took(x, PenOfJohn)</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 John/right 谓词逻辑怎么写？”。标准答案里的“选 Right(John) 和 Took(x, PenOfJohn)，写 Right(John) => ∃x Took(x, PenOfJohn)。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>这句话是条件句式（if...then），主连接词是 =>。"John is right" 是没有量词的命题——John 是具体个体，直接用 Right(John) 表达。"somebody" 表示存在至少一个实体，用 ∃x。PenOfJohn 是特指物品作为常量，不需要量化。整句读作：如果 Right(John) 为真，则存在某个 x 使得 Took(x, PenOfJohn) 为真。</p>
+          <p><strong>题目语境怎么用：</strong>这道题考的是英语翻译谓词逻辑。先判断句式（条件句）→ =>，再判断量词（somebody）→ ∃，然后确定谓词和常量。任何英译逻辑题都可以按"句式 → 连接词 → 量词 → 谓词"这个顺序来做。</p>
+          <p><strong>卷面写法：</strong>(1) Define predicates: Right(p), Took(x, item)。(2) Constant: PenOfJohn。(3) Formula: Right(John) => ∃x Took(x, PenOfJohn)。(4) Interpretation: If John is right, there exists some x who took John's pen。</p>
+          <p><strong>常见失分点：</strong>忘了 Took 需要两个参数（谁拿了什么）；把 PenOfJohn 误写成函数 PenOf(John)；把 => 写成 ∧（变成两个并列事实而非条件关系）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 Every person walking/talking 怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q1(a)(ii)：「Every person is walking and talking」轉謂詞邏輯，<code>∀</code> 和 <code>⇒</code> 和 <code>∧</code> 各自的角色是什麼？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>写 <code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>，不要漏 person 的范围条件。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 Every person walking/talking 怎么写？”。标准答案里的“写 ∀x (Person(x) => Walking(x) ∧ Talking(x))，不要漏 person 的范围条件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>every person 是全称量词，英语"is walking and talking"意味每个人同时做两件事，所以用 ∧ 连接两个谓词。关键：∀x 一定配 ⇒，因为 x 遍历所有事物时只有 Person(x) 为真的才需要检查。如果不加 Person(x) 筛选，∀x (Walking(x) ∧ Talking(x)) 要求宇宙中每个东西都在走路说话。</p>
+          <p><strong>题目语境怎么用：</strong>对比：如果题面是"there exists a person who is walking and talking"，量词变 ∃x，连接用 ∧：∃x (Person(x) ∧ Walking(x) ∧ Talking(x))。全称和存在的连接词选择完全不同。</p>
+          <p><strong>卷面写法：</strong>先定义 Person(x)、Walking(x)、Talking(x) 三个谓词。再写公式 ∀x (Person(x) => Walking(x) ∧ Talking(x))。附解释：对任意 x，如果 x 是人，则 x 走路且说话。</p>
+          <p><strong>常见失分点：</strong>写成 ∀x (Person(x) ∧ Walking(x) ∧ Talking(x))——宣称所有事物都是人都在走路说话。写成 ∃x (Person(x) => Walking(x) ∧ Talking(x))——随手找非人就满足，表达不了存在一个人。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#model-checking">
@@ -1038,30 +1038,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. SAT 问什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>问一个布尔公式是否存在 true/false 赋值让它成立。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. SAT 问什么？”。标准答案里的“问一个布尔公式是否存在 true/false 赋值让它成立。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>SAT 问的是一个布尔公式是否可被某组 true/false 赋值满足。例如 (x OR y) AND (NOT x OR z) 可满足——设 x=true,y=false,z=true 即成立。若没有任何赋值能满足就说 unsat。SAT 是计算机科学最基础 NP-complete 问题，但现代 CDCL solver 在实践中非常高效。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(b) 让你解释 satisfiable/unsatisfiable/tautology——直接对应 SAT 基本概念。2025 Summer Q3(d) 考 CDCL solver。</p>
+          <p><strong>卷面写法：</strong>先说明 SAT 问题定义（Boolean formula, truth assignment, satisfiability），再给简单例子（sat 和 unsat 各一个）。解释 solver 时说明 DPLL 或 CDCL 的基本搜索策略。</p>
+          <p><strong>常见失分点：</strong>把 SAT 和命题逻辑混淆——SAT 是计算问题，命题逻辑是语言。把 unsat 和 false 搞混——unsat 是公式本身不可满足。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. SMT 比 SAT 多懂什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>SMT 还懂整数、数组、等式等背景理论，因此更接近程序验证中的约束。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. SMT 比 SAT 多懂什么？”。标准答案里的“SMT 还懂整数、数组、等式等背景理论，因此更接近程序验证中的约束。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>SAT 只知布尔变量真假，不知数字、数组、函数的性质。SMT 在 SAT 基础上加入"背景理论"——整数算术（知道 x+1 > x 永远为真）、数组理论（读写公理）、位向量等。Dafny verifier 背后就是把验证条件转成 SMT formula 交给 Z3 解。所以 SMT 更接近真实程序验证——程序约束不只布尔逻辑还有整数范围、数组索引。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3 的 FMAS 题可能涉及 SMT。考试问 Dafny verifier 背后用什么，答案就是 SMT solver（Z3）。</p>
+          <p><strong>卷面写法：</strong>先解释 SAT 局限（only propositional, no arithmetic/arrays），再解释 SMT 扩展（SAT + decision procedures for theories），最后给需 arithmetic theory 的例子（x > 0 and x < 3）。</p>
+          <p><strong>常见失分点：</strong>以为 SMT 只是更快的 SAT——SMT 是语义能力扩展不只速度优化。混淆 SMT 和 Dafny——SMT 是技术，Dafny 是使用 SMT 的验证语言。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Z3 返回 sat 后为什么要 get-model？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>因为 model 给出一组具体赋值，说明约束怎样被满足。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Z3 返回 sat 后为什么要 get-model？”。标准答案里的“因为 model 给出一组具体赋值，说明约束怎样被满足。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>check-sat 只告诉你"有解"或"无解"。当你写成 unsat 时可能只是约束写错了——比如忘加了某条件，结果解存在但你期望无解。get-model 让你看到具体是什么赋值让公式成立——帮你验证约束是否正确表达了意图。例如约束 "x > 0 and x < 10"，get-model 可能返回 x=5。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Z3 lab 题可能问 check-sat 返回 sat 后下一步做什么——答案是 get-model 获取具体赋值。若返回 unsat 则没有 model 可获取。</p>
+          <p><strong>卷面写法：</strong>先写 check-sat 获得结果，若 sat 则调用 get-model 获取具体赋值，然后解释 model 中每个变量的取值意味着什么。</p>
+          <p><strong>常见失分点：</strong>check-sat 返回 unsat 后也调用 get-model——unsat 时无 model 可获取会报错。只写 check-sat 不写 model 获取。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -1069,50 +1069,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q3(d) SAT/CDCL 小题：CDCL 比 stochastic search 的优势是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>CDCL 从冲突中学习 clauses，避免重复同类错误搜索；stochastic search 通常缺少这种系统学习保证。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. 2025 Summer Q3(d) SAT/CDCL 小题：CDCL 比 stochastic search 的优势是什么？”。标准答案里的“CDCL 从冲突中学习 clauses，避免重复同类错误搜索；stochastic search 通常缺少这种系统学习保证。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>SAT 问的是一个布尔公式是否可以被某组 true/false 赋值满足。例如公式 (x OR y) AND (NOT x OR z) 是可满足的——设 x=true,y=false,z=true 就成立。如果没有任何赋值能满足就说 unsat。SAT 是计算机科学最基础的 NP-complete 问题，但现代 SAT solver（如 CDCL 算法）在实践中非常高效。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(b) 让你解释 satisfiable/unsatisfiable/tautology——这直接对应 SAT 的基本概念。2025 Summer Q3(d) 考 CDCL solver。</p>
+          <p><strong>卷面写法：</strong>先说明 SAT 问题定义（Boolean formula, truth assignment, satisfiability），再给一个简单例子（sat 和 unsat 各一个）。如果是解释 solver，再说明 DPLL 或 CDCL 的基本搜索策略。</p>
+          <p><strong>常见失分点：</strong>把 SAT 和命题逻辑混淆——SAT 是一个计算问题，命题逻辑是语言。把 unsat 和 false 搞混——unsat 是公式本身不可满足，false 是公式的某个子句为假。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q1(b) propositional logic 小题：unsatisfiable 的例子可以写什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong><code>P ∧ ¬P</code>，没有任何赋值能让它为 true。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. 2025 Summer Q1(b) propositional logic 小题：unsatisfiable 的例子可以写什么？”。标准答案里的“P ∧ ¬P，没有任何赋值能让它为 true。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>SAT 只知道布尔变量的真假，不知道数字、数组、函数的性质。SMT 在 SAT 基础上加入了"背景理论"——比如整数算术（知道 x+1 > x 永远为真）、数组理论（知道读写公理）、位向量理论等。Dafny verifier 背后就是把你的验证条件转成 SMT formula 交给 Z3 去解。所以 SMT 更接近真实的程序验证——程序的约束通常不只是布尔逻辑，还有整数范围、数组索引等。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3 的 FMAS 题可能涉及 SMT。考试里问 Dafny verifier 背后用什么，答案就是 SMT solver（Z3）。</p>
+          <p><strong>卷面写法：</strong>先解释 SAT 的局限（only propositional, no arithmetic/arrays），再解释 SMT 的扩展（SAT + decision procedures for theories），最后给一个需要 arithmetic theory 的例子（如 x > 0 and x < 3）。</p>
+          <p><strong>常见失分点：</strong>以为 SMT 只是更快的 SAT——SMT 不只是在速度上优化，而是语义能力上的扩展。混淆 SMT 和 Dafny——SMT 是技术，Dafny 是使用 SMT 的验证语言。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Z3 lab 类小题：<code>check-sat</code> 返回 sat 后为什么要看 model？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>model 给出使 constraints 成立的具体赋值，可用于解释或调试约束。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Z3 lab 类小题：check-sat 返回 sat 后为什么要看 model？”。标准答案里的“model 给出使 constraints 成立的具体赋值，可用于解释或调试约束。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>check-sat 只告诉你"有解"或"无解"。当你写成 unsat 时可能只是你的约束写错了——比如忘了加某个条件，结果解是存在的但你本来期望无解。get-model 让你看到具体是一组什么赋值让公式成立——这能帮你验证约束是否正确表达了你的意图。例如约束是"x > 0 and x < 10"，get-model 可能返回 x=5，你可以验证 5 确实满足。</p>
+          <p><strong>题目语境怎么用：</strong>2025 的 Z3 lab 题可能问 check-sat 返回 sat 后下一步做什么。答案是 get-model 来获取具体赋值。</p>
+          <p><strong>卷面写法：</strong>先写 check-sat 获得结果（sat/unsat/unknown），如果 sat 则调用 get-model 获取具体赋值，然后解释 model 中每个变量的取值意味着什么。</p>
+          <p><strong>常见失分点：</strong>check-sat 返回 unsat 后也调用 get-model——unsat 时没有 model 可获取，get-model 会报错。只写 check-sat 不写 model 获取——考试可能要求完整交互流程。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 Every person walking/talking 怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q1(a)(ii)：「Every person is walking and talking」轉謂詞邏輯，<code>∀</code> 和 <code>⇒</code> 和 <code>∧</code> 各自的角色是什麼？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>写 <code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>，不要漏 person 的范围条件。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 Every person walking/talking 怎么写？”。标准答案里的“写 ∀x (Person(x) => Walking(x) ∧ Talking(x))，不要漏 person 的范围条件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>every person 是全称量词，英语"is walking and talking"意味每个人同时做两件事，所以用 ∧ 连接两个谓词。关键：∀x 一定配 ⇒，因为 x 遍历所有事物时只有 Person(x) 为真的才需要检查。如果不加 Person(x) 筛选，∀x (Walking(x) ∧ Talking(x)) 要求宇宙中每个东西都在走路说话。</p>
+          <p><strong>题目语境怎么用：</strong>对比：如果题面是"there exists a person who is walking and talking"，量词变 ∃x，连接用 ∧：∃x (Person(x) ∧ Walking(x) ∧ Talking(x))。全称和存在的连接词选择完全不同。</p>
+          <p><strong>卷面写法：</strong>先定义 Person(x)、Walking(x)、Talking(x) 三个谓词。再写公式 ∀x (Person(x) => Walking(x) ∧ Talking(x))。附解释：对任意 x，如果 x 是人，则 x 走路且说话。</p>
+          <p><strong>常见失分点：</strong>写成 ∀x (Person(x) ∧ Walking(x) ∧ Talking(x))——宣称所有事物都是人都在走路说话。写成 ∃x (Person(x) => Walking(x) ∧ Talking(x))——随手找非人就满足，表达不了存在一个人。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 Find invariant 怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q1(d)：Find 方法的 while loop invariant 要描述 <code>min</code> 和已掃描區間 <code>a[0..i)</code> 的什麼關係？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>在已扫描区间 <code>a[0..i)</code> 内，<code>min</code> 不大于每个已扫描元素，并保持 <code>1<=i<=a.Length</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 Find invariant 怎么写？”。标准答案里的“在已扫描区间 a[0..i) 内，min 不大于每个已扫描元素，并保持 1<=i<=a.Length。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>Find 方法维护两个信息：当前扫描到哪里（i）和当前找到的最小值（min）。Invariant 必须同时约束两者。(1) i 的范围：1 <= i <= a.Length；(2) min 和已扫描部分的关系：forall j :: 0 <= j < i ==> min <= a[j]；(3) min 来自已扫描部分：exists j :: 0 <= j < i && min == a[j]。三条缺一不可。退出时 i == a.Length 则已扫描部分 = 整个数组，postcondition 直接推出。</p>
+          <p><strong>题目语境怎么用：</strong>考试中 Find/线性搜索/最小值这类循环的 invariant 模板都是：范围 + 结果变量与已处理区间关系 + 结果变量来自已处理区间。把 i 想象成"已经处理到哪儿了"的指针。</p>
+          <p><strong>卷面写法：</strong>三条 invariant：(1) invariant 1 <= i <= a.Length；(2) invariant forall j :: 0 <= j < i ==> min <= a[j]；(3) invariant exists j :: 0 <= j < i && min == a[j]。分别证明 establishment/preservation/exit use。</p>
+          <p><strong>常见失分点：</strong>只写了 min <= a[j] 但没写 min 来自数组——verifier 可选 min = -inf 来满足第一条但不是真实最小值。索引从 0 开始写错导致多包含或漏掉元素。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#sat-smt">
@@ -1171,30 +1171,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. CS603 做题先判断哪类动作？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先判断是在表达性质、证明程序、补 Dafny annotation、做 model checking，还是解释 SAT/SMT。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. CS603 做题先判断哪类动作？”。标准答案里的“先判断是在表达性质、证明程序、补 Dafny annotation、做 model checking，还是解释 SAT/SMT。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Dafny 题问 verifier 为什么能相信代码。Annotation 要给出 requires/ensures、invariant、decreases 或 Valid() 的证明线索。</p>
-          <p><strong>题目语境怎么用：</strong>递归看 decreases；循环看 invariant/variant；对象状态看 Valid/class invariant；数组或点对象看字段关系。</p>
-          <p><strong>卷面写法：</strong>卷面写 annotation，再解释它保证什么。例如 decreases m,n 是字典序下降；Valid() 要在 constructor 和每个 public method 后保持。</p>
-          <p><strong>常见失分点：</strong>不要只贴代码。Annotation 为什么足够、由谁保持、在哪里使用，都要说明。</p>
+                    <p><strong>为什么这是对的：</strong>CS603 题目看似散，其实可以按四类来读：(1) 表达性质——把自然语言改写成逻辑公式；(2) 证明程序——用 Hoare triple 证明前后条件和循环；(3) 补 Dafny annotation——写 requires/ensures/invariant/decreases；(4) 模型检测——把系统画成状态图写 LTL/CTL。先判断题目问的是哪类，再套对应的答题模板。</p>
+          <p><strong>题目语境怎么用：</strong>看题面关键词：出现"translate to logic"是第 1 类；出现"prove the program"或"loop invariant"是第 2 类；出现 Dafny 代码+补 annotation 是第 3 类；出现 Spin/NuSMV/temporal formula 是第 4 类。</p>
+          <p><strong>卷面写法：</strong>卷面先写一行判断：This question asks me to [express a property / prove a program / write Dafny specification / model check]。然后按对应模板展开。</p>
+          <p><strong>常见失分点：</strong>不看题目类型直接写答案——导致用错了框架（比如用 Hoare 方法答 model checking 题）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. Dafny 题和 Hoare 题的共同核心是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>都在证明前后条件、循环不变量和终止性，只是 Dafny 让 verifier 帮忙检查。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Dafny 题和 Hoare 题的共同核心是什么？”。标准答案里的“都在证明前后条件、循环不变量和终止性，只是 Dafny 让 verifier 帮忙检查。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>两者都在证明前后条件、循环不变量和终止性。Hoare logic 提供理论基础——{P} C {Q}、assignment axiom、loop invariant 三步证明；Dafny 把同样的理论用工具自动化——你写 requires/ensures/invariant/decreases，verifier 自动推导 proof obligations。区别只是：Hoare 你手工推，Dafny 里 Z3 帮你推。</p>
+          <p><strong>题目语境怎么用：</strong>考试里如果你理解了 Hoare 的三步骤（establishment/preservation/exit use），你自然知道 Dafny invariant 该怎么写——因为 Dafny verifier 要求的就是同样的证明义务。反过来，如果 Dafny 题里 invariant 写不对，回头检查 Hoare 三步骤哪个没满足。</p>
+          <p><strong>卷面写法：</strong>先声明两者的共同理论基础（Hoare logic），再解释 Dafny 如何自动化这个理论。可以给同一个 Find 例子：Hoare 版本手工推导 vs Dafny 版本 annotation。</p>
+          <p><strong>常见失分点：</strong>把 Dafny 当成完全不同的东西——忘记了 Dafny 就是 Hoare logic 的工具实现。Hoare 证明了但不提 invariant 对应的 establishment/preservation/exit use。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Model checking 题的答题顺序是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先定义状态和 transition，再写性质，最后解释 model checker 探索状态空间和 counterexample。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Model checking 题的答题顺序是什么？”。标准答案里的“先定义状态和 transition，再写性质，最后解释 model checker 探索状态空间和 counterexample。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>标准答题顺序：(1) 定义系统状态——什么构成一个状态（各变量取值组合）；(2) 定义 transitions——什么操作导致状态跳转；(3) 定义 labels——每个状态下哪些命题为真；(4) 把需求写成 LTL 或 CTL 公式；(5) 说明 model checker 会探索状态空间找反例；(6) 如果性质不成立，counterexample 是一条违反性质的路径。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4 的 Spin 题给你一个并发模型，你按顺序写：(1) 状态 = 各进程程序计数器+变量值；(2) transition = 各进程 step；(3) label = 关键命题（如 in_critical, error）；(4) LTL formula；(5) 说明 Spin 如何检查。</p>
+          <p><strong>卷面写法：</strong>按 1-6 的顺序写，每步用一小段，段首标明序号。这是阅卷人最容易给分的格式。</p>
+          <p><strong>常见失分点：</strong>跳过了状态定义直接写公式——model checker 需要知道什么是状态才能检查公式。公式和模型不匹配——公式引用了模型里没有定义的 label。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -1202,50 +1202,361 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. CS603 2025 小题：学完 logic/Hoare 后先练哪题？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>练 2025 Summer Q1：predicate logic、tautology/sat/unsat、Find 方法 Hoare proof。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. CS603 2025 小题：学完 logic/Hoare 后先练哪题？”。标准答案里的“练 2025 Summer Q1：predicate logic、tautology/sat/unsat、Find 方法 Hoare proof。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>练 2025 Summer Q1：predicate logic 英译逻辑、tautology/satisfiable/unsatisfiable 定义与例子、Find 方法 Hoare 证明。这道题覆盖了 logic 和 Hoare 两个板块的核心考点——从自然语言到谓词公式，从 pre/postcondition 到 invariant，从 partial 到 total correctness 都有。</p>
+          <p><strong>题目语境怎么用：</strong>CS603 题型的自然顺序是先 logic（Q1a 英译逻辑），再 Hoare（Q1d 循环证明），再 Dafny。做完 Q1 相当于串通了 logic 和 Hoare。</p>
+          <p><strong>卷面写法：</strong>答题顺序：先做英译逻辑部分（量词、谓词、连接词），再做术语解释（satisfiable等），再做 Find 方法 annotation 和证明。</p>
+          <p><strong>常见失分点：</strong>跳题做——Q1 各部分有依赖，英译逻辑没搞清楚就去写 Find invariant 容易搞混量词和 implication。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. CS603 2025 小题：学完 Dafny 后先练哪题？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>练 2025 Summer Q2：Ack decreases、method M invariant/variant、BankAccount ghost Valid。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. CS603 2025 小题：学完 Dafny 后先练哪题？”。标准答案里的“练 2025 Summer Q2：Ack decreases、method M invariant/variant、BankAccount ghost Valid。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Hoare/正确性题要把程序行为变成 proof obligations。Invariant 必须连接循环中间状态和 postcondition。</p>
-          <p><strong>题目语境怎么用：</strong>Find/minimum 题绑定 min 与已扫描前缀；CopyArray 题说明已复制区间；total correctness 再找严格下降的 variant。</p>
-          <p><strong>卷面写法：</strong>卷面写 precondition、invariant 初始化/保持/退出三步、postcondition 推导；若问 total correctness，再写 non-negative variant 每轮下降。</p>
-          <p><strong>常见失分点：</strong>不要只写 postcondition。Invariant 缺范围或缺语义，都无法支撑证明。</p>
+                    <p><strong>为什么这是对的：</strong>练 2025 Summer Q2：Ack decreases tuple、method M invariant/variant、BankAccount ghost Valid。这道题覆盖 Dafny 三个核心考点——递归 termination（decreases）、循环 correctness+termination（invariant+variant）、对象 invariants（ghost+Valid）。</p>
+          <p><strong>题目语境怎么用：</strong>考试里 Dafny 题大概率给代码让你补 annotation。Q2 的 Ack 考 decreases，M 考 invariant+variant，BankAccount 考 ghost+Valid+class invariant——全面覆盖。</p>
+          <p><strong>卷面写法：</strong>按难度递增做：先 Ack（decreases），再 M（invariant+variant），最后 BankAccount（ghost+Valid）。每道题写完 annotation 后自查三条：invariant 有范围吗？decreases 覆盖所有分支吗？constructor 也有 ensures 吗？</p>
+          <p><strong>常见失分点：</strong>BankAccount 漏了 constructor ensures Valid()——这道题最容易在这丢分。Ack 用 m+n 而不是 tuple——单参数递减不覆盖所有递归分支。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. CS603 2025 小题：学完 model checking 后先练哪题？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>练 2025 Summer Q4：Spin verification、NuSMV vs Spin、state explosion、LTL formulae。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. CS603 2025 小题：学完 model checking 后先练哪题？”。标准答案里的“练 2025 Summer Q4：Spin verification、NuSMV vs Spin、state explosion、LTL formulae。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>练 2025 Summer Q4：Spin verification 描述系统模型、NuSMV vs Spin 比较、state explosion 解释、LTL formula 表达性质。这道题覆盖 model checking 四个核心考点——系统建模（Kripke structure）、工具对比、scalability 问题（state explosion）、temporal property 表达。</p>
+          <p><strong>题目语境怎么用：</strong>考试里 model checking 题通常按这个结构出：(a) 让你描述模型；(b) 比较工具；(c) 解释 state explosion 和缓解方法；(d) 写 LTL/CTL formula。</p>
+          <p><strong>卷面写法：</strong>按子题顺序做：先画状态图或用文字描述模型（states/transitions/labels），再写对比（Spin explicit vs NuSMV symbolic），再解释 state explosion（abstraction/partial order reduction），最后写 temporal formula 并解释每个 operator 含义。</p>
+          <p><strong>常见失分点：</strong>跳过了模型描述直接写公式——model checker 需要先有模型才能检查公式。state explosion 解释太浅——只说"状态太多"而不提缓解技术（abstraction, partial order reduction, symmetry reduction）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 考试补题：2025 Spin LTL 请求响应怎么写？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q4(d)：用 LTL 表達「每次 request 最終都有 response」，<code>G</code>、<code>F</code>、<code>→</code> 各自在公式 <code>G(request → F response)</code> 裡扮演什麼角色？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>用 <code>G(request -> F response)</code> 表示每次 request 后最终出现 response。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS603 考试补题：2025 Spin LTL 请求响应怎么写？”。标准答案里的“用 G(request -> F response) 表示每次 request 后最终出现 response。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Model checking 题要同时有模型和性质。Temporal formula 明确描述所有路径或未来状态中要检查的行为。</p>
-          <p><strong>题目语境怎么用：</strong>request -> response 是 liveness；永不 error 是 safety；counterexample 是一条具体执行路径。</p>
-          <p><strong>卷面写法：</strong>卷面写 states/transitions/labels，再写 LTL/CTL formula 并解释 G、F、X、U、A、E 等 operator。</p>
-          <p><strong>常见失分点：</strong>不要只写工具名 Spin/NuSMV。公式方向写反会改变性质。</p>
+                    <p><strong>为什么这是对的：</strong>用 G(request -> F response) 表示：在每一条执行路径的每一个状态，如果出现 request，那么最终一定出现 response。G 是 globally（每时每刻），-> 是 implication，F 是 finally（最终）。这属于 liveness property。和 safety 不同：safety 关心坏事永不发生，liveness 关心好事最终发生。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4 大概率让你读并发模型然后写 LTL 公式。先判断是 safety 还是 liveness，再选对 temporal operator：safety 用 G ! ，liveness 用 G (cause -> F effect) 或直接用 F goal。</p>
+          <p><strong>卷面写法：</strong>先写自然语言（每次请求最终都有响应），再写 LTL formula G(request -> F response)，逐符号解释：G 所有路径所有状态，-> 左边成立右边须成立，F 当前或未来。最后说明属 liveness property。</p>
+          <p><strong>常见失分点：</strong>把 G(request -> F response) 写成 F(response)（后者只要求至少一次 response）。把 liveness 当 safety 写 G !(!response)（含义模糊不标准）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 考试补题：2025 CDCL 比 stochastic search 强在哪？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q3(d)：CDCL SAT solver 的 conflict-driven clause learning 機制，比純隨機搜索在效率上有什麼本質優勢？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>CDCL 在冲突后学习 clause，避免重复同类失败；stochastic search 更多靠随机移动，缺少这种系统学习。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS603 考试补题：2025 CDCL 比 stochastic search 强在哪？”。标准答案里的“CDCL 在冲突后学习 clause，避免重复同类失败；stochastic search 更多靠随机移动，缺少这种系统学习。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 逻辑/SAT/SMT 题要把自然语言变成精确公式。对象、predicate、变量范围、量词和连接词都要有理由。</p>
-          <p><strong>题目语境怎么用：</strong>every/exists 决定量词，if/only if 决定 implication 方向，solver 的 model 要能代回公式。</p>
-          <p><strong>卷面写法：</strong>卷面先定义 predicate 和变量，再写公式；若是 solver 题，说明 sat/unsat，并给 model 或 conflict/learned clause 的解释。</p>
-          <p><strong>常见失分点：</strong>不要逐词翻译。量词范围漏掉、implication 方向反了、把 satisfiable 和 tautology 混了，答案含义就变了。</p>
+                    <p><strong>为什么这是对的：</strong>想象你在走迷宫。Stochastic search（随机搜索）像闭着眼睛乱走——某条路撞墙了下次可能又走同一条。CDCL 像会做笔记的人：每次撞墙（conflict），它分析"为什么撞了"，然后写一条新规则（learned clause），以后再也不走那条路。learned clause 本质是简洁的命题逻辑句子，排除了导致冲突的那组赋值。随着搜索推进，learned clauses 越积越多，搜索空间越来越小。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3(d) 问 CDCL 优势，你要对比两种策略的核心机制：stochastic 靠随机游走+偶尔重启碰运气；CDCL 靠冲突分析+学习 clauses+非时序回溯（backjump 到真正导致冲突的决策点）。</p>
+          <p><strong>卷面写法：</strong>对比格式：Stochastic: random walks, local moves, restarts, no memory of failures。CDCL: conflict analysis, clause learning, non-chronological backtracking, learned clauses prune search space。总结：CDCL 从失败中学习，stochastic 不学习。</p>
+          <p><strong>常见失分点：</strong>只说 CDCL "更好"但不解释学习机制；把 CDCL 和 DPLL 搞混（DPLL 是基础回溯框架，CDCL 在 DPLL 上加 conflict learning）；不提 learned clause 或 backjump。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs603-linear.html#exam-ladder">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
+          </section>
+        </article>
+
+        <aside class="toc" aria-label="CS603 线性目录">
+          <h2>CS603 线性目录</h2>
+          <ol>
+            <li><a href="#properties">性质</a></li>
+            <li><a href="#logic">Logic</a></li>
+            <li><a href="#contracts">Contract</a></li>
+            <li><a href="#hoare">Hoare</a></li>
+            <li><a href="#dafny">Dafny</a></li>
+            <li><a href="#requirements">Requirements</a></li>
+            <li><a href="#model-checking">Model Checking</a></li>
+            <li><a href="#sat-smt">SAT / SMT</a></li>
+            <li><a href="#exam-ladder">考试台阶</a></li>
+          </ol>
+        </aside>
+      </div>
+    </main>
+    <footer class="footer"><p>线性页按 CS603 讲义和题型依赖整理；题型模板见 <a href="cs603.html">CS603 题型页</a>。</p></footer>
+    <script src="assets/app.js"></script>
+  </body>
+</html>          <p><strong>为什么这是对的：</strong>用 G(request -> F response) 表示：在所有路径的所有时刻，如果 request 出现，最终一定有 response。G 是 globally，-> 是 implication，F 是 finally。这属于 liveness property。和 safety 不同：safety 用 G !bad 表示坏事永不发生。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4(d) 让你写 temporal formula。先判断需求是 safety 还是 liveness。请求-响应是典型 liveness，用 G(trigger -> F effect) 模式。如果是“两个进程不能同时进临界区”就用 safety 的 G !(both_in_cs)。</p>
+          <p><strong>卷面写法：</strong>先写自然语言描述（每次请求最终都有响应），再写 LTL formula G(request -> F response)，然后逐符号解释：G 对所有路径所有状态，-> 左边成立右边必须成立，F 当前或未来某状态。最后说明属于 liveness property。</p>
+          <p><strong>常见失分点：</strong>把 G(request -> F response) 写成 F(response)——后者只要求至少一次 response，不要求每次 request 都有 response。把 liveness 当 safety 写了 G !(!response)——含义模糊不标准。</p>
+                    <p><strong>为什么这是对的：</strong>这句话是条件句式（if...then），主连接词是 =>。"John is right" 是没有量词的命题——John 是具体个体，直接用 Right(John) 表达。"somebody" 表示存在至少一个实体，用 ∃x。PenOfJohn 是特指物品作为常量，不需要量化。整句读作：如果 Right(John) 为真，则存在某个 x 使得 Took(x, PenOfJohn) 为真。</p>
+          <p><strong>题目语境怎么用：</strong>这道题考的是英语翻译谓词逻辑。先判断句式（条件句）→ =>，再判断量词（somebody）→ ∃，然后确定谓词和常量。任何英译逻辑题都可以按"句式 → 连接词 → 量词 → 谓词"这个顺序来做。</p>
+          <p><strong>卷面写法：</strong>(1) Define predicates: Right(p), Took(x, item)。(2) Constant: PenOfJohn。(3) Formula: Right(John) => ∃x Took(x, PenOfJohn)。(4) Interpretation: If John is right, there exists some x who took John's pen。</p>
+          <p><strong>常见失分点：</strong>忘了 Took 需要两个参数（谁拿了什么）；把 PenOfJohn 误写成函数 PenOf(John)；把 => 写成 ∧（变成两个并列事实而非条件关系）。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q1(a)(ii)：「Every person is walking and talking」轉謂詞邏輯，<code>∀</code> 和 <code>⇒</code> 和 <code>∧</code> 各自的角色是什麼？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>写 <code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>，不要漏 person 的范围条件。</p>
+                    <p><strong>为什么这是对的：</strong>every person 是全称量词，英语"is walking and talking"意味每个人同时做两件事，所以用 ∧ 连接两个谓词。关键：∀x 一定配 ⇒，因为 x 遍历所有事物时只有 Person(x) 为真的才需要检查。如果不加 Person(x) 筛选，∀x (Walking(x) ∧ Talking(x)) 要求宇宙中每个东西都在走路说话。</p>
+          <p><strong>题目语境怎么用：</strong>对比：如果题面是"there exists a person who is walking and talking"，量词变 ∃x，连接用 ∧：∃x (Person(x) ∧ Walking(x) ∧ Talking(x))。全称和存在的连接词选择完全不同。</p>
+          <p><strong>卷面写法：</strong>先定义 Person(x)、Walking(x)、Talking(x) 三个谓词。再写公式 ∀x (Person(x) => Walking(x) ∧ Talking(x))。附解释：对任意 x，如果 x 是人，则 x 走路且说话。</p>
+          <p><strong>常见失分点：</strong>写成 ∀x (Person(x) ∧ Walking(x) ∧ Talking(x))——宣称所有事物都是人都在走路说话。写成 ∃x (Person(x) => Walking(x) ∧ Talking(x))——随手找非人就满足，表达不了存在一个人。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs603-linear.html#model-checking">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
+          </section>
+
+          <section id="sat-smt" class="section">
+            <h2>7. SAT、SMT 和 Z3：自动求解逻辑约束</h2>
+            <p>SAT 问布尔公式能不能被某组 true/false 赋值满足。SMT 在 SAT 的基础上加入理论，例如整数、数组、位向量。Z3 是常见 SMT solver。</p>
+            <h3>SAT 基础词</h3>
+            <div class="term-grid">
+              <div class="term"><strong>Literal</strong>一个变量或它的否定，例如 <code>x</code> 或 <code>¬x</code>。</div>
+              <div class="term"><strong>Clause</strong>多个 literal 的 OR，例如 <code>x ∨ ¬y ∨ z</code>。</div>
+              <div class="term"><strong>CNF</strong>多个 clauses 的 AND，例如 <code>(x∨y) ∧ (¬x∨z)</code>。</div>
+              <div class="term"><strong>Model</strong>让公式为 true 的赋值，例如 <code>x=true, y=false</code>。</div>
+            </div>
+            <h3>DPLL / CDCL 的直觉</h3>
+            <p>DPLL 可以理解成系统地猜变量真假，配合简化和回溯。CDCL 在冲突时学习新的 clause，避免以后重复走同样死路。考试通常不需要手写完整 solver，但要知道它们是 SAT solver 背后的搜索和剪枝思想。</p>
+            <h3>SMT 比 SAT 多懂“理论”</h3>
+            <p>SAT 只知道布尔真假，不知道 <code>x+1&gt;x</code> 这种整数性质。SMT solver 懂一些背景理论，所以可以处理程序验证里常见的整数、数组、函数、等式约束。Dafny 背后也会把验证条件交给 SMT solver。</p>
+            <h3>Z3 的基本交互</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>动作</th><th>意思</th><th>结果</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>声明变量</td><td>告诉 solver 有哪些对象和类型。</td><td>例如整数 <code>x</code>、布尔 <code>p</code>。</td></tr>
+                  <tr><td>加入 constraints</td><td>把必须满足的条件放进去。</td><td>例如 <code>x &gt; 0</code> and <code>x &lt; 3</code>。</td></tr>
+                  <tr><td><code>check-sat</code></td><td>问是否有解。</td><td><code>sat</code>、<code>unsat</code> 或 <code>unknown</code>。</td></tr>
+                  <tr><td><code>get-model</code></td><td>如果 sat，取一组具体赋值。</td><td>例如 <code>x = 1</code>。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>对应材料：<code>sld_mth1.pdf</code>、<code>labZ3_PropLogic.pdf</code>、<code>Z3Exercises.pdf</code>、<code>AI4SE_Monahan1.pdf</code>、<code>CS603_FormalVerification_NeuralNetworks.pdf</code>。</p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. SAT 问什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>问一个布尔公式是否存在 true/false 赋值让它成立。</p>
+                    <p><strong>为什么这是对的：</strong>SAT 问的是一个布尔公式是否可被某组 true/false 赋值满足。例如 (x OR y) AND (NOT x OR z) 可满足——设 x=true,y=false,z=true 即成立。若没有任何赋值能满足就说 unsat。SAT 是计算机科学最基础 NP-complete 问题，但现代 CDCL solver 在实践中非常高效。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(b) 让你解释 satisfiable/unsatisfiable/tautology——直接对应 SAT 基本概念。2025 Summer Q3(d) 考 CDCL solver。</p>
+          <p><strong>卷面写法：</strong>先说明 SAT 问题定义（Boolean formula, truth assignment, satisfiability），再给简单例子（sat 和 unsat 各一个）。解释 solver 时说明 DPLL 或 CDCL 的基本搜索策略。</p>
+          <p><strong>常见失分点：</strong>把 SAT 和命题逻辑混淆——SAT 是计算问题，命题逻辑是语言。把 unsat 和 false 搞混——unsat 是公式本身不可满足。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. SMT 比 SAT 多懂什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>SMT 还懂整数、数组、等式等背景理论，因此更接近程序验证中的约束。</p>
+                    <p><strong>为什么这是对的：</strong>SAT 只知布尔变量真假，不知数字、数组、函数的性质。SMT 在 SAT 基础上加入"背景理论"——整数算术（知道 x+1 > x 永远为真）、数组理论（读写公理）、位向量等。Dafny verifier 背后就是把验证条件转成 SMT formula 交给 Z3 解。所以 SMT 更接近真实程序验证——程序约束不只布尔逻辑还有整数范围、数组索引。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3 的 FMAS 题可能涉及 SMT。考试问 Dafny verifier 背后用什么，答案就是 SMT solver（Z3）。</p>
+          <p><strong>卷面写法：</strong>先解释 SAT 局限（only propositional, no arithmetic/arrays），再解释 SMT 扩展（SAT + decision procedures for theories），最后给需 arithmetic theory 的例子（x > 0 and x < 3）。</p>
+          <p><strong>常见失分点：</strong>以为 SMT 只是更快的 SAT——SMT 是语义能力扩展不只速度优化。混淆 SMT 和 Dafny——SMT 是技术，Dafny 是使用 SMT 的验证语言。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Z3 返回 sat 后为什么要 get-model？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>因为 model 给出一组具体赋值，说明约束怎样被满足。</p>
+                    <p><strong>为什么这是对的：</strong>check-sat 只告诉你"有解"或"无解"。当你写成 unsat 时可能只是约束写错了——比如忘加了某条件，结果解存在但你期望无解。get-model 让你看到具体是什么赋值让公式成立——帮你验证约束是否正确表达了意图。例如约束 "x > 0 and x < 10"，get-model 可能返回 x=5。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Z3 lab 题可能问 check-sat 返回 sat 后下一步做什么——答案是 get-model 获取具体赋值。若返回 unsat 则没有 model 可获取。</p>
+          <p><strong>卷面写法：</strong>先写 check-sat 获得结果，若 sat 则调用 get-model 获取具体赋值，然后解释 model 中每个变量的取值意味着什么。</p>
+          <p><strong>常见失分点：</strong>check-sat 返回 unsat 后也调用 get-model——unsat 时无 model 可获取会报错。只写 check-sat 不写 model 获取。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. 2025 Summer Q3(d) SAT/CDCL 小题：CDCL 比 stochastic search 的优势是什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>CDCL 从冲突中学习 clauses，避免重复同类错误搜索；stochastic search 通常缺少这种系统学习保证。</p>
+                    <p><strong>为什么这是对的：</strong>SAT 问的是一个布尔公式是否可以被某组 true/false 赋值满足。例如公式 (x OR y) AND (NOT x OR z) 是可满足的——设 x=true,y=false,z=true 就成立。如果没有任何赋值能满足就说 unsat。SAT 是计算机科学最基础的 NP-complete 问题，但现代 SAT solver（如 CDCL 算法）在实践中非常高效。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q1(b) 让你解释 satisfiable/unsatisfiable/tautology——这直接对应 SAT 的基本概念。2025 Summer Q3(d) 考 CDCL solver。</p>
+          <p><strong>卷面写法：</strong>先说明 SAT 问题定义（Boolean formula, truth assignment, satisfiability），再给一个简单例子（sat 和 unsat 各一个）。如果是解释 solver，再说明 DPLL 或 CDCL 的基本搜索策略。</p>
+          <p><strong>常见失分点：</strong>把 SAT 和命题逻辑混淆——SAT 是一个计算问题，命题逻辑是语言。把 unsat 和 false 搞混——unsat 是公式本身不可满足，false 是公式的某个子句为假。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. 2025 Summer Q1(b) propositional logic 小题：unsatisfiable 的例子可以写什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong><code>P ∧ ¬P</code>，没有任何赋值能让它为 true。</p>
+                    <p><strong>为什么这是对的：</strong>SAT 只知道布尔变量的真假，不知道数字、数组、函数的性质。SMT 在 SAT 基础上加入了"背景理论"——比如整数算术（知道 x+1 > x 永远为真）、数组理论（知道读写公理）、位向量理论等。Dafny verifier 背后就是把你的验证条件转成 SMT formula 交给 Z3 去解。所以 SMT 更接近真实的程序验证——程序的约束通常不只是布尔逻辑，还有整数范围、数组索引等。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3 的 FMAS 题可能涉及 SMT。考试里问 Dafny verifier 背后用什么，答案就是 SMT solver（Z3）。</p>
+          <p><strong>卷面写法：</strong>先解释 SAT 的局限（only propositional, no arithmetic/arrays），再解释 SMT 的扩展（SAT + decision procedures for theories），最后给一个需要 arithmetic theory 的例子（如 x > 0 and x < 3）。</p>
+          <p><strong>常见失分点：</strong>以为 SMT 只是更快的 SAT——SMT 不只是在速度上优化，而是语义能力上的扩展。混淆 SMT 和 Dafny——SMT 是技术，Dafny 是使用 SMT 的验证语言。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Z3 lab 类小题：<code>check-sat</code> 返回 sat 后为什么要看 model？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>model 给出使 constraints 成立的具体赋值，可用于解释或调试约束。</p>
+                    <p><strong>为什么这是对的：</strong>check-sat 只告诉你"有解"或"无解"。当你写成 unsat 时可能只是你的约束写错了——比如忘了加某个条件，结果解是存在的但你本来期望无解。get-model 让你看到具体是一组什么赋值让公式成立——这能帮你验证约束是否正确表达了你的意图。例如约束是"x > 0 and x < 10"，get-model 可能返回 x=5，你可以验证 5 确实满足。</p>
+          <p><strong>题目语境怎么用：</strong>2025 的 Z3 lab 题可能问 check-sat 返回 sat 后下一步做什么。答案是 get-model 来获取具体赋值。</p>
+          <p><strong>卷面写法：</strong>先写 check-sat 获得结果（sat/unsat/unknown），如果 sat 则调用 get-model 获取具体赋值，然后解释 model 中每个变量的取值意味着什么。</p>
+          <p><strong>常见失分点：</strong>check-sat 返回 unsat 后也调用 get-model——unsat 时没有 model 可获取，get-model 会报错。只写 check-sat 不写 model 获取——考试可能要求完整交互流程。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q1(a)(ii)：「Every person is walking and talking」轉謂詞邏輯，<code>∀</code> 和 <code>⇒</code> 和 <code>∧</code> 各自的角色是什麼？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>写 <code>∀x (Person(x) => Walking(x) ∧ Talking(x))</code>，不要漏 person 的范围条件。</p>
+                    <p><strong>为什么这是对的：</strong>every person 是全称量词，英语"is walking and talking"意味每个人同时做两件事，所以用 ∧ 连接两个谓词。关键：∀x 一定配 ⇒，因为 x 遍历所有事物时只有 Person(x) 为真的才需要检查。如果不加 Person(x) 筛选，∀x (Walking(x) ∧ Talking(x)) 要求宇宙中每个东西都在走路说话。</p>
+          <p><strong>题目语境怎么用：</strong>对比：如果题面是"there exists a person who is walking and talking"，量词变 ∃x，连接用 ∧：∃x (Person(x) ∧ Walking(x) ∧ Talking(x))。全称和存在的连接词选择完全不同。</p>
+          <p><strong>卷面写法：</strong>先定义 Person(x)、Walking(x)、Talking(x) 三个谓词。再写公式 ∀x (Person(x) => Walking(x) ∧ Talking(x))。附解释：对任意 x，如果 x 是人，则 x 走路且说话。</p>
+          <p><strong>常见失分点：</strong>写成 ∀x (Person(x) ∧ Walking(x) ∧ Talking(x))——宣称所有事物都是人都在走路说话。写成 ∃x (Person(x) => Walking(x) ∧ Talking(x))——随手找非人就满足，表达不了存在一个人。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q1(d)：Find 方法的 while loop invariant 要描述 <code>min</code> 和已掃描區間 <code>a[0..i)</code> 的什麼關係？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>在已扫描区间 <code>a[0..i)</code> 内，<code>min</code> 不大于每个已扫描元素，并保持 <code>1<=i<=a.Length</code>。</p>
+                    <p><strong>为什么这是对的：</strong>Find 方法维护两个信息：当前扫描到哪里（i）和当前找到的最小值（min）。Invariant 必须同时约束两者。(1) i 的范围：1 <= i <= a.Length；(2) min 和已扫描部分的关系：forall j :: 0 <= j < i ==> min <= a[j]；(3) min 来自已扫描部分：exists j :: 0 <= j < i && min == a[j]。三条缺一不可。退出时 i == a.Length 则已扫描部分 = 整个数组，postcondition 直接推出。</p>
+          <p><strong>题目语境怎么用：</strong>考试中 Find/线性搜索/最小值这类循环的 invariant 模板都是：范围 + 结果变量与已处理区间关系 + 结果变量来自已处理区间。把 i 想象成"已经处理到哪儿了"的指针。</p>
+          <p><strong>卷面写法：</strong>三条 invariant：(1) invariant 1 <= i <= a.Length；(2) invariant forall j :: 0 <= j < i ==> min <= a[j]；(3) invariant exists j :: 0 <= j < i && min == a[j]。分别证明 establishment/preservation/exit use。</p>
+          <p><strong>常见失分点：</strong>只写了 min <= a[j] 但没写 min 来自数组——verifier 可选 min = -inf 来满足第一条但不是真实最小值。索引从 0 开始写错导致多包含或漏掉元素。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs603-linear.html#sat-smt">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并用自己的话复述本节最小例子。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
+          </section>
+
+          <section id="exam-ladder" class="section">
+            <h2>8. 把教材一路接到考试题</h2>
+            <p>CS603 的题看起来散，其实可以按“性质表达、程序证明、工具验证、状态模型”四类来读。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>台阶</th><th>你要会的动作</th><th>常见题型</th><th>去题型页练什么</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>把自然语言需求改写成逻辑性质。</td><td>Logic / FRET / requirements。</td><td><a href="cs603.html#logic">Logic</a></td></tr>
+                  <tr><td>2</td><td>识别 precondition、postcondition、invariant。</td><td>Contract / Hoare。</td><td><a href="cs603.html#hoare">Hoare</a></td></tr>
+                  <tr><td>3</td><td>证明循环 partial / total correctness。</td><td>Hoare loop proof。</td><td><a href="cs603.html#hoare">Loop invariant</a></td></tr>
+                  <tr><td>4</td><td>补 Dafny invariant、decreases、assert。</td><td>Dafny code questions。</td><td><a href="cs603.html#dafny">Dafny</a></td></tr>
+                  <tr><td>5</td><td>把系统画成状态图，写 LTL/CTL。</td><td>Model checking。</td><td><a href="cs603.html#model-checking">Model Checking</a></td></tr>
+                  <tr><td>6</td><td>解释 SAT/SMT/Z3 的 sat/unsat/model。</td><td>FMAS / solver / AI4SE。</td><td><a href="cs603.html#sat-smt">SAT/SMT</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>教材阅读顺序</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>顺序</th><th>材料</th><th>读完要能回答</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>Module overview, failures, industry, contract slides</td><td>形式化方法为什么不是普通测试？pre/post/invariant 分别约束什么？</td></tr>
+                  <tr><td>2</td><td>Logic slides, Z3 propositional lab</td><td>satisfiable、unsatisfiable、tautology、model 的区别是什么？</td></tr>
+                  <tr><td>3</td><td>Hoare logic notes, summary sheet, loop exercises</td><td>Hoare triple 怎么读？loop invariant 三件事是什么？variant 为什么证明终止？</td></tr>
+                  <tr><td>4</td><td>Dafny intro, recursion, loops, arrays, objects</td><td>Dafny 的 requires/ensures/invariant/decreases/ghost 怎样对应证明义务？</td></tr>
+                  <tr><td>5</td><td>Formalising requirements, FRET, Event-B, FMAS</td><td>需求为什么会有歧义？refinement 怎样保持抽象性质？</td></tr>
+                  <tr><td>6</td><td>Model checking lectures, LTL, CTL, Spin</td><td>state、transition、label、path 是什么？LTL 和 CTL 怎么表达时间性质？</td></tr>
+                  <tr><td>7</td><td>SAT/SMT/Z3, AI4SE, neural network verification</td><td>SAT 和 SMT 差在哪里？solver 返回 sat/unsat/model 分别意味着什么？</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>线性页负责把知识依赖顺下来；做题时回到 <a href="cs603.html">CS603 题型页</a>，按 logic/Hoare、Dafny、FMAS/SAT、model checking 四类练。</p>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. CS603 做题先判断哪类动作？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>先判断是在表达性质、证明程序、补 Dafny annotation、做 model checking，还是解释 SAT/SMT。</p>
+                    <p><strong>为什么这是对的：</strong>CS603 题目看似散，其实可以按四类来读：(1) 表达性质——把自然语言改写成逻辑公式；(2) 证明程序——用 Hoare triple 证明前后条件和循环；(3) 补 Dafny annotation——写 requires/ensures/invariant/decreases；(4) 模型检测——把系统画成状态图写 LTL/CTL。先判断题目问的是哪类，再套对应的答题模板。</p>
+          <p><strong>题目语境怎么用：</strong>看题面关键词：出现"translate to logic"是第 1 类；出现"prove the program"或"loop invariant"是第 2 类；出现 Dafny 代码+补 annotation 是第 3 类；出现 Spin/NuSMV/temporal formula 是第 4 类。</p>
+          <p><strong>卷面写法：</strong>卷面先写一行判断：This question asks me to [express a property / prove a program / write Dafny specification / model check]。然后按对应模板展开。</p>
+          <p><strong>常见失分点：</strong>不看题目类型直接写答案——导致用错了框架（比如用 Hoare 方法答 model checking 题）。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. Dafny 题和 Hoare 题的共同核心是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>都在证明前后条件、循环不变量和终止性，只是 Dafny 让 verifier 帮忙检查。</p>
+                    <p><strong>为什么这是对的：</strong>两者都在证明前后条件、循环不变量和终止性。Hoare logic 提供理论基础——{P} C {Q}、assignment axiom、loop invariant 三步证明；Dafny 把同样的理论用工具自动化——你写 requires/ensures/invariant/decreases，verifier 自动推导 proof obligations。区别只是：Hoare 你手工推，Dafny 里 Z3 帮你推。</p>
+          <p><strong>题目语境怎么用：</strong>考试里如果你理解了 Hoare 的三步骤（establishment/preservation/exit use），你自然知道 Dafny invariant 该怎么写——因为 Dafny verifier 要求的就是同样的证明义务。反过来，如果 Dafny 题里 invariant 写不对，回头检查 Hoare 三步骤哪个没满足。</p>
+          <p><strong>卷面写法：</strong>先声明两者的共同理论基础（Hoare logic），再解释 Dafny 如何自动化这个理论。可以给同一个 Find 例子：Hoare 版本手工推导 vs Dafny 版本 annotation。</p>
+          <p><strong>常见失分点：</strong>把 Dafny 当成完全不同的东西——忘记了 Dafny 就是 Hoare logic 的工具实现。Hoare 证明了但不提 invariant 对应的 establishment/preservation/exit use。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Model checking 题的答题顺序是什么？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>先定义状态和 transition，再写性质，最后解释 model checker 探索状态空间和 counterexample。</p>
+                    <p><strong>为什么这是对的：</strong>标准答题顺序：(1) 定义系统状态——什么构成一个状态（各变量取值组合）；(2) 定义 transitions——什么操作导致状态跳转；(3) 定义 labels——每个状态下哪些命题为真；(4) 把需求写成 LTL 或 CTL 公式；(5) 说明 model checker 会探索状态空间找反例；(6) 如果性质不成立，counterexample 是一条违反性质的路径。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4 的 Spin 题给你一个并发模型，你按顺序写：(1) 状态 = 各进程程序计数器+变量值；(2) transition = 各进程 step；(3) label = 关键命题（如 in_critical, error）；(4) LTL formula；(5) 说明 Spin 如何检查。</p>
+          <p><strong>卷面写法：</strong>按 1-6 的顺序写，每步用一小段，段首标明序号。这是阅卷人最容易给分的格式。</p>
+          <p><strong>常见失分点：</strong>跳过了状态定义直接写公式——model checker 需要知道什么是状态才能检查公式。公式和模型不匹配——公式引用了模型里没有定义的 label。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. CS603 2025 小题：学完 logic/Hoare 后先练哪题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>练 2025 Summer Q1：predicate logic、tautology/sat/unsat、Find 方法 Hoare proof。</p>
+                    <p><strong>为什么这是对的：</strong>练 2025 Summer Q1：predicate logic 英译逻辑、tautology/satisfiable/unsatisfiable 定义与例子、Find 方法 Hoare 证明。这道题覆盖了 logic 和 Hoare 两个板块的核心考点——从自然语言到谓词公式，从 pre/postcondition 到 invariant，从 partial 到 total correctness 都有。</p>
+          <p><strong>题目语境怎么用：</strong>CS603 题型的自然顺序是先 logic（Q1a 英译逻辑），再 Hoare（Q1d 循环证明），再 Dafny。做完 Q1 相当于串通了 logic 和 Hoare。</p>
+          <p><strong>卷面写法：</strong>答题顺序：先做英译逻辑部分（量词、谓词、连接词），再做术语解释（satisfiable等），再做 Find 方法 annotation 和证明。</p>
+          <p><strong>常见失分点：</strong>跳题做——Q1 各部分有依赖，英译逻辑没搞清楚就去写 Find invariant 容易搞混量词和 implication。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. CS603 2025 小题：学完 Dafny 后先练哪题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>练 2025 Summer Q2：Ack decreases、method M invariant/variant、BankAccount ghost Valid。</p>
+                    <p><strong>为什么这是对的：</strong>练 2025 Summer Q2：Ack decreases tuple、method M invariant/variant、BankAccount ghost Valid。这道题覆盖 Dafny 三个核心考点——递归 termination（decreases）、循环 correctness+termination（invariant+variant）、对象 invariants（ghost+Valid）。</p>
+          <p><strong>题目语境怎么用：</strong>考试里 Dafny 题大概率给代码让你补 annotation。Q2 的 Ack 考 decreases，M 考 invariant+variant，BankAccount 考 ghost+Valid+class invariant——全面覆盖。</p>
+          <p><strong>卷面写法：</strong>按难度递增做：先 Ack（decreases），再 M（invariant+variant），最后 BankAccount（ghost+Valid）。每道题写完 annotation 后自查三条：invariant 有范围吗？decreases 覆盖所有分支吗？constructor 也有 ensures 吗？</p>
+          <p><strong>常见失分点：</strong>BankAccount 漏了 constructor ensures Valid()——这道题最容易在这丢分。Ack 用 m+n 而不是 tuple——单参数递减不覆盖所有递归分支。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. CS603 2025 小题：学完 model checking 后先练哪题？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>练 2025 Summer Q4：Spin verification、NuSMV vs Spin、state explosion、LTL formulae。</p>
+                    <p><strong>为什么这是对的：</strong>练 2025 Summer Q4：Spin verification 描述系统模型、NuSMV vs Spin 比较、state explosion 解释、LTL formula 表达性质。这道题覆盖 model checking 四个核心考点——系统建模（Kripke structure）、工具对比、scalability 问题（state explosion）、temporal property 表达。</p>
+          <p><strong>题目语境怎么用：</strong>考试里 model checking 题通常按这个结构出：(a) 让你描述模型；(b) 比较工具；(c) 解释 state explosion 和缓解方法；(d) 写 LTL/CTL formula。</p>
+          <p><strong>卷面写法：</strong>按子题顺序做：先画状态图或用文字描述模型（states/transitions/labels），再写对比（Spin explicit vs NuSMV symbolic），再解释 state explosion（abstraction/partial order reduction），最后写 temporal formula 并解释每个 operator 含义。</p>
+          <p><strong>常见失分点：</strong>跳过了模型描述直接写公式——model checker 需要先有模型才能检查公式。state explosion 解释太浅——只说"状态太多"而不提缓解技术（abstraction, partial order reduction, symmetry reduction）。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS603 2025 Summer Q4(d)：用 LTL 表達「每次 request 最終都有 response」，<code>G</code>、<code>F</code>、<code>→</code> 各自在公式 <code>G(request → F response)</code> 裡扮演什麼角色？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>用 <code>G(request -> F response)</code> 表示每次 request 后最终出现 response。</p>
+                    <p><strong>为什么这是对的：</strong>用 G(request -> F response) 表示：在每一条执行路径的每一个状态，如果出现 request，那么最终一定出现 response。G 是 globally（每时每刻），-> 是 implication，F 是 finally（最终）。这属于 liveness property。和 safety 不同：safety 关心坏事永不发生，liveness 关心好事最终发生。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q4 大概率让你读并发模型然后写 LTL 公式。先判断是 safety 还是 liveness，再选对 temporal operator：safety 用 G ! ，liveness 用 G (cause -> F effect) 或直接用 F goal。</p>
+          <p><strong>卷面写法：</strong>先写自然语言（每次请求最终都有响应），再写 LTL formula G(request -> F response)，逐符号解释：G 所有路径所有状态，-> 左边成立右边须成立，F 当前或未来。最后说明属 liveness property。</p>
+          <p><strong>常见失分点：</strong>把 G(request -> F response) 写成 F(response)（后者只要求至少一次 response）。把 liveness 当 safety 写 G !(!response)（含义模糊不标准）。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS603 2025 Summer Q3(d)：CDCL SAT solver 的 conflict-driven clause learning 機制，比純隨機搜索在效率上有什麼本質優勢？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>CDCL 在冲突后学习 clause，避免重复同类失败；stochastic search 更多靠随机移动，缺少这种系统学习。</p>
+                    <p><strong>为什么这是对的：</strong>想象你在走迷宫。Stochastic search（随机搜索）像闭着眼睛乱走——某条路撞墙了下次可能又走同一条。CDCL 像会做笔记的人：每次撞墙（conflict），它分析"为什么撞了"，然后写一条新规则（learned clause），以后再也不走那条路。learned clause 本质是简洁的命题逻辑句子，排除了导致冲突的那组赋值。随着搜索推进，learned clauses 越积越多，搜索空间越来越小。</p>
+          <p><strong>题目语境怎么用：</strong>2025 Summer Q3(d) 问 CDCL 优势，你要对比两种策略的核心机制：stochastic 靠随机游走+偶尔重启碰运气；CDCL 靠冲突分析+学习 clauses+非时序回溯（backjump 到真正导致冲突的决策点）。</p>
+          <p><strong>卷面写法：</strong>对比格式：Stochastic: random walks, local moves, restarts, no memory of failures。CDCL: conflict analysis, clause learning, non-chronological backtracking, learned clauses prune search space。总结：CDCL 从失败中学习，stochastic 不学习。</p>
+          <p><strong>常见失分点：</strong>只说 CDCL "更好"但不解释学习机制；把 CDCL 和 DPLL 搞混（DPLL 是基础回溯框架，CDCL 在 DPLL 上加 conflict learning）；不提 learned clause 或 backjump。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs603-linear.html#exam-ladder">

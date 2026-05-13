@@ -88,81 +88,81 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. CS605 里的 language 是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>Language 是一组字符串。题目条件决定哪些字符串是 yes instance，满足条件的字符串就在语言里。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. CS605 里的 language 是什么？”。标准答案里的“Language 是一组字符串。题目条件决定哪些字符串是 yes instance，满足条件的字符串就在语言里。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>理论计算机科学里，"问题"和"语言"是同一枚硬币的两面。你不直接问"这个程序会停机吗"，而是问"&lt;M,w&gt; 这个编码在不在 HALT 语言里"。这样就把所有计算问题统一成了集合成员判断——一个字符串要么在集合里（yes），要么不在（no）。这种统一让你可以用同一套数学工具（自动机、归约、复杂度类）去分析看似完全不同的题目。</p>
+          <p><strong>题目语境怎么用：</strong>看到任何 CS605 大题，第一件事不是翻证明模板，而是把题面翻译成语言定义：输入长什么样？yes 条件是什么？比如"Java 程序在某个时刻 a+b=c"这个题，输入是 &lt;J,a,b,c&gt; 的编码，yes 条件是存在某个运行时刻满足等式。这一步翻译对了，后面选 pumping、decider、reduction 还是 NP verifier 就自然清楚了。</p>
+          <p><strong>卷面写法：</strong>做题时先在草稿纸上写下 L = { &lt;...&gt; : ... } 的完整形式，把冒号前的输入编码形式和冒号后的 yes 条件都写清楚。这一步写对了，整个证明的方向就不会歪。</p>
+          <p><strong>常见失分点：</strong>很多同学一看到编码题就直接套 HALT reduction，但题面可能只是在考你把问题写成语言的能力。如果语言定义都写错了，后面的证明再漂亮也没分。先判断输入类型再选工具。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 为什么要把机器、图、公式编码成字符串？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>因为理论模型里的 TM 输入是字符串；编码让程序、图、公式都能作为语言成员被讨论。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 为什么要把机器、图、公式编码成字符串？”。标准答案里的“因为理论模型里的 TM 输入是字符串；编码让程序、图、公式都能作为语言成员被讨论。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>Turing Machine 的纸带上只能写符号，输入必须是有限字符串。但计算对象——程序、图、公式——天然不是字符串。编码就是桥梁：你给每个对象分配一个唯一字符串，比如用邻接矩阵表示图、用 ASCII 表示程序源码。这样 TM 就能"读"这些对象了。更深一层说，编码让"关于程序的判断"变成"关于字符串的判断"，于是可以用语言理论统一处理所有计算问题。</p>
+          <p><strong>题目语境怎么用：</strong>大题里看到 &lt;M&gt;、&lt;G,k&gt;、&lt;&phi;&gt; 这种尖括号，就是在告诉你输入是编码后的对象。你不需要真的写出编码细节，但要理解"输入是一个字符串，这个字符串代表某个对象"这层关系——它决定了你是用字符串结构工具（pumping）还是程序行为工具（TM/归约）。</p>
+          <p><strong>卷面写法：</strong>定义语言时写清楚 &lt;...&gt; 里是什么对象的编码，比如 &lt;G,k&gt; 表示图 G 和整数 k 的编码。不要写"输入是图 G"，要写"输入是 &lt;G&gt; 即 G 的编码"。这会影响后续复杂度分析——输入大小是编码长度，不是图中顶点数本身。</p>
+          <p><strong>常见失分点：</strong>把编码等同于原对象。虽然日常说"输入是图 G"，但在形式定义里要说"输入是 &lt;G&gt; 即 G 的编码"。这个概念会影响到复杂度分析——输入 size 是编码长度，不是图中顶点个数本身。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 读语言定义的第一步是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先找输入长什么样，再找 yes 条件，最后判断该用 pumping、decider、reduction 还是 NP 工具。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 读语言定义的第一步是什么？”。标准答案里的“先找输入长什么样，再找 yes 条件，最后判断该用 pumping、decider、reduction 还是 NP 工具。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>语言定义是整道题的"根"。输入的形式直接决定了你的证明工具选择：如果输入是纯字符串（如 a^n b^n），你走 pumping lemma 路线；如果输入是机器或程序的编码（如 &lt;M,w&gt;），你走识别/可判定/归约路线；如果输入是图或集合加数字（如 &lt;G,k&gt;），你走 NP 路线。不看输入格式就套模板，等于连题都没读懂。</p>
+          <p><strong>题目语境怎么用：</strong>拿到题先圈出输入部分，判断它是"裸字符串"还是"对象编码"还是"图/集合结构"。裸字符串 → pumping；机器编码 → TM/归约；图结构 → NP。这个分类在考试中正确率最高。</p>
+          <p><strong>卷面写法：</strong>第一步永远是"Let us first understand the language: the input is ... and the yes condition is ..."。一句翻译能帮你和阅卷人都锁定方向。</p>
+          <p><strong>常见失分点：</strong>把 yes 条件和输入格式搞混。比如 {a^n b^n} 的 yes 条件是 n 个 a 后跟 n 个 b，"a 后面跟 b"是格式、"数量相等"才是条件。格式和条件分离不清会导致后面 pumping witness 选错。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q1(a) 小题：<code>L1A={w1#w2#...#w2n : wi∈{a}*, wi=wi+1 for one odd i}</code> 的输入长什么样？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q1(a) 小题：<code>L1A={w1#w2#...#w2n : wi&in;{a}*, wi=wi+1 for one odd i}</code> 的输入长什么样？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>输入是用 <code>#</code> 分隔的偶数个 unary blocks，例如 <code>a#aa#...</code>；yes 条件是某个奇数位置 block 等于下一个 block。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample B Q1(a) 小题：L1A={w1#w2#...#w2n : wi∈{a}*, wi=wi+1 for one odd i} 的输入长什么样？”。标准答案里的“输入是用 # 分隔的偶数个 unary blocks，例如 a#aa#...；yes 条件是某个奇数位置 block 等于下一个 block。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>L1A 定义里，wi&in;{a}* 表示每个 block 只由 a 组成（unary 编码，长度就是数量）。# 是分隔符。下标 w2n 说明 block 总数必须是偶数——这很重要，因为后面要找奇数位置 i 去和 i+1 比较。冒号后条件"存在某个奇数 i 使 wi=wi+1"，只要有一对相邻的奇数-偶数 block 等长就算 yes，不是所有对都要相等。</p>
+          <p><strong>题目语境怎么用：</strong>这道题属于 Q1（两类 pumping）的基础小题，先确认语言定义。后面 (b) 要求证 not regular，(c) 可能证 not CFL。只有把"偶数个 block"和"存在某个奇数位置相等"吃透了，pumping 时才知道要破坏什么。</p>
+          <p><strong>卷面写法：</strong>用一句英文："The input is an even-length sequence of unary blocks separated by #. It is a yes instance if there exists an odd index i where block i and block i+1 have the same length."</p>
+          <p><strong>常见失分点：</strong>漏掉"偶数个 blocks"这个条件，或者把 wi=wi+1 理解成"所有相邻 block 对都相等"而忘了是"存在某个奇数 i"。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A Q2(b) 小题：<code>{J,a,b,c : running J sometime makes a+b=c true}</code> 是在问字符串结构还是程序行为？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>是在问 Java program 的运行行为，所以更接近 recogniser/模拟，而不是 pumping lemma。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A Q2(b) 小题：{J,a,b,c : running J sometime makes a+b=c true} 是在问字符串结构还是程序行为？”。标准答案里的“是在问 Java program 的运行行为，所以更接近 recogniser/模拟，而不是 pumping lemma。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>这个语言的输入是 Java 程序 J 和变量名 a,b,c 的编码——尖括号已经告诉你这不是裸字符串。yes 条件涉及 J 的运行过程："存在某个时刻 a+b=c"。这意味着判断 yes/no 需要执行或模拟 J，不能只看字符串的静态结构。这就是区分 pumping 题和 TM 题的关键线索：输入里有程序，条件涉及运行时行为——走向构造 recogniser 或归约。</p>
+          <p><strong>题目语境怎么用：</strong>这种"程序运行时 eventually 发生某件事"的题，标准做法是构造一个 recogniser 模拟 J 的执行，一旦检测到 a+b=c 就 accept。由于 J 可能永远不满足条件（无限循环），recogniser 在 no instance 上可能永远跑下去——这正是 Turing-recognisable 的典型形状。</p>
+          <p><strong>卷面写法：</strong>先点明"这是程序行为题而非字符串结构题"，然后给出 simulator 的描述：模拟 J 的 step-by-step execution，每一步检查变量值，满足条件则 accept。承认 no instance 上可能不终止。</p>
+          <p><strong>常见失分点：</strong>误以为可以判定。如果 J 本身不停机且永远不满足 a+b=c，没有任何通用算法能在有限时间内确认这一点——所以它不是 decidable，只是 recognisable。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q6A 小题：CARA friends clique 语言的 yes instance 是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>输入是 graph <code>G,k</code>；yes 条件是存在 size <code>k</code> 的学生集合，集合中任意两人都是朋友。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q6A 小题：CARA friends clique 语言的 yes instance 是什么？”。标准答案里的“输入是 graph G,k；yes 条件是存在 size k 的学生集合，集合中任意两人都是朋友。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>这道题把抽象图论概念落到具体场景：学生是 vertices，朋友关系是 edges。yes instance 就是存在 k 个学生两两认识——这是经典的 clique 问题。"两两认识"= "任意两个选中学生之间都有边" = "选中顶点构成完全子图"。一旦建立这个对应，后面证明 in NP 和 NP-complete 就有了明确目标。</p>
+          <p><strong>题目语境怎么用：</strong>这道题的语境是 NP/NP-complete。先在 Q6A 证明 in NP（给 certificate 和多项式 verifier），然后 Q7 从 3-SAT 归约证明 NP-complete。yes 条件定义决定了 certificate 长什么样：一个 k 大小的学生集合。</p>
+          <p><strong>卷面写法：</strong>输入是 &lt;G,k&gt;，G 是学生社交图，k 是目标 clique 大小。yes 条件：&exist;S&sube;V, |S|=k, &forall;u,v&in;S, u&ne;v &rarr; (u,v)&in;E。</p>
+          <p><strong>常见失分点：</strong>把"任意两人"写成"至少两人"，或者遗漏 clique size 恰好是 k。"两两认识"要求每一对都有边，不是"每个人都认识至少一个其他人"。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q5 line never executed 怎么构造？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample A Q5：证明 L5 = {&lt;M,n&gt;: M is Java program, line n never executed} undecidable 时，构造的程序 N 把目标行放在什么位置才能让 HALT→线被执行？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>把目标 line 放在模拟 <code>M(w)</code> 之后；模拟停机才执行该 line，不停机则永远不到。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q5 line never executed 怎么构造？”。标准答案里的“把目标 line 放在模拟 M(w) 之后；模拟停机才执行该 line，不停机则永远不到。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>这是经典的 HALT 归约"后置触发"技巧。给任意 &lt;M,w&gt;，构造新程序 N：N 忽略自己的输入，开始模拟 M 在 w 上的运行。如果 M(w) 停机，N 执行目标行；如果不停机，N 的模拟也永远跑不完，目标行永远不会被触及。于是"目标行是否执行"= "M(w) 是否停机"。如果存在 decider 能判断任意程序的目标行是否执行，套在 N 上就能判定 HALT——矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q5 问 Java 程序的某一行是否 never executed，要证 undecidable。做法就是上面的"行后置"模式：把目标行放在模拟 HALT 之后，让 HALT 的 yes/no 控制目标行是否执行。</p>
+          <p><strong>卷面写法：</strong>构造 N：ignore input; simulate M on w; if simulation halts, execute line n; else forever loop. Prove &lt;M,w&gt;&isin;HALT iff N reaches line n.</p>
+          <p><strong>常见失分点：</strong>目标 line 放错位置——放在模拟之前就总是执行，和 HALT 无关。iff 证明必须两个方向都写。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q6(a)：证明 CARA clique（学生朋友图，k 人两两互为好友）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？”。标准答案里的“证书是 k 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>证明 in NP 的本质：yes instance 有一个"短证据"让你在多项式时间内验证。对于 clique，证据就是那 k 个学生。检查：(1) 真有 k 个；(2) 每对学生之间都有边。检查 (2) 需 C(k,2) = O(k&sup2;) 次边查找，因 k&le;n，整个过程 O(n&sup2;)，是输入大小的多项式。</p>
+          <p><strong>题目语境怎么用：</strong>在 Sample B Q6A 里，先证 CARA clique &isin; NP——给证书和多项式 verifier。Q7 再证 NP-hard。</p>
+          <p><strong>卷面写法：</strong>Certificate: a set S of k students. Verifier: check |S|=k; for each pair u,v&in;S check (u,v)&in;E; accept iff all pass. O(k&sup2;) edge lookups, polynomial.</p>
+          <p><strong>常见失分点：</strong>只写"guess a clique"而不描述 verifier 的具体检查步骤，或者忘记论证检查时间是多项式。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#language">
@@ -208,30 +208,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. 反证法在 CS605 里怎么用？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先假设相反结论成立，例如假设语言 regular 或 decidable，再推出和 pumping lemma 或 HALT 结论冲突。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 反证法在 CS605 里怎么用？”。标准答案里的“先假设相反结论成立，例如假设语言 regular 或 decidable，再推出和 pumping lemma 或 HALT 结论冲突。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>反证法是 CS605 最常用的证明骨架。逻辑链：假设要证明的结论为假（如"L is regular"），利用这个假设导出已知为假的结论（如"a^n b^n 能被 pump"或"HALT is decidable"）。因为已知结论为假，原始假设不可能成立。在 pumping 题里：假设 L regular → 存在 p → 选 witness → 论证任意 pump 破坏语言条件 → 矛盾于 pumping lemma。</p>
+          <p><strong>题目语境怎么用：</strong>遇到 pumping 题，开头写"Assume, for contradiction, that L is regular."遇到 undecidability 题，开头写"Assume there exists a decider D for L."这句假设是后面一切推导的起点。</p>
+          <p><strong>卷面写法：</strong>假设句 → 利用假设推出中间构造 → 分析构造导致矛盾 → 结论"Therefore the assumption is false"。必须明确点出矛盾在哪——不能只说"矛盾"，要说"这 contradicts the pumping lemma which requires xy^iz &isin; L"。</p>
+          <p><strong>常见失分点：</strong>假设写对了但后面忘记回到假设去推矛盾——比如 pumping 完后只说"so the string is not in L"但没说"this contradicts the pumping lemma"。必须明确点出矛盾点。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. Pumping proof 里为什么强调 for all split？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>因为你不能挑自己喜欢的切法；你要证明所有合法切法 pump 后都会破坏语言条件。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Pumping proof 里为什么强调 for all split？”。标准答案里的“因为你不能挑自己喜欢的切法；你要证明所有合法切法 pump 后都会破坏语言条件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>Pumping lemma 说的是"存在一种切法 xyz"使得 pump 后还在语言里。你要反驳它，就要证明"对所有合法切法"，pump 后都破坏条件。如果只挑了一种切法（比如 y 恰好是最方便的那几个字符），只证明那种切法不行——但 lemma 允许 adversary 选一种行的切法。必须用 |xy|&le;p 和 |y|&gt;0 约束确定 y 可能落在哪些区域，然后对每个区域论证 pump 后都坏。</p>
+          <p><strong>题目语境怎么用：</strong>选好 witness word 后，用 pumping 约束推断 y 只能由哪些字符组成。比如选 w=a^p b^p，由于 |xy|&le;p，y 只能全由 a 组成。如果 w 更复杂，可能需分情况讨论。</p>
+          <p><strong>卷面写法：</strong>"For any split w=xyz with |xy|&le;p and |y|&gt;0, by the choice of w, we must have y consisting only of a's. Then consider i=0..." 如需分情况，逐一列出每种区域下 pump 后的结果。</p>
+          <p><strong>常见失分点：</strong>自己挑一个方便 split 而不是说明所有 split 都会坏。也别忘了用 |y|&gt;0——如果 y 是空的，pump 没有变化，矛盾推不出来。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. <code>iff</code> 在 reduction 里为什么关键？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>它证明翻译前后的 yes/no 完全同步。没有 iff，decider 不能可靠地从新问题答案推出原问题答案。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. iff 在 reduction 里为什么关键？”。标准答案里的“它证明翻译前后的 yes/no 完全同步。没有 iff，decider 不能可靠地从新问题答案推出原问题答案。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>Reduction 的核心是 f: A &rarr; B 满足 x&isin;A &hArr; f(x)&isin;B。两个方向：(→) 原问题 yes ⇒ 构造出的实例也 yes；(←) 构造实例 yes ⇒ 原问题也 yes。缺一个方向，归约就断了——decider for B 的 yes/no 不能可靠翻译回 A。比如只证了 M(w) halts → N 有 property，但 N 有 property 可能来自别的原因，那 decider B 说 yes 时不代表 M(w) halts。</p>
+          <p><strong>题目语境怎么用：</strong>在 HALT reduction 题里，构造 N 时让它先模拟 M(w)。(→) M halts ⇒ N 在模拟后触发 property。(←) N 触发 property ⇒ 回顾 N 结构，property 只在模拟 M 停机后出现 ⇒ M halts。两个方向都要在卷面上明确写出。</p>
+          <p><strong>卷面写法：</strong>分开写两个方向：(⇒) Assume &lt;M,w&gt;&isin;HALT. Then M halts, so during simulation... f(&lt;M,w&gt;)&isin;L. (&lArr;) Assume f(&lt;M,w&gt;)&isin;L. By construction of N... M must halt, so &lt;M,w&gt;&isin;HALT.</p>
+          <p><strong>常见失分点：</strong>只写一个方向，或两个方向都写得很模糊。方向写反：在 undecidability 归约里是 HALT &le;m L，写成 L &le;m HALT 就反了。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -239,50 +239,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q1(a) not regular 小题：证明开头第一句怎么写？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Assume for contradiction that <code>L1A</code> is regular. Let <code>p</code> be the pumping length.</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample B Q1(a) not regular 小题：证明开头第一句怎么写？”。标准答案里的“Assume for contradiction that L1A is regular. Let p be the pumping length.”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>Pumping lemma 的完整量词结构：如果 L 是 regular，则 &exist;p&gt;0，使得 &forall;w&isin;L 且 |w|&ge;p，&exist; split w=xyz 满足三条件，且 &forall;i&ge;0, xy^iz&isin;L。你第一步是激活这个蕴含式：假设 L regular → 得到 pumping length p。p 不是你自己选的数字——它是 pumping lemma 给你的，取决于 L 的 FA 的状态数。你的任务是选一个长度&ge;p 且属于 L 的 w。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q1(a) 的 L1A 是偶数个 unary block、存在某对相邻奇数-偶数 block 等长。开头假设+取 p 是标准模板，但接着要选具体 witness w。</p>
+          <p><strong>卷面写法：</strong>Assume for contradiction that L1A is regular. By the pumping lemma, there exists a pumping length p &gt; 0. Choose w = ... &isin; L1A with |w| &ge; p. Then consider any split w = xyz satisfying |xy| &le; p and |y| &gt; 0...</p>
+          <p><strong>常见失分点：</strong>忘记说"let p be the pumping length"，直接选 w。没有 p 就没有长度约束，|xy|&le;p 就没办法用来限制 y 的位置。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A Q3 L3 exception 21 小题：mapping reduction 里 <code>iff</code> 要对齐哪两件事？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试2. CS605 Sample A Q3（L3 = {&lt;J&gt;: J takes no input, never throws Exception21}）：mapping reduction 里 <code>iff</code> 要对齐哪两件事？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>构造出的 Java program 是否不抛 exception 21，要和原 <code>M</code> 是否 halts on <code>w</code> 精确对齐。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A Q3 L3 exception 21 小题：mapping reduction 里 iff 要对齐哪两件事？”。标准答案里的“构造出的 Java program 是否不抛 exception 21，要和原 M 是否 halts on w 精确对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>归约方向是 HALT &le;m L3，其中 L3 = {&lt;P&gt; : P never throws exception 21}。翻译函数 f 把 &lt;M,w&gt; 变成新程序 N。对齐关系：&lt;M,w&gt;&isin;HALT &hArr; f(&lt;M,w&gt;) = &lt;N&gt;&isin;L3。构造 N：先模拟 M(w)，若停机则 throw new Exception21()。若不停机，exception 永不抛。因此 M halts ⇔ N throws exception ⇔ &lt;N&gt;&notin;L3。这是从 HALT complement 的归约，方向要对齐。</p>
+          <p><strong>题目语境怎么用：</strong>构造 N：先模拟 M(w)。模拟停机 → throw Exception21()。不停机 → 永远不抛。对齐关系要在 if and only if 证明中明确。</p>
+          <p><strong>卷面写法：</strong>证两个方向：⇒ M halts on w → N throws exception → &lt;N&gt;&notin;L3。⇐ &lt;N&gt;&notin;L3 → N throws exception → by N's structure, M halted → M halts on w。</p>
+          <p><strong>常见失分点：</strong>iff 方向没对齐——比如 N 在 M halts 时不抛 exception，在 M 不 halt 时反而抛了。要先在草稿上画箭头确认映射是一致的。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q7 3-SAT to CARA clique 小题：correctness 需要哪两个方向？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>如果 3-SAT formula satisfiable，则构造图有 clique；如果图有目标 clique，则能读回 satisfying assignment。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q7 3-SAT to CARA clique 小题：correctness 需要哪两个方向？”。标准答案里的“如果 3-SAT formula satisfiable，则构造图有 clique；如果图有目标 clique，则能读回 satisfying assignment。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>NP-hard reduction 的 correctness 要求 x&isin;3-SAT &hArr; f(x)&isin;CLIQUE。(→) 在 satisfying assignment 下，每个 clause 至少一个 literal 为 true——每 clause 选一个 true literal 对应的 vertex，它们之间互不冲突（冲突 literal 之间无边），构成 k-clique。(←) 如果图中有 k-clique，因每 clause 内无边，clique 必须每 clause 恰好选一个 vertex。这些 vertex 对应的 literal 不冲突，设为 true 就是合法赋值。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q7 要求把 3-SAT 转成图并证明 correctness。要先描述 reduction 构造（每个 clause 的 3 个 literal → 3 个 vertex，clause 内不连边，不同 clause 的 literal 如果不冲突就连边），再证两个方向。</p>
+          <p><strong>卷面写法：</strong>(⇒) Assume φ satisfiable. Pick one true literal per clause; corresponding vertices form k-clique. (⇐) Assume k-clique exists. One vertex per clause (no intra-clause edges). Set those literals true; they don't conflict, so assignment satisfies φ.</p>
+          <p><strong>常见失分点：</strong>只证一个方向。或证 ← 时说"literal 不冲突所以 assignment 合法"但忘了论证每 clause 恰好选一个——这需要用到 clause 内部无边 + clique 大小 = clause 数。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q2B Java <code>a+b=c</code> 怎么认出 yes？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample A Q2(b)：证明 L2B = {&lt;J,a,b,c&gt;: J is Java program, a+b=c true at least once} 是 Turing-recognisable，模拟 J 时 accept/reject 条件各是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>模拟 <code>J</code> 每一步，读变量 <code>a,b,c</code>；一旦 <code>a+b=c</code> 成立就 accept。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q2B Java a+b=c 怎么认出 yes？”。标准答案里的“模拟 J 每一步，读变量 a,b,c；一旦 a+b=c 成立就 accept。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>Java 程序的执行可以逐步模拟——每一步都知道当前指令和变量值。要识别"J 在某个时刻 a+b=c"，你只需忠实执行 J 的每条指令，每步后检查 a+b=c。如果成立，立刻 accept。这保证了：yes instance 最终会被 accept（因为条件最终会发生）；no instance 可能永远跑下去（程序无限循环且从不满足条件）。这正是 recogniser 的特征——保证识别 yes，不保证处理完 no。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q2(a) 是 FA 相关 decidable，(b) 是 Java 相关 recognisable。对比两问帮你建立"有限对象 → decidable" vs "程序行为 → recognisable"的直觉。</p>
+          <p><strong>卷面写法：</strong>Construct TM R: on input &lt;J,a,b,c&gt;, simulate J step by step. After each step, check a+b=c. If true, accept. If J terminates without satisfying, reject. If J loops forever without satisfying, R loops. Thus L is Turing-recognisable.</p>
+          <p><strong>常见失分点：</strong>写了"模拟 J"就说它是 decidable。必须明确：你的 TM 在 no instance 上会不会停机？如果 J 无限循环且从不满足 a+b=c，你的模拟也无限循环——所以只是 recogniser。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample A Q3：证明 L3 = {&lt;J&gt;: J takes no input, never throws Exception21} undecidable 时，构造的程序 N 怎样把 HALT 的停機行為轉換成 exception 21 的觸發？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>构造程序先模拟 <code>M(w)</code>；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？”。标准答案里的“构造程序先模拟 M(w)；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>把 HALT 的 yes/no "编码"到目标 property 里。具体：给 &lt;M,w&gt;，输出程序 N：N 内部先模拟 M 在 w 上运行。如果模拟停机，N 故意 throw new Exception21()。如果不停机，模拟永不结束，exception 永不抛。于是 N 不会抛 exception 21 ⇔ 模拟不停机 ⇔ M(w) 不 halt。所以 &lt;M,w&gt;&isin;HALT_complement ⇔ &lt;N&gt;&isin;L3。从 HALT_complement（同样 undecidable）归约到 L3。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q3 L3 = {&lt;P&gt; : P never throws exception 21}。你要证 L3 undecidable。假设 L3 decidable，构造 f: HALT_complement → L3，推出 HALT decidable，矛盾。</p>
+          <p><strong>卷面写法：</strong>Define f(&lt;M,w&gt;) = &lt;N&gt; where N: ignore input; simulate M on w; if halts, throw Exception21(). Then &lt;M,w&gt;&notin;HALT iff N never throws exception 21 iff &lt;N&gt;&isin;L3. Since HALT undecidable, L3 undecidable.</p>
+          <p><strong>常见失分点：</strong>归约方向搞反——证明 L3 &le;m HALT 只能说明 L3 不比 HALT 更难，不能推出 undecidable。要证 undecidable 必须从已知 undecidable 问题归约到目标问题。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#proof-basics">
@@ -333,81 +333,81 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. FA 的能力边界是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>FA 只有有限状态，能记有限摘要和模数信息，但不能准确保存任意大的计数。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. FA 的能力边界是什么？”。标准答案里的“FA 只有有限状态，能记有限摘要和模数信息，但不能准确保存任意大的计数。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>FA 的"记忆"就是它的当前状态。因为状态数是固定的（比如 5 个或 100 个），它能表达的信息也是有限的。它能区分"读到偶数个 1"和"读到奇数个 1"（只需 2 个状态）；但不能区分"读到 15 个 a"和"读到 16 个 a"——因为要做到后者，需要至少 17 个不同状态逐个区分每种数量，一旦 n 可以任意大，需要的状态数就无限了。这就是为什么 FA 能处理模运算和局部模式，但处理不了需要精确计数的语言。</p>
+          <p><strong>题目语境怎么用：</strong>看到题面问"这个语言是否 regular"，先看 yes 条件是否需要"等量比较"或"任意长精确计数"。如果需要，大概率 not regular——选 pumping lemma。如果只是判断后缀、模数、禁止局部模式——那很可能 regular，画个 FA 就行。</p>
+          <p><strong>卷面写法：</strong>若证 regular：画出 DFA/NFA，说明每个状态含义。若证 not regular：用 pumping lemma，选 witness word 使 pump 后破坏数量相等关系。</p>
+          <p><strong>常见失分点：</strong>把"FA 状态有限"当成"FA 不能处理任何需要计数的东西"——实际上 FA 可以做模计数（如除以 3 的余数），不能做的是任意大精确计数。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. Regular language 的直觉是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>有限记忆就能识别的字符串集合，例如固定后缀、奇偶性、有限模式。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Regular language 的直觉是什么？”。标准答案里的“有限记忆就能识别的字符串集合，例如固定后缀、奇偶性、有限模式。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>Regular language 的精髓是"你只需要记住有界的信息"来判断字符串是否属于语言。比如"以 01 结尾"，只需记住最后两个字符——更早的字符不影响判断。比如"包含偶数个 1"，只需记住当前 1 个数的奇偶性——只有两个可能值。更广地说，regular language 等价于能被正则表达式描述的语言，也等价于能被有限状态机识别的语言——三条路通向同一个集合。</p>
+          <p><strong>题目语境怎么用：</strong>如果题目让你"describe this language in English"且语言定义里有 # 分隔符、block 结构等，先判断它是否 regular。直觉说 regular → 试着画 DFA；直觉说 not regular → 准备 pumping。</p>
+          <p><strong>卷面写法：</strong>遇到"判断 regular 与否"的题，结论写"This language is (not) regular because..."后跟 pumping 证明或 DFA 构造。</p>
+          <p><strong>常见失分点：</strong>以为"包含复杂结构"就不是 regular。实际上很多看起来复杂的字符串模式其实只需要有限状态（比如特定分隔符之间的模式匹配），关键仍然是"需要记住的信息量是否有限"。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 为什么 <code>a^n b^n</code> 不像 regular？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>它需要比较任意多的 <code>a</code> 和 <code>b</code> 数量，有限状态没有足够记忆。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 为什么 a^n b^n 不像 regular？”。标准答案里的“它需要比较任意多的 a 和 b 数量，有限状态没有足够记忆。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>要判断 a^n b^n，需要先数清前面有多少个 a，再检查后面 b 的数量是否相等。n 可以任意大——可以是 5、1000、一百万。FA 只有固定数量状态，假设 k 个，当 n &gt; k 时，读 a 的过程中必然回到某个之前访问过的状态（鸽子洞原理）。一旦状态重复，FA 就"忘了"读了多少个 a——它无法区分"读了 15 个 a"和"读了 15+m 个 a"。这就是 pumping lemma 的直觉根源：状态有限 + 输入足够长 ⇒ 必然有循环 ⇒ 循环可以 pump。</p>
+          <p><strong>题目语境怎么用：</strong>a^n b^n 是 CS605 里 not regular 的"hello world"。选 w = a^p b^p，用 |xy|&le;p 锁死 y 在 a 区域，pump 后 a 和 b 数量不等。这个模式是所有后续 pumping 题的模板。</p>
+          <p><strong>卷面写法：</strong>Assume L = {a^n b^n} is regular. Let p be pumping length. Choose w = a^p b^p &isin; L. For any split w=xyz with |xy|&le;p, |y|&gt;0, y consists only of a's. Then xy^0z = a^{p-|y|} b^p &notin; L. Contradiction.</p>
+          <p><strong>常见失分点：</strong>选 w = a^p b^p 是对的，但忘记用 |xy|&le;p 来限制 y 的位置。没有这个限制，y 可能跨过 a 和 b 边界，导致分析变复杂。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A Q2(a) 小题：FA accepts at least one word of length greater than 5，decider 先检查什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试1. CS605 Sample A Q2(a)（L2A = {&lt;M&gt;: M is FA that accepts at least one word of length &gt;5}）：decider 先检查什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先检查输入是否是有效 FA 编码，再搜索有限状态图中是否存在长度大于 5 的 accepting path。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A Q2(a) 小题：FA accepts at least one word of length greater than 5，decider 先检查什么？”。标准答案里的“先检查输入是否是有效 FA 编码，再搜索有限状态图中是否存在长度大于 5 的 accepting path。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>这道题问"给定一个 FA，它是否接受某个长度大于 5 的字符串"。因为 FA 只有有限个状态（设为 n），任何长度大于 n 的 accepting path 必然包含状态循环。你不需要搜索无限长的路径——只需检查是否存在从 start state 到 accept state 的路径长度 &ge; 6。可以用 BFS/DFS 系统搜索，由于状态有限，搜索必然终止。这三步（验证编码 → 搜索 → 终止论证）构成了 decidable 的完整证明。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q2(a) 要求证明这个语言 decidable。步骤：(1) 检查输入是否合法 FA 编码——不是就 reject；(2) 用图搜索找长度 &ge;6 的 accepting path；(3) 论证搜索因状态有限而终止。</p>
+          <p><strong>卷面写法：</strong>On input &lt;M&gt;: (1) Validate encoding, reject if invalid. (2) Search FA state graph for an accepting path of length &ge; 6. (3) Since M has finitely many states, search terminates. Accept if such path exists, else reject. Thus L is decidable.</p>
+          <p><strong>常见失分点：</strong>忘记先验证输入合法性。TM 的输入可能是任何字符串，非法编码应 reject。另外需要论证搜索终止——利用"无环路径长度最多等于状态数"或类似分析。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q2(a) 小题：FA language nonempty 怎么 decide？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>从 start state 做 graph reachability，看是否能到达 accepting state；状态有限，所以会停机。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample B Q2(a) 小题：FA language nonempty 怎么 decide？”。标准答案里的“从 start state 做 graph reachability，看是否能到达 accepting state；状态有限，所以会停机。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>判断 FA language nonempty 等价于问"有没有一条从 start state 到 accept state 的路径"。这是标准图可达性问题——从 start state 做 BFS/DFS，标记所有可达状态，检查是否有 accept state 被标记。因为 FA 状态数有限，标记过程必然终止。如果 accept state 可达 → 存在被接受的字符串 → language nonempty；如果都不可达 → language empty。和 Sample A Q2(a) 一样，核心都是"FA 状态有限 ⇒ 搜索终止 ⇒ decidable"。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q2(a) 同样是 FA 相关的 decidable 题。不同于 Sample A 的是判断条件——"接受长度 >5 的词" vs "接受至少一个词"。前者跟踪路径长度，后者只需可达性。但都是 decidable。</p>
+          <p><strong>卷面写法：</strong>On input &lt;M&gt;: (1) Validate encoding. (2) Mark start state reachable. (3) Propagate: for each marked state, mark all one-step reachable states. (4) If any accept state marked, accept; else reject. Terminates because finite states.</p>
+          <p><strong>常见失分点：</strong>把 FA language nonempty 和 TM language nonempty 混淆。TM language nonempty 是 undecidable（HALT 归约可证）。FA 的特殊性在于状态有限。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Sample A Q6B 小题：一组 FA 都接受某个 word，verifier 要模拟什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书给出那个 word；verifier 检查 word 在 <code>W</code> 中且每个 automaton 都接受它。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample A Q6B 小题：一组 FA 都接受某个 word，verifier 要模拟什么？”。标准答案里的“证书给出那个 word；verifier 检查 word 在 W 中且每个 automaton 都接受它。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>语言定义：给定一组 FA A1..Am 和一个有限字符串集合 W，是否存在 word&isin;W 被所有 m 个 FA 接受？Certificate = 那个 word。Verifier：(1) 确认 word&isin;W（只需检查有限列表）；(2) 对每个 FA Ai，模拟它读 word 的过程——每步消耗一个字符，读完就停，必然终止；(3) 如果所有 FA 都在读完 word 后处于 accept state，accept。每个 FA 的模拟 O(|word|)，m 个共 O(m·|word|)，多项式时间。</p>
+          <p><strong>题目语境怎么用：</strong>这道题在考 in NP 证明。关键创新点：certificate 不只可以是"选中的对象"，还可以是"被所有机器接受的字符串"。Verifier 不负责找这个 word——那是 certificate 的作用。</p>
+          <p><strong>卷面写法：</strong>Certificate: a word w. Verifier: (1) Check w&isin;W. (2) For each FA Ai, simulate Ai on w. (3) If all accept, accept. O(m·|w|) steps, polynomial. Thus L&isin;NP.</p>
+          <p><strong>常见失分点：</strong>忘记验证 w&isin;W——w 必须是题目指定集合 W 中的词，不能是任意字符串。另外不要混淆"verifier 模拟 FA"（总是会停）和"FA 模拟 TM"（可能不停）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q5 line never executed 怎么构造？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample A Q5：证明 L5 = {&lt;M,n&gt;: M is Java program, line n never executed} undecidable 时，构造的程序 N 把目标行放在什么位置才能让 HALT→线被执行？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>把目标 line 放在模拟 <code>M(w)</code> 之后；模拟停机才执行该 line，不停机则永远不到。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q5 line never executed 怎么构造？”。标准答案里的“把目标 line 放在模拟 M(w) 之后；模拟停机才执行该 line，不停机则永远不到。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>HALT 归约中的"后置触发"技巧。构造 N：ignore input → simulate M on w → if simulation halts, execute line n. 于是 M(w) halts ⇔ line n is executed。若存在 decider D 能判断任意程序某行是否 never executed → 把 N 喂给 D → D 答案直接告诉你 M(w) 是否 halts → 判定 HALT → 矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q5 考 Java 程序的某一行是否 never executed，用"行后置"模式把 HALT 的 yes/no 映射到目标 property。</p>
+          <p><strong>卷面写法：</strong>Assume decider D for L={&lt;P,n&gt;:line n never executed}. Construct f(&lt;M,w&gt;)=&lt;N,n&gt;: N ignores input, simulates M on w, if halts executes line n. Then &lt;M,w&gt;&isin;HALT iff line n executed iff &lt;N,n&gt;&notin;L. Contradiction.</p>
+          <p><strong>常见失分点：</strong>只写构造没写 iff 证明。或方向写反——归约到 L 还是其 complement，卷面上要说清楚。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q6(a)：证明 CARA clique（学生朋友图，k 人两两互为好友）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？”。标准答案里的“证书是 k 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Clique 的 in NP 证明是所有 NP 证明的范本。找到 clique 很难（可能要试很多组合），但验证"给定的集合是不是 clique"很简单——检查集合大小 = k，再检查每对学生之间是否有边。C(k,2) 次检查，每次 O(1)，总体 O(k&sup2;) = O(n&sup2;)，多项式。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q6A 是 Q6 的第一问，专门证 in NP。Q7 再用这里的基础证 NP-complete。写 in NP 记住"三要素"：certificate、verifier、多项式时间论证。</p>
+          <p><strong>卷面写法：</strong>Certificate: a subset S&sube;V, |S|=k. Verifier: check |S|=k; for each pair u,v&in;S check (u,v)&in;E; accept iff all pass. O(k&sup2;) checks, polynomial. L&isin;NP.</p>
+          <p><strong>常见失分点：</strong>忘记检查 |S|=k——certificate 可能给多于 k 个学生，只做 pairwise edge check 会错误 accept。另外没有分析时间复杂度。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#automata">
@@ -458,30 +458,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. Regular pumping lemma 用来证明什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>它通常用来证明一个语言 not regular，而不是证明 regular。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Regular pumping lemma 用来证明什么？”。标准答案里的“它通常用来证明一个语言 not regular，而不是证明 regular。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>Pumping lemma 是 regular language 的必要条件：如果 L 是 regular ⇒ L 满足 pumping property。逆否命题：如果不满足 pumping property ⇒ 不是 regular。所以 pumping lemma 只能"证伪"——证明某个语言不 regular。不能用它证明语言是 regular（因为有些 non-regular 语言也能被 pump——pumping lemma 只是必要条件，不充分）。证 regular 的方法永远是构造 FA 或正则表达式。</p>
+          <p><strong>题目语境怎么用：</strong>Q1 通常"prove L is not regular"。结构：(1) 假设 L regular，(2) pumping lemma 给 p，(3) 选 witness w，(4) 分析所有 split 导致矛盾，(5) 结论 L not regular。</p>
+          <p><strong>卷面写法：</strong>严格按五步：Assume regular → Let p be pumping length → Choose w = ... → For any split... → Pump... → Contradiction → Therefore not regular。</p>
+          <p><strong>常见失分点：</strong>试图用 pumping lemma 证明语言是 regular（方向反了）。或忘记说"assume L is regular"，直接跳到选 w——阅卷人不知道你的假设。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
-        <button class="qa-question" type="button" aria-expanded="false">内容2. <code>|xy|≤p</code> 的用处是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">内容2. <code>|xy|&le;p</code> 的用处是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>它限制 <code>x</code> 和 <code>y</code> 都在前 <code>p</code> 个字符里，方便判断被 pump 的段落位置。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. |xy|≤p 的用处是什么？”。标准答案里的“它限制 x 和 y 都在前 p 个字符里，方便判断被 pump 的段落位置。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>这个条件来自 pumping lemma 的证明：p 是 FA 的状态数，第一个重复状态必然在前 p+1 步内出现。所以循环（对应 y）必定在输入的前 p 个字符内。证明中利用这个条件把 y 锁死在狭窄区域：比如 w = a^p b^p，因为 |xy|&le;p，xy 最多覆盖到第 p 个字符——前 p 个全是 a——所以 y 只能全由 a 组成。没有这个条件，y 可能横跨 a 和 b，分析会复杂得多。</p>
+          <p><strong>题目语境怎么用：</strong>选 witness 时，刻意让前 p 个字符都是同一类（如全 a）。这样 |xy|&le;p 会迫使 y 落在预设区域，后面的 pump 分析一键完成。</p>
+          <p><strong>卷面写法：</strong>"Since |xy| &le; p, and the first p characters of w are all a's, y must consist entirely of a's." 然后基于 y 仅含 a 来分析 pump 后效果。</p>
+          <p><strong>常见失分点：</strong>选了 witness 但没用 |xy|&le;p 限制 y 的位置。比如选了 w = a^p b a^p，说"y can be anything"——这没有利用 pumping lemma 给你的武器。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 为什么常用 <code>i=0</code> 或 <code>i=2</code>？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>它们分别删除或重复被 pump 段，容易破坏数量、顺序或位置关系。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 为什么常用 i=0 或 i=2？”。标准答案里的“它们分别删除或重复被 pump 段，容易破坏数量、顺序或位置关系。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>Pumping lemma 说 xy^iz &isin; L 对所有 i&ge;0 都成立。你要找某个 i 让结果不在 L 里。i=0（删除 y）常用于破坏"必须足够多"的条件——如 a^n b^n 中删除若干 a 让 a 比 b 少。i=2（重复 y）常用于破坏"不能太多"的条件——如语言要求"a 数量 &le; 10"，pump 后超了。选哪个 i 取决于你要让数量变多还是变少。大多数经典题中 i=0 或 i=2 就够。</p>
+          <p><strong>题目语境怎么用：</strong>等量比较题（如 a^n b^n），通常 i=0 或 i=2 都能用。unary block 题（Sample B Q1），i=2 更自然（让某 block 变长破坏相等）。含分隔符的题，i=0 可能把分隔符删了。</p>
+          <p><strong>卷面写法：</strong>明确写"Take i = 0 (or i = 2). Then the resulting string is ... which is not in L because ..." 解释为什么不在 L 里。</p>
+          <p><strong>常见失分点：</strong>不写 i 的具体值，只说"pump 后会坏"。必须明确写出 i 值、pump 后字符串的样子、违反语言定义的哪一条。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -489,50 +489,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q1(a) 小题：对 <code>w1#w2#...#w2n</code> 类语言，pumping 时为什么要选很多 unary block？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>因为要让 pumped part 被限制在某个局部，pump 后破坏某个相邻 block 相等关系或分隔结构。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample B Q1(a) 小题：对 w1#w2#...#w2n 类语言，pumping 时为什么要选很多 unary block？”。标准答案里的“因为要让 pumped part 被限制在某个局部，pump 后破坏某个相邻 block 相等关系或分隔结构。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>L1A 要求存在某个奇数位置 block i 和下一个 block i+1 长度相等。要证 not regular，选 witness 使：(1) 本身在 L 中（满足某对 block 等长），(2) 无论怎么 pump，这个相等关系都被破坏。好策略：选很多 block，每个长度都不同且都很大——这样 |xy|&le;p 把 y 限制在最前面的几个 block 内。如果只让一对 block 等长而其他都不等，pump 改变某 block 长度就会破坏唯一那对相等。</p>
+          <p><strong>题目语境怎么用：</strong>含 # 分隔符的 unary block 语言，witness 设计思路：(1) block 数远大于 p，(2) 每个 block 长度"稀疏"分布，(3) 只让一对 block 相等。然后 |xy|&le;p 把 y 锁在靠前 block，pump 破坏相等关系。</p>
+          <p><strong>卷面写法：</strong>选择 w 包含 2p 个 block，第 i 个 block 长度 f(i)（一个足够分散的函数），确保只有一对相邻奇数-偶数 block 等长。论证 |xy|&le;p ⇒ y 在最早几个 block ⇒ pump 破坏等长关系。</p>
+          <p><strong>常见失分点：</strong>选 witness 时让太多 block 等长——pump 后可能"意外"产生新相等关系，让 pumped word 仍在 L 里。要让 yes 条件"脆弱"——轻轻一碰就坏。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A Q1(a) 小题：not regular 证明中，选 word 后下一句必须说明什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>说明任意合法 split <code>xyz</code> 中 <code>y</code> 被 pumping length 限制在特定区域。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A Q1(a) 小题：not regular 证明中，选 word 后下一句必须说明什么？”。标准答案里的“说明任意合法 split xyz 中 y 被 pumping length 限制在特定区域。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>选好 w 后不能说"let y be..."——那是挑一种切法。必须说"For any split w=xyz with |xy|&le;p and |y|&gt;0"，然后推断 y 由哪些字符组成。这一句控制证明的全局量词：你对 adversary 说"不管你选什么合法切法，我都能证 pump 后坏"。如果只分析一种切法，只击败了一种选择。正确的做法：利用约束（|xy|&le;p，且 w 前 p 个字符是某类）把 y 锁死在特定区域。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q1(a) 的 not regular 证明也是标准模板。选 w 后写"For any split w=xyz satisfying the pumping conditions..."，用 |xy|&le;p 确定 y 的位置和组成。</p>
+          <p><strong>卷面写法：</strong>"Consider any split w = xyz such that |xy| &le; p and |y| &gt; 0. Since the first p characters of w are all X, y must consist entirely of X's."</p>
+          <p><strong>常见失分点：</strong>忘了说"for any split"——只选一种切法然后直接跳到 pump。这是 pumping 证明最严重的失分点，丧失了全称量词。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q1(a) 小题：pump 后如何写 contradiction？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>指出 pumped string 不再满足题目定义的相等/位置条件，但 pumping lemma 要求仍在语言中。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q1(a) 小题：pump 后如何写 contradiction？”。标准答案里的“指出 pumped string 不再满足题目定义的相等/位置条件，但 pumping lemma 要求仍在语言中。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>Contradiction 必须包含三要素：(1) 明确泵后字符串长什么样；(2) 指出它违反了语言定义的哪一条（如"原本等长的那对 block 不再等长"）；(3) 明确指出这与 pumping lemma 矛盾——"xy^iz must be in L by the pumping lemma, but we have shown xy^iz &notin; L"。这是反证法的收尾：假设 (L regular) → 结论 (xy^iz &isin; L)；事实 (xy^iz &notin; L)；所以假设为假。</p>
+          <p><strong>题目语境怎么用：</strong>pumping 证明最后，需要一句话把矛盾说明白。不要说"this is a contradiction"——要具体说"this contradicts the pumping lemma which requires xy^iz &isin; L for all i"。</p>
+          <p><strong>卷面写法：</strong>"Thus xy^iz &notin; L1A for i = 2. But this contradicts the pumping lemma, which states that xy^iz &isin; L1A for all i &ge; 0. Therefore L1A is not regular."</p>
+          <p><strong>常见失分点：</strong>只说"hence contradiction"不说和什么矛盾。或只说"not in language"忘记指出这与 pumping lemma 要求冲突。矛盾必须两条陈述的冲突，两条都写出来。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample B Q6(a)：证明 CARA clique（学生朋友图，k 人两两互为好友）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？”。标准答案里的“证书是 k 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Clique ∈ NP：证书 = k 个学生集合 S。Verifier 检查：(1) |S|=k；(2) S 中每对学生之间都有边。C(k,2) 次边检查，每次 O(1) 用邻接矩阵，总体 O(k²) ≤ O(n²)，多项式时间。如果图有 k-clique，存在 S 通过检查；如果无，任何 S 都会在边检查中失败——完美匹配 NP 的"存在证据 → yes"语义。</p>
+          <p><strong>题目语境怎么用：</strong>跨章节补题，NP section 里最基础的题目。无论在哪节出现，答案结构不变。</p>
+          <p><strong>卷面写法：</strong>Certificate: set S of k students. Verifier: check |S|=k, then ∀u,v∈S verify (u,v)∈E. Accept iff all pass. O(k²) checks, polynomial.</p>
+          <p><strong>常见失分点：</strong>只写"guess a clique"不写 verifier 步骤；忘记论证多项式时间。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q6(b)：证明 phone vertex cover（手机覆盖所有通信对）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？”。标准答案里的“证书是 k 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Vertex Cover 验证比 Clique 更简单——不看选中顶点内部关系，而是看是否"覆盖所有边"。Certificate = k 个 phone 子集 S。Verifier 遍历每条边 (u,v)，检查 u∈S or v∈S。任何一条边两端都不在 S → reject。|E| 次迭代，每次检查集合隶属 O(1)（哈希集），总 O(|E|) 多项式。与 clique 对照：clique 验证"内部密度"，vertex cover 验证"对外覆盖"。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q6B 的 phone vertex cover 场景把抽象问题具体化——phone 是 vertex，communication edge 是边。</p>
+          <p><strong>卷面写法：</strong>Certificate: set S of k phones. Verifier: for each edge (u,v), check u∈S or v∈S. Accept if all edges covered. O(|E|) checks, polynomial. L∈NP.</p>
+          <p><strong>常见失分点：</strong>把 vertex cover 验证写成 clique 验证——检查 S 内部每对是否有边。两个问题的验证逻辑"内外相反"，一定不要混淆。vertex cover 不是 dominating set。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#pumping-regular">
@@ -591,81 +591,81 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. PDA 比 FA 多了什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>多了一个 stack，可以记一类后进先出的配对信息，例如括号或 <code>a^n b^n</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. PDA 比 FA 多了什么？”。标准答案里的“多了一个 stack，可以记一类后进先出的配对信息，例如括号或 a^n b^n。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>Stack 的本质是"后进先出"——最后放进去的最先被拿出。天然适合嵌套配对：遇到左括号 push，遇到右括号 pop 检查匹配。a^n b^n 同理：读 a 时 push，读 b 时 pop。关键限制：只能访问栈顶，不能跳到栈中间去读。所以 a^n b^n c^n（需要同时比较三个数量，或先比较 a 和 b 再比较 b 和 c）一个 stack 不够。一个 stack = 一种"一维"记忆，处理不了需要二维交叉比较的问题。</p>
+          <p><strong>题目语境怎么用：</strong>分析一个语言是否 CFL，先想能不能用一个 stack 解决。可以（a^n b^n、ww^R、平衡括号）→ 通常是 CFL。需要两个 stack 或随机访问记忆（a^n b^n c^n、ww）→ 通常不是 CFL——用 CFL pumping lemma 证明。</p>
+          <p><strong>卷面写法：</strong>证 CFL：描述 PDA 的 push/pop 策略。证 not CFL：用 CFL pumping lemma，选五段切法 uvxyz，分情况讨论 v 和 y 落在哪里。</p>
+          <p><strong>常见失分点：</strong>认为 PDA 有一个 stack 所以能处理任何需要"记忆"的问题。实际上一个 stack 有严格访问限制（只能看栈顶），很多看似只需记忆的问题需要随机访问。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. CFL pumping 为什么切成五段？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>Context-free 结构可能有两处一起重复，所以写成 <code>uvxyz</code>，同时 pump <code>v</code> 和 <code>y</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. CFL pumping 为什么切成五段？”。标准答案里的“Context-free 结构可能有两处一起重复，所以写成 uvxyz，同时 pump v 和 y。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>CFL pumping 来源于 CFG 的推导树。如果字符串足够长，推导树中必然有一个从根到叶的路径上出现两次同一个非终结符 A。这意味着 A ⇒* vAy（产生 v 和 y 两段）且 A ⇒* x（中间一段）。整个推导可循环：uv^i x y^i z。所以 v 和 y 同时被 pump——它们来自同一个递归变量的两次展开。Regular pumping 只有一个 y 是因为 FA 循环在状态图上只产生一段重复。</p>
+          <p><strong>题目语境怎么用：</strong>做 CFL pumping 题时，分析对象是两个泵段 v 和 y。关键是 |vxy|&le;p 约束了它们的位置范围——分析 vxy 可能落在 witness 的哪些区域，对每种区域分别论证 pump 后破坏语言条件。</p>
+          <p><strong>卷面写法：</strong>证 not CFL：Assume L is CFL. Let p be CFL pumping length. Choose w = ... &isin; L, |w| &ge; p. For any split w=uvxyz with |vxy|&le;p and |vy|&gt;0, consider cases where vxy falls...</p>
+          <p><strong>常见失分点：</strong>用 regular pumping 的 xyz 三切法去证 not CFL——那是错的。CFL 必须用五切法 uvxyz。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. not CFL 题为什么常分情况？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>因为 <code>v</code> 和 <code>y</code> 可能落在不同区间，你要证明每种合法位置 pump 后都会坏。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. not CFL 题为什么常分情况？”。标准答案里的“因为 v 和 y 可能落在不同区间，你要证明每种合法位置 pump 后都会坏。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>以 a^n b^n c^n 为例，w = a^p b^p c^p。vxy 长度 &le;p，最多覆盖两个相邻区域（a-b 或 b-c），不能同时覆盖 a、b、c 三个区域。所以分情况：(1) vxy 全在 a → pump 后 a 数量变，三段不等；(2) 全在 b；(3) 全在 c；(4) 跨越 a-b 边界 → a 和 b 可能同时变但 c 不变；(5) 跨越 b-c。每种情况都要论证 pump 后至少一个字符数量与其他不同。这是在行使 for all split 的量词职责。</p>
+          <p><strong>题目语境怎么用：</strong>witness word 含多个不同字母区块时，用 |vxy|&le;p 作为"距离限制"分情况。情况划分依据是 vxy 区间覆盖了哪几个字母区域。</p>
+          <p><strong>卷面写法：</strong>列出所有可能的区域覆盖情况（"Case 1: vxy entirely within the a's..."），对每种情况取 i=0 或 i=2，指出 pump 后为什么不在语言里。</p>
+          <p><strong>常见失分点：</strong>漏掉跨越边界的 case——常只分析 vxy 在单个区域。或用 |vxy|&le;p 论证跨越情况时分析不彻底。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample Q1(b) 小题：not context-free 题里 <code>|vxy|≤p</code> 的作用是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample Q1(b) 小题：not context-free 题里 <code>|vxy|&le;p</code> 的作用是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>它让 <code>vxy</code> 只能覆盖局部区域，不能同时修正所有相关 block。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample Q1(b) 小题：not context-free 题里 |vxy|≤p 的作用是什么？”。标准答案里的“它让 vxy 只能覆盖局部区域，不能同时修正所有相关 block。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>在 CFL pumping 中，|vxy|&le;p 是关键的"距离限制"。当你选 w = a^p b^p c^p（长度 3p），vxy 最多只有 p 个字符长，意味着 vxy 无法同时穿越全部三个区域——最多覆盖两个相邻区域的交界处。这避免了 adversary 让 v 和 y 分别增加 a 和 c 而保持与 b 同步的场景。没有这个约束，CFL pumping lemma 在 a^n b^n c^n 这种经典例子上推不出矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>Sample Q1(b) 是 not CFL 证明。选 w 时让它长度 >> p 且由多个不同区域组成。|vxy|&le;p 自动帮你缩小 vxy 的可能位置范围，只需分析有限几种情况。</p>
+          <p><strong>卷面写法：</strong>"Since |vxy| &le; p, the substring vxy can span at most two adjacent blocks/regions of w. We consider the following cases..." 然后列举每种可能的覆盖方式。</p>
+          <p><strong>常见失分点：</strong>忽略 |vxy|&le;p 假设 vxy 可出现在任何位置（包括横跨三个区域）。实际上 vxy 长度限制禁止了横跨超过两个区域的情况。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. Sample Q1(b) 小题：如果 <code>v</code> 和 <code>y</code> 都落在同一段，pump 后通常破坏什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>通常破坏该段数量而其他段不变，从而破坏相等或配对关系。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample Q1(b) 小题：如果 v 和 y 都落在同一段，pump 后通常破坏什么？”。标准答案里的“通常破坏该段数量而其他段不变，从而破坏相等或配对关系。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>当 v 和 y 都在同一个字母区域（比如都在 a 区）时，pump 只改变该区域的字符数量，其他区域不变。如果语言要求多区域等量（如 a^n b^n c^n），只改变一个区域就破坏等式。取 i=2：a 的数量变成 p+|v|+|y|，而 b 和 c 还是 p 个——三段不等。取 i=0：a 的数量变成 p-|v|-|y|，仍然不等。这种"同区域"是最简单的 case，基本上任意 i≠1 都奏效。</p>
+          <p><strong>题目语境怎么用：</strong>分情况分析中这是第一种 case。说明：(1) v 和 y 由什么字符组成，(2) 取 i 后字符串样子，(3) 违反语言定义的哪一条。</p>
+          <p><strong>卷面写法：</strong>"Case 1: vxy lies entirely within the a's. Then v and y consist only of a's. For i=2, uv^2xy^2z has (p+|v|+|y|) a's but only p b's and p c's, so it is not in L."</p>
+          <p><strong>常见失分点：</strong>只说"pump 后数量变了"不具体指出变成多少、违反哪条条件。注意 |vy|>0 保证 pump 后一定有变化。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Sample Q1(b) 小题：如果 <code>vxy</code> 跨过分隔符，pump 后常破坏什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>常破坏字符串格式或分隔符数量/位置，使 pumped word 不符合语言定义。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample Q1(b) 小题：如果 vxy 跨过分隔符，pump 后常破坏什么？”。标准答案里的“常破坏字符串格式或分隔符数量/位置，使 pumped word 不符合语言定义。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>当 vxy 跨过 # 分隔符时：(1) 如果 v 或 y 包含 # 本身，pump 会增加或删除分隔符，导致 block 数量不是偶数或格式不对；(2) 如果 v 和 y 分别落在分隔符两侧的不同 block，pump 同时改变两个 block 的长度，可能破坏唯一的相等关系或意外创造新相等关系（也需要论证不合法）。关键分析：pump 后 # 的数量对了吗？block 序列结构还保持吗？原有的相等/不等关系是否被破坏？</p>
+          <p><strong>题目语境怎么用：</strong>含 # 分隔符的语言（如 Sample B Q1 的 not CFL 版）中，跨分隔符的情况需单独分析。</p>
+          <p><strong>卷面写法：</strong>"Case 2: vxy crosses a # separator. Then either v or y contains #. Pumping changes the number or placement of # symbols, violating the required format of even-length unary blocks separated by #."</p>
+          <p><strong>常见失分点：</strong>只说"格式坏了"不具体指明哪个结构约束被破坏。要具体说明 block 数量不对、分隔符重复了、还是 block 内混入了非 a 字符。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample B Q6(a)：证明 CARA clique（学生朋友图，k 人两两互为好友）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？”。标准答案里的“证书是 k 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Clique NP 证书 = clique 本身（一组 k 个顶点）。验证只需 O(k²) 次边检查。因为 k≤n=|V|，最坏 O(n²)，多项式时间。如果存在 k-clique，有这个证书；如果不存，任何证书都会在边检查中失败。</p>
+          <p><strong>题目语境怎么用：</strong>NP 中最基础题，跨章节重复出现。证书描述和验证步骤是统一的。</p>
+          <p><strong>卷面写法：</strong>Certificate: subset S of k vertices. Verifier: check |S|=k; verify ∀u,v∈S, u≠v→(u,v)∈E. O(k²) checks, polynomial. L∈NP.</p>
+          <p><strong>常见失分点：</strong>用 NTM 描述代替 certificate-verifier 描述。in NP 证应该给 certificate 和 verifier，不是"guess and check"。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q6(b)：证明 phone vertex cover（手机覆盖所有通信对）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？”。标准答案里的“证书是 k 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Vertex Cover 验证：certificate = k 个 phone 子集 S。遍历每条边 (u,v)，检查 u∈S 或 v∈S。一条边两个端点都不在 S → reject。|E| 次迭代，每次 O(1)，总 O(|E|) 多项式。与 clique 形成对比：clique 验证"集合内部全连接"，vertex cover 验证"集合对外全覆盖"。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q6B 的具体场景：phone 是 vertex，communication edge 是边。</p>
+          <p><strong>卷面写法：</strong>Certificate: set S of k phones. Verifier: for each edge (u,v), check u∈S or v∈S. Accept if all edges covered. O(|E|), polynomial. L∈NP.</p>
+          <p><strong>常见失分点：</strong>把 vertex cover 验证写成 clique 验证。这两个问题的验证逻辑"内外相反"。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#pda-cfl">
@@ -718,30 +718,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. Decider 和 recogniser 的区别是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>Decider 对 yes/no 都会停机给答案；recogniser 只保证 yes 时 accept，no 时可以永远跑。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Decider 和 recogniser 的区别是什么？”。标准答案里的“Decider 对 yes/no 都会停机给答案；recogniser 只保证 yes 时 accept，no 时可以永远跑。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>这个区别是 CS605 可计算性核心。Decider（判定器）是始终停机的 TM——任何输入最终输出 accept 或 reject。Recogniser 弱一些：yes instance 保证被接受，但 no instance 可能被 reject 也可能永远跑。经典例子：HALT 是 Turing-recognisable（模拟 M(w)，停机就 accept），但不是 decidable（没有算法对所有 &lt;M,w&gt; 都停机正确判断）。口诀："decider = always halts；recogniser = halts on yes"。若一个语言既是 T-r 又是 co-T-r，它就是 decidable——并行跑两个 recogniser，总有一个会停机。</p>
+          <p><strong>题目语境怎么用：</strong>Q2 常考"证 decidable 或 Turing-recognisable"。区分方法：看输入对象。FA（状态有限）→ 通常 decidable；Java/TM 程序（可能无限运行）+ "eventually does X" → 通常 recognisable。</p>
+          <p><strong>卷面写法：</strong>证 decidable：写算法，论证"this algorithm terminates on every input because..."。证 recognisable：写模拟过程，"if event occurs, accept；if never occurs, simulation may continue indefinitely"。</p>
+          <p><strong>常见失分点：</strong>把"模拟了程序"当作判定——模拟在 no instance 上可能永远跑，只能证 recognisable。Decidable 必须额外论证为什么能终止。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 证明 decidable 时最后必须补哪句？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>必须说明构造的机器 halts on every input，否则只是 recogniser 级别。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 证明 decidable 时最后必须补哪句？”。标准答案里的“必须说明构造的机器 halts on every input，否则只是 recogniser 级别。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>一个 TM 要成为 decider，必须对所有输入都最终 accept/reject 并停机。你的算法需覆盖：(1) 非法编码 → reject 并停机；(2) 合法编码 → 搜索/计算一定终止。比如搜索 FA 路径：FA 状态有限，可设置搜索边界保证终止。比如检查程序行为：没有边界（程序可能无限运行），不能说 decidable 只能说 recognisable。最后一句 halt on every input 是 decidable 题的生命线——缺了这句，你的证明最多到 recognisable。</p>
+          <p><strong>题目语境怎么用：</strong>Q2 decidable 证明最后一句："Thus the TM halts on every input, and accepts iff the condition holds. Hence the language is decidable." 终止原因必须具体。</p>
+          <p><strong>卷面写法：</strong>"The algorithm always terminates because: (reason). Therefore the language is decidable." 原因必须具体——不能"obviously terminates"，要给出数学保证。</p>
+          <p><strong>常见失分点：</strong>论证了正确性没论证终止性。或给了一个算法，对某些输入会无限循环——这在 decidable 证明中不可接受。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Java eventually does X 常证明成什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>通常证明 Turing-recognisable：模拟程序，一旦看到 X 就 accept；如果永远不发生，模拟可一直跑。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Java eventually does X 常证明成什么？”。标准答案里的“通常证明 Turing-recognisable：模拟程序，一旦看到 X 就 accept；如果永远不发生，模拟可一直跑。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>这类题的通病是条件的"eventually"——你只知道"如果会发生，总会在有限步内发生"，但无法判断"如果不会发生"应该什么时候停止。比如 Sample A Q2(b) 的"Java 程序在运行中某时刻 a+b=c"——模拟 J 每步检查变量，一旦 a+b=c 就 accept。如果 J 永远不满足（无限循环做别的事），你该永远等下去——这正是 Turing-recognisable。你无法变 decider，因为 Rice 定理：程序运行时行为的非平凡性质都是不可判定的。</p>
+          <p><strong>题目语境怎么用：</strong>Q2 两问常设计成一对：一问 FA 相关（decidable），一问 Java/TM 相关（recognisable but not decidable）。要能区分并给不同级别的证明。</p>
+          <p><strong>卷面写法：</strong>Construct TM R: simulate J. After each step, check if X holds. If yes, accept. If J terminates without X, reject. If J runs forever without X, R runs forever. Therefore L is Turing-recognisable.</p>
+          <p><strong>常见失分点：</strong>写了模拟就说它是 decidable。Java 程序模拟最坏情况不会终止——只是 recogniser。除非有额外论证说明为什么能终止。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -749,50 +749,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A Q2(b) 小题：Java 运行中某次 <code>a+b=c</code>，recogniser 怎么构造？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>模拟 <code>J</code>，每一步检查变量 <code>a,b,c</code>；一旦发现 <code>a+b=c</code> 就 accept。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A Q2(b) 小题：Java 运行中某次 a+b=c，recogniser 怎么构造？”。标准答案里的“模拟 J，每一步检查变量 a,b,c；一旦发现 a+b=c 就 accept。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>构造 TM R：输入 &lt;J, a, b, c&gt;。R 逐步模拟 J——每步跟踪当前指令、变量值、程序计数器。执行完一步后检查 a+b=c。满足则 accept 停机。如果 J 正常结束从不满足条件，reject 停机。如果 J 无限循环从不满足，R 也无限循环。这精确满足 Turing-recognisable 定义：yes instance 最终被 accept（条件最终发生，模拟最终到达那刻）；no instance 可能被 reject（J 终止）或永远跑（J 无限循环）。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q2(b) 跟在 Q2(a)（FA 相关 decidable）后面。两问对比建立"有限对象 → decidable" vs "程序行为 → recognisable"的直觉。</p>
+          <p><strong>卷面写法：</strong>On input &lt;J,a,b,c&gt;: simulate J step by step. After each step, check a+b=c. If true, accept. If J terminates without satisfying, reject. If J runs forever without satisfying, loop. Thus the language is Turing-recognisable.</p>
+          <p><strong>常见失分点：</strong>写了模拟但没区分"J 终止但不满足"和"J 不终止"两种情况——前者应 reject 停机，后者应 forever loop。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q2(b) 小题：Java opens at least <code>n</code> files 后文件数不等于 <code>n</code>，为什么是 recognisable？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>可以模拟程序，观察 open file count；一旦目标事件发生就 accept，若永不发生可一直模拟。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample B Q2(b) 小题：Java opens at least n files 后文件数不等于 n，为什么是 recognisable？”。标准答案里的“可以模拟程序，观察 open file count；一旦目标事件发生就 accept，若永不发生可一直模拟。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>条件拆解：(1) 程序先打开至少 n 个文件（文件数 &ge; n），(2) 此后某时刻文件数 ≠ n。这是"eventually 发生"条件——模拟中跟踪当前打开文件数。当文件数首次 &ge; n 时，开始监控是否 ≠ n。一旦检测到 ≠ n，accept。你不知道会不会发生，不需要预测。如果永远不发生（程序始终让文件数保持 n 或从未达到 &ge; n），模拟可能永远跑——这正是 recognisable 的 trade-off。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q2(b) 和 Sample A Q2(b) 结构一模一样——模拟 + 事件检测 + accept + no 侧不保证终止。</p>
+          <p><strong>卷面写法：</strong>Construct TM R: on input &lt;J,n&gt;, simulate J. Track current open files count f. Once f ≥ n, after each step check if f ≠ n. If f ≠ n occurs, accept. If J terminates without this, reject. Otherwise loop. L is Turing-recognisable.</p>
+          <p><strong>常见失分点：</strong>忽略"at least n files"前提——如果文件数从未达到 n，后续条件不触发。recogniser 需先跟踪文件数是否达到 n。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Sample A/B Q2(a) 小题：FA 相关 decidable proof 结尾必须写什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>状态图有限、搜索/模拟有限，因此 TM halts on every input。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample A/B Q2(a) 小题：FA 相关 decidable proof 结尾必须写什么？”。标准答案里的“状态图有限、搜索/模拟有限，因此 TM halts on every input。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>FA 的有限性给了"搜索必然终止"的保证。FA 只有 n 个状态。在状态图中搜索满足某性质的路径时，可只考虑无环路径（长度最多 n）或检测含环的长路径。两种方式都在有限步内完成——永远可设边界（"检查所有长度 &le; n 的路径"或"BFS 直到状态重复"）。搜索完成后，无论结果如何，都能明确 accept/reject。不存在"永远搜索"的可能——这就是 FA 题常 decidable 而 TM 题常 undecidable 的根本原因。</p>
+          <p><strong>题目语境怎么用：</strong>Q2(a) 答案结尾必须写一句说明搜索终止。范例："Since the FA has finitely many states, the above search visits each state at most once per path length, and thus terminates. Therefore the TM halts on every input, so the language is decidable."</p>
+          <p><strong>卷面写法：</strong>"The TM halts on every input because the FA has only finitely many states and transitions, so the graph traversal terminates."</p>
+          <p><strong>常见失分点：</strong>只说"search is finite"没联系到 FA 状态数有限。另外注意非法编码处理——先 validate 然后 reject，也是"halt on every input"的一部分。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample B Q6(a)：证明 CARA clique（学生朋友图，k 人两两互为好友）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？”。标准答案里的“证书是 k 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Clique NP 证书 = k 个学生集合。验证：(1) 大小 = k，(2) 每对之间有边。O(k²) 次检查，多项式。有 k-clique → 存在这样的证书；没有 → 任何证书都会在边检查中失败。</p>
+          <p><strong>题目语境怎么用：</strong>跨章节补题。无论出现在哪节，答案一致：certificate + verifier + polynomial time。</p>
+          <p><strong>卷面写法：</strong>Certificate: set S of k students. Verifier: |S|=k, ∀u,v∈S check (u,v)∈E. O(k²). Polynomial. L∈NP.</p>
+          <p><strong>常见失分点：</strong>忘记检查 |S|=k，或忘记多项式时间论证。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q6(b)：证明 phone vertex cover（手机覆盖所有通信对）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q6B phone vertex cover 怎么验证？”。标准答案里的“证书是 k 部 phone；遍历每条 communication edge，检查至少一个端点在证书集合内。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Vertex Cover 验证：certificate = k 个 phone 子集 S。遍历每条边，检查至少一端在 S。|E| 次迭代，O(|E|) 多项式。与 clique 对照：clique 验证内部全连接，vertex cover 验证对外全覆盖边。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q6B 具体场景：phone = vertex，communication = edge。</p>
+          <p><strong>卷面写法：</strong>Certificate: set S of k phones. Verifier: for each edge (u,v), check u∈S or v∈S. O(|E|) polynomial. L∈NP.</p>
+          <p><strong>常见失分点：</strong>写成 clique 验证逻辑。vertex cover ≠ dominating set。验证条件是"每条边至少一个端点在 S"。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#tm">
@@ -861,82 +861,82 @@
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容1. 要证明新语言 undecidable，常用什么方向？</button>
         <div class="qa-answer">
-          <p><strong>核心答案（先确认概念）：</strong>常写 <code>HALT ≤m L</code>：如果新语言可判定，就能判定 HALT，从而矛盾。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. 要证明新语言 undecidable，常用什么方向？”。标准答案里的“常写 HALT ≤m L：如果新语言可判定，就能判定 HALT，从而矛盾。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>核心答案（先确认概念）：</strong>常写 <code>HALT &le;m L</code>：如果新语言可判定，就能判定 HALT，从而矛盾。</p>
+          <p><strong>为什么这是对的：</strong>归约的方向是"从已知难题到目标语言"。已知 HALT 是 undecidable 的。如果 HALT &le;m L（HALT 可 many-one reduce 到 L），那么如果存在 L 的 decider，先做归约翻译再调用 L 的 decider，就能 decide HALT——矛盾。所以关键在于方向：已知难题 → 目标语言。反方向 L &le;m HALT 只能说明 L 不比 HALT 难，不能推出 L undecidable（因为 HALT 的 decider 可能拒绝翻译后的实例，但原实例可能不是 HALT 实例）。</p>
+          <p><strong>题目语境怎么用：</strong>undecidability 证明的"五步台阶"：假设 L decidable → 拿 HALT 输入 &lt;M,w&gt; → 构造新实例 N → 证 iff → 推出 HALT decidable 矛盾。</p>
+          <p><strong>卷面写法：</strong>Assume L decidable by D. Construct f(&lt;M,w&gt;) = &lt;N&gt; such that &lt;M,w&gt;&isin;HALT iff &lt;N&gt;&isin;L. Then HALT would be decidable (run D on f(&lt;M,w&gt;)), contradiction.</p>
+          <p><strong>常见失分点：</strong>方向写反——证明 L &le;m HALT 不能推出 L undecidable，只能推出 L 不比 HALT 更难。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. 归约构造机器 <code>N</code> 的常见套路是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong><code>N</code> 先模拟 <code>M(w)</code>；若模拟停机，就触发题目 property；若不停机，property 不出现。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. 归约构造机器 N 的常见套路是什么？”。标准答案里的“N 先模拟 M(w)；若模拟停机，就触发题目 property；若不停机，property 不出现。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>这个套路叫"后置触发"——把目标 property 放在 HALT 模拟之后。N 的结构：(1) 忽略自己的实际输入（如果有的话），(2) 开始模拟 M 在 w 上的运行，(3) 如果模拟结束（M 停机），就执行触发 property 的操作（抛 exception、print、accept、执行某行等），(4) 如果模拟永远不结束，property 永不出现。这样：M(w) halts ⇔ N 触发 property。整个 property 的 yes/no 被 HALT 的 yes/no 精准控制——就像一个开关。</p>
+          <p><strong>题目语境怎么用：</strong>构造 N 时通常先写"ignore its own input"，然后"simulate M on w"，最后"if simulation halts, do X"。"do X"就是你要对齐的 property。</p>
+          <p><strong>卷面写法：</strong>Construct N: on any input, simulate M on w. If simulation halts, [trigger property]. Otherwise run forever.</p>
+          <p><strong>常见失分点：</strong>Property 触发逻辑放在模拟之前——导致 property 总是触发，和 HALT 无关。或忘记"ignore its own input"，N 自己的输入干扰了逻辑。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. 为什么只说 reduce to HALT 不够？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>必须写清楚输入如何翻译、构造是否可计算，以及 yes/no 的 iff 正确性。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 为什么只说 reduce to HALT 不够？”。标准答案里的“必须写清楚输入如何翻译、构造是否可计算，以及 yes/no 的 iff 正确性。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>Mapping reduction 的完整要求：(1) f 必须是 computable（可有效计算）——你不能说"f 翻译 &lt;M,w&gt; 到 N"但不描述 N 怎么构造；(2) iff 必须两个方向都证——M halts ⇒ f(&lt;M,w&gt;)&isin;L 且 f(&lt;M,w&gt;)&isin;L ⇒ M halts；(3) 构造必须从任意 &lt;M,w&gt; 出发，不能依赖于知道 M 是否 halts。如果只说"reduce to HALT"而不给构造和 iff，等于没证明——阅卷人不知道你的归约是否存在、是否正确。</p>
+          <p><strong>题目语境怎么用：</strong>任何 undecidability 证明，如果只写了"this reduces to HALT"而没有具体构造和 iff 论证，得分极低。具体构造 + iff 双方向 = 核心分。</p>
+          <p><strong>卷面写法：</strong>(1) Describe the computable mapping f explicitly. (2) Prove ⇒ direction. (3) Prove ⇐ direction. (4) Conclude with contradiction.</p>
+          <p><strong>常见失分点：</strong>只写"reduce to HALT"。必须给出 mapping、computable 理由、iff 两个方向。三个要素缺一不可。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试1. Sample A Q3 小题：L3 是 Java program 不抛 exception 21，构造 <code>N</code> 时如何让 HALT 控制 property？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试1. CS605 Sample A Q3（L3 = {&lt;J&gt;: J takes no input, never throws Exception21}）：构造 <code>N</code> 时如何让 HALT 控制 property？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong><code>N</code> 先模拟 <code>M(w)</code>；根据是否 halts 决定是否抛 exception 21，使 property 与 HALT 对齐。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample A Q3 小题：L3 是 Java program 不抛 exception 21，构造 N 时如何让 HALT 控制 property？”。标准答案里的“N 先模拟 M(w)；根据是否 halts 决定是否抛 exception 21，使 property 与 HALT 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>L3 = {&lt;P&gt; : P never throws exception 21}。要证 L3 undecidable，从 HALT complement 归约。构造 f(&lt;M,w&gt;) = &lt;N&gt;：N 忽略自己的输入 → 模拟 M 在 w 上的运行 → 如果模拟停机，throw new Exception21()；如果不停机，模拟永不结束，exception 永不抛。于是 N never throws exception 21 ⇔ M(w) 不 halt ⇔ &lt;M,w&gt;&isin;HALT_complement。因为 HALT_complement 也是 undecidable，L3 也是。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q3 — 给 &lt;M,w&gt; 输出新程序 N，让 N 的 exception 行为反映 M 的停机行为。</p>
+          <p><strong>卷面写法：</strong>Define f(&lt;M,w&gt;) = &lt;N&gt;: N ignores input; simulates M on w; if simulation halts, throw Exception21(). Then &lt;M,w&gt;&notin;HALT iff N never throws exception 21 iff &lt;N&gt;&isin;L3. Contradiction.</p>
+          <p><strong>常见失分点：</strong>归约到 L3 而不是其 complement。方向要注意：如果构造 N 在 M halts 时抛 exception，映射到的是 L3 的补。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample A Q5 小题：line number <code>n</code> never executed，如何把目标 line 放进构造？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试2. CS605 Sample A Q5（L5 = {&lt;J,n&gt;: J is Java program, line n never executed}）：构造 N 时如何把目标行放在模拟 HALT 之后让 HALT→该行被执行？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>让 <code>N</code> 先模拟 <code>M(w)</code>；若模拟停机才执行指定 line，从而 line 是否执行反映 HALT。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample A Q5 小题：line number n never executed，如何把目标 line 放进构造？”。标准答案里的“让 N 先模拟 M(w)；若模拟停机才执行指定 line，从而 line 是否执行反映 HALT。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>L = {&lt;P,n&gt; : line n is never executed in P}。构造 f(&lt;M,w&gt;) = &lt;N, n_target&gt;：N 忽略自己的输入 → 模拟 M 在 w 上的运行 → 如果模拟停机，执行第 n_target 行；否则模拟永远跑，该行永远不执行。于是 M(w) halts ⇔ line n_target is executed ⇔ &lt;N, n_target&gt;&notin;L。若存在 L 的 decider，套在 N 上就能判定 HALT——矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q5 考"某行是否执行"，用"行后置"模式把目标行放在模拟 HALT 之后。</p>
+          <p><strong>卷面写法：</strong>Assume decider D for L. Construct f(&lt;M,w&gt;) = &lt;N, n&gt;: N ignores input; simulates M on w; if halts, execute line n. Then &lt;M,w&gt;&isin;HALT iff &lt;N,n&gt;&notin;L. Run D on &lt;N,n&gt; would decide HALT. Contradiction.</p>
+          <p><strong>常见失分点：</strong>目标 line 放错位置（放在模拟之前），失去了和 HALT 的关联。iff 证明必须双向。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试3. Sample B Q5 小题：<code>b &lt; mean(c)</code> throughout execution 的 reduction 要控制什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试3. CS605 Sample B Q5（L = {&lt;J,b,c&gt;: J is Java program, float b, int[] c, throughout execution b &lt; mean(c)}）：reduction 怎样让 HALT 停机前后分别保持和破坏该不变量？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>构造程序让该不变量在 <code>M(w)</code> 是否停机时被保持或被破坏，从而和 HALT yes/no 对齐。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample B Q5 小题：b < mean(c) throughout execution 的 reduction 要控制什么？”。标准答案里的“构造程序让该不变量在 M(w) 是否停机时被保持或被破坏，从而和 HALT yes/no 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>本题要求证一个有关"throughout execution"不变量的性质不可判定。"throughout"意味着程序运行的每一步都必须满足 b &lt; mean(c)。构造 N 的思路：让 N 在模拟 M(w) 期间保持 b &lt; mean(c)（通过设置合适的初始值）；一旦模拟停机，N 故意改变 b 或 c 的值破坏这个不变量。于是 M(w) 不 halt ⇒ 模拟永远跑且不变量始终成立 ⇒ &lt;N&gt; 满足 property；M(w) halt ⇒ 模拟结束后不变量被破坏 ⇒ &lt;N&gt; 不满足 property。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q5 — "throughout" 类 property 的归约关键：在模拟停机前保持 property，停机后破坏它。</p>
+          <p><strong>卷面写法：</strong>Construct N: ignore input; initialize b,c so b &lt; mean(c)；simulate M on w; if simulation halts, modify b or c to break b &lt; mean(c). Then M halts on w iff N violates the throughout property.</p>
+          <p><strong>常见失分点：</strong>忘记"throughout"要求每一步都成立——需要在模拟前就建立不变量，且在模拟期间不被破坏。仅在结束时检查不够。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q5 line never executed 怎么构造？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample A Q5：证明 L5 = {&lt;M,n&gt;: M is Java program, line n never executed} undecidable 时，构造的程序 N 把目标行放在什么位置才能让 HALT→线被执行？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>把目标 line 放在模拟 <code>M(w)</code> 之后；模拟停机才执行该 line，不停机则永远不到。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q5 line never executed 怎么构造？”。标准答案里的“把目标 line 放在模拟 M(w) 之后；模拟停机才执行该 line，不停机则永远不到。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>"后置触发"模式。N：ignore input → simulate M on w → if halts, execute target line n。M halts ⇔ line n executed。用 decider D 判断 line n 是否 never executed → 若 D says "never"，则 M 不 halt → 若 D says "executed"，则 M halts → 这样就能 decide HALT——矛盾。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q5。和前面 Q5 题同样的模板。核心：目标行的位置决定映射关系的方向。</p>
+          <p><strong>卷面写法：</strong>f(&lt;M,w&gt;) = &lt;N, n&gt;: N ignores input; simulates M on w; if halts, execute line n. Then &lt;M,w&gt;&isin;HALT ⇔ &lt;N,n&gt;&notin;L. If L decidable, HALT decidable. Contradiction.</p>
+          <p><strong>常见失分点：</strong>构造和 iff 双向必须完整。缺一不可。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q6(a)：证明 CARA clique（学生朋友图，k 人两两互为好友）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？”。标准答案里的“证书是 k 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Clique ∈ NP 是基础。证书 = k 学生集合。验证：大小 = k + 每对有边。O(k²) = O(n²) 多项式。</p>
+          <p><strong>题目语境怎么用：</strong>跨章节补题。NP 中最基础和重复的题。</p>
+          <p><strong>卷面写法：</strong>Certificate: set S of k students. Verifier: |S|=k, ∀u,v∈S (u,v)∈E. O(k²). L∈NP.</p>
+          <p><strong>常见失分点：</strong>缺少多项式论证。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#reductions">
@@ -1015,30 +1015,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. Computability 和 complexity 的区别是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>Computability 问有没有算法；complexity 问算法随着输入变大要花多久。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. Computability 和 complexity 的区别是什么？”。标准答案里的“Computability 问有没有算法；complexity 问算法随着输入变大要花多久。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>Computability（前半学期）关心"存在不存在一个总能停机的算法解决这个问题"。答案只有 yes（decidable）或 no（undecidable），不关心效率。Complexity（后半学期）在 decidable 的前提下进一步问："这个算法需要多长时间？"——多项式时间（efficient）、指数时间（infeasible）等。一个问题可能 decidable 但需要指数时间，实际规模稍大就跑不动。P vs NP 的核心就是"能快速验证的问题是否也能快速求解"。</p>
+          <p><strong>题目语境怎么用：</strong>看到题面有"polynomial time""certificate""verifier""NP"等词，就进入 complexity 领域。看到"decidable""undecidable""recognisable""HALT"就进入 computability 领域。不要在两个领域间混用工具——比如用 HALT reduction 证明 NP-hardness 是错的。</p>
+          <p><strong>卷面写法：</strong>Complexity 题：给出 verifier，分析 runtime，证多项式。Computability 题：给 decider/recogniser，或从 HALT 归约。</p>
+          <p><strong>常见失分点：</strong>在 complexity 题里写"reduce to HALT"——这是 computability 工具，不能证 NP-hard。NP-hard 归约是从已知 NP-complete 问题做多项式时间归约。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. P 和 NP 的最短区别是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>P 是能快速求解；NP 是给你候选答案后能快速验证。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. P 和 NP 的最短区别是什么？”。标准答案里的“P 是能快速求解；NP 是给你候选答案后能快速验证。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>P：存在一个多项式时间算法，对任何输入自己找到答案。NP：如果别人告诉你一个候选答案（certificate），你可以在多项式时间内验证它是否正确。关键不对称：NP 不要求"找到"答案快，只要求"检查"快。比如 clique：找到 k-clique 可能很慢（试遍所有 C(n,k) 组合），但验证"给定 k 个点是不是 clique"很快（检查每对有没有边）。P ⊆ NP（能快速求解的必然能快速验证——直接自己解一遍然后比较），但 NP ⊆ P 是著名的 open problem。</p>
+          <p><strong>题目语境怎么用：</strong>证明 in NP 永远用 certificate-verifier 模型：先定义 certificate 是什么（一组点、一个 assignment、一个子集等），再描述 verifier 如何多项式时间检查。不要写"guess a solution"——那是 NTM 描述，阅卷人期望 certificate-verifier。</p>
+          <p><strong>卷面写法：</strong>To prove L ∈ NP: give a polynomial-time verifier V. On input (x, c) where c is the certificate: [verification steps]. V accepts iff x ∈ L. V runs in polynomial time.</p>
+          <p><strong>常见失分点：</strong>把"guess a solution and verify in polynomial time"当作 NP 证明——应该给具体的 certificate 和具体的 verifier 检查步骤。还常见的问题是混淆 P 和 NP 的定义方向。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Certificate 在图题里常是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>通常是一组选中的点、边、集合或赋值，用来作为 yes instance 的候选证据。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Certificate 在图题里常是什么？”。标准答案里的“通常是一组选中的点、边、集合或赋值，用来作为 yes instance 的候选证据。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Certificate 是和具体问题绑定的"短证据"。clique 的 certificate = 一组 k 个顶点。vertex cover = 一组 k 个顶点。Hamiltonian path = 一个顶点排列。3-SAT = 一个 true/false assignment。集合划分 = 一个子集。规律：certificate 总是 yes instance 的特征结构——如果答案 yes，就存在这样一个结构。Verifier 的作用就是按语言定义逐条检查这个结构是否合格。</p>
+          <p><strong>题目语境怎么用：</strong>Sample 题中证书例子：Sample A Q6A 两个 subsets 覆盖 A 且 sums equal → certificate = 两个子集 Y,Z；Sample A Q6B 一组 FA 都接受某 word → certificate = 那个 word；Sample B Q6A clique → certificate = k 个学生；Q6B vertex cover → certificate = k 个 phone。</p>
+          <p><strong>卷面写法：</strong>明确写："The certificate is a [specific structure]. The verifier checks [specific conditions in language definition]." 要具体，不要说"the solution"——说清楚它是什么数据结构。</p>
+          <p><strong>常见失分点：</strong>Certificate 定义太模糊——"the solution""the correct answer"。阅卷人需要知道具体是什么：多少个点？什么格式？有没有大小限制？</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -1046,50 +1046,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q6A 小题：CARA clique 的 certificate 是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>一个 size <code>k</code> 的学生子集 <code>S</code>。Verifier 检查每对学生是否在 <code>E</code> 中。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample B Q6A 小题：CARA clique 的 certificate 是什么？”。标准答案里的“一个 size k 的学生子集 S。Verifier 检查每对学生是否在 E 中。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Certificate = 声称构成 clique 的 k 个学生集合。Verifier 三步：(1) 检查 |S| = k；(2) 检查所有学生都在 V 中；(3) 对每对 u,v∈S 检查 (u,v)∈E。如果都通过，accept。C(k,2) = O(k²) 次边查找，k ≤ |V| = n，所以 O(n²)，多项式时间。这三步是 clique ∈ NP 的标准证明。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q6A 是 Q6 的第一部分——证明 clique ∈ NP。后面 Q7 用 3-SAT 归约证 NP-hard，从而完成 NP-complete 证明。</p>
+          <p><strong>卷面写法：</strong>Certificate: a subset S of k students. Verifier: (1) |S|=k; (2) for each u≠v in S, verify (u,v)∈E; (3) accept iff all checks pass. Runtime O(k²) ⊆ O(n²). Therefore L6A ∈ NP.</p>
+          <p><strong>常见失分点：</strong>遗漏 |S|=k 检查；或不分析 runtime 多项式。三项（证书、验证步骤、runtime）缺一不可。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q6B 小题：phones vertex cover 语言的 certificate 是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>一个 size <code>k</code> 的 phone 子集 <code>S</code>。Verifier 检查每条 communication edge 至少有一个端点在 <code>S</code> 中。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample B Q6B 小题：phones vertex cover 语言的 certificate 是什么？”。标准答案里的“一个 size k 的 phone 子集 S。Verifier 检查每条 communication edge 至少有一个端点在 S 中。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Vertex cover 的 certificate = 声称覆盖所有边的 k 个 vertex（phone）。Verifier：(1) 检查 |S| = k；(2) 遍历每条边 (u,v)，检查 u∈S 或 v∈S；(3) 如果每条边都被覆盖，accept。遍历 |E| 条边，每次检查集合隶属 O(1)（用哈希集），总 O(|E|) = O(|V|²) 最坏，多项式。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q6B 和 Q6A 是同时的——一个证 clique ∈ NP，一个证 vertex cover ∈ NP。对比理解：证书都是顶点子集，但验证条件不同。</p>
+          <p><strong>卷面写法：</strong>Certificate: a set S of k phones. Verifier: (1) |S|=k; (2) for each edge (u,v), check u∈S or v∈S; (3) accept iff all edges covered. O(|E|) polynomial. L6B ∈ NP.</p>
+          <p><strong>常见失分点：</strong>写成"每条边两个端点都在 S 中"——那是 vertex cover 的条件反了，实际是"至少一个"。或写成 dominating set（覆盖所有 vertex，而非所有 edge）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Sample A Q6A 小题：两个 proper subsets <code>Y,Z</code> 覆盖 <code>A</code> 且 sums equal，certificate 是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>Certificate 是两个子集 <code>Y,Z</code>；verifier 检查 proper、覆盖每个元素、并比较两边 sum。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample A Q6A 小题：两个 proper subsets Y,Z 覆盖 A 且 sums equal，certificate 是什么？”。标准答案里的“Certificate 是两个子集 Y,Z；verifier 检查 proper、覆盖每个元素、并比较两边 sum。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>这道题要求把集合 A 分成两个 proper subset Y 和 Z（Y∪Z=A，且两个都 proper），且 sum(Y)=sum(Z)。Certificate = 两个子集 Y 和 Z。Verifier 检查：(1) Y⊂A 且 Z⊂A（proper——排除 Y=A 或 Z=A）；(2) Y∪Z = A（覆盖所有元素——每个 A 的元素至少在一个子集中）；(3) sum(Y) = sum(Z)（两边元素值求和相等）。每步都是 O(|A|) 或 O(|A|log|A|)，多项式时间。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q6A — 集合划分相关题。Certificate 不止一个集合（不像 clique），而是两个集合 Y 和 Z。注意 proper 条件——排除平凡解（Y=A, Z=∅ 之类的）。</p>
+          <p><strong>卷面写法：</strong>Certificate: two subsets Y,Z ⊆ A. Verifier: (1) Y ⊂ A, Z ⊂ A (proper); (2) Y∪Z = A; (3) sum(Y) = sum(Z). All checks O(|A|). Polynomial. L ∈ NP.</p>
+          <p><strong>常见失分点：</strong>漏掉 proper subset 检查——如果 Y=A, Z=∅，Y∪Z=A 仍然满足，但这不合 proper 要求。还有覆盖检查（每个元素至少在一个子集中）不能漏。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q2B Java <code>a+b=c</code> 怎么认出 yes？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample A Q2(b)：证明 L2B = {&lt;J,a,b,c&gt;: J is Java program, a+b=c true at least once} 是 Turing-recognisable，模拟 J 时 accept/reject 条件各是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>模拟 <code>J</code> 每一步，读变量 <code>a,b,c</code>；一旦 <code>a+b=c</code> 成立就 accept。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q2B Java a+b=c 怎么认出 yes？”。标准答案里的“模拟 J 每一步，读变量 a,b,c；一旦 a+b=c 成立就 accept。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>逐行模拟 J 的执行。每步后检查 a+b=c。满足 → accept 停机。J 终止但不满足 → reject 停机。J 无限循环且不满足 → TM 也无限循环。yes instance：条件最终发生，模拟最终到达那一刻，accept。no instance：可能 reject（J 终止）或 forever loop（J 无限循环）。这是标准的 Turing-recognisable 构造。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q2(b) — recognisable but not decidable。对比 (a) FA 题 decidable，深入理解两者区别。</p>
+          <p><strong>卷面写法：</strong>TM R on input &lt;J,a,b,c&gt;: simulate J step by step; after each step, check a+b=c; if true, accept; if J terminates without satisfying, reject; otherwise loop. L is Turing-recognisable.</p>
+          <p><strong>常见失分点：</strong>把模拟说成判定——模拟可能永不终止，不是 decider。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample A Q3：证明 L3 = {&lt;J&gt;: J takes no input, never throws Exception21} undecidable 时，构造的程序 N 怎样把 HALT 的停機行為轉換成 exception 21 的觸發？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>构造程序先模拟 <code>M(w)</code>；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q3 exception 21 如何接 HALT？”。标准答案里的“构造程序先模拟 M(w)；根据是否 halts 安排是否抛 exception 21，让 property 与 HALT 对齐。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>L3 = {&lt;P&gt;：P never throws exception 21}。归约：f(&lt;M,w&gt;) = &lt;N&gt;，N 模拟 M(w)，若停机 throw Exception21()。于是 M halts ⇔ N throws exception ⇔ &lt;N&gt;&notin;L3。所以 &lt;M,w&gt;&isin;HALT_complement ⇔ &lt;N&gt;&isin;L3。若 L3 decidable，则 HALT_complement decidable，矛盾。注意是从 HALT_complement（同样 undecidable）归约，不是直接从 HALT。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q3。构造时注意：M halts → N throws exception → N ∉ L3。所以映射关系是 HALT_complement → L3 或 HALT → complement(L3)。</p>
+          <p><strong>卷面写法：</strong>f(&lt;M,w&gt;) = &lt;N&gt;: N ignores input; simulates M on w; if halts, throw Exception21(). Then &lt;M,w&gt;&notin;HALT iff &lt;N&gt;&isin;L3. Since HALT_complement undecidable, L3 undecidable.</p>
+          <p><strong>常见失分点：</strong>归约方向和 complement 处理混乱。要先在草稿上画箭头确认映射方向：HALT_complement → L3。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#complexity">
@@ -1141,30 +1141,30 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. NP-complete 证明有哪两半？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先证明 in NP，再证明 NP-hard。缺一半都不完整。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. NP-complete 证明有哪两半？”。标准答案里的“先证明 in NP，再证明 NP-hard。缺一半都不完整。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>NP-complete 的定义就是"in NP + NP-hard"。两者缺一不可。第一部分（in NP）：给证书和多项式 verifier，证明 yes instance 可以被多项式时间验证。第二部分（NP-hard）：把一个已知的 NP-complete 问题（如 3-SAT、CLIQUE）在多项式时间内归约到你的语言。只有两半都证了，才能说你的语言是 NP-complete。Sample B 的设计正是这样——Q6 证 in NP，Q7 证 NP-hard。</p>
+          <p><strong>题目语境怎么用：</strong>Q6+Q7 是经典的 NP-complete 组合。Q6 做 in NP（给出 certificate 和 verifier），Q7 从已知 NP-complete 问题（通常题目给定，如"3-SAT is NP-complete"）做多项式时间归约。</p>
+          <p><strong>卷面写法：</strong>Part 1 (in NP): certificate = ...; verifier checks ... in O(...) time. Part 2 (NP-hard): reduce from known NP-complete problem A; construct f(x); prove x∈A iff f(x)∈L; f computable in polynomial time.</p>
+          <p><strong>常见失分点：</strong>只做一半——只证 in NP 或只证 NP-hard 都不算 NP-complete。或把 NP-hard 的归约写成 HALT reduction（混用了 computability 和 complexity 的工具）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. NP-hard reduction 的方向怎么选？</button>
         <div class="qa-answer">
-          <p><strong>核心答案（先确认概念）：</strong>从已知 NP-complete 问题 reduce 到要证明的新问题，例如 <code>3-SAT ≤p L</code>。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. NP-hard reduction 的方向怎么选？”。标准答案里的“从已知 NP-complete 问题 reduce 到要证明的新问题，例如 3-SAT ≤p L。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>核心答案（先确认概念）：</strong>从已知 NP-complete 问题 reduce 到要证明的新问题，例如 <code>3-SAT &le;p L</code>。</p>
+          <p><strong>为什么这是对的：</strong>和 undecidability 归约一样，方向是"已知难题 → 目标语言"。已知 3-SAT 是 NP-complete（即 NP-hard）。如果 3-SAT &le;p L（3-SAT 可多项式时间归约到 L），那任何 NP 问题都可以先归约到 3-SAT 再归约到 L——所以 L 也是 NP-hard。反方向（L &le;p 3-SAT）只能说明 L ∈ NP（如果再加 in NP 证明的话）但不能证明 NP-hard。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q7 给定"3-SAT is NP-complete"，要求你从 3-SAT 归约到 CARA clique。方向：3-SAT → CARA clique。将 3-SAT 的 formula φ 映射为图 G 和数字 k。</p>
+          <p><strong>卷面写法：</strong>Reduce from 3-SAT: given a 3-CNF formula φ with m clauses, construct a graph G = (V,E) and integer k = m such that φ is satisfiable iff G has a k-clique.</p>
+          <p><strong>常见失分点：</strong>方向写反——把 L 归约到 3-SAT 只说明 L ∈ NP，不是 NP-hard。另外，构造必须在多项式时间内完成（节点数、边数都是多项式）。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容3. Correctness 要证明哪两个方向？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>原实例 yes 推出新实例 yes；新实例 yes 也能反推出原实例 yes。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. Correctness 要证明哪两个方向？”。标准答案里的“原实例 yes 推出新实例 yes；新实例 yes 也能反推出原实例 yes。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>Reduction correctness 的 iff：(→) φ satisfiable ⇒ G has k-clique。做法：从 satisfying assignment 中每 clause 选一个 true literal，对应 vertex 构成 clique。(←) G has k-clique ⇒ φ satisfiable。做法：k-clique 必须每 clause 恰好一个 vertex（因为 clause 内无边），这些 vertex 对应的 literal 互不冲突（冲突则无边），全设为 true 就是 satisfying assignment。两个方向都证了，归约才完整。缺一个方向，decider for L 的答案不能可靠地翻译回原问题。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q7(c) 要求证明 reduction 的 correctness。分两个段落：Paragraph 1 = forward direction；Paragraph 2 = reverse direction。每段都要给出明确的推理链。</p>
+          <p><strong>卷面写法：</strong>(⇒) If φ satisfiable with assignment τ: for each clause, pick one literal true under τ; corresponding vertices form k-clique because true literals never conflict. (⇐) If G has k-clique: since vertices in same clause are not connected, clique must contain exactly one per clause; set those literals true; they don't conflict, so τ is satisfying.</p>
+          <p><strong>常见失分点：</strong>← 方向忘记论证"每 clause 恰好一个 vertex"——需要用到"clause 内部无边"+"clique 大小 = clause 数"。"互不冲突"也需要用"冲突 literal 之间无边"来论证。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
@@ -1172,50 +1172,50 @@
         <button class="qa-question" type="button" aria-expanded="false">考试1. Sample B Q7 小题：要证明 CARA clique NP-complete，已知源问题是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>题目给定 3-SAT is NP-complete，因此 reduction 从 3-SAT 到 L6A/CARA clique。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. Sample B Q7 小题：要证明 CARA clique NP-complete，已知源问题是什么？”。标准答案里的“题目给定 3-SAT is NP-complete，因此 reduction 从 3-SAT 到 L6A/CARA clique。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>NP-hard 归约必须从一个已知 NP-complete 问题出发。题目明确给了"3-SAT is NP-complete"作为已知条件。所以方向是 3-SAT ≤p CARA clique。将任意 3-CNF formula φ 映射为 (G, k)，使得 φ satisfiable iff G has k-clique。如果做成了，因为 3-SAT 是 NP-hard，CARA clique 也是 NP-hard。加上 Q6A 已证 ∈ NP，就完成了 NP-complete。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q7(a) 描述 reduction 构造，(b) 给具体公式输出图，(c) 证 correctness 和 NP-complete。</p>
+          <p><strong>卷面写法：</strong>Since 3-SAT is NP-complete, reduce from 3-SAT: given 3-CNF φ with m clauses, construct G with 3m vertices (one per literal occurrence) and k = m.</p>
+          <p><strong>常见失分点：</strong>不知道或忘记引用题目给的已知条件"3-SAT is NP-complete"。或选了错误的源问题。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q7(b) 小题：给公式 <code>(b∨a∨c)...</code> 要求 reduction output，考的是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q7(b) 小题：给公式 <code>(b&or;a&or;c)...</code> 要求 reduction output，考的是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>考你是否真的会把 clauses/literals 转成 clique construction 的 vertices 和 edges，而不是只背模板。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. Sample B Q7(b) 小题：给公式 (b∨a∨c)... 要求 reduction output，考的是什么？”。标准答案里的“考你是否真的会把 clauses/literals 转成 clique construction 的 vertices 和 edges，而不是只背模板。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>这道题不再让你描述 reduction 的一般方法，而是给一个具体的 3-CNF formula，要求你输出对应的图（列出 vertices 和 edges）以及 k 值。这是验证你"真的会构造"而不是"只会说构造方法"。你需要：每个 clause 的 3 个 literal → 3 个 vertex（标记为 literal 名）；同一 clause 内的 vertex 之间不加边；不同 clause 的 vertex 之间，如果对应的 literal 不冲突（不是 x 和 ¬x 的关系），就连边。k = clause 数。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q7(b) — 给了具体公式如 (b∨a∨c)∧(¬b∨a∨¬c)...，你要画出 vertices 列表和 edges 列表。</p>
+          <p><strong>卷面写法：</strong>Vertices: (b,1), (a,1), (c,1), (¬b,2), (a,2), (¬c,2), ... where (ℓ,i) means literal ℓ from clause i. Edges: (ℓ,i)–(ℓ´,j) for i≠j and ℓ ≠ ¬ℓ´. k = number of clauses.</p>
+          <p><strong>常见失分点：</strong>忘记同一 clause 内部的 literal 之间不加边。或者加边规则搞反——把冲突 literal 连上了。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. Sample Q7 小题：证明 NP-complete 时为什么要引用前一题 in NP？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>因为 NP-complete 需要 membership + hardness；前一题已经证明 <code>L∈NP</code>，Q7 重点补 NP-hard reduction。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. Sample Q7 小题：证明 NP-complete 时为什么要引用前一题 in NP？”。标准答案里的“因为 NP-complete 需要 membership + hardness；前一题已经证明 L∈NP，Q7 重点补 NP-hard reduction。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>标准答案（先写结论）：</strong>因为 NP-complete 需要 membership + hardness；前一题已经证明 <code>L&isin;NP</code>，Q7 重点补 NP-hard reduction。</p>
+          <p><strong>为什么这是对的：</strong>NP-complete = in NP + NP-hard。Sample B Q6A 已经证明了 CARA clique ∈ NP（给了 certificate 和 verifier）。Q7 的任务是补上 NP-hard 证明。因此 Q7 的开头应该引用 Q6A 的结论："By Q6A, we already have L6A ∈ NP. It remains to prove NP-hardness." 如果不引用，阅卷人可能认为你忘了 in NP 这一半，或者要求你重新写一遍。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q7 — 开头先声明"From Q6, we have L ∈ NP. Now we prove NP-hardness by reduction from 3-SAT."</p>
+          <p><strong>卷面写法：</strong>By Question 6A, L6A ∈ NP. To show NP-complete, we prove L6A is NP-hard. Reduce from 3-SAT...</p>
+          <p><strong>常见失分点：</strong>完全不提 Q6A 的结论，重新写一遍 in NP 证明（浪费时间），或者忘记 NP-complete 需要两半。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample B Q1A 的 word 怎么选？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample B Q1(a)：证明 L1A = {w1#w2#...#w2n : wi∈{a}*, n&gt;0, wi=wi+1 for one odd i} not regular 时，witness word 怎么利用 odd i 的条件来选？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>选足够长的 unary block 串，让 pumping 后某个奇数位置相邻 blocks 不再相等，从而破坏 yes 条件。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample B Q1A 的 word 怎么选？”。标准答案里的“选足够长的 unary block 串，让 pumping 后某个奇数位置相邻 blocks 不再相等，从而破坏 yes 条件。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 Pumping 题不能只说“机器记不住”，必须用 pumping lemma 的量词结构说明任意合法 split 被 pump 后都会破坏语言条件。</p>
-          <p><strong>题目语境怎么用：</strong>题面里的 block、数量相等、分隔符或复制关系决定 witness word 怎么选，也决定 pumped 段会落在哪个局部区域。</p>
-          <p><strong>卷面写法：</strong>卷面写：假设 regular/CFL，取 pumping length p，选 witness，说明任意 split 的限制，取 i=0 或 i=2，指出 pumped word 违反哪条语言定义。</p>
-          <p><strong>常见失分点：</strong>不要自己挑一个方便 split；你要覆盖所有合法 split。也不要省略 witness 和 pump 后的矛盾。</p>
+          <p><strong>为什么这是对的：</strong>L1A 的 yes 条件是"存在某个奇数 i 使 wi=wi+1"。选 witness 时策略：(1) 让 block 数 &ge; 2p（保证 |xy|&le;p 只能覆盖最早几个 block），(2) 每个 block 长度不同且足够大（如用 p 的倍数偏移），(3) 只让一对 block（比如 w1 和 w2）等长，其他都不等。pump 后改变 w1 或 w2 的长度，等长关系破坏。注意避免 pump 后意外产生新等长关系。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q1(a) pumping 题。witness 选择是 pumping 证明中最需要技巧的一步——要"脆弱"到 pump 必坏。</p>
+          <p><strong>卷面写法：</strong>Choose w = a^p # a^p # a^{p+1} # a^{p+2} # ... # a^{p+2p-2} (total 2p blocks). Only w1 = w2 = a^p. |xy| ≤ p ⇒ y entirely within first block(s). Pumping changes w1 or w2, breaking the only equal pair.</p>
+          <p><strong>常见失分点：</strong>witness 让多对 block 等长——pump 后可能意外"修复"，使 pumped word 仍在 L 中。要让语言条件极其脆弱。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample A Q2(a)：证明 L2A = {&lt;M&gt;: M is FA that accepts at least one word of length >5} decidable，为什么 FA 的有限状态保证搜索会停机？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample A Q2A FA 长度 >5 为什么 decidable？”。标准答案里的“FA 状态有限，只需系统搜索长度超过 5 的可达 accepting path；搜索空间有限，最后 halt。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>FA 有 n 个状态。目标：是否存在长度 ≥ 6 的 accepting path。算法：搜索状态图，看 accept state 是否可通过长度 ≥ 6 的路径从 start state 到达。因为有状态循环，长度可以无限——但只要发现一条包含循环且通往 accept state 的路径，就是 yes。具体做法：先查是否有简单路径（无环）长度 ≥ 6 到达 accept；如果有含环路径，任意长都可达，yes。搜索在检查完所有 (state, length_in_mod) 或所有无环路径后必然终止。所以 decidable。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q2(a) — FA 相关问题都是 decidable，因为"输入对象本身提供了终止边界"。对比 (b) Java 题。</p>
+          <p><strong>卷面写法：</strong>Search FA state graph for an accepting path of length ≥ 6. Since FA has finitely many states, either (a) a simple path of length ≥ 6 reaches accept → yes, or (b) a cycle exists on the way to accept → infinite paths exist → yes, or (c) no path of length ≥ 6 reaches accept → no. Algorithm halts. L is decidable.</p>
+          <p><strong>常见失分点：</strong>忘记论证搜索终止——只说"搜索有限"没说明为什么。要提到 FA 状态数有限决定了无环路径数量的上界。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#np-complete">
@@ -1275,81 +1275,81 @@
         <button class="qa-question" type="button" aria-expanded="false">内容1. CS605 做题第一步永远是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>先把 language 和输入编码翻译成人话，再决定用哪种证明工具。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容1. CS605 做题第一步永远是什么？”。标准答案里的“先把 language 和输入编码翻译成人话，再决定用哪种证明工具。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>无论题目表面长什么样（Java 程序、社交图、unary block 串），第一步永远是"翻译成语言"：确定输入编码是什么、冒号后的 yes 条件是什么。翻译完成后，自然就知道该选什么证明工具：裸字符串 → pumping；机器编码 → recogniser/decider/reduction；图/集合结构 → NP。如果跳过翻译直接套模板，方向大概率偏。这道"第一步"的原则贯穿全部 9 个 section。</p>
+          <p><strong>题目语境怎么用：</strong>看到任何题面，先在草稿纸上写下 L = { &lt;...&gt; : ... }。花 30 秒做这步，后面 10 分钟的证明才不会跑偏。</p>
+          <p><strong>卷面写法：</strong>开场句：Let L = { &lt;input encoding&gt; : &lt;yes condition&gt; }. We need to determine/prove L is... 这句翻译给阅卷人信号：你看懂题了。</p>
+          <p><strong>常见失分点：</strong>跳过翻译直接套模板——比如看到尖括号就直接写 HALT reduction，但题面可能只是问 in NP。翻译错了，全场崩。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
         <button class="qa-question" type="button" aria-expanded="false">内容2. Q1 到 Q7 的主线是什么？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>从机器能力边界，到可判定/可识别，到 HALT 归约，再到 P/NP 和 NP-complete。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容2. Q1 到 Q7 的主线是什么？”。标准答案里的“从机器能力边界，到可判定/可识别，到 HALT 归约，再到 P/NP 和 NP-complete。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>CS605 整门课沿着一条故事线：Q1（pumping）讨论"哪些语言是 FA/PDA 处理不了的"——机器的能力边界。Q2 讨论"哪些问题是 decidable/recognisable"——计算的边界。Q3-Q5 讨论"哪些问题比 HALT 还难"——通过归约传播不可判定性。Q6-Q7 讨论"哪些问题能快速验证但不能快速求解"——P vs NP 的边界。这条线从"机器"走到"计算"走到"效率"，每个阶段使用不同但递增的工具。</p>
+          <p><strong>题目语境怎么用：</strong>复习时按 Q1→Q7 顺序，每阶段只练对应的证明模板。不要把 HALT reduction 用在 Q1，也不要把 pumping 用在 Q6。</p>
+          <p><strong>卷面写法：</strong>按题目号判断证明类型：Q1 = pumping（regular 或 CFL）；Q2 = decider/recogniser 构造；Q3-Q5 = HALT mapping reduction；Q6 = in NP（certificate+verifier）；Q7 = NP-complete（in NP + NP-hard reduction）。</p>
+          <p><strong>常见失分点：</strong>跨题型混用工具——比如在 Q7 里写 HALT reduction 证明 NP-hard。NP-hard 归约是用已知 NP-complete 问题做多项式归约，不是从 HALT。</p>
         </div>
       </article>
       <article class="qa-card qa-card-content">
-        <button class="qa-question" type="button" aria-expanded="false">内容3. 为什么题型页要在线性页之后用？</button>
+        <button class="qa-question" type="button" aria-expanded="false">复习策略：内容3. 为什么题型页要在线性页之后用？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>线性页建立概念依赖；题型页把概念压成可交卷的证明模板。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“内容3. 为什么题型页要在线性页之后用？”。标准答案里的“线性页建立概念依赖；题型页把概念压成可交卷的证明模板。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 CS605 基础题要先把题面翻成形式对象：输入编码是什么、yes condition 是什么、需要哪类证明工具。</p>
-          <p><strong>题目语境怎么用：</strong>如果题面只是在问读定义、反证法、iff 或 proof structure，不要马上套 HALT；先说明它怎样帮助你选择 pumping、decider/recogniser、reduction 或 NP 工具。</p>
-          <p><strong>卷面写法：</strong>卷面写法是先翻译语言/性质，再说明工具选择理由，再写对应证明结构。遇到 reduction 才进一步补 construction 和 iff。</p>
-          <p><strong>常见失分点：</strong>不要把所有出现 reduction 的地方都写成 HALT。基础题经常只是问 proof discipline：对象、假设、构造和双向正确性。</p>
+          <p><strong>为什么这是对的：</strong>线性页（本页）按"为什么需要这个工具 → 工具怎么用 → 工具在什么题里用"的逻辑展开。题型页（cs605.html）按题型（Q1、Q2...）组织答案模板。如果先看题型页，你是在背模板；如果先看线性页，你是在理解模板为什么长这样。理解了再背，遇到变体题才能自己调整。两者的关系：线性页是"教材"，题型页是"习题集"。</p>
+          <p><strong>题目语境怎么用：</strong>学习顺序：读完线性页的某个 section → 去题型页找对应题型 → 自己盖住答案做 → 用线性页的 Q&A 对照理解。</p>
+          <p><strong>卷面写法：</strong>N/A — 这是学习方法题，不是考试答题格式。</p>
+          <p><strong>常见失分点：</strong>跳过线性页直接看题型页——背了模板但不懂为什么，考试题稍微变形就不会用。</p>
         </div>
       </article>
       <p class="qa-subtitle">考试题目题（再做 5 题）</p>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试1. CS605 Sample A 小题：学完 decider/recogniser 后先练哪题？</button>
+        <button class="qa-question" type="button" aria-expanded="false">复习策略：考试1. CS605 Sample A 小题：学完 decider/recogniser 后先练哪题？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>练 Q2：FA accepts word length >5 decidable，以及 Java <code>a+b=c</code> Turing-recognisable。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试1. CS605 Sample A 小题：学完 decider/recogniser 后先练哪题？”。标准答案里的“练 Q2：FA accepts word length >5 decidable，以及 Java a+b=c Turing-recognisable。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 这里要区分 decidable 和 recognisable。FA 题通常能用有限图搜索并停机；程序 eventually 性质通常只能模拟到事件发生，no case 可能一直等。</p>
-          <p><strong>题目语境怎么用：</strong>FA 题抓状态有限；Java/TM 运行中某事件 eventually 发生，则抓 step-by-step simulation 和 accept 条件。</p>
-          <p><strong>卷面写法：</strong>若证明 decidable，要写算法并证明 halts on all inputs。若证明 recognisable，要写模拟过程和 accept 条件，并承认 no instance 可能不停。</p>
-          <p><strong>常见失分点：</strong>不要把“能模拟”直接说成 decidable。模拟可能永远跑下去，只能支持 recognisable。</p>
+          <p><strong>为什么这是对的：</strong>Q2 是"decidable vs recognisable"的直接考察。Sample A Q2(a) 是 FA 题（decidable——状态有限保证搜索终止），(b) 是 Java 程序题（recognisable——模拟可能永不终止）。两问一起练，能建立最核心的区分直觉："输入对象本身的有限性"是 decidable 的保证，"程序行为的不确定性"让题目降到 recognisable。练完这两问，再去 Q3-Q5 做 HALT 归约就会更清楚为什么要归约。</p>
+          <p><strong>题目语境怎么用：</strong>复习顺序：学完 TM 章节 → 练 Sample A/B Q2（各两道子题）→ 确保能区分 decidable/recognisable → 进入 reductions 章节。</p>
+          <p><strong>卷面写法：</strong>练题时：(a) 写算法、论证终止；(b) 写模拟器、说明 why recognisable but not decidable。对比两问的终止论证差异。</p>
+          <p><strong>常见失分点：</strong>只练其中一问，没建立对比。没有对比就无法理解"为什么一个 decidable 一个不是"的关键差异。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试2. CS605 Sample A 小题：学完 reductions 后先练哪题？</button>
+        <button class="qa-question" type="button" aria-expanded="false">复习策略：考试2. CS605 Sample A 小题：学完 reductions 后先练哪题？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>练 Q3 exception 21 和 Q5 line number n never executed 的 HALT mapping reductions。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试2. CS605 Sample A 小题：学完 reductions 后先练哪题？”。标准答案里的“练 Q3 exception 21 和 Q5 line number n never executed 的 HALT mapping reductions。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>Q3 和 Q5 是 HALT reduction 的两种经典变形。Q3（exception 21）代表"程序是否抛出某异常"类 property——构造 N 在模拟 HALT 后触发异常。Q5（line never executed）代表"程序是否到达某行"类 property——把目标行放在模拟 HALT 后。两者都是"后置触发"模式，但 property 本质不同：一个是异常（运行时事件），一个是代码行（静态结构+运行时）。练这两种，基本覆盖了所有 HALT reduction 的构造模式。</p>
+          <p><strong>题目语境怎么用：</strong>学完 reductions → 先练这两题的完整构造+iff→ 再练更复杂的（如"throughout execution"类）。</p>
+          <p><strong>卷面写法：</strong>每道归约题都按四步写：假设 decider → 构造 f → 证 iff 双向 → contradiction。</p>
+          <p><strong>常见失分点：</strong>不亲自写完整答案，只在脑子里"想一遍"——归约题的关键是构造和 iff 的措辞精确度，想和写差距很大。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试3. CS605 Sample B 小题：学完 NP 后先练哪题？</button>
+        <button class="qa-question" type="button" aria-expanded="false">复习策略：考试3. CS605 Sample B 小题：学完 NP 后先练哪题？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>练 Q6 CARA clique/phone vertex cover in NP，再接 Q7 3-SAT reduction。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试3. CS605 Sample B 小题：学完 NP 后先练哪题？”。标准答案里的“练 Q6 CARA clique/phone vertex cover in NP，再接 Q7 3-SAT reduction。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Sample B Q6+Q7 是 NP-complete 的完整流程。Q6A（clique ∈ NP）和 Q6B（vertex cover ∈ NP）教你 certificate-verifier 的标准写法。Q7（3-SAT to clique reduction）教你 NP-hard 归约的构造+correctness 双方向。四道题连在一起练，等于完整跑了一遍 NP-complete 证明的所有环节：membership（Q6）→ reduction construction（Q7a）→ concrete output（Q7b）→ correctness proof（Q7c）。</p>
+          <p><strong>题目语境怎么用：</strong>先练 Q6（理解 certificate-verifier 范式），再练 Q7（理解多项式归约和 iff 正确性）。不要反过来——没有 Q6 的 in NP 基础，Q7 的 NP-complete 不完整。</p>
+          <p><strong>卷面写法：</strong>Q6：certificate + verifier + polynomial time。Q7：reduce from known NP-complete problem + prove iff + prove polynomial construction。</p>
+          <p><strong>常见失分点：</strong>单独练 Q6 或 Q7，没理解两问之间的依赖。NP-complete = former + latter，考试中常常两问连着出。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 考试补题：Sample A Q5 line never executed 怎么构造？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试4. CS605 Sample A Q5：证明 L5 = {&lt;M,n&gt;: M is Java program, line n never executed} undecidable 时，构造的程序 N 把目标行放在什么位置才能让 HALT→线被执行？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>把目标 line 放在模拟 <code>M(w)</code> 之后；模拟停机才执行该 line，不停机则永远不到。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试4. CS605 考试补题：Sample A Q5 line never executed 怎么构造？”。标准答案里的“把目标 line 放在模拟 M(w) 之后；模拟停机才执行该 line，不停机则永远不到。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 HALT 归约题的核心是把题目 property 变成停机问题的开关：如果目标性质可判定，就能判定 M(w) 是否停机，从而矛盾。</p>
-          <p><strong>题目语境怎么用：</strong>构造程序 N 时通常先模拟 M(w)：若停机，就触发 exception、执行指定 line 或破坏某个 throughout 条件；若不停机，就不触发该性质。</p>
-          <p><strong>卷面写法：</strong>卷面四步：假设 decider D 存在；从 <M,w> 有效构造 N；运行 D(N)；证明 M(w) halts iff N 具有题目性质；最后写 contradiction。</p>
-          <p><strong>常见失分点：</strong>不能只写 reduce to HALT。mapping 怎么造、为什么 computable、iff 两个方向都要写。</p>
+          <p><strong>为什么这是对的：</strong>经典"后置触发"模式。N：ignore input → simulate M on w → if halts, execute target line n。这样 M halts ⇔ line executed。有了这个映射，从 HALT 归约到目标 property 的 complement（或等价地，直接构造 HALT_complement 的归约）。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A Q5 — 反复练习的 HALT reduction 基础题。构造简单但 iff 证明要完整。</p>
+          <p><strong>卷面写法：</strong>Assume decider D for L. f(&lt;M,w&gt;) = &lt;N, n&gt;: N ignores input; simulates M on w; if halts, executes line n. M halts iff N reaches line n iff &lt;N,n&gt;&notin;L. Contradiction: HALT would be decidable.</p>
+          <p><strong>常见失分点：</strong>iff 双向证不完整，或目标行位置放错。</p>
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q6(a)：证明 CARA clique（学生朋友图，k 人两两互为好友）在 NP，certificate 和 verifier 各是什么？verifier 多项式时间的理由？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>证书是 <code>k</code> 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。</p>
-          <p><strong>标准分析（为什么）：</strong>这道小题问的是“考试5. CS605 考试补题：Sample B Q6A CARA in NP 证书是什么？”。标准答案里的“证书是 k 个学生的集合；verifier 二重循环检查每一对是否有 friend edge。”只是结论，真正要拿分的是说明题面为什么支持这个结论。 NP 题要证明候选答案可在 polynomial time 检查，而不是只说 guess。要说 certificate 是什么、verifier 检查什么、循环规模为什么是多项式。</p>
-          <p><strong>题目语境怎么用：</strong>CARA clique、vertex cover、3-SAT clauses/literals 都是在给 certificate 和 verifier 的语境：clique 检查点集两两有 edge；3-SAT reduction 检查 clause/literal 到目标结构的对应。</p>
-          <p><strong>卷面写法：</strong>in NP 写 certificate、verifier、polynomial time。NP-complete 写 membership，再从已知 NP-complete 问题构造并证明 yes iff yes。</p>
-          <p><strong>常见失分点：</strong>不要把 NP-complete reduction 写成 HALT reduction。3-SAT reduction 用来证明 NP-hard；HALT reduction 用来证明 undecidable。</p>
+          <p><strong>为什么这是对的：</strong>Clique NP 证明三要素：certificate = k 学生集合；verifier = 大小检查 + 逐对边检查；runtime = O(k²) ⊆ O(n²) 多项式。这是整个 NP 章节里最基础和重复的题，必须能闭眼默写。</p>
+          <p><strong>题目语境怎么用：</strong>跨章节高频补题。无论在哪个 section 出现，答案结构不变。</p>
+          <p><strong>卷面写法：</strong>Certificate: S ⊆ V, |S| = k. Verifier: for each u≠v in S, check (u,v) ∈ E. Accept iff all pass. O(k²) checks. L ∈ NP.</p>
+          <p><strong>常见失分点：</strong>三项缺一不可：证书定义、验证步骤、多项式时间论证。</p>
         </div>
       </article>
       <div class="qa-gate" data-progress-key="cs605-linear.html#exam-ladder">
