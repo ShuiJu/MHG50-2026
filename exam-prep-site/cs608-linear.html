@@ -17,6 +17,7 @@
           <a href="#test-case">测试用例</a>
           <a href="#black-box">黑盒</a>
           <a href="#white-box">白盒</a>
+          <a href="cs608.html#examiner-notes">教师批注</a>
           <a href="#random">随机测试</a>
         </nav>
       </div>
@@ -33,6 +34,7 @@
           <a class="tag" href="#white-box">SC / BC / JaCoCo</a>
           <a class="tag" href="#oo">Class Context</a>
           <a class="tag" href="#automation">Automation</a>
+          <a class="tag" href="cs608.html#examiner-notes">2026 教师批注</a>
           <a class="tag" href="#exam-ladder">考试台阶</a>
         </div>
       </section>
@@ -88,7 +90,7 @@
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>输入、执行方式和 expected result。更完整时还包括测试目标、环境和实际结果记录。</p>
           <p><strong>为什么这是对的：</strong>test case 是"可独立复现的验证单元"。假设你写"测 age=17"，别人不知道你调哪个函数、期望什么输出。但写成"调用 fare(17)，期望返回 child fare"，任何同学都能复现并判断对错。加上 TCI 是为了可追溯——知道这个 test case 在覆盖哪个风险点。</p>
-          <p><strong>题目语境怎么用：</strong>考试里给出 test case 时，至少包含 Method Name、Input Values、Expected Output 三列。如果涉及对象类（如 Q3），还要加上 Object Initial State，因为 instance method 的行为依赖对象状态。</p>
+          <p><strong>题目语境怎么用：</strong>考试里给出 test case 时，至少包含 Method Name、Input Values、Expected Results 三列。如果涉及对象类（如 Q3），还要加上 Object Initial State，因为 instance method 的行为依赖对象状态。</p>
           <p><strong>卷面写法：</strong>用结构化表格：列标题 TCI | Input Data | Method Call | Expected Result。不要写成描述性段落——阅卷人找不到关键信息会扣分。TCI 写抽象目标，Data 写具体值，Expected 写可验证的输出。</p>
           <p><strong>常见失分点：</strong>漏写 expected result；把 TCI 和 test case 混为一谈填在同一格；忘记写被测方法名称和参数；对象测试题漏写对象初始状态。</p>
         </div>
@@ -460,6 +462,20 @@
               <li><strong>构造 additional test。</strong>让之前没出现的 true/false 结果发生。</li>
               <li><strong>写为什么它补 coverage。</strong>不要只给输入，要说明它触发了哪条未覆盖语句或分支。</li>
             </ol>
+            <h3>教师批注反向校准：先搭表格，再填分析</h3>
+            <p>Summer 2022 Q2(b) Waves.categorise 的批注提醒很具体：白盒 coverage 题用表格可以减少书写量，也让判卷人立刻看到你覆盖了哪一行。线性学习时要把这个当成白盒题的“输出格式”，而不是最后临时整理。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>学习动作</th><th>考试输出</th><th>Waves.categorise 例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>从红线反推条件</td><td>Conditions table: ID / Line Number / Condition</td><td>line 37 的条件是 <code>13 &lt;= h &amp;&amp; h &lt; 25</code>，不是只写“middle value”。</td></tr>
+                  <tr><td>把条件变成覆盖项</td><td>TCI table: TCI / Line Number / Test Case</td><td>SC2 | 37 | T2。TCI 表只写 line number 和 test case 编号，不抄 source code。</td></tr>
+                  <tr><td>给具体输入和判定</td><td>Test Cases table: Test Case / Input / Expected Results</td><td>T2 | <code>h=19</code> | MODERATE。术语用 Expected Results，不写 Expected Output。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <h3>短路逻辑不要跳过</h3>
             <p>Short-circuit evaluation 指复合条件可能提前停止。<code>A && B</code> 中，如果 <code>A</code> false，<code>B</code> 不会被检查；<code>A || B</code> 中，如果 <code>A</code> true，<code>B</code> 不会被检查。这会影响分支和条件覆盖，也会影响某些函数调用是否发生。</p>
             <div class="answer-box">
@@ -598,6 +614,19 @@
             </ol>
             <div class="answer-box">
               <p><strong>class context 模板：</strong>Create an object in a known initial state. Use public methods to place it in the required state. Call the method under test. Use an accessor or return value to observe the result. Assert the expected value derived from the specification.</p>
+            </div>
+            <h3>教师批注反向校准：Q3 先分 class context 和 state-based</h3>
+            <p>Stephen Brown 给出的练习年份其实是在告诉你：OO 题有两条线，不要把所有题都套成同一种调用序列。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>复习线</th><th>先练哪些年份</th><th>核心产物</th><th>读题警戒</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Testing in class context</td><td>2018、2020、2021、2022、2023、2024、2025</td><td>完整 method call sequence：new、setter/mutator、method under test、getter/return、assert。</td><td>重点是对象状态如何通过 public API 被设置和观察。</td></tr>
+                  <tr><td>State-based testing</td><td>2016、2017</td><td>状态名、state query、transition/action、必要时的 method signatures。</td><td>Jan 2017 Q3(b) 没问 signatures 就用 <code>isShipped()</code>/<code>isReturned()</code>；Q3(c) 才写 full signatures。</td></tr>
+                </tbody>
+              </table>
             </div>
             <h3>把 Q3 class context 变成调用序列</h3>
             <div class="table-wrap">
@@ -1071,7 +1100,7 @@
           <p><strong>标准答案（先写结论）：</strong>它组合温度区间和 <code>isOn</code>，effects 是 <code>NONE</code>/<code>LOW</code>/<code>HIGH</code>，每条可行 rule 要有 test case。</p>
           <p><strong>为什么这是对的：</strong>boilerSetting 是 DT 的经典案例。温度 t 有三个互斥区间（<1、[1,25)、>=25）和 isOn 布尔条件，两个维度组合决定三态输出 NONE/LOW/HIGH。单独测温度或单独测开关都不够——必须测组合。DT 表系统地陈列所有组合，划掉互斥不可行的，为每条可行 rule 写 test case。</p>
           <p><strong>题目语境怎么用：</strong>这道题示范了 DT 的完整步骤：1)识别 causes（温度区间 + 开关状态）；2)识别 effects（三种输出）；3)列所有理论组合；4)划掉互斥 infeasible 组合；5)为 feasible rules 写 test case。</p>
-          <p><strong>卷面写法：</strong>DT 表：causes t<1? | 1<=t<25? | t>=25? | isOn? ；effects NONE | LOW | HIGH。每列一条 rule。互斥的 t 区间同时为 T 的列划掉。然后为每条可行 rule 给具体 t 和 isOn 值和 expected output。</p>
+          <p><strong>卷面写法：</strong>DT 表：causes t<1? | 1<=t<25? | t>=25? | isOn? ；effects NONE | LOW | HIGH。每列一条 rule。互斥的 t 区间同时为 T 的列划掉。然后为每条可行 rule 给具体 t 和 isOn 值和 expected result。</p>
           <p><strong>常见失分点：</strong>把三个温度区间当独立条件不标互斥；没有划掉 infeasible combinations；只列 DT 不给 test case；effects 写成 maybe LOW 而非精确定值。</p>
         </div>
       </article>

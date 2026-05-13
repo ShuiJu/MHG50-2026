@@ -53,7 +53,7 @@
                   <tr><td>ReactJS、componentization、stack</td><td>CS615 frontend/framework explanation</td><td>定义 + component/props/state + stack 各层职责</td><td>有没有只写"React 更快"。</td></tr>
                   <tr><td>Prove not regular / not CFL</td><td>CS605 pumping proof</td><td>选 word、任意 split、pump 后矛盾</td><td>有没有覆盖所有合法切法。</td></tr>
                   <tr><td>Java program property、HALT、mapping reduction</td><td>CS605 undecidability</td><td>构造 N + iff + contradiction</td><td>有没有说明 property 如何被 halting 控制。</td></tr>
-                  <tr><td>BVA、TCI、test cases、without errors</td><td>CS608 black-box testing</td><td>TCI table、data values、test cases、expected result</td><td>有没有重复覆盖、有没有 expected output。</td></tr>
+                  <tr><td>BVA、TCI、test cases、without errors</td><td>CS608 black-box testing</td><td>TCI table、data values、test cases、expected result</td><td>有没有重复覆盖、有没有 expected result。</td></tr>
                   <tr><td>JaCoCo yellow/red、SC/BC、additional tests</td><td>CS608 white-box testing</td><td>缺口说明 + additional tests + coverage explanation</td><td>有没有说明新测试补哪条 line/branch。</td></tr>
                   <tr><td>Hoare logic、partial/total correctness</td><td>CS603 program proof</td><td>pre/post、invariant、rule use、variant if total</td><td>有没有把 invariant 和 exit condition 接到 postcondition。</td></tr>
                   <tr><td>Spin、NuSMV、LTL、CTL、temporal</td><td>CS603 model checking</td><td>state model + formula + verification/counterexample</td><td>有没有给具体 formula，例如 <code>G(request -> F response)</code>。</td></tr>
@@ -128,8 +128,8 @@
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试4. 首页考试补题：CS608 2025 Summer Q1(c)：Climate.determine BVA 第一轮应产出 partitions 表、TCI 表和 test cases 表，三张表中哪张表的 expected result 列最容易因为不从 spec 推导而写错？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>Climate.determine 的 input/output partitions、围绕 16 和 60 的 BVA data values、以及带 expected output 的 test cases。</p>
-          <p><strong>为什么这是对的：</strong>Climate.determine 的 spec 用 temp=16 和 humidity=60 作为判定边界，fault 倾向于在这些阈值的 just below/on/above 位置出现。所以第一轮不是泛泛地"做测试"，而是产出三张具体的表——partition 表把输入域按判定结果分区、BVA 表为每个分区边界选 representative values、test case 表把每个值配上从 spec 推出的 expected output。三张表检查完，这道题的核心分就稳了。</p>
+          <p><strong>标准答案（先写结论）：</strong>Climate.determine 的 input/output partitions、围绕 16 和 60 的 BVA data values、以及带 expected result 的 test cases。</p>
+          <p><strong>为什么这是对的：</strong>Climate.determine 的 spec 用 temp=16 和 humidity=60 作为判定边界，fault 倾向于在这些阈值的 just below/on/above 位置出现。所以第一轮不是泛泛地"做测试"，而是产出三张具体的表——partition 表把输入域按判定结果分区、BVA 表为每个分区边界选 representative values、test case 表把每个值配上从 spec 推出的 expected result。三张表检查完，这道题的核心分就稳了。</p>
           <p><strong>题目语境怎么用：</strong>temp 围绕 16 取 15/16/17，humidity 围绕 60 取 59/60/61。然后按 spec 中各区间组合的判定逻辑（例如 temp>=16 and humidity>=60 → Hot and Humid）分别给出 expected result。</p>
           <p><strong>卷面写法：</strong>三张表顺序不能乱：先做 equivalence partitioning（按输出类别分区），再做 BVA（为每个分区边界取三值），最后写完整 test cases（TCI+selected value+test case+expected result）。每张表都标注它测试的 spec 条款。</p>
           <p><strong>常见失分点：</strong>跳过 partition 直接写 test case，导致边界值覆盖不系统；或者 expected result 是自己猜的而不是从 specification 逐条推出的。</p>
@@ -517,7 +517,7 @@
                   <tr><td>CS615</td><td>Security 只写 sanitize。</td><td>SQL injection 写 parameterized queries；XSS 写 output encoding、sanitization、CSP、HttpOnly cookies。</td></tr>
                   <tr><td>CS605</td><td>Pumping proof 只展示一个切法。</td><td>写任意合法 split，并用条件限制被 pump 的段在哪里。</td></tr>
                   <tr><td>CS605</td><td>Reduction 只写"reduce from HALT"。</td><td>写构造、computable mapping、iff、contradiction。</td></tr>
-                  <tr><td>CS608</td><td>Test case 只有输入，没有 expected result。</td><td>每个 test case 都写 call、inputs、expected output，并说明覆盖哪个 TCI。</td></tr>
+                  <tr><td>CS608</td><td>Test case 只有输入，没有 expected result。</td><td>每个 test case 都写 call、inputs、expected result，并说明覆盖哪个 TCI。</td></tr>
                   <tr><td>CS608</td><td>White-box 只说"add tests"。</td><td>指出未覆盖 line/branch，给触发条件和 expected result。</td></tr>
                   <tr><td>CS603</td><td>Invariant 只写自然语言"it works"。</td><td>写范围 invariant、已处理部分性质、退出时如何推出 postcondition。</td></tr>
                   <tr><td>CS603</td><td>LTL/CTL 只写工具名。</td><td>写状态模型、公式、operator 含义和 counterexample 解释。</td></tr>
@@ -533,7 +533,7 @@
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>写完答案后用它反向检查：有没有 expected result、iff、variant、trade-off、operator meaning。</p>
           <p><strong>为什么这是对的：</strong>写完答案后人的认知倾向于"我写得挺全面"，但真实的漏分往往藏在你认为"已经写了"的地方。漏分点表的作用是把隐性检查变成显性的逐项打勾——expected result 写了吗（每道 CS608 题）、iff 两个方向都有吗（每道 CS605 证明题）、variant 在 total correctness 题里写了吗（CS603 Hoare 题）、每个 trade-off 都列出了被选方案的劣势吗（CS615 架构题）。这五项是跨所有题型反复出现的扣分点，每次写完后用 30 秒扫一遍，能把"粗心丢的 5-10 分"稳稳兜住。</p>
-          <p><strong>题目语境怎么用：</strong>写完后把漏分点表当 checklist：每写完一道 CS608 题，眼睛扫过"expected result?"——自己的答案里每个 test case 后面都有 expected output 的来源标注吗？每写完一道 CS605 题，扫过"iff?"——两个方向各有一句话且都包含了原文的变量/条件吗？不必理解新概念，只需检查既有答案的完整性。</p>
+          <p><strong>题目语境怎么用：</strong>写完后把漏分点表当 checklist：每写完一道 CS608 题，眼睛扫过"expected result?"——自己的答案里每个 test case 后面都有 expected result 的来源标注吗？每写完一道 CS605 题，扫过"iff?"——两个方向各有一句话且都包含了原文的变量/条件吗？不必理解新概念，只需检查既有答案的完整性。</p>
           <p><strong>卷面写法：</strong>在草稿纸背面画一个 5×4 的表格：行是"expected result / iff / variant/范围 / trade-off / operator meaning"，列是"Q1 Q2 Q3 Q4"。每做完一道题在该题对应行打✔或✗。全卷做完后✗的行就是你要回补的内容。</p>
           <p><strong>常见失分点：</strong>把漏分点表当成"第三轮才用"的工具——实际上应该每写完一道大题立刻就查。延迟检查的代价是你可能要回到几页之前的答案去补写，时间更紧张。</p>
         </div>
@@ -582,9 +582,9 @@
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. CS608 最危险的漏分是什么？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>没有 expected result。测试题只给 input 不够，必须从 specification、DT、EP 或 oracle 推出 expected output。</p>
+          <p><strong>标准答案（先写结论）：</strong>没有 expected result。测试题只给 input 不够，必须从 specification、DT、EP 或 oracle 推出 expected result。</p>
           <p><strong>为什么这是对的：</strong>测试评分有两个独立的给分轴：①测试数据是否覆盖了要求的 criteria（TCI、BVA、branch 等）；②每个测试的 expected result 是否正确且来自 specification。缺了 expected result，第一条轴再完美也只能拿该题 30-40% 的分——因为你没有完成"测试"的定义（test = 输入 + 执行 + 预期输出比对）。很多学生的 test case 表里"Expected Result"列写着"—"或"output depends"，这在评卷人看来等于没有做测试。</p>
-          <p><strong>题目语境怎么用：</strong>Climate.determine(16, 60) 的 expected result 不是"probably Hot and Humid"而是从 spec 逐条件推出来的"Hot and Humid (temp>=16 → true, humidity>=60 → true)"。Decision Table 的每个 rule 必须有一个明确的 expected output（action/effect），不能只列 conditions 不填 actions。Random testing 的 expected result 通常来自 oracle 或 specification-based derivation，需要在答案里说明 oracle 是什么。</p>
+          <p><strong>题目语境怎么用：</strong>Climate.determine(16, 60) 的 expected result 不是"probably Hot and Humid"而是从 spec 逐条件推出来的"Hot and Humid (temp>=16 → true, humidity>=60 → true)"。Decision Table 的每个 rule 必须有一个明确的 expected result（action/effect），不能只列 conditions 不填 actions。Random testing 的 expected result 通常来自 oracle 或 specification-based derivation，需要在答案里说明 oracle 是什么。</p>
           <p><strong>卷面写法：</strong>每个 test case 后面 expected result 的格式：<strong>Expected:</strong> [具体值/状态] (per specification section X: [引用 spec 中的判定条件])。如果 expected result 不是一个值而是一组属性（如"throws IllegalArgumentException with message 'X'")，就把属性全列出来。</p>
           <p><strong>常见失分点：</strong>三种典型的"假 expected result"：①写"as per spec"不写具体值——等于没写；②写了 expected result 但和给的 input 对不上——比如 input=15 却写了 expected "Hot and Humid"（实际 15 不满足 temp>=16）；③expected result 是猜的而非从 specification 推导的——评卷人对照 spec 时发现不一致，直接判错。</p>
         </div>

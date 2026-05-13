@@ -757,7 +757,7 @@
 
               <h3>Step 4：列 Test Cases</h3>
               <p>
-                前 4 个 test case 覆盖 8 个输入边界。第 5 个 test case 是为了补输出 <code>HEAT_AND_AC</code>，因为只靠前 4 个边界组合没有覆盖这个 expected output。
+                前 4 个 test case 覆盖 8 个输入边界。第 5 个 test case 是为了补输出 <code>HEAT_AND_AC</code>，因为只靠前 4 个边界组合没有覆盖这个 output partition。
               </p>
               <div class="table-wrap">
                 <table>
@@ -781,7 +781,7 @@
               </div>
               <h3>Step 5：写 review 句</h3>
               <p>
-                The completed TCI table shows that every non-error boundary value and every non-error expected output is covered by at least one test case. Each test case contributes at least one new TCI, so there is no unnecessary duplicate test case.
+                The completed TCI table shows that every non-error boundary value and every non-error output partition is covered by at least one test case. Each test case contributes at least one new TCI, so there is no unnecessary duplicate test case.
               </p>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">
@@ -839,7 +839,7 @@
         </div>
       </article>
       <article class="qa-card qa-card-exam">
-        <button class="qa-question" type="button" aria-expanded="false">考试3. Climate.determine 小题：为什么题目要求 identify expected output TCIs？</button>
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Climate.determine 小题：为什么题目要求 identify output TCIs？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>因为输出 NONE/HEAT_ONLY/AC_ONLY/HEAT_AND_AC 也要被覆盖，不能只覆盖输入边界。</p>
           <p><strong>为什么这是对的：</strong>BVA 的基本做法是把输入边界值写成 TCI，但前 4 个 test case 的 pairwise 组合（temp 边界 × humidity 边界）产生的输出只有 HEAT_ONLY、AC_ONLY、NONE 三种——HEAT_AND_AC 从未出现。如果只覆盖输入边界，代码在"两个参数同时越过阈值"的路径可能有 bug 而不会被发现。列出 output TCI（OUT1~OUT4）后，检查每个 output 的 covered by 列：OUT4 是空的 → 需要 TC5 补上 temp=15 + humidity=61 来覆盖。</p>

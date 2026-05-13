@@ -15,6 +15,7 @@
           <a href="index.html">总入口</a>
           <a href="cs608-linear.html">CS608 线性教材</a>
           <a href="cs608.html">CS608 题型页</a>
+          <a href="#teacher-notes">教师批注</a>
           <a href="#s1">几乎必出</a>
           <a href="#s2">很有可能</a>
           <a href="#s3">如果换考法</a>
@@ -31,11 +32,30 @@
           <a class="tag" href="#s1">几乎必出</a>
           <a class="tag" href="#s2">很有可能</a>
           <a class="tag" href="#s3">如果换考法</a>
+          <a class="tag" href="#teacher-notes">2026 批注校准</a>
         </div>
       </section>
 
       <div class="layout">
         <article class="content">
+
+          <section id="teacher-notes" class="section">
+            <h2>先看教师批注：模拟战的判分校准</h2>
+            <p>模拟战负责押题和演练，但 Stephen Brown 的批注负责修正交卷格式。下面几条要在做题前先锁住：表格、术语、signature 边界，比多背一段泛泛解释更容易直接涨分。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>批注</th><th>对模拟战的影响</th><th>考场动作</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>AllPathTesting 不作为 2026 考题</td><td>Q2 仍集中练 SC、BC、JaCoCo、short-circuit 和 additional tests。</td><td>最多用一句话说明 all paths 更强但通常不现实，不展开成主答案。</td></tr>
+                  <tr><td>Summer 2022 Q2(b) 白盒批注</td><td>Additional tests 必须用表格呈现：Conditions、TCI、Test Cases。</td><td>列名先写对：Conditions table 用 ID/Line Number/Condition；TCI table 用 TCI/Line Number/Test Case；Test Cases table 用 Expected Results。</td></tr>
+                  <tr><td>OO sample 年份</td><td>Class context 看 2018、2020-2025；state-based 看 2016、2017。</td><td>做 Q3 前先判断是调用序列题，还是状态/签名题。</td></tr>
+                  <tr><td>Jan 2017 signatures 批注</td><td>不要一看到状态题就写 full signatures。</td><td>Q3(b) 用已有 <code>isShipped()</code>/<code>isReturned()</code>；Q3(c) 明确要求时才写 modified signatures，且不需要 test cases。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
 
           <!-- ===== SECTION 1: 几乎必出 ===== -->
           <section id="s1" class="section">
@@ -172,6 +192,9 @@
               <h3>Q2: decideWrite() JaCoCo White-box（25 marks）</h3>
               <p><strong>预测：</strong><code>Filestore.decideWrite(boolean enabled, boolean exists, boolean overwrite)</code>。JaCoCo 报告：line 28 yellow、line 32 yellow、line 33 red。</p>
               <p><strong>子题：</strong>(a) [15] Additional tests 实现 full BRANCH coverage。 (b) [5] 解释 "1 of 4 branches missed"（short-circuit）。 (c) [5] Black-box vs white-box 四点区别。</p>
+              <div class="micro-check">
+                <p><strong>教师批注校准：</strong>不要把 Q2 写成一段解释。先列 Conditions/TCI/Test Cases 三张表；TCI 表只放 line number 和 test case 编号，不抄 source code；测试表列名用 Expected Results。</p>
+              </div>
 
               <h4>(a) 模型答案：Additional Tests for Full Branch Coverage</h4>
               <p><strong>Coverage gaps 分析：</strong></p>
@@ -239,6 +262,9 @@
               <h3>Q3: Numbers Class Context（25 marks）</h3>
               <p><strong>预测：</strong>Numbers 类有 static method <code>isNeg(int x)</code> 和 instance methods <code>setValue(int v)</code>、<code>isNegative()</code>、<code>getResult()</code>。</p>
               <p><strong>子题：</strong>(a) [10] 比较 static 与 instance method 的测试写法。 (b) [15] Braking.decide() 在 class context 中的 EP 测试。</p>
+              <div class="micro-check">
+                <p><strong>教师批注校准：</strong>Class context 题练 2018、2020-2025；state-based 题补 2016、2017。Jan 2017 Q3(b) 若已有 <code>isShipped()</code>/<code>isReturned()</code> 就用它们识别状态；Q3(c) 才要求 full signatures。</p>
+              </div>
 
               <h4>(a) 模型答案：Static vs Instance Testing</h4>
               <div class="table-wrap">
@@ -586,6 +612,7 @@ assertEquals(expected, isSquare(x));</code></pre>
         <aside class="toc" aria-label="CS608 模拟战目录">
           <h2>模拟战目录</h2>
           <ol>
+            <li><a href="#teacher-notes">教师批注校准</a></li>
             <li><a href="#s1-q1">Q1: Climate BVA</a></li>
             <li><a href="#s1-q2">Q2: decideWrite JaCoCo</a></li>
             <li><a href="#s1-q3">Q3: Numbers Class Context</a></li>

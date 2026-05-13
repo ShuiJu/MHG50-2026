@@ -260,7 +260,7 @@
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试5. 首页考试补题：CS608 2025 Summer Q1(c)：Climate.determine BVA 第一轮应产出 partitions 表、TCI 表和 test cases 表，三张表中哪张表的 expected result 列最容易因为不从 spec 推导而写错？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>Climate.determine 的 input/output partitions、围绕 16 和 60 的 BVA data values、以及带 expected output 的 test cases。</p>
+          <p><strong>标准答案（先写结论）：</strong>Climate.determine 的 input/output partitions、围绕 16 和 60 的 BVA data values、以及带 expected result 的 test cases。</p>
           <p><strong>为什么这是对的：</strong>CS608 Q1的第一轮目标是产出可提交的表格骨架，而不是完美的测试集。input/output partition把无限输入空间压缩为有限等价类（如temp<16, temp=16, temp>16），BVA在每个等价类边界上选取just below/on/above三个具体值，test case表把输入和期望输出一一配对。三张表做完，Q1的基础分就拿到了——partition证明你理解了规格，BVA证明你会选边界值，test case证明你会推导期望结果。第一轮如果连表头都列不出来，说明specification还没读懂，该回到线性页重读黑盒测试那节。</p>
           <p><strong>题目语境怎么用：</strong>Climate 题围绕 temp=16、humidity=60；其他 BVA 题也要先找 threshold、minimum、maximum 或 between 的边界。</p>
           <p><strong>卷面写法：</strong>卷面用表格写 TCI、selected value、test case、expected result。每个 expected result 都必须来自 specification。</p>
@@ -426,6 +426,7 @@
           <a class="keyword-link" data-keyword-item data-keywords="CS608 black-box BVA Decision Table TCI" href="cs608.html#q1">CS608 Black-box</a>
           <a class="keyword-link" data-keyword-item data-keywords="CS608 linear textbook full course testing coverage random" href="cs608-linear.html">CS608 教材线性页</a>
           <a class="keyword-link" data-keyword-item data-keywords="CS608 mock battle 模拟战 预测 标准答案 BVA DT JaCoCo random" href="cs608-mock-battle.html">CS608 模拟战</a>
+          <a class="keyword-link" data-keyword-item data-keywords="CS608 Stephen Brown 教师批注 marking comments AllPathTesting Waves categorise signatures Expected Results" href="cs608.html#examiner-notes">CS608 教师批注</a>
           <a class="keyword-link" data-keyword-item data-keywords="CS608 white-box JaCoCo statement branch coverage" href="cs608.html#q2">CS608 White-box</a>
           <a class="keyword-link" data-keyword-item data-keywords="CS608 class context EP static instance accessor" href="cs608.html#q3">CS608 Class Context</a>
           <a class="keyword-link" data-keyword-item data-keywords="CS608 random testing oracle completion rand" href="cs608.html#q4">CS608 Random</a>

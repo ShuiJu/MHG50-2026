@@ -16,6 +16,7 @@
         </a>
         <nav class="topnav" aria-label="主导航">
           <a href="index.html">总入口</a>
+          <a href="#examiner-notes">教师批注</a>
           <a href="#terms">基础词汇</a>
           <a href="#q1">Q1 黑盒</a>
           <a href="#q2">Q2 白盒</a>
@@ -38,12 +39,153 @@
           <a class="tag" href="#q2">SC / BC / JaCoCo</a>
           <a class="tag" href="#q3">In-class context</a>
           <a class="tag" href="#q4">Random testing</a>
+          <a class="tag" href="#examiner-notes">2026 教师批注</a>
           <a class="tag" href="cs608-q1-sample.html">Q1 样章</a>
         </div>
       </section>
 
       <div class="layout">
         <article class="content">
+          <section id="examiner-notes" class="section">
+            <h2>2026 教师批注：先按判分口径校准答案</h2>
+            <p>
+              这些不是“再背几个知识点”，而是 Stephen Brown 对 sample answer 的实际批注意见。用法是：先照常学 Q1-Q4，再用本节检查自己交卷时的表格、术语和题目边界是否符合老师的期待。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>批注来源</th>
+                    <th>直接结论</th>
+                    <th>复习流程里怎么用</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>2026-04-15 总范围说明</td><td>考试每年选题会变，summer/repeat 也可能不同；module material 都可能被选中。</td><td>不要只按去年题号机械预测。题型页负责抓高频格式，线性页负责补完整课程边界。</td></tr>
+                  <tr><td>2026-05-04 AllPathTesting</td><td>AllPathTesting PDF 不会作为 2026 考题；它是额外材料，用来加深对白盒结构测试的理解。</td><td>不用把 All Paths Testing 当必答题背模板；白盒主复习仍放在 SC、BC、JaCoCo、additional tests。</td></tr>
+                  <tr><td>2026-04-09 Summer 2022 Q2(b)</td><td>白盒 coverage 题优先用表格，条件表、TCI 表、Test Cases 表分开写，术语用 IEEE 的 Expected Results。</td><td>Q2 练习时先写列名，再填内容。不要把源代码整段抄进 TCI 表，也不要把 Expected Results 写成 Expected Output。</td></tr>
+                  <tr><td>2026-04-27 OO 题年份</td><td>Testing in class context 可看 2018、2020、2021、2022、2023、2024、2025；state-based testing 看 2016、2017。</td><td>Q3 先练 class context 调用序列，再补 2016/2017 的 state-based 风格，别把两类题混成同一个模板。</td></tr>
+                  <tr><td>2026-04-28 Jan 2017 Q3(b)/(c)</td><td>Q3(b) 没问 full signatures 时尽量用 <code>isShipped()</code>/<code>isReturned()</code> 识别状态；Q3(c) 才要求在这些方法未定义时写 full signatures。</td><td>读题先圈动词：identify state 还是 develop signatures。只要题目没叫你写 signatures，就不要把答案重心偏到完整签名设计。</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Summer 2022 Q2(b) Waves.categorise 的可交卷骨架</h3>
+            <p>
+              这道题要求为未覆盖红线补 full statement coverage。题面给出红线 line 29、37、41，以及黄色 decision line 28、36、40。答题时不要写成长段散文，直接把“到达红线的条件”和“追加测试”拆成表。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>目标红线</th><th>到达该行的条件</th><th>可选测试值</th><th>Expected Results</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>line 29: return ERROR</td><td><code>h &lt; 0</code></td><td><code>h = -10</code></td><td>ERROR</td></tr>
+                  <tr><td>line 37: return MODERATE</td><td><code>13 &lt;= h &amp;&amp; h &lt; 25</code></td><td><code>h = 19</code></td><td>MODERATE</td></tr>
+                  <tr><td>line 41: return HIGH</td><td><code>60 &lt;= h &amp;&amp; h &lt; 140</code></td><td><code>h = 100</code></td><td>HIGH</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="answer-box">
+              <p><strong>卷面顺序：</strong>先写 Conditions table：ID、Line Number、Condition；再写 TCI table：TCI、Line Number、Test Case；最后写 Test Cases table：Test Case、Input、Expected Results。TCI 表里只引用 line number 和 test case 编号，不抄 source code。</p>
+            </div>
+    <!-- qa-hardcoded:start -->
+    <div class="qa-set" aria-label="过关问答">
+      <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
+      <p class="qa-subtitle">内容理解题（先做 3 题）</p>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容1. 为什么这些教师批注要放在学习流程最前面？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>因为它们校准的是“怎么得分”，不是单独的新知识点。</p>
+          <p><strong>为什么这是对的：</strong>CS608 很多分不是丢在概念不会，而是丢在答案形状不符合题目要求。例如你知道 line 29 要用 <code>h&lt;0</code> 覆盖，但如果把整段代码抄进 TCI table、把 expected 写成随口的 output、没有 line number，判卷人很难按 marking scheme 找到你覆盖了什么。教师批注把这些隐性规则变成显性规则：白盒题用表格、术语用 Expected Results、TCI 和 test case 分开、OO 题先看是否要求 signatures。</p>
+          <p><strong>题目语境怎么用：</strong>做任何 past paper 前先问：这题要求的交付物是什么？是 Conditions table、TCI table、Test Cases table，还是 signatures，还是调用序列？先定交付物，再填内容。</p>
+          <p><strong>卷面写法：</strong>把批注转成检查清单：表格列名是否对；是否引用 line number；expected result 是否从 Return Value/spec 推导；题目没问 signatures 时是否避免跑题。</p>
+          <p><strong>常见失分点：</strong>把教师批注当“老师偏好”而不是判分格式。实际上这些批注对应的是 marking visibility：老师必须能快速看到你满足了题目每个要求。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容2. 白盒题为什么要把 Conditions table、TCI table、Test Cases table 分开？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>三张表回答三个不同问题：为什么能到达、要覆盖什么、用哪个测试覆盖。</p>
+          <p><strong>为什么这是对的：</strong>Conditions table 是逻辑分析，说明某条红线或 missed branch 的进入条件。例如 line 37 要执行，前面的 <code>h&lt;0</code>、<code>h&lt;2</code>、<code>h&lt;5</code>、<code>h&lt;13</code> 都必须为 false，而 <code>h&lt;25</code> 为 true，所以条件可合并成 <code>13&lt;=h&lt;25</code>。TCI table 是覆盖承诺，说明 SC1 对应 line 37。Test Cases table 才是具体数据，说明用 <code>h=19</code> 覆盖 SC1，Expected Results 是 MODERATE。混在一起会让分析、目标和数据互相遮住。</p>
+          <p><strong>题目语境怎么用：</strong>看到 JaCoCo 红线/黄线，先不要急着给输入。先写“要到达这行，条件必须是什么”。条件想清楚后，具体 input 就只是从区间里选一个代表值。</p>
+          <p><strong>卷面写法：</strong>Conditions table：C1 line 29 <code>h&lt;0</code>；C2 line 37 <code>13&lt;=h&lt;25</code>；C3 line 41 <code>60&lt;=h&lt;140</code>。TCI table：SC1 line 29 T1；SC2 line 37 T2；SC3 line 41 T3。Test Cases table：T1 -10 ERROR；T2 19 MODERATE；T3 100 HIGH。</p>
+          <p><strong>常见失分点：</strong>TCI 表里塞 source code、Test Cases 表没有 Expected Results、或者只有输入没有解释它为什么能到达目标行。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-content">
+        <button class="qa-question" type="button" aria-expanded="false">内容3. Q3 什么时候写 full signatures，什么时候只用 isXXX 方法？</button>
+        <div class="qa-answer">
+          <p><strong>核心答案（先确认概念）：</strong>题目问 identify state 时优先用已有 <code>isShipped()</code>/<code>isReturned()</code>；题目明确要求 develop full signatures 时才写完整签名。</p>
+          <p><strong>为什么这是对的：</strong>state-based 或 OO class context 题不是见到状态就自动写 signatures。Jan 2017 的批注说明了题目粒度差异：Q3(b) 只问如何识别状态，所以如果类已经给了 <code>isShipped()</code>、<code>isReturned()</code> 这种 public query method，答案应围绕这些方法说明如何判断对象处于 shipped/returned 状态。Q3(c) 的语境不同：它假设这些 query methods 未定义，所以才要求你补 full signatures，让状态可被测试观察。也就是说，signatures 是解决“没有可观察状态 API”的工具，不是所有状态题的默认答案。</p>
+          <p><strong>题目语境怎么用：</strong>读题时圈关键词：identify、use、develop、signature、not defined。如果题目说 isShipped/isReturned are available，就用它们；如果题目说 they are not defined 且 asks for full signatures，再写 <code>boolean isShipped()</code>、<code>boolean isReturned()</code> 这类方法签名。</p>
+          <p><strong>卷面写法：</strong>Q3(b) 写：“Use <code>isShipped()</code> and <code>isReturned()</code> as observable state queries after invoking the relevant methods.” Q3(c) 写：“Add signatures such as <code>public boolean isShipped()</code> and <code>public boolean isReturned()</code> so tests can observe the state.”</p>
+          <p><strong>常见失分点：</strong>题目没问 signatures 却把主要篇幅写成 API 设计；或者题目明确说没有 isXXX 方法时，仍然假设它们存在。</p>
+        </div>
+      </article>
+      <p class="qa-subtitle">考试题目题（再做 5 题）</p>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试1. Summer 2022 Q2(b) Waves.categorise：line 29、37、41 各用什么 additional test 覆盖？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>line 29 用 <code>h=-10</code> 期望 ERROR；line 37 用 <code>h=19</code> 期望 MODERATE；line 41 用 <code>h=100</code> 期望 HIGH。</p>
+          <p><strong>为什么这是对的：</strong>题面给出的红线是未执行语句。line 29 是 <code>return ERROR</code>，它只在第一层条件 <code>h&lt;0</code> 为 true 时执行，所以 <code>-10</code> 是最直接的代表值。line 37 是 <code>return MODERATE</code>，前面的 ERROR/CALM/SMOOTH/SLIGHT 都必须跳过，到 <code>h&lt;25</code> 才成立，因此合法区间是 <code>13&lt;=h&lt;25</code>，选 <code>19</code> 在区间中间，避免边界歧义。line 41 是 <code>return HIGH</code>，要先跳过 ROUGH，满足 <code>60&lt;=h&lt;140</code>，选 <code>100</code> 是清楚的中间值。</p>
+          <p><strong>题目语境怎么用：</strong>这是 full statement coverage，所以目标是让每条红色 return 语句至少执行一次。黄色 line 28、36、40 是你追溯条件的位置，不是最终 expected result 的列。</p>
+          <p><strong>卷面写法：</strong>Test Cases 表写三行：T1 input <code>h=-10</code>, Expected Results ERROR, covers SC1 line 29；T2 input <code>h=19</code>, Expected Results MODERATE, covers SC2 line 37；T3 input <code>h=100</code>, Expected Results HIGH, covers SC3 line 41。</p>
+          <p><strong>常见失分点：</strong>把 line 41 的 HIGH 区间写成 <code>h&gt;140</code>。题面说 <code>h&gt;=140</code> 是 PHENOMENAL，所以 HIGH 必须是 <code>60&lt;=h&lt;140</code>。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试2. Summer 2022 Q2(b)：TCI table 应该有哪些列，不能放什么？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>列用 TCI、Line Number、Test Case；不要把 source code 放进 TCI table。</p>
+          <p><strong>为什么这是对的：</strong>TCI table 是覆盖目标到测试编号的映射，不是代码摘抄区。老师批注特别指出：只需要 line number，不需要把每行 source code 写进去。原因很实际：题目和代码已经给出，判卷人要看的不是你能抄代码，而是你能把每个 coverage item 绑定到某个追加测试。把 source code 塞进 TCI table 会让表格变长、变乱，还容易掩盖缺少 Test Case 编号的问题。</p>
+          <p><strong>题目语境怎么用：</strong>Waves.categorise 的 TCI table 可以写：SC1 | 29 | T1；SC2 | 37 | T2；SC3 | 41 | T3。条件本身放在 Conditions table，具体输入放在 Test Cases table。</p>
+          <p><strong>卷面写法：</strong>三表分工：Conditions table 用 ID/Line Number/Condition；TCI table 用 TCI/Line Number/Test Case；Test Cases table 用 Test Case/Input/Expected Results。</p>
+          <p><strong>常见失分点：</strong>TCI 表写成“if h&lt;0 return ERROR”这种代码复述；或者用 Expected Output 这个非 IEEE 术语，而不是 Expected Results。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试3. Jan 2017 Q3(b)/(c)：isShipped/isReturned 和 full signatures 的区别怎么答？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Q3(b) 尽量用已有 <code>isShipped()</code>/<code>isReturned()</code> 识别状态；Q3(c) 在这些方法未定义时才写 full signatures，而且只要 signatures，不要 test cases。</p>
+          <p><strong>为什么这是对的：</strong>老师批注意味着这两小题的任务边界不同。Q3(b) 的重点是状态识别：对象执行某些操作后，如何通过 public query method 判断它是否处于 shipped 或 returned 状态。Q3(c) 的重点是 API 补足：如果没有这些 query method，测试无法观察状态，所以你要提出方法签名。它没有要求你继续写 test cases。把 Q3(c) 写成完整测试用例会浪费时间，也可能漏掉“modified signatures as asked for”的关键得分点。</p>
+          <p><strong>题目语境怎么用：</strong>先看题干是否说 “signatures”。有这个词，再写 <code>public boolean isShipped()</code> 等；没有这个词，就把注意力放在用现有方法观察状态。</p>
+          <p><strong>卷面写法：</strong>Q3(b)：After calling <code>ship()</code>, call <code>isShipped()</code> and expect true; after <code>returnItem()</code>, call <code>isReturned()</code> and expect true。Q3(c)：Add signatures <code>public boolean isShipped()</code>, <code>public boolean isReturned()</code> to make these states observable。</p>
+          <p><strong>常见失分点：</strong>Q3(c) 写 test cases 但没写 modified signatures；Q3(b) 忽略已给的 query methods，直接发明新 API。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试4. 2026 教师答疑：AllPathTesting PDF 会不会作为考试题？该怎么复习它？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>不会作为 2026 examination paper 的题目；它作为额外材料帮助理解 white-box structural testing 的最强形式。</p>
+          <p><strong>为什么这是对的：</strong>老师明确回答 “No”。这给复习优先级画了边界：你不需要为 All Paths Testing 单独准备一套 past-paper 答题模板，也不需要把大量时间花在枚举所有路径。它的价值是帮助你理解覆盖标准强弱关系：statement coverage 看行，branch coverage 看分支，path-level thinking 更强但成本更高。这个理解可以反过来加强 Q2 中“为什么 BC 比 SC 更强、为什么 full path 不现实”的解释。</p>
+          <p><strong>题目语境怎么用：</strong>如果 Q2 问 white-box testing 比较，All Paths Testing 可作为背景一句话：it is stronger but usually impractical because path count explodes。不要把它写成主要答案。</p>
+          <p><strong>卷面写法：</strong>主答案仍围绕 SC/BC/JaCoCo/additional tests。AllPathTesting 只在比较覆盖强度时作为辅助解释，不展开成独立大题。</p>
+          <p><strong>常见失分点：</strong>看到 “strongest white-box structural testing” 就误以为必考，把复习时间从 SC/BC 和 JaCoCo 题挪走。</p>
+        </div>
+      </article>
+      <article class="qa-card qa-card-exam">
+        <button class="qa-question" type="button" aria-expanded="false">考试5. 2026 教师答疑：OO sample 题应按哪些年份分两类练？</button>
+        <div class="qa-answer">
+          <p><strong>标准答案（先写结论）：</strong>Testing in class context 看 2018、2020、2021、2022、2023、2024、2025；state-based testing 看 2016、2017。</p>
+          <p><strong>为什么这是对的：</strong>这条批注直接给了 Q3 的练习地图。Class context 题训练的是 create-set-call-observe-assert 调用序列、accessor/mutator 识别、static vs instance 区分。State-based testing 题训练的是对象状态、状态查询、signatures 或 transition 的表达。两类题都属于 OO，但考查动作不同：前者更像“怎么写测试步骤”，后者更像“怎么观察和命名状态”。如果混着练，容易把所有 Q3 都写成一个模板，结果遇到 signatures 或 state identification 就跑偏。</p>
+          <p><strong>题目语境怎么用：</strong>第一轮先练 2023-2025 的 class context，因为它和当前题型页最贴近；第二轮补 2016/2017 state-based，专门训练 isXXX、state query、signature 边界。</p>
+          <p><strong>卷面写法：</strong>Class context：对象创建 + setter + method under test + getter/return + assert。State-based：状态名 + 可观察 query/signature + transition/action + expected state。</p>
+          <p><strong>常见失分点：</strong>只练近三年，把 2016/2017 的 state-based 忽略；或者 state-based 题里只写调用序列，不说明如何判断对象已经进入目标状态。</p>
+        </div>
+      </article>
+      <div class="qa-gate" data-progress-key="cs608.html#examiner-notes">
+        <p class="qa-gate-title">本节过关门槛</p>
+        <div class="qa-gate-controls">
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="content"><span><strong>内容理解过关</strong><small>能不看答案答出 3 道内容题，并说清教师批注如何改变交卷格式。</small></span></label>
+          <label class="qa-gate-label"><input type="checkbox" data-gate-id="exam"><span><strong>考试题目过关</strong><small>能不看答案答出 5 道 past/sample 题，并写出可交卷关键词或结构。</small></span></label>
+        </div>
+        <p class="qa-gate-status"></p>
+      </div>
+    </div>
+    <!-- qa-hardcoded:end -->
+          </section>
+
           <section id="terms" class="section">
             <h2>1. 软件测试基础词汇</h2>
             <p>
@@ -260,7 +402,7 @@
       <article class="qa-card qa-card-exam">
         <button class="qa-question" type="button" aria-expanded="false">考试3. 2025 Summer Q1(c) Climate.determine 小题：如何避免 duplicate coverage？</button>
         <div class="qa-answer">
-          <p><strong>标准答案（先写结论）：</strong>每个 test case 要覆盖新的 TCI 或 expected output TCI；已经覆盖的边界不要重复用另一个等价 test case。</p>
+          <p><strong>标准答案（先写结论）：</strong>每个 test case 要覆盖新的 input TCI 或 output TCI；已经覆盖的边界不要重复用另一个等价 test case。</p>
           <p><strong>为什么这是对的：</strong>Duplicate coverage 指的是两个不同 test case 覆盖了完全相同的 TCI 且期望输出一样——这浪费测试资源。例如你已用 determine(15, 50) 覆盖了"temp just below 16"和"humidity≤60 的代表值"两个 TCI，就没必要再加 determine(14, 45) 测同样的东西。避免方法是每新增一个 test case 时检查：它是否至少带来一个之前未被覆盖的 TCI？如果是，有用；如果只是换了个等价值但不增加任何新覆盖，就是 duplicate。</p>
           <p><strong>题目语境怎么用：</strong>Climate.determine 中 temp 有 3 个边界 TCI（below/on/above 16），humidity 有 3 个（below/on/above 60）。组合设计 test case 时，确保每个 test case 至少覆盖一个之前没测过的 TCI。</p>
           <p><strong>卷面写法：</strong>在 Test Cases 表最后一列写 "New TCI covered"，如果某行是首次覆盖某个 TCI 就标出来。最后检查：所有 TCI 都在某行的 "New TCI covered" 列中出现过。</p>
@@ -330,6 +472,25 @@
               <li>写 Test Cases table：输入、expected、covered TCI。</li>
               <li>最后说明这些是 additional tests，用来补充已有 black-box tests。</li>
             </ol>
+            <h3>教师批注落地：Summer 2022 Waves.categorise</h3>
+            <p>
+              Stephen Brown 对 Summer 2022 Q2(b) 的批注说明：白盒题要把“条件分析”和“测试用例”分开放进表格，判卷人才能逐项给分。下面这类 statement coverage 题，核心不是把代码抄一遍，而是说明什么条件能执行未覆盖红线。
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>表</th><th>列名</th><th>Waves.categorise 示例</th><th>不要这样写</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Conditions table</td><td>ID / Line Number / Condition</td><td>C2, line 37, <code>13 &lt;= h &amp;&amp; h &lt; 25</code></td><td>不要长段文字解释到读者找不到 line 37 条件。</td></tr>
+                  <tr><td>TCI table</td><td>TCI / Line Number / Test Case</td><td>SC2, line 37, T2</td><td>不要把 <code>return MODERATE</code> 这类 source code 塞进表里。</td></tr>
+                  <tr><td>Test Cases table</td><td>Test Case / Input / Expected Results</td><td>T2, <code>h=19</code>, MODERATE</td><td>不要写 Expected Output；老师批注要求用 Expected Results。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="micro-check">
+              <p><strong>一眼检查：</strong>红线 line 29/37/41 分别可用 <code>h=-10</code>、<code>h=19</code>、<code>h=100</code> 补 full statement coverage；expected results 分别是 ERROR、MODERATE、HIGH。</p>
+            </div>
             <h3>Black-box vs white-box 四点对比</h3>
             <div class="table-wrap">
               <table>
@@ -478,6 +639,21 @@
             </ol>
             <div class="answer-box">
               <p>典型 test case 写法：create object；call setter for the relevant state；call the method under test with selected input；call getter to obtain actual result；assert expected equals actual；record covered TCI.</p>
+            </div>
+            <h3>教师批注落地：class context 和 state-based 别混</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题型</th><th>建议练习年份</th><th>卷面重点</th><th>Jan 2017 签名边界</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Testing in class context</td><td>2018、2020、2021、2022、2023、2024、2025</td><td>写 create → set state → call method under test → observe via getter/return → assert。</td><td>题目若只要求 identify state，尽量用已有 <code>isShipped()</code>/<code>isReturned()</code>。</td></tr>
+                  <tr><td>State-based testing</td><td>2016、2017</td><td>写状态名、状态转换、可观察 state query，以及怎样判断对象进入该状态。</td><td>题目若说明 <code>isShipped()</code>/<code>isReturned()</code> 未定义并要求 signatures，才写完整方法签名。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="micro-check">
+              <p><strong>读题动作：</strong>先圈题目有没有 <em>signatures</em>。没有就别把答案写成 API 设计；有并且说明状态查询方法缺失，才补 <code>public boolean isShipped()</code> 这类签名。</p>
             </div>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">

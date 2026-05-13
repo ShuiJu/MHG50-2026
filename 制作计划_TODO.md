@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-12 21:00
+更新时间：2026-05-13 19:56
 
 ## 项目目标
 
@@ -107,6 +107,23 @@
 - [x] 为每个科目增加基于教材的线性全课程学习页面。
 - [x] 按 CS615 新深度继续扩写 CS605 / CS608 / CS603 线性页。
 - [ ] 制作 `2026 May exam prep.pptx` 考前速查版。
+
+## 2026-05-13 CS608 教师批注整合
+
+- 用户提供 Stephen Brown 2026 年 sample answer / marking comments：
+  - AllPathTesting PDF 不作为 2026 考题，只作为加深 white-box structural testing 理解的额外材料。
+  - Summer 2022 Q2(b) 白盒 coverage 题必须用清晰表格：Conditions table、TCI table、Test Cases table；TCI 表不放 source code；术语用 Expected Results。
+  - OO sample 题：testing in class context 看 2018、2020、2021、2022、2023、2024、2025；state-based testing 看 2016、2017。
+  - Jan 2017 Q3(b)/(c)：Q3(b) 尽量用已有 isShipped()/isReturned() 识别状态；Q3(c) 才要求 full signatures，且只问 signatures 不问 test cases。
+- 已执行内容：
+  - `cs608.html` 新增 `#examiner-notes` 教师批注硬编码小节，并新增 3 道内容 QA + 5 道考试 QA。
+  - `cs608.html#q2` 加入 Waves.categorise 表格化答题骨架。
+  - `cs608.html#q3` 加入 class context / state-based / signatures 的判分边界。
+  - `cs608-linear.html` 在 white-box 和 OO 线性学习流中加入教师批注反向校准。
+  - `cs608-mock-battle.html` 加入教师批注校准小节，并在 Q2/Q3 预测题前加入判分口径提醒。
+  - `index.html` 关键词区新增 CS608 教师批注入口。
+  - 顺手把 CS608 相关页面里非引用场景的 expected output 统一为 expected result / Expected Results，避免和教师批注术语冲突。
+  - 检查 QA marker 时发现 `cs603-linear.html` 首个 `</html>` 后存在重复尾巴，已截断到合法 HTML 结束处，修复 QA marker 数量不一致问题。
 
 ## 2026-05-06 当前推进
 
