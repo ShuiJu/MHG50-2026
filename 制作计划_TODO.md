@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-13 19:56
+更新时间：2026-05-13 21:56
 
 ## 项目目标
 
@@ -653,3 +653,17 @@
   - 所有本地链接和锚点通过。
   - CS615 标题编号连续。
   - 未发现 `强事务`、`ACID 常见`、`<pre>`、`note/warning/callout-line` 等不符合当前风格的问题。
+
+### 2026-05-13 21:56 新情报处理
+
+- 已按用户新获得的考试情报改进网页内容：
+  - CS605：补强 Summer Q4 / L3 / complement / TR 判断。重点写清：不要死记 “L3 是 TR 还是 complement 是 TR”，先看题面把 L3 定义成 eventually throws 还是 never throws；eventually observable 的那一侧可用模拟构造 recogniser，另一侧再用 “both TR => decidable” 与 undecidable 结论推出 not TR。
+  - CS603：把 NN verification 从材料名提升为可考答题套路。写清 input region、network constraints、negated safety property、solver 返回 sat/unsat 的卷面含义。
+- 已更新页面：
+  - `exam-prep-site/cs605.html`
+  - `exam-prep-site/cs605-linear.html`
+  - `exam-prep-site/cs605-mock-battle.html`
+  - `exam-prep-site/cs603.html`
+  - `exam-prep-site/cs603-linear.html`
+  - `exam-prep-site/cs603-mock-battle.html`
+  - `exam-prep-site/index.html`

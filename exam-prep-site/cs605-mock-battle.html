@@ -187,6 +187,9 @@
               <p><strong>1. L<sub>3</sub> complement (L̄<sub>3</sub>) = {&lt;J&gt; : J DOES throw Exception21}.</strong> This language IS Turing-recognisable. Reason: construct a recogniser that simulates J step by step. If at any point J throws Exception21, the recogniser catches it and accepts. If J never throws Exception21 (and loops forever), the recogniser runs forever — which is acceptable for a recogniser. Thus L̄<sub>3</sub> ∈ T-r.</p>
               <p><strong>2. Is L<sub>3</sub> itself Turing-recognisable?</strong> Use the theorem: if both L and L̄ are Turing-recognisable, then L is decidable. From Q3, we proved L<sub>3</sub> is undecidable. Since L̄<sub>3</sub> IS Turing-recognisable (proved above), L<sub>3</sub> CANNOT be Turing-recognisable. Otherwise, if L<sub>3</sub> were also T-r, running the recognisers for L<sub>3</sub> and L̄<sub>3</sub> in parallel would give a decider — contradiction to L<sub>3</sub> being undecidable.</p>
               <p><strong>Conclusion:</strong> L̄<sub>3</sub> is Turing-recognisable (T-r). L<sub>3</sub> is co-Turing-recognisable (co-T-r). L<sub>3</sub> is NOT Turing-recognisable itself. ∎</p>
+              <div class="micro-check">
+                <p><strong>最新情报校准：</strong>如果实际 Summer Q4 把 <code>L3</code> 定义成 "J DOES throw Exception21"，那就不是和本页矛盾，而是题面方向换了：此时 <code>L3</code> is TR，<code>L̄3</code> is not TR。判断规则永远是先找 eventually observable event；能被有限模拟见证的那侧是 TR，另一侧用 undecidable + both-TR-implies-decidable 推 not TR。</p>
+              </div>
               <p><strong>得分关键：</strong></p>
               <ol class="rung-list">
                 <li><strong>必须先确定 complement 是什么</strong> —— L̄<sub>3</sub> = "J throws Exception21"。</li>

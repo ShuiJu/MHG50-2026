@@ -735,6 +735,25 @@
             <p>
               Validity 和 satisfiability 的关系：要证明公式 <code>F</code> 永远为真，可以让 Z3 检查 <code>not F</code> 是否 unsatisfiable。如果 <code>not F</code> 没有任何模型，那么 <code>F</code> 就是 valid。
             </p>
+            <h3>新情报：Neural Network Verification 要按考试题准备</h3>
+            <p>Rossane 提到 NN verification 可能相关，所以这里不能只把它当材料名。卷面上它属于 SAT/SMT/AI4SE 的应用：不是训练神经网络，也不是问 accuracy，而是问一个已经训练好的 network 在某个输入范围内是否一定满足安全性质。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题面信号</th><th>卷面动作</th><th>结果怎么解释</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Verify a neural network safety property</td><td>把 input region、network layers/ReLU 关系、output safety property 编码成 constraints。</td><td>这是 formal verification：检查所有允许输入，而不是抽样测试几个输入。</td></tr>
+                  <tr><td>Ask whether an unsafe output is possible</td><td>交给 solver 的常见公式是 <code>input_constraints ∧ network_constraints ∧ violation</code>。</td><td>故意检查 violation；找不到 violation 才说明 property holds。</td></tr>
+                  <tr><td>Solver returns <code>sat</code></td><td>读 model。</td><td>model 是一个具体 counterexample/adversarial input，说明安全性质被违反。</td></tr>
+                  <tr><td>Solver returns <code>unsat</code></td><td>说明在给定 input region 内不存在 violation。</td><td>因此该 safety property 在这个 bounded region 内成立。</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="answer-box">
+              <p><strong>可直接写卷面的例子：</strong>Suppose an image classifier should not change class when the input is perturbed by at most <code>epsilon</code>. Encode the original input bounds, each neural-network layer, and the negation of the desired output property. If Z3/MILP solver finds <code>sat</code>, the returned input is an adversarial example. If it returns <code>unsat</code>, no such adversarial input exists in that region, so the network is verified for that property and region.</p>
+              <p><strong>为什么它属于 CS603：</strong>它把 AI system 的 correctness question 变成 satisfiability/SMT-style problem；和 Dafny/Z3 一样，核心是用 solver 找 counterexample 或证明没有 counterexample。</p>
+            </div>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">
       <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>

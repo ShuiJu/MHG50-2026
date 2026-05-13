@@ -508,8 +508,8 @@
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>Complement 是 Turing-recognisable，也就是能认出 no 的一侧。</p>
           <p><strong>为什么这是对的：</strong>L 是 co-TR 意味着 L ̄ 是 TR——有程序能识别 no instances。重要定理：L decidable iff both L and L ̄ are TR。若 yes 和 no 都能分别被认出可并行跑两个 recogniser 总有一个在有限步 accept。这是 Q4 的核心推理工具。</p>
-          <p><strong>题目语境怎么用：</strong>Q4 典型结构：(1)证 L undecidable(HALT reduction) (2)证 L in TR(构造 recogniser) (3)用定理推出 L ̄ not in TR。若 L not in TR 且 undecidable L ̄ 可能也不在 TR。</p>
-          <p><strong>卷面写法：</strong>L is co-Turing-recognisable if L ̄ in TR. By theorem L decidable iff L in TR and L ̄ in TR. Since L undecidable but in TR it follows L ̄ not in TR。</p>
+          <p><strong>题目语境怎么用：</strong>Q4 不要先背"L3 是哪边"。先看题面 yes condition 是不是可观察的 eventually event。若 <code>L</code> 定义为 "J eventually throws Exception21"，则 <code>L</code> in TR；若 <code>L</code> 定义为 "J never throws Exception21"，则 complement "J throws Exception21" in TR，而 <code>L</code> 本身不能也 TR，否则和 undecidable 矛盾。</p>
+          <p><strong>卷面写法：</strong>L is co-Turing-recognisable if L ̄ in TR. By theorem L decidable iff L in TR and L ̄ in TR. First construct a recogniser for the side whose yes instance is eventually observable; then use undecidability to conclude the opposite side is not TR。</p>
           <p><strong>常见失分点：</strong>混用 co-TR 和不是 TR；忘引 L and L ̄ both TR=>L decidable 定理；Q4 推理中 TR 方向搞反。</p>
         </div>
       </article>
@@ -609,6 +609,10 @@
             <p>
               一旦你已经证明 <code>L</code> 和 <code>L̄</code> 都 undecidable，就可以用一个重要事实：如果一个语言和它的 complement 都 Turing-recognisable，那么它 decidable。因此如果二者都 undecidable，至少有一边不是 T-r。考试通常还要求你构造一台 recogniser 证明其中一边是 T-r，再推出另一边不是 T-r。
             </p>
+            <div class="answer-box">
+              <p><strong>最新情报校准：L<sub>3</sub> 名字不能死记，先看定义。</strong> 如果 Summer Q4 的 <code>L3</code> 被定义成 "program eventually throws / reaches / accepts"，那么 <code>L3</code> 是 Turing-recognisable：模拟程序，事件一发生就 accept；因为题里已证明它 undecidable，所以 <code>L̄3</code> 不能也是 TR，否则两边 recogniser 并行运行就得到 decider。</p>
+              <p>如果题面像 Sample A 一样写 <code>L3 = {&lt;J&gt; : J never throws Exception21}</code>，方向正好反过来：<code>L̄3 = {&lt;J&gt; : J throws Exception21}</code> 是 TR，而 <code>L3</code> 不是 TR。卷面判断口诀不是"L3 一定 TR"，而是<strong>eventually observable 的那一侧 TR；另一侧靠 undecidable + both-TR-implies-decidable 推 not TR</strong>。</p>
+            </div>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">
       <p class="qa-title">过关问答：先内容理解，再 past/sample paper 题，悬停或点击显示答案</p>
@@ -637,9 +641,9 @@
         <button class="qa-question" type="button" aria-expanded="false">内容3. Q4 常用哪个定理？</button>
         <div class="qa-answer">
           <p><strong>核心答案（先确认概念）：</strong>如果 <code>L</code> 和 complement 都 T-r，则 <code>L</code> decidable。</p>
-          <p><strong>为什么这是对的：</strong>Theorem: L decidable iff L in TR and L ̄ in TR。若两边都 TR 可构造 decider——并行跑两个 recogniser 总有一个 accept。Q4 标准用法：(1)HALT reduction 证 L undecidable (2)构造 recogniser 证 L in TR (3)推出 L ̄ not in TR。</p>
-          <p><strong>题目语境怎么用：</strong>Sample A/B Q4：题给语言 L 问 (a)证 L undecidable (b)证 L in TR (c)推出 L ̄ 状态。三道子题对应 reduction+recogniser+theorem。</p>
-          <p><strong>卷面写法：</strong>L undecidable(proved via HALT reduction). L in TR(recogniser constructed). By theorem L decidable iff both L and L ̄ are TR. Since L undecidable but L in TR, L ̄ not in TR。</p>
+          <p><strong>为什么这是对的：</strong>Theorem: L decidable iff L in TR and L ̄ in TR。若两边都 TR 可构造 decider——并行跑两个 recogniser，总有一个会在正确一侧 accept。Q4 的真实任务是先找出哪一侧有 recogniser：可观察事件发生的一侧（throws/reaches/accepts at some point）能通过模拟认出；"never" 或 "for all future" 那一侧通常不能直接认出。</p>
+          <p><strong>题目语境怎么用：</strong>Sample A 若 L3 写作 never throws Exception21，则 complement "does throw" 是 TR，L3 不是 TR。若 Summer Q4 把 L3 写成 "does throw Exception21"，则 L3 是 TR，L ̄3 不是 TR。两个答案看似相反，其实同一条逻辑：eventually side TR；另一侧因 undecidable 不能也 TR。</p>
+          <p><strong>卷面写法：</strong>First identify the observable side. Construct recogniser R by simulating J and accepting when the event occurs. Since the language from Q3 is undecidable, the opposite side cannot also be TR; otherwise both recognisers in dovetailing would decide membership. Therefore [observable side] is TR and [other side] is not TR。</p>
           <p><strong>常见失分点：</strong>写成如果 L TR 则 L decidable 少一边条件；忘先证 L undecidable 直接说 L ̄ not in TR 没逻辑基础。</p>
         </div>
       </article>
@@ -860,7 +864,7 @@
                   <tr><td>Q2(a)</td><td>Prove decidable</td><td>Construct decider</td><td>说明机器每个输入都会 halt。</td></tr>
                   <tr><td>Q2(b)</td><td>Prove Turing-recognisable</td><td>Construct recogniser</td><td>只需 yes 时 accept；no 时可 loop。</td></tr>
                   <tr><td>Q3/Q5</td><td>Prove undecidable</td><td>Mapping reduction from HALT</td><td>写 iff 关系和 contradiction。</td></tr>
-                  <tr><td>Q4</td><td>TR / not TR for language and complement</td><td>Recognizer + theorem</td><td>用“若 L 和 complement 都 T-r，则 decidable”。</td></tr>
+                  <tr><td>Q4</td><td>TR / not TR for language and complement</td><td>Recognizer + theorem</td><td>先看题面 L3 定义；eventually/throws 那侧 TR，另一侧用“both TR ⇒ decidable”推出 not TR。</td></tr>
                   <tr><td>Q6</td><td>Prove in NP</td><td>Certificate + verifier</td><td>说明 certificate 和 polynomial runtime。</td></tr>
                   <tr><td>Q7</td><td>Prove NP-complete</td><td>in NP + reduction from 3-SAT</td><td>membership、hardness、correctness、polynomial time。</td></tr>
                 </tbody>

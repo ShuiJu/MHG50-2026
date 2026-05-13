@@ -291,6 +291,9 @@ while (i &lt; a.Length) {
           <section id="s1-q3" class="section">
             <h2>Q3: Event-B + Data Refinement + CDCL SAT (25 marks)</h2>
             <p><strong>预测子题结构：</strong>(a)[8] Event-B 系统建模 — contexts、machines、invariants、events、proof obligations；(b)[6] Data Refinement — 抽象到具体的映射，gluing invariant，coded example；(c)[5] FRET — 如何将 natural language requirements 转化为 temporal logic 支持 model checking；(d)[6] CDCL SAT solver — 算法流程 + 相比 stochastic search 的本质优势。</p>
+            <div class="micro-check">
+              <p><strong>最新情报校准：</strong>Rossane 提到 NN verification relevant。若 Q3 把 CDCL/Z3 应用换成 neural network verification，答案不要写成机器学习泛泛介绍；按 SAT/SMT 应用写：input region + network constraints + negated safety property，然后解释 <code>sat</code> 是 counterexample/adversarial input，<code>unsat</code> 是 bounded region 内 verified。</p>
+            </div>
 
             <h3>Model Answer — (a) Event-B 系统建模 [8 marks]</h3>
             <div class="table-wrap">
@@ -587,6 +590,25 @@ if result == sat:
     m = s.model()       # Get model
     print(m[x], m[y])   # e.g. 1, 2</code></pre>
             <p><strong>SMT-LIB 语法基础：</strong><code>(assert (&gt; x 0))</code>；<code>(declare-const x Int)</code>；<code>(check-sat)</code>；<code>(get-model)</code>。返回 <code>sat</code> / <code>unsat</code> / <code>unknown</code>。</p>
+          </section>
+
+            <section class="section">
+              <h3>若 Q3 换 Neural Network Verification / AI4SE</h3>
+              <p>这类题的核心不是"神经网络很复杂"，而是把 network 的行为编码成约束，再用 solver 搜索违反性质的输入。答题时一定要围绕 property、constraints、counterexample 三个词。</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>问法</th><th>标准回答骨架</th><th>为什么</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>What is NN verification?</td><td>Checking whether a trained neural network satisfies a formal property for all inputs in a specified region.</td><td>它比 testing 强，因为不是抽样，而是覆盖整个 bounded input set。</td></tr>
+                    <tr><td>How can solver be used?</td><td>Encode input bounds, layer equations/activations, and the negation of the desired safety property.</td><td>把"是否有坏输入"变成 satisfiability problem。</td></tr>
+                    <tr><td>What does <code>sat</code> mean?</td><td>There exists an input satisfying the violation constraints.</td><td>model 是 concrete counterexample/adversarial input，property fails。</td></tr>
+                    <tr><td>What does <code>unsat</code> mean?</td><td>No violating input exists inside the encoded region.</td><td>因此 property holds for that region，但不要夸大到所有可能现实输入。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>可交卷例子：</strong>For an image classifier, require that every image within epsilon of a given input keeps the same class. Encode the epsilon ball, the network layers, and the violation "some other class has higher score". If the solver is sat, the model gives an adversarial image; if unsat, the classifier is verified robust in that epsilon region.</p>
           </section>
 
             <section class="section">

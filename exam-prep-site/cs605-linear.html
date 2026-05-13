@@ -853,6 +853,10 @@
             </div>
             <h3>TR / co-TR 的连接</h3>
             <p>一个重要事实：如果 <code>L</code> 和 <code>L̄</code> 都 Turing-recognisable，那么 <code>L</code> decidable。方法是并行运行两个 recogniser，哪个先 accept 就给答案。所以如果你已经证明 <code>L</code> undecidable，而又证明 <code>L</code> 是 T-r，那么 <code>L̄</code> 就不能也是 T-r。</p>
+            <div class="answer-box">
+              <p><strong>Summer Q4 情报校准：</strong>讨论里说 "L3 is TR; L3 complement is not TR" 时，先确认题面里的 <code>L3</code> 到底定义成哪一侧。如果 <code>L3</code> 是 "J does throw Exception21"，它的 yes instance 是一个 eventually observable event，所以 <code>L3</code> is TR；再由 Q3 已证 undecidable 推出 <code>L̄3</code> not TR。</p>
+              <p>如果题面像 Sample A 页那样写 <code>L3 = {&lt;J&gt; : J never throws Exception21}</code>，结论要反过来：<code>L̄3</code>（J does throw Exception21）is TR，<code>L3</code> itself is not TR。卷面不要死背名字；写法固定为：construct recogniser for the side where a finite simulation can witness yes, then use "both side TR would make a decider" for the other side。</p>
+            </div>
             <p>对应材料：<code>2026-02-25-Notes-Non-T-r-languages_annotated.pdf</code>、<code>2026-03-04-Notes-Reductions_annotated.pdf</code>、<code>2026-03-11 Reductions with non-T-r languages_annotated.pdf</code>、<code>C - Computability II.pdf</code>、reduction videos。</p>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">

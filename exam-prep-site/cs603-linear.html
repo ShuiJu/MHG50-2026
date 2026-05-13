@@ -1029,6 +1029,21 @@
                 </tbody>
               </table>
             </div>
+            <h3>NN verification：把神经网络当成约束系统验证</h3>
+            <p>新情报说 Rossane 明确提到 NN verification，所以这一块要按可考应用准备。它不是问怎样训练 network，而是问：对某个输入范围内的所有输入，network 的输出是否都满足 safety property。</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>步骤</th><th>要写什么</th><th>小例子</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1. Input region</td><td>限制允许输入。</td><td><code>x</code> 在某个 box 内，或图片像素扰动不超过 <code>epsilon</code>。</td></tr>
+                  <tr><td>2. Network constraints</td><td>把每层计算、ReLU/activation、weights 变成约束。</td><td><code>z = W*x + b</code>，<code>relu(z)=max(0,z)</code>。</td></tr>
+                  <tr><td>3. Negated property</td><td>检查坏事是否可能发生。</td><td>要求 class A 保持不变时，solver 查 <code>score_B &gt; score_A</code> 是否可满足。</td></tr>
+                  <tr><td>4. Solver result</td><td><code>sat</code> 给 counterexample；<code>unsat</code> 证明该区域内无 violation。</td><td><code>sat</code> 的 model 就是 adversarial input；<code>unsat</code> 才是 verified。</td></tr>
+                </tbody>
+              </table>
+            </div>
             <p>对应材料：<code>sld_mth1.pdf</code>、<code>labZ3_PropLogic.pdf</code>、<code>Z3Exercises.pdf</code>、<code>AI4SE_Monahan1.pdf</code>、<code>CS603_FormalVerification_NeuralNetworks.pdf</code>。</p>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">
