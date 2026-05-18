@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-13 21:56
+更新时间：2026-05-18 19:05
 
 ## 项目目标
 
@@ -667,3 +667,18 @@
   - `exam-prep-site/cs603-linear.html`
   - `exam-prep-site/cs603-mock-battle.html`
   - `exam-prep-site/index.html`
+
+### 2026-05-18 19:05 CS615 Sample 形式情报处理
+
+- 用户获得最新情报：CS615 将完全以 `CS615Sample.pdf` 的形式出题。
+- 已先检查当前网站和本地仓库：
+  - 工作区原本干净，最近提交为 `3850a4d Integrate latest CS603 CS605 exam intel`。
+  - 本地存在 `1-CS615/CS615Sample.pdf`，已用 `pdftotext` 读取确认样卷结构。
+- 已重写 `exam-prep-site/cs615-mock-battle.html`：
+  - 从旧的“题型预测概率页”改为“CS615Sample.pdf 四题制模拟战”。
+  - 明确写入样卷规则：3 小时，必答 Q1，再至少答两题；Q1 40 分，Q2/Q3/Q4 各 30 分。
+  - Q1：FinTrack 架构比较，按三层映射、三维比较、recommendation 细化答案。
+  - Q2：AI Agents in SDLC，补齐 advantages、risks、legacy monolith refactor、opaque code、human oversight、junior developer role shift。
+  - Q3：Rails Controller，按 MVC/SRP 违规、service/policy/job/event refactor、unit test 改善细化。
+  - Q4：CI/CD + Observability，按 definition、monitoring 区分、quality feedback loop、trade-offs/challenges 细化。
+- 已更新 `exam-prep-site/index.html` 的 CS615 模拟战入口和关键词，避免继续显示“题型预测”旧导向。

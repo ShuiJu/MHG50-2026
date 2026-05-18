@@ -3,496 +3,381 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CS615 模拟战：题型预测与标准答案</title>
+    <title>CS615 Sample 模拟战：按 CS615Sample.pdf 出题</title>
     <link rel="stylesheet" href="assets/styles.css">
   </head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
     <header class="site-header">
       <div class="topbar">
-        <a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS615 Mock Battle</small></a>
+        <a class="brand" href="index.html"><span>2026 May Exam Prep</span><small>CS615 Sample Mode</small></a>
         <nav class="topnav" aria-label="主导航">
           <a href="index.html">总入口</a>
           <a href="cs615-linear.html">CS615 线性页</a>
           <a href="cs615.html">CS615 题型页</a>
-          <a href="#section1">几乎必出</a>
-          <a href="#section2">很有可能</a>
-          <a href="#section3">如果换题型</a>
+          <a href="#strategy">样卷规则</a>
+          <a href="#q1">Q1 FinTrack</a>
+          <a href="#q2">Q2 AI Agents</a>
+          <a href="#q3">Q3 Rails</a>
+          <a href="#q4">Q4 CI/CD</a>
         </nav>
       </div>
     </header>
 
     <main id="main">
       <section class="hero">
-        <p class="eyebrow">CS615 mock battle · predicted questions</p>
-        <h1>CS615 模拟战：题型预测与标准答案</h1>
-        <p class="lead">基于 2023–2025 历年真题、Sample Paper 信号和教材暗示，按概率从高到低排列最可能出现的 9 道大题。每道题提供完整的标准答案框架——不是零散要点，而是可直接背诵并在考场上展开的完整答案。</p>
+        <p class="eyebrow">CS615 latest intel · sample-paper mode</p>
+        <h1>CS615 模拟战：完全按 CS615Sample.pdf 形式准备</h1>
+        <p class="lead">最新情报是：CS615 将完全以 <code>CS615Sample.pdf</code> 的形式出题。因此本页不再按旧的“题型预测概率”组织，而是按样卷四道题逐题拆成可交卷答案。核心战术：Q1 必答拿稳 40 分，再从 Q2/Q3/Q4 中选择最稳的两题拿满 60 分。</p>
         <div class="tag-list">
-          <a class="tag" href="#section1">Section 1 · 几乎必出</a>
-          <a class="tag" href="#section2">Section 2 · 很有可能</a>
-          <a class="tag" href="#section3">Section 3 · 如果换题型</a>
-          <span class="tag">Full-Stack / MVC / Microservices</span>
-          <span class="tag">Event Loop / CI/CD / SRP</span>
-          <span class="tag">TypeScript / WebSocket / JWT</span>
+          <a class="tag" href="#strategy">3 小时作战顺序</a>
+          <a class="tag" href="#q1">Q1 FinTrack 40 marks</a>
+          <a class="tag" href="#q2">Q2 AI Agents 30 marks</a>
+          <a class="tag" href="#q3">Q3 Rails SRP 30 marks</a>
+          <a class="tag" href="#q4">Q4 CI/CD + Observability 30 marks</a>
         </div>
       </section>
 
       <div class="layout">
         <article class="content">
-
-          <section id="section1" class="section">
-            <h2>Section 1：几乎必出（Sample Paper 已经给出信号）</h2>
-            <p>Sample Paper 的四道题分别对应了 microservices 架构比较、Rails controller 代码审查、CI/CD + observability 定义与配合。But Sample 没有覆盖 full-stack 解释和 MVC 设计模式——而这两道题在 2023–2025 真题中年年出现。因此，Section 1 的三道题为最高概率题，每道都必须能闭卷完整写出。</p>
-
-            <!-- Q1 -->
-            <h3>Q1: Full-Stack 架构解释 + 数据库选型（预测 25 分）</h3>
+          <section id="strategy" class="section">
+            <h2>0. 样卷规则和考场策略</h2>
             <div class="note">
-              <p><strong>题面预测：</strong>给你一个业务场景（如 FinTrack 股票追踪、或购物习惯追踪），要求：(a) 解释 frontend/backend/database 三层各自角色，用一个具体请求串起来；(b) 根据场景数据特征推荐 SQL 或 NoSQL，给出三点技术理由 + 一点 trade-off。</p>
+              <p><strong>样卷形式：</strong>Time allowed: 3 hours. Answer Question 1 and at least two other questions. Q1 = 40 marks；Q2/Q3/Q4 各 30 marks。</p>
+              <p><strong>新情报含义：</strong>现在 CS615 模拟考页面必须围绕这四题准备。旧的 MVC essay、event loop、JWT、TypeScript 只作为知识背景，不再放在模拟战主线里。</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>题号</th><th>主题</th><th>拿分关键</th><th>建议时间</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Q1</td><td>FinTrack 架构比较</td><td>三层映射、三个比较维度、明确 recommendation。</td><td>65-75 分钟</td></tr>
+                  <tr><td>Q2</td><td>AI Agents in SDLC</td><td>优势和风险都要贴 e-commerce/legacy refactor 场景。</td><td>45-50 分钟</td></tr>
+                  <tr><td>Q3</td><td>Rails Controller 代码审查</td><td>逐行指出 MVC/SRP 违规，给出 service/policy/job/event 重构。</td><td>45-50 分钟</td></tr>
+                  <tr><td>Q4</td><td>CI/CD + Observability</td><td>定义边界、和 monitoring 区分、用线上故障闭环串起来。</td><td>45-50 分钟</td></tr>
+                </tbody>
+              </table>
             </div>
             <div class="answer-box">
-              <p><strong>标准答案框架 (a) 三层架构解释（12 分）：</strong></p>
-              <p>用"用户点击查看收据"串起完整数据流：</p>
-              <ol class="rung-list">
-                <li><strong>Browser (React)</strong> 捕获用户点击事件，构造 HTTP 请求：<code>GET /api/receipts/15</code>，headers 携带 session cookie 或 JWT token 证明身份。</li>
-                <li><strong>Route 层</strong> 将 URL pattern <code>/api/receipts/:id</code> 匹配到 <code>ReceiptsController#show</code>。</li>
-                <li><strong>Controller</strong> 验证用户身份（从 token 解析 user_id，检查该 receipt 是否属于该用户），调用 <code>ReceiptService.findById(15)</code>。</li>
-                <li><strong>Service 层</strong> 执行核心业务规则：权限校验、折扣计算、数据聚合。不直接写 SQL，而是调用 <code>ReceiptRepository</code>。</li>
-                <li><strong>Repository / Data Access 层</strong> 生成 SQL：<code>SELECT r.*, ri.* FROM receipts r JOIN receipt_items ri ON r.id = ri.receipt_id WHERE r.id = 15</code>，发给 PostgreSQL。</li>
-                <li><strong>PostgreSQL</strong> 执行查询，返回 receipt header + item rows 的结果集。</li>
-                <li><strong>Server → Browser</strong> 将结果集组装成 JSON <code>{"id":15, "date":"2025-01-03", "total":90, "items":[...]}</code> 返回。React 组件将 JSON 放进 state 并渲染收据详情。</li>
-              </ol>
-              <p>三层职责边界（关键句）：</p>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>层</th><th>负责</th><th>不知道 / 不负责</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>Presentation（React）</td><td>展示数据、收集用户输入、交互反馈</td><td>数据怎么存的、业务规则怎么算的</td></tr>
-                    <tr><td>Application（Spring Boot / Rails / Express）</td><td>处理业务规则（折扣计算、权限检查）、协调 service 和 repository</td><td>不直接写 SQL（那是 Repository 的活）、不负责页面样式</td></tr>
-                    <tr><td>Data（PostgreSQL / MongoDB）</td><td>持久化存储、高效查询、ACID 事务</td><td>不知道业务规则（不关心打折公式）、不知道页面长什么样</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <p><strong>关键句：</strong>"每层只和相邻层通信——React ↔ REST API ↔ Backend ↔ DB Driver ↔ Database。换掉 React 用 Vue，不影响后端和数据库；换掉 PostgreSQL 用 MySQL，不影响前端的页面和业务规则。"</p>
-              <p><strong>标准答案框架 (b) 数据库选型（13 分）：</strong></p>
-              <p>默认选 <strong>SQL（PostgreSQL）</strong>。三点技术理由，每条贴回题面具体数据：</p>
-              <ol class="rung-list">
-                <li><strong>数据是结构化交易记录</strong>——场景可建模为 <code>Customers → Receipts → ReceiptItems</code> 三张表（一对多关系）。分析购物习惯需要 JOIN 这三张表做 "某用户过去 30 天总消费" 的聚合查询，SQL 的 FOREIGN KEY + JOIN 是原生支持。</li>
-                <li><strong>receipt_number 需要 UNIQUE constraint</strong>——两张收据撞号的后果是财务对账无法确定哪张是真的。SQL 的 UNIQUE constraint 在数据库层面强制执行，写入那一刻就阻止重复，比应用层代码校验可靠。</li>
-                <li><strong>一张收据和它的明细需要 ACID transaction 保证同时写入</strong>——不能出现"收据头已存但 2 条明细只存了 1 条"的半成品状态。PostgreSQL 的 <code>BEGIN; INSERT INTO receipts ...; INSERT INTO receipt_items ...; COMMIT;</code> 保证原子性。</li>
-              </ol>
-              <p><strong>Trade-off：</strong>如果将来需求从"购买记录"变成"点击流/行为日志"（每秒万条写入、字段不固定如 experimentId 随时增减、不需要 JOIN、丢失几条不影响对账），NoSQL（MongoDB）的灵活 schema 和高写入吞吐用更低成本支撑相同业务。现阶段收据数据的<strong>写错代价远高于灵活性需求</strong>，所以 SQL。"</p>
+              <p><strong>选题建议：</strong>Q1 必答。Q3 和 Q4 最像工程题，结构最稳定，通常最适合拿稳分。Q2 是议论文题，容易写空，所以必须把每一点都落到具体场景：e-commerce login/payment/cart、legacy monolith 拆微服务、opaque optimized code、human review、tests、security scanning。</p>
+              <p><strong>卷面总原则：</strong>CS615 不奖励只背名词。每段都要做到：先给结论，再解释技术机制，最后贴回题面场景和 trade-off。比较题必须两边都写，最后必须推荐一个方案并说明前提。</p>
             </div>
-
-            <!-- Q2 -->
-            <h3>Q2: MVC 设计模式 + 框架实例（预测 25 分）</h3>
-            <div class="note">
-              <p><strong>题面预测：</strong>解释 MVC 设计模式，用 web 应用例子说明 request flow，再用另一个编程环境（如 mobile app）说明 MVC 同样适用，画图。</p>
-            </div>
-            <div class="answer-box">
-              <p><strong>标准答案框架：</strong></p>
-              <p><strong>MVC 三部分职责定义：</strong></p>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>组件</th><th>职责</th><th>Web 例子</th><th>Mobile 例子</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td><strong>Model</strong></td><td>管理数据和业务规则。代表系统中"知道什么"的部分。</td><td>ActiveRecord / Repository + PostgreSQL。例如 <code>Order</code> model 存储订单数据、验证金额不为负。</td><td>本地 SQLite 数据库 + 网络 API 层。例如 <code>OrderManager</code> 封装数据库读写和 API 调用。</td></tr>
-                    <tr><td><strong>View</strong></td><td>只负责展示。不包含业务逻辑，不知道数据怎么存的。</td><td>React 组件 / HTML 模板。例如 <code>OrderSummary</code> 组件用 props 渲染订单列表。</td><td>Android Activity / iOS ViewController。例如 <code>OrderListActivity</code> 用 RecyclerView 展示订单。</td></tr>
-                    <tr><td><strong>Controller</strong></td><td>接收用户动作，调用 Model，选择 View。是"协调者"而非执行者。</td><td>Rails Controller / Spring @RestController。例如 <code>OrdersController#checkout</code>。</td><td>Activity 的事件处理器。例如 <code>onCheckoutButtonClick()</code>。</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <p><strong>Web request flow 六步：</strong></p>
-              <ol class="rung-list">
-                <li><strong>用户点击"结账"按钮</strong> —— 浏览器发送 <code>POST /orders/checkout</code>，body 含 cart items 和 shipping address。</li>
-                <li><strong>路由到 OrdersController#checkout</strong> —— URL pattern 匹配到 controller action。</li>
-                <li><strong>Controller 调 OrderService 验库存算总价</strong> —— Controller 自己不计算，只把 params 传给 service："这是用户要买的东西，帮我验能不能买"。</li>
-                <li><strong>Service 通过 OrderRepository 写数据库</strong> —— OrderRepository 负责 SQL 翻译，Service 不直接碰数据库。</li>
-                <li><strong>Controller 选择 response</strong> —— 成功则 <code>render json: {order_id: 123, status: "confirmed"}</code>；失败则 <code>render :new with errors</code>。</li>
-                <li><strong>React 收到 JSON 更新 UI</strong> —— 渲染"订单确认"页面，显示订单号和预计送达时间。</li>
-              </ol>
-              <p><strong>关键句：</strong>"Controller 不应该包含业务逻辑和数据库操作——那是 Model 的活。Controller 的职责是 HTTP 协调：接请求、调对的人、选对的 response。"</p>
-              <p><strong>Mobile 映射：</strong></p>
-              <ol class="rung-list">
-                <li>用户点"下单" → Activity 处理点击事件。</li>
-                <li>Activity 调 <code>OrderManager.create(cartItems)</code> —— 此处在 mobile 里 OrderManager 充当 Controller 的角色（接收用户意图）。</li>
-                <li><code>OrderManager</code> 调本地 DB（SQLite）存待发订单 + 远程 API 发 POST 请求。</li>
-                <li>Activity 更新 RecyclerView（View）展示最新订单列表。</li>
-              </ol>
-              <p><strong>配图描述：</strong></p>
-              <pre><code>┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│    View      │ ←── │  Controller  │ ──→ │    Model     │
-│ (React/HTML  │     │ (协调者)      │     │ (数据+规则)   │
-│  Activity)   │     │              │     │              │
-└──────────────┘     └──────────────┘     └──────────────┘
- Web: React 组件      Web: Rails Ctl     Web: ActiveRecord + PG
- Mobile: Activity     Mobile: Activity    Mobile: SQLite + API</code></pre>
-            </div>
-
-            <!-- Q3 -->
-            <h3>Q3: 微服务 vs 单体架构比较（预测 25-40 分，来自 Sample Q1）</h3>
-            <div class="note">
-              <p><strong>题面预测：</strong>FinTrack 案例——Approach A 是单体（React + Spring Boot + PostgreSQL），Approach B 是微服务（React SPA + 多个 Node 服务 + MongoDB）。从 scalability、resilience、development velocity 三个维度比较，最后推荐一个方案并说明理由。</p>
-            </div>
-            <div class="answer-box">
-              <p><strong>标准答案框架：</strong></p>
-              <p><strong>Scalability（可扩展性）：</strong></p>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>维度</th><th>Approach A（单体）</th><th>Approach B（微服务）</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>独立扩容</td><td>全量扩容——即使只有 price-service 有压力，也必须复制整个 monolith，浪费 CPU/内存。</td><td>price-service 可独立扩容到 10 个实例应对实时股价推送，trade-history-service 保持 2 个实例即可。精细粒度扩容。</td></tr>
-                    <tr><td>通信成本</td><td>进程内方法调用（微秒级），零网络延迟，不会因网络抖动失败。</td><td>服务间通过 HTTP/gRPC 通信（1–50ms），引入网络延迟、超时、重试开销。</td></tr>
-                    <tr><td>结论</td><td colspan="2"><strong>B 更优</strong>：FinTrack 的实时股价对 price-service 有高吞吐压力但 trade-history 没有，独立扩容避免浪费。但 B 的跨服务网络调用增加延迟，需要加缓存（Redis）和 circuit breaker 缓解。</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <p><strong>Resilience（故障容错）：</strong></p>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>维度</th><th>Approach A（单体）</th><th>Approach B（微服务）</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>故障隔离</td><td>单点故障——monolith 挂了整个系统不可用。但运维简单：只有一个进程要监控、一个日志文件。</td><td>price-service 挂了不影响 trade-history 查询（故障隔离）。但引入新的故障模式：网络分区（两个 service 之间的网络断了）、级联超时（A 超时→B 堆积→C 也超时）、分布式事务失败。</td></tr>
-                    <tr><td>数据一致性</td><td>单体事务 ACID 简单可靠——<code>BEGIN → INSERT receipt → INSERT items → COMMIT</code> 四条 SQL 在一个 DB connection 里完成。</td><td>跨 service 事务需要分布式 saga 或 2PC，复杂度指数增长。FinTrack 交易历史需要强一致，拆分后一致性担保成本很高。</td></tr>
-                    <tr><td>结论</td><td colspan="2"><strong>各有优劣</strong>：B 有更好的故障隔离但引入分布式故障模式。FinTrack 场景下，如果交易数据的正确性比价格服务的可用性更重要，A 的简单故障模式反而是优势——"宁可价格显示慢一秒，不能交易记录错一笔"。</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <p><strong>Development Velocity（开发速度）：</strong></p>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>阶段</th><th>Approach A（单体）</th><th>Approach B（微服务）</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>初期</td><td><strong>A 更快</strong>——一个 repo、一套 CI/CD、一次部署。3 人团队不需要协调跨 service 的 API contract，改一行代码立即看效果。</td><td>B 初期慢——需要决定 service 边界、定义 API contract、搭建容器编排（K8s）、配置服务发现和分布式日志。3 人团队被基础设施消耗大量时间。</td></tr>
-                    <tr><td>长期</td><td>A 变慢——代码库膨胀后，改一个功能可能影响全局。所有开发者挤在一个 codebase 里，merge conflict 增多。</td><td><strong>B 长期更快</strong>——price 小队和 trade 小队可独立迭代、独立部署、独立选技术栈。一个 service 的 bug 不会 block 整个 release。</td></tr>
-                    <tr><td>结论</td><td colspan="2"><strong>A 短期更优，B 长期更优</strong>。关键看团队规模和项目阶段。"</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <p><strong>推荐方案（必须扣回题面约束）：</strong></p>
-              <div class="note">
-                <p><strong>推荐：选 A（单体 + PostgreSQL），但预留 price-service 拆分接口。</strong></p>
-                <p>理由：题面约束是①团队小（small-medium team）——微服务的 K8s 运维、分布式 tracing、跨 service API versioning 的维护成本超过收益；②交易历史需强一致——单体的 ACID 事务比分布式 saga 简单得多，错账代价太高；③实时股价有吞吐压力——但可以通过 Redis 缓存 + WebSocket 推送在单体内部解决，不需要拆独立服务。</p>
-                <p><strong>演进条件：</strong>当 price-service 的 QPS 超过单实例承载能力 + Redis 缓存命中率降到阈值以下 + 团队扩展到 10 人以上可以分成两个 squad 时——再拆出独立的 price-service 并逐步迁移。</p>
-              </div>
-              <p><strong>答题关键：</strong>每个维度都给"两边各有什么好、什么坏"，不能说一边全好一边全坏。最后推荐必须扣回题面约束（团队规模、数据一致性需求、实时性压力），而不是泛泛说"微服务好"。</p>
-            </div>
-
           </section>
 
-          <section id="section2" class="section">
-            <h2>Section 2：很有可能（2023–2025 真题反复出现）</h2>
-            <p>这三道题覆盖了 Node.js event loop 输出、CI/CD observability 联合排查、Rails controller 代码审查——2023 Summer、2024、2025 Summer 均出现过类似题型。Sample Paper Q3 和 Q4 进一步确认了它们的重要性。</p>
-
-            <!-- Q4 -->
-            <h3>Q4: Node.js + Event Loop 输出题（预测 10-15 分）</h3>
+          <section id="q1" class="section">
+            <h2>Q1. FinTrack 架构比较 [40 marks]</h2>
             <div class="note">
-              <p><strong>题面预测：</strong>给一段嵌套 setTimeout / console.log 代码，要求写出输出顺序并解释 event loop 机制。例如：</p>
-              <pre><code>console.log('A');
-setTimeout(() => console.log('B'), 0);
-Promise.resolve().then(() => console.log('C'));
-console.log('D');</code></pre>
-            </div>
-            <div class="answer-box">
-              <p><strong>标准答案框架：</strong></p>
-              <p><strong>输出：A → D → C → B</strong></p>
-              <p><strong>解释（分层递进）：</strong></p>
-              <ol class="rung-list">
-                <li><strong>同步代码先全部执行完（call stack 清空）</strong> —— <code>console.log('A')</code> 和 <code>console.log('D')</code> 是同步调用，直接压入 call stack 执行后弹出。此时输出 <strong>A</strong> 和 <strong>D</strong>。</li>
-                <li><strong>Microtask queue 优先于 macrotask queue</strong> —— <code>Promise.resolve().then(...)</code> 的 callback 进入 <strong>microtask queue</strong>（Promise jobs）。<code>setTimeout(...)</code> 的 callback 进入 <strong>macrotask queue</strong>（Timer phase）。Event loop 在每个 macrotask 之间清空所有 microtask，所以 C 先于 B 输出。</li>
-                <li><strong>setTimeout(fn, 0) 不是"立刻执行"</strong> —— 0ms 的意思是"尽快加入 macrotask queue"，但至少等当前同步代码跑完 + microtask queue 清空后，event loop 才会取它执行。所以 B 是最后一个。</li>
-              </ol>
-              <p><strong>完整 event loop 时间线：</strong></p>
-              <pre><code>t0: call stack → console.log('A') → 输出 A
-t1: call stack → setTimeout(..., 0) → callback 进入 macrotask queue
-t2: call stack → Promise.resolve().then(...) → callback 进入 microtask queue
-t3: call stack → console.log('D') → 输出 D
-t4: call stack 清空 → event loop 先取 microtask: console.log('C') → 输出 C
-t5: microtask queue 清空 → event loop 取 macrotask: console.log('B') → 输出 B</code></pre>
+              <p><strong>题面核心：</strong>FinTrack 是实时金融 dashboard，需要高频 stock/crypto 更新、复杂的用户自定义过滤、严格一致的 transaction history。Approach A 是 React + Spring Boot + PostgreSQL 的 3-tier monolith，单个垂直扩容实例；Approach B 是 React SPA + 多个 Node.js microservices + NoSQL document stores。</p>
+              <p><strong>配分：</strong>(a) map both approaches to 3-tier and identify application-tier communication flow differences [10]；(b) compare scalability/performance, resilience, development velocity/deployment [15]；(c) recommend one architecture and justify [15]。</p>
             </div>
 
-            <!-- Q5 -->
-            <h3>Q5: CI/CD + Observability（预测 15-25 分，来自 Sample Q4）</h3>
-            <div class="note">
-              <p><strong>题面预测：</strong>定义 CI/CD 和 Observability，解释两者如何配合排查 production bug，写一个具体故障排查流程。</p>
-            </div>
+            <h3>Q1(a) 三层映射和通信流 [10]</h3>
             <div class="answer-box">
-              <p><strong>标准答案框架：</strong></p>
-              <p><strong>定义：</strong></p>
+              <p><strong>标准答案先写结论：</strong>两种方案都能映射到 Presentation, Application/Logic, Data 三层；差异不在“有没有三层”，而在 Application Tier 是一个 monolithic backend 还是多个通过网络通信的 services。</p>
               <div class="table-wrap">
                 <table>
                   <thead>
-                    <tr><th>概念</th><th>定义</th><th>核心能力</th></tr>
+                    <tr><th>层</th><th>Approach A: 3-tier monolith</th><th>Approach B: microservices</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td><strong>CI（Continuous Integration）</strong></td><td>代码合并到主干后自动 build + test。每次 git push 触发 pipeline：装依赖→lint→单元测试→集成测试→build artifact。任何一步失败就中断，阻止坏代码进主干。</td><td>防止 integration hell、尽早发现 bug、保证 main branch 始终可部署。</td></tr>
-                    <tr><td><strong>CD（Continuous Delivery/Deployment）</strong></td><td>通过测试的代码自动部署到 staging，经过 smoke test 后自动/手动推到 production。</td><td>缩短"代码写完→用户能用"的时间、减少手工部署的人为失误。</td></tr>
-                    <tr><td><strong>Observability</strong></td><td>通过 logs（每条请求的详细记录）、metrics（聚合数字趋势）、traces（跨 service 的请求路径）让工程师能问"为什么 user A 的请求返回了 500"。</td><td>回答未知问题——不只是看已知指标有没有超阈值。</td></tr>
+                    <tr><td>Presentation</td><td>React frontend。负责 dashboard UI、filters、charts、form input。</td><td>Decoupled React SPA。通过 REST/GraphQL/WebSocket 调 API gateway 或各 service。</td></tr>
+                    <tr><td>Application / Logic</td><td>一个 Spring Boot backend。Controller、service、security、filtering logic、transaction-history logic 都在同一个 deployable application 内。</td><td>多个 Node.js services，例如 price-service、portfolio-service、filter-service、transaction-service。每个 service 负责一小块业务能力。</td></tr>
+                    <tr><td>Data</td><td>PostgreSQL。关系表、foreign keys、transactions、SQL joins 支撑 transaction history 和 user-specific filtering。</td><td>NoSQL document stores，通常每个 service 拥有自己的 data store，schema 更灵活但跨服务 join/transaction 更难。</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p><strong>Observability ≠ Monitoring：</strong></p>
-              <p>Monitoring 告诉你 "CPU 90% 了"（<em>已知指标超预设阈值</em>）。Observability 让你问 "为什么用户 A 看收据的请求返回了 500"（<em>未知问题的自由探索</em>）。Monitoring 定义"健康"的边界；Observability 提供诊断"不健康"原因的工具。两者互补但目的不同。</p>
-              <p><strong>故障排查流程（完整的 production bug 闭环）：</strong></p>
-              <ol class="rung-list">
-                <li><strong>收到 PagerDuty alert</strong> —— observability 的 metrics 检测到 <code>/api/receipts</code> 端点的 p99 latency 从 200ms 跳到 3000ms、error rate 从 0.1% 跳到 5%。</li>
-                <li><strong>在 tracing 系统（Jaeger）找到该 trace ID</strong> —— 挑一个失败的 trace，看到请求路径：<code>React → API Gateway → receipt-service（200ms, OK）→ price-service（2800ms, Timeout）</code>。bottleneck 定位到 price-service。</li>
-                <li><strong>查 price-service 的 logs</strong> —— 在对应时间窗口 grep 出 "Redis connection timeout" 的 stack trace。日志说 price-service 在连 Redis 时 30 次尝试均超时。</li>
-                <li><strong>查 metrics 确认</strong> —— Redis 连接池的 <code>available_connections</code> 指标在故障时刻从 20 降到 0，<code>connection_wait_time</code> 从 1ms 飙升到 5000ms。证实连接池耗尽。</li>
-                <li><strong>修复</strong> —— 增加 Redis 连接池大小从 20 到 50，或为 price-service 加 circuit breaker（Redis 不可用时返回缓存价格而不是超时报错）。</li>
-                <li><strong>CI/CD pipeline 自动部署修复并跑 regression test</strong> —— git push 触发 CI 跑 lint + 单元测试 + 集成测试（staging 上模拟 Redis 不可用的 fallback 行为）。Pass → CD 部署到 production。</li>
-              </ol>
-              <p><strong>关键：</strong>不能只写 "logs/metrics/traces"，要写出三者各自提供什么信息、联合使用的场景。</p>
+              <p><strong>Application Tier 通信差异：</strong>Approach A 里 controller 调 service、service 调 repository 是进程内方法调用，速度快，事务边界清楚，日志和调试集中。Approach B 里一次 dashboard request 可能经过 API gateway、price-service、portfolio-service、filter-service 和 transaction-service；这些调用走 HTTP/gRPC/message queue，引入 network latency、timeouts、retries、service discovery 和 distributed tracing。</p>
+              <p><strong>卷面例子：</strong>用户打开 dashboard 时，Approach A 是 <code>React -> Spring DashboardController -> DashboardService -> PostgreSQL -> JSON response</code>。Approach B 是 <code>React SPA -> API Gateway -> price-service + portfolio-service + transaction-service -> separate NoSQL stores</code>，再由 gateway 或 frontend 聚合结果。</p>
             </div>
 
-            <!-- Q6 -->
-            <h3>Q6: Rails Controller 代码审查（预测 15-30 分，来自 Sample Q3）</h3>
+            <h3>Q1(b) 三个维度比较 [15]</h3>
+            <div class="answer-box">
+              <p><strong>1. Scalability and Performance</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Approach A</th><th>Approach B</th><th>FinTrack 判断</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>垂直扩容简单：升级 CPU/RAM 即可。单体内部方法调用快，SQL join/filter 在一个数据库内完成。</td><td>可以独立扩容热点服务，例如 price-service 单独加实例处理高频行情，transaction-service 不必跟着扩容。</td><td>实时价格更新支持 B；复杂用户过滤和 transaction history 支持 A，因为 SQL 查询和事务更自然。</td></tr>
+                    <tr><td>缺点是整体扩容粒度粗。只有 price updates 热，也要复制整个 backend 或升级整台机器。</td><td>缺点是网络调用多，跨 service 聚合 dashboard 增加 latency；NoSQL 跨集合/跨服务查询比 SQL join 更笨重。</td><td>如果瓶颈主要是 stock/crypto feed，B 更有弹性；如果瓶颈是交易历史查询准确性，A 更稳。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>2. System Resilience</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Approach A</th><th>Approach B</th><th>FinTrack 判断</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>故障模式简单：一个 app、一个 DB，容易定位和回滚。但单体进程或单机挂掉会影响整个系统。</td><td>故障隔离更好：price-service 挂了，transaction history 理论上还能查。每个 service 可独立部署和恢复。</td><td>FinTrack 可以接受价格短暂延迟，但 transaction history 错账不可接受。A 的强一致和简单事务边界是重大优势。</td></tr>
+                    <tr><td>PostgreSQL ACID transaction 能保证交易记录、账户变更、审计日志同进同退。</td><td>跨服务一致性要靠 saga/eventual consistency/compensating action，出错面更大。</td><td>严格数据一致性是题面明示条件，不能只因 microservices resilience 好就忽略一致性风险。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p><strong>3. Development Velocity and Deployment</strong></p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Approach A</th><th>Approach B</th><th>FinTrack 判断</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>初期更快：一个 repo、一个 build、一个 deployable artifact。团队不用维护多个 service contract。</td><td>长期团队变大后更快：不同小队可分别开发 price、portfolio、transaction service，独立部署。</td><td>Startup 早期通常更需要快速验证产品和保持系统可理解，A 更合适。</td></tr>
+                    <tr><td>缺点是 codebase 长大后可能变成 big ball of mud，部署任何小改动都要部署整个 app。</td><td>缺点是 DevOps 成本高：CI/CD、container、service discovery、observability、API versioning 都要搭好。</td><td>B 的速度收益只有在团队足够大、service 边界稳定时才会超过成本。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <h3>Q1(c) 推荐方案 [15]</h3>
+            <div class="answer-box">
+              <p><strong>推荐：</strong>For the initial version of FinTrack, choose Approach A, but implement it as a modular monolith and design the price-update module so it can later be extracted into a separate service.</p>
+              <p><strong>为什么不是直接选 B：</strong>题面里最危险的数据不是实时价格，而是 transaction history。价格可以延迟、缓存、重试；交易历史如果出现半写入、重复写入、总额和明细不一致，会直接破坏用户信任和审计能力。PostgreSQL 的 transactions、unique constraints、foreign keys 和 SQL joins 更适合这类强一致金融记录。</p>
+              <p><strong>为什么 A 仍能处理实时压力：</strong>Approach A 不等于“什么优化都不能做”。可以在 Spring Boot 内部使用 Redis cache、WebSocket/SSE push、background worker 拉行情、read replica 做查询扩展。先用这些低复杂度手段解决 high-frequency updates；只有当 price feed 成为明确瓶颈时，再把 price-service 抽出来。</p>
+              <p><strong>必须写 trade-off：</strong>A 的代价是独立扩容能力弱，未来用户暴增时可能需要拆服务；B 的代价是现在就承担分布式系统复杂度。基于 startup、strict consistency、complex filtering 这三个条件，A 的简单性和数据可靠性更重要。</p>
+              <p><strong>高分收束句：</strong>This is not a rejection of microservices. It is a staged architecture decision: start with a modular monolith to preserve consistency and delivery speed, observe real bottlenecks, then extract the high-frequency price component when scale and team maturity justify the operational cost.</p>
+            </div>
+          </section>
+
+          <section id="q2" class="section">
+            <h2>Q2. AI Agents in the SDLC [30 marks]</h2>
             <div class="note">
-              <p><strong>题面预测：</strong>给你一段 OrdersController#create 代码（内嵌折扣计算、订单保存、邮件发送、analytics 记录），要求指出 MVC/SRP 违规、提出重构方案、说明重构如何改善测试。</p>
-              <pre><code># Sample 中你可能会看到的坏代码结构：
-def create
-  @order = Order.new(order_params)
-  # 折扣计算（业务规则在 controller 里）
-  if @order.total > 200
-    @order.discount = 20
-  elsif @order.total > 500
-    @order.discount = 80
+              <p><strong>题面核心：</strong>AI Agents 能执行多步骤 workflow，比如创建登录页、写 unit tests、部署到 staging。题目要求分析它们进入大型 e-commerce 平台 SDLC 的优势/风险，讨论 agent 把 legacy monolith 重构成 microservices 时的 opaque code 风险，并评价“AI Agents will replace junior web developers”。</p>
+              <p><strong>配分：</strong>(a) 3 advantages + 3 risks [10]；(b) opaque optimized code 对 maintainability/technical debt 的影响 + oversight strategy [10]；(c) 批判性评价 junior developers 是否会被替代 [10]。</p>
+            </div>
+
+            <h3>Q2(a) 三个优势和三个风险 [10]</h3>
+            <div class="answer-box">
+              <p><strong>优势 1：多步骤自动化提高 throughput。</strong>传统 developer-led workflow 需要人手动切换任务：写页面、写 API、写测试、改 CI、部署 staging。AI Agent 可以把这些串成一个 workflow，快速生成 login page、form validation、API call、unit test 和 deployment script。对 e-commerce 平台，常见 CRUD 页面、admin dashboard、测试样板代码可以更快完成。</p>
+              <p><strong>优势 2：把重复工程任务标准化。</strong>Agent 可以按团队 template 生成 consistent code，例如所有 React form 都使用同一套 validation pattern，所有 API endpoint 都带 authentication middleware 和 error handling。传统手写容易因不同开发者习惯造成风格不一致。</p>
+              <p><strong>优势 3：缩短 feedback loop。</strong>Agent 可在生成代码后立即运行 tests、lint、type check，并根据失败信息修复一轮。这让 developer 更快看到可运行原型，把时间投入到支付安全、库存一致性、性能瓶颈等高价值判断上。</p>
+              <p><strong>风险 1：生成看似正确但不安全或不符合需求的代码。</strong>例如 agent 生成 login page 时把 JWT 存在 localStorage，或忘记 CSRF protection。代码能跑不代表符合 e-commerce 的安全要求。</p>
+              <p><strong>风险 2：架构层面的误判会放大 technical debt。</strong>Agent 可能为追求局部优化生成复杂抽象，或把订单、支付、库存拆成过细 microservices，导致团队后来要维护大量 API contracts、distributed transactions 和 tracing。</p>
+              <p><strong>风险 3：可解释性、责任和数据风险。</strong>Agent 可能生成 opaque code、引入许可证不明的片段，或把业务数据/密钥暴露给外部工具。大型平台还要考虑 audit trail：谁批准了这次改动，谁负责生产事故。</p>
+            </div>
+
+            <h3>Q2(b) Opaque optimized code 和 oversight strategy [10]</h3>
+            <div class="answer-box">
+              <p><strong>对 maintainability 的影响：</strong>高度优化但不透明的 code 会让系统短期看似更快，长期更难维护。开发者无法解释某个 service boundary 为什么这样拆、某个 cache invalidation 为什么这样写、某段异步 retry 为什么不会重复扣款。结果是 bug 难定位、onboarding 变慢、测试难写、变更风险上升。</p>
+              <p><strong>对 technical debt 的影响：</strong>Legacy monolith 拆 microservices 本身已经会引入 network failures、eventual consistency、distributed tracing、deployment orchestration。如果 agent 又生成难懂的优化代码，团队等于同时背上两层债：原 monolith 的历史债没有真正消失，新 microservices 的运维债又增加了。</p>
+              <p><strong>平衡策略：</strong></p>
+              <ol class="rung-list">
+                <li><strong>Human architecture gate.</strong> 人先定义 bounded contexts 和 service boundaries，例如 catalog、cart、order、payment，而不是让 agent 自己按文件夹机械拆。</li>
+                <li><strong>Strangler pattern.</strong> 不一次性重写整个 monolith。先抽一个低风险模块，通过 facade/API gateway 逐步替换，保留可回滚路径。</li>
+                <li><strong>Mandatory review and ADR.</strong> Agent 生成的关键设计必须配 Architecture Decision Record，说明为什么这样拆、替代方案是什么、trade-off 是什么。</li>
+                <li><strong>Tests before trust.</strong> 对每个新 service 要有 contract tests、integration tests、security tests 和 performance smoke tests。AI 生成代码只有通过 CI 才能进入主干。</li>
+                <li><strong>Observability from day one.</strong> 每个 service 必须有 structured logs、metrics、trace IDs。否则拆分后出错只会更难定位。</li>
+              </ol>
+              <p><strong>卷面收束：</strong>Use AI agents as accelerators, not autonomous architects. They can propose code and migrations, but humans must own service boundaries, correctness, security and long-term maintainability.</p>
+            </div>
+
+            <h3>Q2(c) 是否会取代 junior developers [10]</h3>
+            <div class="answer-box">
+              <p><strong>立场：</strong>The statement is too strong. AI agents will change junior developers' work, but they will not remove the need for junior developers.</p>
+              <p><strong>为什么不会完全替代：</strong>Junior developers 不只是敲样板代码。他们也学习 domain rules、debug real production issues、理解用户需求、写 tests、做 code review、维护文档、和团队沟通。AI Agent 可以生成初稿，但它不知道真实业务优先级，也不能承担事故责任。</p>
+              <p><strong>角色会怎样变化：</strong>Junior 的工作会从“从空白文件写第一版”转向“prompt, review, verify, debug”。他们需要能判断 agent 输出是否破坏 MVC/SRP、是否漏掉 input validation、是否引入 SQL injection/XSS、是否缺少 tests。换句话说，implementation skill 仍然重要，但 verification skill 变得更重要。</p>
+              <p><strong>平衡评价：</strong>AI 会减少低价值重复劳动，让 junior 更快接触真实系统；但如果团队只让 junior 接受 agent 输出而不训练他们理解架构，长期会削弱工程判断。最好的组织会把 AI 当 pair-programmer 和 tutor，同时保留 human mentorship、review 和 ownership。</p>
+              <p><strong>高分收束句：</strong>AI agents may reduce the amount of boilerplate assigned to junior developers, but the developer role shifts toward orchestration, verification and accountability rather than disappearing.</p>
+            </div>
+          </section>
+
+          <section id="q3" class="section">
+            <h2>Q3. Rails Controller, MVC Flow and SRP [30 marks]</h2>
+            <div class="note">
+              <p><strong>题面核心：</strong>给出 <code>OrdersController#create</code>，其中 controller 创建 order、计算折扣、保存、发邮件、记 analytics、redirect/render。要求指出 MVC flow 和 Single Responsibility Principle 问题，提出重构方案，并说明重构后 discount logic 的 unit tests 如何改变。</p>
+              <p><strong>配分：</strong>(a) identify MVC/SRP violations [10]；(b) refactor and mention applicable patterns [14]；(c) testing impact [6]。</p>
+            </div>
+
+            <div class="answer-box">
+              <p><strong>题面代码的核心坏味道：</strong></p>
+              <pre><code>class OrdersController &lt; ApplicationController
+  def create
+    @order = Order.new(order_params)
+
+    if @order.total &gt; 1000 &amp;&amp; @order.user.premium?
+      @order.total *= 0.9
+    elsif @order.total &gt; 500
+      @order.total -= 50
+    end
+
+    if @order.save
+      Mailer.send_receipt(@order).deliver_now
+      Analytics.track("order_created", @order)
+      redirect_to @order, notice: "Success"
+    else
+      render :new
+    end
   end
-  # 直接保存（数据操作在 controller 里）
-  @order.save!
-  # 发邮件（副作用在 controller 里）
-  OrderMailer.confirmation(@order).deliver_now
-  # 记 analytics（横切关注点在 controller 里）
-  AnalyticsTracker.track("order_created", { order_id: @order.id })
-  redirect_to @order
 end</code></pre>
             </div>
+
+            <h3>Q3(a) 违规识别 [10]</h3>
             <div class="answer-box">
-              <p><strong>标准答案框架：</strong></p>
-              <p><strong>违规识别（逐一标出）：</strong></p>
               <ol class="rung-list">
-                <li><strong>折扣计算（业务规则，应在 Service 层）</strong> —— <code>if @order.total > 200 ...</code> 是业务规则。违反 SRP：折扣策略变（比如黑五改成满 300 减 50），必须改 controller。Controller 的职责是 HTTP 协调，不是业务计算。</li>
-                <li><strong>直接写数据库（应用 Repository 封装）</strong> —— <code>@order.save!</code> 直接在 controller 里调。虽然一行，但只要 controller 知道"保存"这件事，任何持久化方式变更（加缓存层、改分库规则）都可能影响 controller。</li>
-                <li><strong>发邮件（副作用，应通过 background job）</strong> —— <code>OrderMailer.confirmation(@order).deliver_now</code> 让用户等邮件发完才看到 redirect。邮件服务商挂了会导致订单提交也失败。应该改为 <code>deliver_later</code> 放进 ActiveJob。</li>
-                <li><strong>记 analytics（横切关注点，应用 Observer/pub-sub）</strong> —— <code>AnalyticsTracker.track(...)</code> 与核心业务无关。Analytics 服务挂了会影响订单提交。应该通过 model callback 或 event bus 解耦。</li>
+                <li><strong>Discount calculation is business logic inside the controller.</strong> <code>@order.total &gt; 1000</code>、premium user、10% discount、minus 50 都是 pricing rules。Controller 的职责应是处理 HTTP request/response，不应拥有价格策略。</li>
+                <li><strong>Controller knows too much about the model.</strong> 它直接读取 <code>@order.total</code> 和 <code>@order.user.premium?</code>，说明 controller 被迫理解订单内部结构和用户等级规则。</li>
+                <li><strong>Synchronous email is a side effect in the request path.</strong> <code>deliver_now</code> 会让用户等待邮件发送；邮件服务失败可能导致订单流程异常。应该用 background job。</li>
+                <li><strong>Analytics is a cross-cutting concern.</strong> <code>Analytics.track</code> 与创建订单的核心行为不同，应该通过 domain event、observer 或 job 解耦。</li>
+                <li><strong>SRP violation.</strong> 这个 action 有多个变化原因：折扣规则变、邮件模板变、analytics schema 变、保存逻辑变、redirect/render 行为变。一个方法同时承担太多责任。</li>
               </ol>
-              <p><strong>违反 SRP 的核心原则：</strong>create action 有超过一个"会变化的原因"——折扣策略变、邮件模板变、analytics 需求变。任何一个变都要改 controller。SRP 说：<em>一个类应该只有一个变化的原因</em>。</p>
-              <p><strong>重构方案：</strong></p>
+              <p><strong>卷面一句话：</strong>The controller is no longer a coordinator. It has become a place where HTTP handling, pricing policy, persistence and side effects are mixed together.</p>
+            </div>
+
+            <h3>Q3(b) 重构方案 [14]</h3>
+            <div class="answer-box">
               <div class="table-wrap">
                 <table>
                   <thead>
-                    <tr><th>原来在 controller 里</th><th>移到哪里</th><th>为什么</th></tr>
+                    <tr><th>原问题</th><th>移到哪里</th><th>可提 pattern</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>折扣计算（if total > 200 ...）</td><td><code>app/services/order_pricing_service.rb</code></td><td>纯业务规则，输入 order + coupon → 输出 discount。独立单元测试：<code>expect(service.calculate(order, nil)).to eq(20)</code>。</td></tr>
-                    <tr><td>订单保存（@order.save!）</td><td><code>app/repositories/order_repository.rb</code></td><td>数据访问封装。换 ORM 或加缓存时只改 repository。</td></tr>
-                    <tr><td>发邮件（deliver_now）</td><td><code>app/jobs/order_confirmation_job.rb</code>（ActiveJob）</td><td>异步执行，用户不等邮件。失败可 retry，不影响订单提交。</td></tr>
-                    <tr><td>记 analytics（track）</td><td><code>app/models/order.rb</code>（after_create callback）或 EventBus</td><td>横切关注点。Analytics 挂了不 block 订单。</td></tr>
+                    <tr><td>折扣规则</td><td><code>DiscountPolicy</code> 或 <code>OrderPricingService</code></td><td>Strategy / Policy object。不同折扣规则可独立替换。</td></tr>
+                    <tr><td>创建订单流程</td><td><code>CreateOrderService</code> 或 command object</td><td>Service object / Command。封装 use case。</td></tr>
+                    <tr><td>发邮件</td><td><code>OrderReceiptJob</code></td><td>Background Job。异步执行，可 retry。</td></tr>
+                    <tr><td>Analytics</td><td><code>OrderCreated</code> domain event 的 subscriber</td><td>Observer / Pub-Sub。横切关注点解耦。</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p><strong>重构后 controller：</strong></p>
+              <p><strong>重构后 controller 应该变薄：</strong></p>
               <pre><code>def create
-  @order = OrderPricingService.new(order_params).build_and_apply_pricing
-  if @order.valid?
-    OrderRepository.save!(@order)       # after_create callback 触发: mailer job + analytics event
-    redirect_to @order, notice: "Order created"
+  result = CreateOrderService.call(order_params, current_user)
+
+  if result.success?
+    redirect_to result.order, notice: "Success"
   else
+    @order = result.order
     render :new, status: :unprocessable_entity
   end
 end</code></pre>
-              <p><strong>测试改善（这是得分关键）：</strong></p>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>重构前</th><th>重构后</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>测 create action 需要 stub 数据库、邮件、analytics 三层。一个"测 redirect 是否成功"的测试被迫配置全部 mock。</td><td><strong>Controller 测试</strong>：只需 stub OrderPricingService 返回成功/失败，验证 HTTP 层的 redirect / render。不碰数据库和邮件。</td></tr>
-                    <tr><td>测折扣计算必须构造完整 HTTP request（POST 到 /orders 带 form params），mock session 认证，然后解析 response 验证价格。</td><td><strong>OrderPricingService 单元测试</strong>：纯 Ruby 对象，<code>service = OrderPricingService.new(items: [...])</code>，测各种折扣组合——满 200 减 20、满 500 减 80、优惠券过期——不需要 HTTP、数据库、邮件。</td></tr>
-                    <tr><td>改折扣公式 → 所有 controller test 可能因 mock 配置过时而 break。</td><td>改折扣公式 → 只影响 OrderPricingServiceSpec 中的 3 个 test case。Controller test 不受影响。</td></tr>
-                  </tbody>
-                </table>
-              </div>
+              <p><strong>Pricing policy 示例：</strong></p>
+              <pre><code>class DiscountPolicy
+  def self.apply(order)
+    if order.total &gt; 1000 &amp;&amp; order.user.premium?
+      order.total * 0.9
+    elsif order.total &gt; 500
+      order.total - 50
+    else
+      order.total
+    end
+  end
+end</code></pre>
+              <p><strong>CreateOrderService 负责 orchestration：</strong>build order, apply discount, save order in a transaction, publish <code>OrderCreated</code> event, enqueue receipt job. Controller 只关心 success/failure 和 response。</p>
+              <p><strong>高分提醒：</strong>不要把所有代码简单塞进 model 里然后说“fat model”。更好的答案是把 pricing policy、workflow orchestration、side effects 分开，因为它们变化原因不同。</p>
             </div>
 
+            <h3>Q3(c) Unit tests 如何改变 [6]</h3>
+            <div class="answer-box">
+              <p><strong>重构前：</strong>要测试折扣逻辑，必须通过 controller request 构造 order params、user、session、database save，还可能触发 email 和 analytics。测试慢、脆弱，失败时不清楚是折扣错、数据库错、邮件错还是 redirect 错。</p>
+              <p><strong>重构后：</strong>discount logic 是纯业务对象，可以直接测：</p>
+              <pre><code>it "gives 10 percent discount to premium orders over 1000" do
+  order = build_order(total: 1200, premium: true)
+  expect(DiscountPolicy.apply(order)).to eq(1080)
+end</code></pre>
+              <p><strong>测试分层：</strong>DiscountPolicy unit tests 覆盖价格规则；CreateOrderService integration tests 覆盖保存和事件发布；controller tests 只验证 successful result redirects、failed result renders <code>:new</code>。这样 tests 更快、更稳定、更能定位问题。</p>
+            </div>
           </section>
 
-          <section id="section3" class="section">
-            <h2>Section 3：如果突然换题型——会换成什么但用类似手法</h2>
-            <p>考试不会完全重复往年题。如果 Section 1 和 2 的题型被替换，最可能的三个变体是：TypeScript 类型安全（替代 React merits）、WebSocket 时序（替代 Node.js callback）、JWT authentication（替代 accessibility/SEO）。这三种变体用的论证结构分别和原题一模一样——只需映射到新场景。</p>
-
-            <!-- Q7 -->
-            <h3>Q7: TypeScript 对工程质量的影响（替代 "React 有什么优点"）</h3>
+          <section id="q4" class="section">
+            <h2>Q4. CI/CD and Observability [30 marks]</h2>
             <div class="note">
-              <p><strong>题面预测（如果不再问 React merits）：</strong>"TypeScript 如何减少 Web 应用的 bug？从类型安全、重构信心、团队协作三个角度回答。给具体代码例子。"</p>
+              <p><strong>题面核心：</strong>现代 Web development 中，delivery speed（CI/CD）和理解 production 行为（Observability）是关键成功因素。题目问定义、区分 Observability 和 Monitoring、分析二者如何共同保证质量可靠性、以及组织实施完整 observability stack 时的 trade-offs/challenges。</p>
+              <p><strong>配分：</strong>(a) define CI/CD and Observability [6]；(b) distinguish Observability from Monitoring [4]；(c) analyze how they work together [10]；(d) strategic trade-offs and challenges [10]。</p>
             </div>
+
+            <h3>Q4(a) 定义 [6]</h3>
             <div class="answer-box">
-              <p><strong>标准答案框架：</strong></p>
-              <p><strong>答题手法：</strong>和 "React 有什么优点" 题一模一样——对比动态类型语言的劣势，每条给具体例子，不是空泛说 "类型安全好"。</p>
-              <p><strong>1. 类型安全 — 编译时阻止运行时错误：</strong></p>
-              <p>JavaScript 里：<code>function add(a, b) { return a + b }</code> 可以 <code>add("1", 2)</code> 得到 <code>"12"</code>（字符串拼接而非数学加法），生产环境 bug 靠用户报告才发现。TypeScript 里：</p>
-              <pre><code>function add(a: number, b: number): number {
-  return a + b;
-}
-add("1", 2); // ❌ Compile error: Argument of type 'string' is not assignable to parameter of type 'number'.</code></pre>
-              <p>TS 在编译阶段就拦截此类 bug。更复杂的例子：API response 的类型定义让 IDE 自动提示字段名、拼写错误在编译时发现而不是在浏览器 console。</p>
-              <p><strong>2. 重构信心 — 类型系统充当安全网：</strong></p>
-              <pre><code>// 重构前
-interface User { name: string; email: string; }
-function greet(u: User) { return "Hello " + u.name; }
-
-// 重构：把 email 拆成 workEmail + personalEmail
-interface User { name: string; workEmail: string; personalEmail: string; }
-// ❌ 所有引用了 user.email 的地方自动标红 — 编译器告诉你 37 处需要更新
-// JavaScript 里你只能 grep "email" 并祈祷没有误伤</code></pre>
-              <p><strong>3. 团队协作 — 类型是活的文档：</strong></p>
-              <pre><code>interface CreateOrderRequest {
-  items: { productId: string; quantity: number }[];
-  shippingAddress: string;
-  couponCode?: string;           // ? = optional — 自文档化
-  paymentMethod: "card" | "paypal"; // union type — 限定合法值，新人不会传 "cash" 然后等 runtime error
-}</code></pre>
-              <p>新队员调用此 API 时不需要读文档或问人，IDE 自动补全所有字段并标出类型错误。</p>
-              <p><strong>总结句（扣回考题）：</strong>"TypeScript 不消除所有 bug，但把 bug 从'用户在生产环境发现'前移到'开发者在 IDE 里看到红色波浪线'——大幅降低修复成本和用户影响。"</p>
+              <p><strong>Continuous Integration:</strong> Developers frequently merge code into a shared main branch. Each merge triggers automated build, linting, unit tests and integration tests. The goal is to find integration problems early rather than letting many branches drift apart.</p>
+              <p><strong>Continuous Delivery/Deployment:</strong> Once code passes CI, it is packaged and promoted through environments such as staging and production using an automated pipeline. Continuous delivery may keep a manual approval gate; continuous deployment pushes automatically when checks pass.</p>
+              <p><strong>Observability:</strong> The ability to understand a running system's internal state from its external outputs, especially logs, metrics and traces. It lets engineers investigate why a specific request failed, which service was slow, or which deployment changed behavior.</p>
             </div>
 
-            <!-- Q8 -->
-            <h3>Q8: WebSocket 实时推送的输出顺序（替代 Node.js callback 输出题）</h3>
-            <div class="note">
-              <p><strong>题面预测（如果不再考 setTimeout 输出顺序）：</strong>"用户 A 编辑股价、用户 B 同时查询、server 通过 WebSocket 推送——写出各方收到消息的顺序并解释为什么。"</p>
-            </div>
+            <h3>Q4(b) Observability vs Monitoring [4]</h3>
             <div class="answer-box">
-              <p><strong>标准答案框架：</strong></p>
-              <p><strong>场景描述：</strong>用户 A 在 FinTrack admin panel 修改 AAPL 股价从 $150 到 $152，同时用户 B 正在看 AAPL 详情页。Server 通过 WebSocket 向所有连接推送更新。</p>
-              <p><strong>时序分析：</strong></p>
-              <ol class="rung-list">
-                <li><strong>用户 A 的浏览器发送</strong> <code>POST /api/stocks/AAPL { price: 152 }</code>。这是 HTTP request，通过 TCP 连接发到 server。</li>
-                <li><strong>Server 收到 POST</strong> —— controller 验证 A 的 admin 权限，调用 <code>StockService.updatePrice("AAPL", 152)</code>。Service 更新数据库中的 AAPL 记录。</li>
-                <li><strong>Server 通过 WebSocket broadcast</strong> —— <code>wss.broadcast({ type: "PRICE_UPDATE", symbol: "AAPL", price: 152, timestamp: ... })</code> 发送给所有已连接的 WebSocket 客户端。</li>
-                <li><strong>用户 A 收到 POST response</strong> —— HTTP response <code>{ status: "ok" }</code> 通过同一个 TCP 连接返回。注意：A 的 WebSocket 也同时收到了自己触发的 PRICE_UPDATE 消息（因为 broadcast 包含所有连接）。</li>
-                <li><strong>用户 B 收到 PRICE_UPDATE</strong> —— 如果 B 和 A 到 server 的网络延迟不同，B 可能比 A 先收到 WebSocket 推送（因为 A 走 HTTP response 路径而 B 始终在 WebSocket 连接上等待）。</li>
-              </ol>
-              <p><strong>输出顺序（考虑 event loop 和网络 IO）：</strong></p>
-              <pre><code>Server 端执行顺序（同步）：
-① 处理 HTTP POST → ② 更新 DB → ③ WebSocket broadcast → ④ 返回 HTTP response
-
-各客户端收到消息的实际顺序（异步，受网络延迟影响）：
-A: 先收到 HTTP response → 然后 WebSocket PRICE_UPDATE 到达（TCP 保序）
-B: 没有 HTTP response，只收到 WebSocket PRICE_UPDATE
-如果 A 的网络延迟 > B:  B 的 WebSocket 消息 可能比 A 的 HTTP response 先到</code></pre>
-              <p><strong>底层考的仍是 event loop + 异步：</strong>WebSocket 的 <code>onmessage</code> callback 和 HTTP <code>fetch().then()</code> 都是异步回调。Server 端 broadcast 是同步调用（推消息到 socket buffer），但网络传输和客户端接收是异步的。原理和 setTimeout vs Promise 一样：谁先进入 callback queue 取决于 IO 完成时间，不取决于代码书写顺序。</p>
-            </div>
-
-            <!-- Q9 -->
-            <h3>Q9: JWT Authentication 流程（替代 accessibility/SEO 题）</h3>
-            <div class="note">
-              <p><strong>题面预测（如果不再单独考 accessibility 和 SEO）：</strong>"画 JWT authentication 的流程图，说明 access token 和 refresh token 的分工，以及为什么 token 比 session cookie 更适合微服务架构。"</p>
-            </div>
-            <div class="answer-box">
-              <p><strong>标准答案框架：</strong></p>
-              <p><strong>JWT Authentication 流程图：</strong></p>
-              <pre><code>┌─────────┐     ① POST /login          ┌──────────┐
-│  Client  │ ──────────────────────────→ │  Server   │
-│ (React)  │ ←────────────────────────── │ (Auth)    │
-└─────────┘  ② {access_token, refresh}   └──────────┘
-     │                                          │
-     │ ③ GET /api/orders                        │
-     │    Header: Authorization: Bearer &lt;AT&gt;    │
-     ├──────────────────────────────────────────→│
-     │                                           │ ④ verify signature
-     │                                           │    (no DB lookup needed)
-     │ ⑤ 200 { orders: [...] }                  │
-     │←──────────────────────────────────────────┤
-     │                                           │
-     │ [15 min later, AT expired]                │
-     │ ⑥ POST /refresh                          │
-     ├──────────────────────────────────────────→│
-     │ ⑦ { access_token: "new..." }             │
-     │←──────────────────────────────────────────┤</code></pre>
-              <p><strong>Access Token 和 Refresh Token 的分工：</strong></p>
               <div class="table-wrap">
                 <table>
                   <thead>
-                    <tr><th>属性</th><th>Access Token</th><th>Refresh Token</th></tr>
+                    <tr><th>Monitoring</th><th>Observability</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>有效期</td><td>短（15 分钟）</td><td>长（7 天）</td></tr>
-                    <tr><td>用途</td><td>每次 API 请求携带，证明"我是谁、我能做什么"</td><td>仅用于获取新的 access token，不参与常规 API 调用</td></tr>
-                    <tr><td>暴露风险</td><td>每次请求都发，网络抓包风险高→短有效期限制损害窗口</td><td>极少发送（只在 access token 过期时），暴露面小</td></tr>
-                    <tr><td>存储位置</td><td>前端内存（React state）</td><td>HttpOnly cookie（JS 无法读取，防 XSS）</td></tr>
-                    <tr><td>是否查数据库</td><td>否——自包含（header.payload.signature），server 只验证签名</td><td>是——server 需查 DB 确认此 refresh token 未被 revoke</td></tr>
+                    <tr><td>Tracks known indicators against predefined thresholds, such as CPU &gt; 90%, error rate &gt; 2%, disk almost full.</td><td>Supports open-ended debugging of unknown problems using logs, metrics and traces.</td></tr>
+                    <tr><td>Answers “Is the system healthy?”</td><td>Answers “Why is this user request slow or failing?”</td></tr>
+                    <tr><td>Often alert-oriented.</td><td>Investigation-oriented and correlation-oriented.</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p><strong>为什么 JWT 比 session cookie 更适合微服务架构：</strong></p>
-              <ol class="rung-list">
-                <li><strong>无状态验证 — 每个 service 独立验证 token，不需要查集中式 session store。</strong> Session cookie 要求所有 service 共享 Redis/Central DB 来查 session，token 的验证只需公钥验证签名——price-service 和 trade-service 各自独立验证同一个 JWT，不需要互相通信。在微服务几十个 service 的规模下，节省了 session store 的瓶颈和故障点。</li>
-                <li><strong>自包含 claims — payload 里可以放 user_id、roles、permissions。</strong> 不需要每次调 /users/me 查权限。service 从 token 直接读出 <code>{sub: "user_42", scope: "admin stocks:write"}</code> 就知道该用户能不能改股价。</li>
-                <li><strong>跨语言通用 — 签名验证是标准算法（HMAC-SHA256 / RSA）。</strong> price-service 用 Node、trade-service 用 Java、auth-service 用 Go——三者都能验证同一个 JWT，不需要共享 session 实现。</li>
-              </ol>
-              <p><strong>Trade-off：</strong>JWT 不能服务端主动 invalidate（logout 后只要 access token 没过期就还能用），需要用短有效期 + refresh token rotation 缓解。Session cookie 可随时删掉 session 记录立即生效。</p>
+              <p><strong>一句话：</strong>Monitoring tells you something is wrong; observability helps you find out why.</p>
             </div>
 
+            <h3>Q4(c) CI/CD 和 Observability 如何配合 [10]</h3>
+            <div class="answer-box">
+              <ol class="rung-list">
+                <li><strong>Before deployment, CI reduces defect injection.</strong> 每次 commit 先跑 lint、unit tests、integration tests、security checks，阻止明显坏代码进入 main branch。</li>
+                <li><strong>During deployment, CD makes release repeatable.</strong> Pipeline 用同样步骤部署 staging 和 production，减少手工操作差异。Canary release 或 blue/green deployment 让新版本先影响少量用户。</li>
+                <li><strong>After deployment, observability validates real behavior.</strong> Metrics 比较 deploy 前后的 error rate、latency、throughput；logs 提供错误上下文；traces 显示一次 request 横跨哪些 services。</li>
+                <li><strong>Feedback loop closes the quality cycle.</strong> 如果 observability 发现 production bug，团队把失败场景加入 regression test；下一次 CI 会防止同类 bug 再上线。</li>
+              </ol>
+              <p><strong>具体例子：</strong>一个 checkout service 新版本上线后，metrics 显示 p95 latency 从 300ms 升到 2s。Trace 显示请求卡在 payment-service 调 tax-service 的 HTTP call。Logs 显示新版本缺少 timeout，导致线程等待。团队回滚该 deploy，添加 timeout 和 fallback，写 integration test 模拟 tax-service 延迟，再由 CI/CD 发布修复。这个流程把 CI/CD 的交付控制和 observability 的生产诊断连成闭环。</p>
+            </div>
+
+            <h3>Q4(d) Trade-offs and challenges [10]</h3>
+            <div class="answer-box">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>挑战</th><th>为什么重要</th><th>应对策略</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Speed vs safety</td><td>自动部署提高速度，但错误也可能更快进 production。</td><td>Use staged rollout, canary, feature flags, automatic rollback based on metrics.</td></tr>
+                    <tr><td>Flaky tests</td><td>不稳定测试会让团队不信任 CI，最后绕过 pipeline。</td><td>Keep tests deterministic, quarantine flaky tests, maintain test data carefully.</td></tr>
+                    <tr><td>Observability cost</td><td>Logs/traces/metrics 数据量巨大，存储和查询成本高。</td><td>Sampling, retention policies, structured logging, only high-value spans.</td></tr>
+                    <tr><td>Alert fatigue</td><td>太多低价值告警会让工程师忽视真正事故。</td><td>Alert on user impact and SLOs, not every noisy internal metric.</td></tr>
+                    <tr><td>Privacy and security</td><td>Logs 可能泄露 emails、tokens、payment data。</td><td>Redaction, access control, encryption, avoid logging secrets.</td></tr>
+                    <tr><td>Organizational change</td><td>CI/CD and observability require developers to own production, not throw code over the wall.</td><td>Shared ownership, runbooks, incident reviews, deployment discipline.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>高分收束：</strong>The strategic trade-off is not simply tool cost. CI/CD and observability change how an organization releases, detects, diagnoses and learns from failures. The benefit is faster and safer delivery, but only if the team invests in tests, telemetry quality, privacy controls and operational discipline.</p>
+            </div>
           </section>
 
           <section class="section">
-            <h2>如何使用本页</h2>
-            <p>本页是 <strong>背诵级参考答案汇编</strong>，不是学习材料。前提假设你已通过 <a href="cs615-linear.html">CS615 线性页</a> 学完了所有概念。使用方式：</p>
-            <ol class="rung-list">
-              <li><strong>Section 1 逐道闭卷默写。</strong> 遮住答案，拿出草稿纸，用自己的话写出完整答案。写完对比本页——漏了哪个得分点就标红补上。</li>
-              <li><strong>Section 2 逐道闭卷默写。</strong> 同上。Q4（event loop 输出题）可以给自己出变体练习——改 setTimeout 嵌套层级、加 process.nextTick、加 setImmediate，预判所有变体。</li>
-              <li><strong>Section 3 读一遍，理解答题手法。</strong> 不需要逐字背。关键是理解"论证结构映射"——如果 React merits 换成 TypeScript 类型安全，论证结构不变：对比动态类型劣势→给具体代码例子→总结句扣题。</li>
-              <li><strong>考前 48 小时再默写一遍 Section 1 的全部三题。</strong> 这三题是概率最高的底盘题——拿全它们的分布，总分已经过安全线。</li>
-            </ol>
-            <div class="answer-box">
-              <p><strong>关键提醒：</strong>所有答案里的技术理由必须贴回题面具体数据。不能说 SQL 因为"数据结构化"——要说"receipt_number 需要 UNIQUE constraint、Customers→Receipts→ReceiptItems 是两重 JOIN、一张收据和它的明细需要 ACID transaction 同时写入"。空话不得分，贴题面数据才得分。</p>
+            <h2>最后一遍默写清单</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>必须能默写</th><th>检查问题</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Q1 recommendation</td><td>有没有明确选 A 或 B？有没有解释为什么 strict transaction history 比泛泛 scalability 更关键？</td></tr>
+                  <tr><td>Q2 AI stance</td><td>有没有同时写 productivity 和 risk？有没有写 human oversight、tests、review、security?</td></tr>
+                  <tr><td>Q3 refactor</td><td>有没有把 discount、order creation、email、analytics 分到不同责任对象？</td></tr>
+                  <tr><td>Q4 monitoring vs observability</td><td>有没有写出 “Monitoring tells something is wrong; observability tells why” 并用 logs/metrics/traces 举例？</td></tr>
+                </tbody>
+              </table>
             </div>
           </section>
-
         </article>
 
         <aside class="toc">
-          <h2>概率排序</h2>
+          <h2>Sample 顺序</h2>
           <ol>
-            <li><a href="#section1">Section 1：几乎必出</a>
-              <ol>
-                <li>Q1: Full-Stack + 数据库（25分）</li>
-                <li>Q2: MVC 设计模式（25分）</li>
-                <li>Q3: 微服务 vs 单体（25-40分）</li>
-              </ol>
-            </li>
-            <li><a href="#section2">Section 2：很有可能</a>
-              <ol>
-                <li>Q4: Event Loop 输出（10-15分）</li>
-                <li>Q5: CI/CD + Observability（15-25分）</li>
-                <li>Q6: Rails Controller 审查（15-30分）</li>
-              </ol>
-            </li>
-            <li><a href="#section3">Section 3：如果换题型</a>
-              <ol>
-                <li>Q7: TypeScript 类型安全</li>
-                <li>Q8: WebSocket 时序</li>
-                <li>Q9: JWT Authentication</li>
-              </ol>
-            </li>
+            <li><a href="#strategy">样卷规则</a></li>
+            <li><a href="#q1">Q1 FinTrack 架构比较</a></li>
+            <li><a href="#q2">Q2 AI Agents</a></li>
+            <li><a href="#q3">Q3 Rails Controller</a></li>
+            <li><a href="#q4">Q4 CI/CD + Observability</a></li>
           </ol>
-          <p style="margin-top:14px;font-size:0.9rem;color:var(--muted)">本页是背诵级参考答案汇编。先学 <a href="cs615-linear.html">CS615 线性页</a> 再背这里。</p>
+          <p style="margin-top:14px;font-size:0.9rem;color:var(--muted)">本页现在只服务 CS615Sample.pdf 形式。完整概念地基仍在 <a href="cs615-linear.html">CS615 线性页</a> 和 <a href="cs615.html">CS615 题型页</a>。</p>
         </aside>
       </div>
     </main>
 
     <footer class="footer">
-      <p>CS615 Internet Solutions Engineering · Mock Battle · 题型预测与标准答案</p>
+      <p>CS615 Internet Solutions Engineering · Sample-paper mock battle</p>
     </footer>
   </body>
 </html>
