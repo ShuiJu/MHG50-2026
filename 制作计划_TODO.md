@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-18 19:05
+更新时间：2026-05-18 21:22
 
 ## 项目目标
 
@@ -682,3 +682,16 @@
   - Q3：Rails Controller，按 MVC/SRP 违规、service/policy/job/event refactor、unit test 改善细化。
   - Q4：CI/CD + Observability，按 definition、monitoring 区分、quality feedback loop、trade-offs/challenges 细化。
 - 已更新 `exam-prep-site/index.html` 的 CS615 模拟战入口和关键词，避免继续显示“题型预测”旧导向。
+
+### 2026-05-18 21:22 CS615 Sample 变体题库
+
+- 用户要求：先检查当前页面更新状态，再结合手头教材思考类似题目还能怎么出，并把类似题追加到现有内容后面。
+- 当前状态：
+  - `exam-prep-site/cs615-mock-battle.html` 已处于 Sample 四题制版本，且有未提交的口语化改写；本轮在现有状态上追加，不回退已有内容。
+  - 参考材料包括 `ArchitecturalPatterns.pdf`、`DB_WS_C.pdf`、`REST Architecture with Spring .pdf`、`Rails Routes and Active Record.pdf`、`Intro to Ruby on Rails.pdf`、`Design Patterns.pdf`、`Forms and Security.pdf`、`CICDOBS.pdf`、`VibeCoding.pdf`、`WSFE.pdf`。
+- 已在 `exam-prep-site/cs615-mock-battle.html` 末尾追加 `Sample 同形式变体题库`：
+  - Q1 变体：HealthTrack/ShopPulse、event-driven microservices、logical vs physical architecture、SQL/NoSQL/polyglot persistence。
+  - Q2 变体：AI-native workflow、800 行单文件 AI code technical debt、MCP/tools 安全风险、developer 从 implementation 转向 orchestration/verification。
+  - Q3 变体：ProductsController、ReportsController、Strategy、Observer、Rails route top-down 匹配。
+  - Q4 变体：canary rollback、monitoring vs observability、CI test strategy、observability cost/privacy/SLO。
+- 已更新 CS615 模拟战页导航、侧边目录和首页关键词，让 `变体题库` 可被搜索和跳转。
