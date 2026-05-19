@@ -4560,3 +4560,354 @@ Q7B
 为了不让老师看瞎眼睛，你可以把岛屿排成一个大圆圈。
 
 现在重新梳理一次sample paper，从第一题开始，完整的用中文回答一次，每题回答结束再写一份对应的概念理解性解释，这是用于临阵磨枪或者说在最后时间停止恐慌的最后一份大型文档
+
+这份文档是为你量身打造的 **CS605 终极冲刺指南**。我们直接将 **Sample A (修正版)** 和 **Sample B** 的每一道题拆解为“考场直接默写的满分中文答案”以及“考前定心丸（概念本质理解）”。
+
+深呼吸，你已经掌握了这门课最核心的“特洛伊木马”、“滑动尺子”和“懒惰验收员”思维。带着这份文档，上考场去终结它们吧！
+
+---
+
+# 🏆 第一部分：Sample A 全卷重构与修正
+
+*(注：Q1B 已按照你的要求，换用最经典的 4p 结构 `a^p b^{p-1}a # a^p b^p` 进行绝杀)*
+
+### 第一题：形式语言与泵引理
+
+#### Q1(a) 证明 $L_{1A}$ 不是正则语言 (Not Regular)
+
+题目：$L_{1A}=\{uv:u,v\in\{0,1\}^{*},|u|=|v|,$ u and v begin with the same symbol}
+
+**📝 考场满分证明：**
+我们将使用泵引理的反证法来证明该语言不是正则语言。
+
+1. **假设：** 假设 $L_{1A}$ 是正则语言。令 $p$ 为泵引理给出的泵长度。
+2. **选字符串：** 我们选择字符串 $s=0^p1^p0^p1^p$。显然 $|u|=|v|=2p$，且均以 '0' 开头，因此 $s \in L_{1A}$。同时 $|s|=4p \ge p$。
+3. **应用条件：** 根据泵引理，$s=xyz$，满足 $|xy| \le p$ 且 $|y| > 0$。因此 $x$ 和 $y$ 必定完全落在最开头的 $p$ 个 '0' 之中。令 $y=0^k$ ($1 \le k \le p$)。
+4. **向上泵与矛盾：** 令 $i=2$，新字符串 $s' = xy^2z = 0^{p+k}1^p0^p1^p$。总长度变为 $4p+k$。
+* **情况 1：** 若 $k$ 是奇数，总长度为奇数，无法被均分为 $u'$ 和 $v'$，$s' \notin L_{1A}$。
+* **情况 2：** 若 $k$ 是偶数，新中点位于 $2p+k/2$。因为 $k \le p$，所以 $k/2 < p$。这意味着新的后半段 $v'$ 的开头必定落在了第一组 '1' 的区域内。此时 $u'$ 依然以 '0' 开头，但 $v'$ 以 '1' 开头，首字母不再相同，$s' \notin L_{1A}$。矛盾。
+
+
+5. **结论：** $L_{1A}$ 不是正则语言。■
+
+**🧠 概念理解：** DFA 只有状态没有记忆。你用一堵 $p$ 长度的 '0' 墙把它死死卡在左边。一旦它开始泵，整个字符串的中点就会向右偏移，导致后半段的开头直接“撞进”后面的 '1' 堆里，瞬间打破首字母相同的规则。
+
+#### Q1(b) 证明 $L_{1B}$ 不是上下文无关语言 (Not Context-Free)
+
+题目：$L_{1B} = \{u\#v: u,v \in \{a, b\}^*, |u|=|v|$ and u differs from v by exactly one symbol}
+
+**📝 考场满分证明：**
+我们将使用上下文无关语言的泵引理反证法。
+
+1. **假设：** 假设 $L_{1B}$ 是上下文无关语言，令 $p$ 为泵长度。
+2. **选字符串：** 选择字符串 $s = a^p b^{p-1} a \# a^p b^p$。
+* 令 $u = a^p b^{p-1} a$，$v = a^p b^p$。两者长度均为 $2p$，且仅在最后一个字符不同（$a$ 与 $b$），符合语言定义。
+
+
+3. **应用条件：** 根据引理，$s=uvxyz$，满足 $|vxy| \le p$ 且 $|vy| > 0$。
+4. **滑动尺子与矛盾：**
+* **情况 1 & 2：** $vxy$ 完全落在 $\#$ 的左侧或完全落在 $\#$ 的右侧。向上泵会导致某一边变长，打破 $|u|=|v|$ 的硬性条件。
+* **情况 3：** $vxy$ 跨越了 $\#$。由于 $|vxy| \le p$，$vxy$ 最多只能包含 $u$ 末尾的 $b$ 和 $a$、中间的 $\#$ 以及 $v$ 开头的 $a$。
+* 若 $v$ 或 $y$ 包含 $\#$，泵操作会产生多个 $\#$，格式错误。
+* 若 $\#$ 只在 $x$ 中，我们向下泵 ($i=0$)。此时 $u$ 失去了末尾的部分字符，$v$ 失去了开头的部分 $a$。为了保持 $|u|=|v|$（即使强制重新划分中点），由于右侧开头少了一段 $a$，右侧的 $b^p$ 会整体向左平移。在平移和对齐后，由于 $b$ 错位，左右两边必然在**多于一处**的位置上产生字符不匹配（a 对 b）。这打破了“恰好只有 1 处不同”的规则。矛盾。
+
+
+
+
+5. **结论：** $L_{1B}$ 不是上下文无关语言。■
+
+**🧠 概念理解：** 经典的 **4p 断崖游标卡尺**！只要 $vxy$ 敢跨过中间的 $\#$ 删减字符，右边的字母大军就会向左塌方平移。一平移，原本对齐的 $a$ 和 $b$ 就会大面积错位，“只允许错1个”的规矩直接防死了 PDA。
+
+---
+
+### 第二题：可判定性与可识别性
+
+#### Q2(a) 证明 $L_{2A}$ 是可判定的 (Decidable)
+
+**📝 考场满分证明：**
+构造图灵机 $T_{2A}$ = “对于输入 $\langle M \rangle$：
+
+1. 构造一个 DFA $D$，使其恰好接受所有长度大于 5 的字符串。
+2. 构造新有限自动机 $B$，使得 $L(B) = L(M) \cap L(D)$。
+3. 将 $\langle B \rangle$ 作为输入，运行标准的 $E_{DFA}$ 判定器（判断 DFA 是否为空集）。
+4. 若 $E_{DFA}$ 返回拒绝（非空），则本机器**接受**；若 $E_{DFA}$ 返回接受（空集），则本机器**拒绝**。”
+由于所有构造有限步完成且 $E_{DFA}$ 必停机，因此 $T_{2A}$ 必停机并正确判定。■
+
+**🧠 概念理解：** 遇到 FA 问题绝不自己写算法。造一个“只放行长度>5”的安检门 $D$，和原机器串联，最后扔给官方质检员 $E_{DFA}$ 看看有没有漏网之鱼就行了。
+
+#### Q2(b) 证明 $L_{2B}$ 是图灵可识别的 (Turing-recognisable)
+
+**📝 考场满分证明：**
+构造图灵机 $T_{2B}$ = “对于输入 $\langle J,a,b,c \rangle$：
+
+1. 检查输入是否为合法 Java 程序，否则拒绝。
+2. 逐步 (step-by-step) 模拟 Java 程序 $J$。
+3. 在每一步执行后，检查当前变量状态。若发现 $a+b=c$ 成立，立刻停机并**接受**。”
+如果程序达到目标状态，TM 必能抓住并接受。若永远达不到，TM 可能死循环，这符合图灵可识别的定义。■
+
+**🧠 概念理解：** 既然只要求 Recognisable，那就化身“监控探头”死死盯着变量。抓到了就按停大喊，抓不到就一辈子看下去（合法死循环）。
+
+---
+
+### 第三、四、五题：不可判定性映射归约
+
+#### Q3/Q5 证明异常与不执行行为不可判定
+
+**📝 考场满分证明（以 Q5 Complement 模板直出）：**
+**Complement $L_5$ =** { $\langle M,n \rangle$ : $M$ is not a valid Java program, OR $M$ is a Java program and when $M$ is run, line $n$ IS executed }
+In the following proof, L refers to **Complement $L_5$**.
+We will use a mapping reduction to prove $HALT \le L$. Assume $L$ is decidable.
+$F$ = "On input $\langle M,w \rangle$:
+
+1. Construct the following $N$:
+$N$ = "public static void main(String[] args) {
+// Line 1: Simulate Turing machine M on input w;
+// Line 2: int trap = 1;
+}"
+2. Return $\langle N, 2 \rangle$."
+Now, $\langle N, 2 \rangle \in L$ **iff** $\langle M,w \rangle \in HALT$. So we can decide HALT. Contradiction. L is undecidable.
+
+**🧠 概念理解：** **特洛伊木马**。题目说“永远不触发”，我们就证明“触发”是不可判定的（ Complement）。把死循环包在陷阱前面，它只要不停机，陷阱就永远踩不到。
+
+#### Q4 证明 $L_3$ 是否图灵可识别
+
+**📝 考场满分证明：**
+We will prove this by constructing a TM $M$ to recognise **Complement $L_3$**.
+$M$ = "On input $\langle J \rangle$: Simulate $J$ step-by-step. If at any point $J$ throws exception 21, halt and accept."
+Since $M$ recognises **Complement $L_3$**, it is Turing-recognisable. Since in Q3 we proved $L_3$ and Complement $L_3$ are undecidable, at least one is not Turing-recognisable. Therefore **$L_3$** is not Turing-recognisable.
+
+**🧠 概念理解：** **排除法**。补集（报错）可以用监控探头抓现行，所以补集是可识别的。既然两者必定有一个是废物，那废物必然是原集。
+
+---
+
+### 第六、七题：$\mathcal{NP}$ 与 $\mathcal{NP}$-Complete
+
+#### Q6 证明属于 $\mathcal{NP}$ (送分题)
+
+**📝 考场满分证明 (以求和为例)：**
+We prove $L_{6A}$ is in $\mathcal{NP}$ by constructing a TM $M_{6A}$ to verify it in polynomial time.
+Let the certificate $c$ be **the subsets Y and Z**.
+$M_{6A}$ = "On input $\langle A, c \rangle$:
+
+1. Verify $Y \subset A, Z \subset A, Y \cup Z = A$.
+2. Calculate sum of $Y$ and sum of $Z$. If equal, accept."
+The worst case running time is **$O(n^2)$ to scan and sum**, which is a polynomial. Thus $L_{6A} \in \mathcal{NP}$.
+
+**🧠 概念理解：** 懒惰验收员。不要自己算，直接让别人把答案 (Certificate) 给你，你只负责写个流水账验证清单。
+
+#### Q7 证明 Hitting Set (选球员) 是 $\mathcal{NP}$-Complete
+
+**📝 考场满分证明：**
+Let reduction $3-SAT \le L_7$ be defined by TM $F$.
+$F$ = "On input $\langle C \rangle$ with $y$ variables:
+
+1. For each variable $v_i$, create two players: $v_i$ and $\neg v_i$.
+2. Create Match $M_i = \{v_i, \neg v_i\}$.
+3. For each clause $c_j = (l_1 \lor l_2 \lor l_3)$, create Match $M_{y+j} = \{l_1, l_2, l_3\}$.
+4. Set $k = y$. Output $\langle Matches, k \rangle$."
+$\langle Matches, k \rangle \in L_7$ **iff** $\langle C \rangle \in 3-SAT$. Time is $O(n)$ (polynomial). Thus NP-hard. Combines with $L_7 \in \mathcal{NP}$, it is NP-complete.
+
+**🧠 概念理解：** 给每个变量的正反两面安排一场双人对决，并限制总名额只能选 $y$ 个人，逼着教练每个变量只能选“真”或“假”。子句则变成三方混战。
+
+---
+
+---
+
+# 🚀 第二部分：Sample B 全卷解析
+
+### 1 (a) 证明 $L_{1A}$ 不是正则语言 (Not Regular)
+
+题目：$L_{1A} = \{w_1\#w_2\#...\#w_{2n}: w_i \in \{a\}^*, n > 0$, and $w_i=w_{i+1}$ for one odd integer $i \}$
+
+**📝 考场满分证明：**
+我们将使用泵引理反证法。
+
+1. **假设：** 假设 $L_{1A}$ 是正则的。令 $p$ 为泵长度。
+2. **选字符串：** 选择 $s = a^p \# a^p$。此时 $n=1$。$w_1 = a^p, w_2 = a^p$。由于唯一的奇数索引 $i=1$ 满足 $w_1 = w_2$，因此 $s \in L_{1A}$。$|s| \ge p$。
+3. **应用条件：** $s = xyz$，$|xy| \le p$ 且 $|y| > 0$。因此 $x, y$ 完全落在第一组 $a^p$（即 $w_1$）中。令 $y = a^k$ ($k > 0$)。
+4. **向上泵：** 令 $i=2$ 泵入，$s' = xy^2z = a^{p+k} \# a^p$。
+* 在 $s'$ 中，结构依然由一个 $\#$ 分隔，$n$ 依然等于 1。
+* 此时新的 $w_1 = a^{p+k}$，而 $w_2 = a^p$。
+* 因为 $k > 0$，所以 $w_1 \neq w_2$。唯一的奇数索引 $i=1$ 不再满足条件。
+
+
+5. **结论：** 泵操作后 $s' \notin L_{1A}$，矛盾。因此该语言不是正则的。■
+
+**🧠 概念理解：** 语言要求某一对相邻的词必须完全一样。我们直接把前半截卡在 $p$ 长度内。DFA 一抽风往里注水，前半截立马变胖，跟后半截再也对不上了。
+
+### 1 (b) 证明不是 CFG (选择 $L_{1Ba}$)
+
+题目：$L_{1Ba} = \{w_1\#...\#w_n : w_i \in \{a,b\}^* \text{ and } w_i=w_j \text{ for some } j>i\}$
+
+**📝 考场满分证明：**
+选择 $L_{1Ba}$。使用上下文无关语言泵引理。
+
+1. **假设：** 假设 $L_{1Ba}$ 是 CFG。令 $p$ 为泵长度。
+2. **选字符串：** 选择 $s = a^p b^p \# a^p b^p$。此时 $n=2$，$w_1 = w_2 = a^p b^p$。满足条件，且 $|s| \ge p$。
+3. **应用条件：** $s = uvxyz$，$|vxy| \le p$ 且 $|vy| > 0$。
+4. **滑动尺子：**
+* 若 $vxy$ 完全落在左侧 $w_1$ 中，泵操作会改变 $w_1$。由于 $n=2$ 且只有两个词，改变后的 $w_1 \neq w_2$，不再有任何 $w_i = w_j$。
+* 若 $vxy$ 完全落在右侧 $w_2$ 中，同理。
+* 若 $vxy$ 跨越了 $\#$。由于 $|vxy| \le p$，$vxy$ 只能影响 $w_1$ 末尾的 $b$ 和 $w_2$ 开头的 $a$。令 $i=0$ 向下泵，此时 $w_1$ 丢失了部分 $b$ 变成 $a^p b^{p-k_1}$，而 $w_2$ 丢失了部分 $a$ 变成 $a^{p-k_2} b^p$。显然两者结构被破坏，永远不可能再相等。
+
+
+5. **结论：** 任何泵法都导致字符串不属于该语言，矛盾。不是 CFG。■
+
+**🧠 概念理解：** 经典的 4p 结构再现！它要求必须有两段完全一样的词。我们造出两座冰山（$a^p b^p$）。尺子太短只能改其中一个，或者在两座山中间挖坑。怎么挖，两座山都不可能再长得一模一样。
+
+---
+
+### 2 (a) 证明 $L_{2A}$ 可判定
+
+题目：$L_{2A} = \{\langle M \rangle : M$ is FA with $\{a,b\}$ and $\mathcal{L}(M) \neq \emptyset\}$
+
+**📝 考场模版填空：**
+We will prove this by constructing a TM D to decide $L_{2A}$.
+D = "On input **$\langle M \rangle$**:
+
+1. **Run the standard Turing Machine decider for $E_{DFA}$ (the emptiness problem for DFA) on input $\langle M \rangle$.**
+2. **If the decider for $E_{DFA}$ accepts (meaning the language is empty), REJECT.**
+3. **If the decider for $E_{DFA}$ rejects (meaning the language is not empty), ACCEPT.**"
+Since D decides $L_{2A}$, this proves that $L_{2A}$ is decidable.
+
+**🧠 概念理解：** 送分题。题目要找“不是空集”的 FA。直接调取官方课本里已经存在的“判定空集 ($E_{DFA}$)” 机器，它说是，你就说不是，反着来就行。
+
+### 2 (b) 证明 $L_{2Ba}$ 是图灵可识别的
+
+题目：$L_{2Ba}$ = Java 程序打开文件，在打开第 $n$ 个之后，有过至少一次当前打开数 $\neq n$。
+
+**📝 考场模版填空：**
+We will prove this by constructing a TM T to recognise $L_{2B}$.
+T = "On input **$\langle J, n \rangle$**:
+
+1. **Simulate the execution of Java program $J$ step-by-step.**
+2. **Maintain a counter of total files opened and currently open files.**
+3. **Wait until the program opens its $n^{th}$ file.**
+4. **After that point, continuously monitor the number of currently open files at every step. If it is ever NOT equal to $n$, immediately halt and ACCEPT.**"
+Since T recognises $L_{2B}$, this proves that $L_{2B}$ is Turing-recognisable.
+
+**🧠 概念理解：** 实时监控探头。盯着它，只要数量不对立刻抓现行。如果它一直守规矩或者死循环，我们的机器也跟着死循环，完美符合 Recognisable 的定义。
+
+---
+
+### 3 证明 $L_3$ 不可判定 (Undecidable)
+
+题目：$L_3 = \{\langle M \rangle : \mathcal{L}(M) \neq \emptyset\}$
+
+**📝 考场模版填空：**
+As appropriate: Complement $L_3$ = **$\overline{L_3} = \{\langle M \rangle : \mathcal{L}(M) = \emptyset\}$**
+In the following proof, L refers to **$L_3$**.
+We will use a mapping reduction...
+F = "On input **$\langle M,w \rangle$**:
+
+1. Construct the following N given by the following pseudocode.
+N = "public static void main(String[] args) {
+**// Simulate Turing machine M on input w.**
+**// If M halts on w, execute a command to accept the input string.**
+}"
+2. Return **$\langle N \rangle$**."
+Now, **$\langle N \rangle \in L_3$** iff **$\langle M,w \rangle \in HALT$**. So, using f...
+
+**🧠 概念理解：** 特洛伊木马倒转！只要 $M$ 停机，里面的代码就会无条件 Accept 任何东西，导致它的集合变成满集（$\neq \emptyset$）。所以判断 $L_3$ 就等于判断停机。*(注：由于考卷模版强制要求填 Java `main`，直接写伪代码注释模拟即可，这是标准操作)*。
+
+---
+
+### 4 证明 $L_3$ 或其补集是否可识别
+
+**📝 考场模版填空：**
+We will prove this by constructing a Turing machine M to recognise **$L_3$**.
+M = "On input **$\langle N \rangle$**:
+
+1. **For $i = 1, 2, 3 \dots$**
+2. **Simulate $N$ on the first $i$ strings of $\Sigma^*$ for $i$ steps each.**
+3. **If $N$ accepts any string during this simulation, halt and ACCEPT.**"
+Since M recognises **$L_3$**, this proves that it is Turing-recognisable. Since in Q3 we proved that $L_3$ and $\overline{L_3}$ are undecidable, this means that at least one of $L_3$ and $\overline{L_3}$ are not Turing-recognisable. Therefore this proves that **$\overline{L_3}$** is not Turing-recognisable.
+
+**🧠 概念理解：** 并行排查法。我们要证明“不是空集”是可识别的。只要同时跑所有的输入，只要有任何一个跑通了，我们就能发现它不是空集。所以原集是没问题的，有问题的必然是补集 $\overline{L_3}$！
+
+---
+
+### 5 证明 $L_5$ 不可判定
+
+题目：$L_5$ = 运行期间 $b < mean(c)$ 永远成立。
+
+**📝 考场模版填空：**
+As appropriate: Complement $\overline{L}_5=$ **$\{ \langle J, b, c \rangle : \text{at some point during execution, } b \ge \text{mean of array } c \}$**.
+In the following proof, L refers to **$\overline{L}_5$**.
+We will use a mapping reduction...
+F = "On input **$\langle M,w \rangle$**:
+
+1. Construct the following N given by the following pseudocode.
+N = "public static void main(String[] args) {
+**float b = 0.0f; int[] c = {10}; // Initial: b (0.0) < mean (10.0)**
+**// Simulate Turing machine M on input w.**
+**b = 20.0f; // If M halts, this line is reached, and b > mean.**
+}"
+2. Return **$\langle N, b, c \rangle$**."
+Now, **$\langle N, b, c \rangle \in \overline{L}_5$** iff **$\langle M,w \rangle \in HALT$**. So, using f...
+
+**🧠 概念理解：** 再次使用特洛伊木马。把“永远小于”取反变成“终有一天会大于”。我们在最后一行埋雷把 $b$ 变大。只要前面模拟的 $M$ 能停机，程序就会踩到雷。
+
+---
+
+### 6 证明问题在 $\mathcal{NP}$ 中
+
+题目：(a) 社交网络小团体 (CLIQUE)，(b) 找内鬼手机 (VERTEX COVER)
+
+**📝 考场模版填空：**
+**(a) CLIQUE 证明:**
+Let the certificate c be **a subset $S \subseteq V$ of vertices of size $k$**.
+$M_{6A}$ = "On input **$\langle G, c \rangle$** where $G=(V,E)$ is a graph...:
+
+1. **Check if the subset $S$ contains exactly $k$ vertices.**
+2. **For every pair of vertices $u, v \in S$, check if the edge $(u,v)$ exists in $E$.**
+3. **If both checks pass, accept. Otherwise, reject.**"
+The worst case running time for $M_{6A}$ is **$O(|V|^2)$ to check all pairs**, which is a polynomial.
+
+**(b) VERTEX COVER 证明:**
+Let the certificate c be **a subset $S \subseteq V$ of phones of size $k$**.
+$M_{6B}$ = "On input **$\langle (V,E), c \rangle$** where there are $n$ phones...:
+
+1. **Check if the subset $S$ contains exactly $k$ phones.**
+2. **For every edge $e=(a,b) \in E$, check if at least one of $a$ or $b$ is present in $S$.**
+3. **If both checks pass, accept. Otherwise, reject.**"
+The worst case running time for $M_{6B}$ is **$O(|E| \cdot k)$ to check edges**, which is a polynomial.
+
+**🧠 概念理解：** 老板（判定器）很懒，抓内鬼和找小团体这种事他绝对不自己干。他要求别人直接交一份嫌疑人名单 (Certificate)。他只负责照着名单对一遍（验证）。不用自己算，多项式时间内验算完成，完美。
+
+---
+
+### 7 归约与实例输出
+
+题目：(a) 3-SAT 到 CLIQUE ($L_{6A}$) 归约，(b) 给定 3-SAT 实例画图。
+
+**📝 考场模版填空：**
+**(a) Proof**
+Let the reduction $3-SAT \le L_{6A}$ be defined by TM F.
+F = "On input $\langle C \rangle$ where there are x clauses and y variables in C:
+
+1. **Create a vertex in $V$ for every literal in every clause. (Total $3x$ vertices)**
+2. **Create an edge in $E$ between any two vertices IF AND ONLY IF: they belong to DIFFERENT clauses, AND they are NOT complementary literals (e.g., do not connect $a$ and $\bar{a}$).**
+3. **Set the target clique size $k = x$ (number of clauses). Output $\langle G=(V,E), k \rangle$.**"
+Now, **$\langle G, k \rangle \in L_{6A}$** iff **$\langle C \rangle \in 3-SAT$**.
+The worst case running time for F is **$O(x^2)$ to create edges**, which is a polynomial.
+
+**(b) Output Example**
+题目输入: $C = (\overline{b} \lor \overline{a} \lor \overline{c}) \land (a \lor c \lor \overline{b}) \land (\overline{a} \lor b \lor c) \land (b \lor \overline{a} \lor \overline{c})$
+**(写在答题纸上的纯干货)：**
+
+* **$k$ 值设定：** $k = 4$ (因为有 4 个子句)。
+* **顶点集合 $V$ (12个顶点)：**
+将每个子句标记为 $C_1, C_2, C_3, C_4$。
+$V = \{ (C_1,\bar{b}), (C_1,\bar{a}), (C_1,\bar{c}),$
+$\quad \ \ (C_2,a), (C_2,c), (C_2,\bar{b}),$
+$\quad \ \ (C_3,\bar{a}), (C_3,b), (C_3,c),$
+$\quad \ \ (C_4,b), (C_4,\bar{a}), (C_4,\bar{c}) \}$
+* **边集合 $E$：**
+$E$ 包含 $V$ 中任意两个顶点之间的无向连线，**除了以下情况不连线**：
+1. 属于同一个子句内的顶点不连线（例如 $(C_1,\bar{b})$ 与 $(C_1,\bar{a})$ 之间无边）。
+2. 互为相反数的文字不连线（所有 $a$ 与 $\bar{a}$，$b$ 与 $\bar{b}$，$c$ 与 $\bar{c}$ 之间即使跨子句也**绝对不能**连线）。
+
+
+
+**🧠 概念理解：** 这就是整个 CS605 最艺术的“翻译”过程。“跨子句连线”逼迫你只能在每个子句里挑 1 个人组建 $k$ 人团；“相反不连线”保证了你不能既说 $a$ 是真的，又说 $a$ 是假的。只要能拉起 $k$ 人的圈子，这个逻辑公式就一定是可满足的！

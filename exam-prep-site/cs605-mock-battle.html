@@ -66,41 +66,54 @@
             <h2>Q1：Pumping Lemma</h2>
             <h3>Sample A Q1(a)：证明 L = {uv : |u|=|v|, u 和 v 开头相同} 不是 regular</h3>
             <div class="answer-box">
+              <p><strong>核心思路 — 短尺子模型：</strong>regular pumping lemma 的 <code>|xy| ≤ p</code> 条件就像一把只有 p 个刻度的短尺子。这把尺子只能量到字符串的前 p 个字符，永远够不着后面的部分。因此 y（被泵的部分）被强制锁死在字符串的最开头区域。我们选字符串时，故意把"关键信息"（比如中点位置）放在 p 之后——短尺子够不着，泵 y 就必然破坏语言条件。</p>
+              <p>为什么选 <code>0^p1^p0^p1^p</code>？前 p 个全是 0，短尺子只能抓到 0。泵这些 0 后，前半段变长，中点向右漂移，掉进原本是 1 的区域——右边第一个字符就变了。</p>
+            </div>
+            <div class="answer-box">
               <p><strong>完整中文答案：</strong>假设 L 是 regular。由 regular pumping lemma，存在泵长 p。取字符串 <code>s = 0^p 1^p 0^p 1^p</code>。令左半 <code>u = 0^p1^p</code>，右半 <code>v = 0^p1^p</code>，两半长度相同并且都以 0 开头，所以 s ∈ L，且 |s| ≥ p。</p>
               <p>根据泵引理，s 可以写成 <code>xyz</code>，满足 <code>|xy| ≤ p</code>、<code>|y| &gt; 0</code>，并且对所有 i ≥ 0 都有 <code>xy^i z ∈ L</code>。因为 s 的前 p 个字符全是 0，且 |xy| ≤ p，所以 y 只能由 0 组成。设 <code>|y| = r</code>，其中 r &gt; 0。</p>
               <p>取 i = 2，得到 <code>s' = xy^2z = 0^(p+r)1^p0^p1^p</code>。如果 r 是奇数，则 s' 总长度为奇数，不能分成两个等长部分，因此不在 L。如果 r 是偶数，则 s' 的中点落在第一段 1 的内部，所以右半的第一个字符是 1，而左半的第一个字符是 0，两半开头不同，也不在 L。无论 r 奇偶，泵后的字符串都不在 L，矛盾。因此 L 不是 regular。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>这题的死穴是“正中点”。DFA 没有无限计数能力，不能知道字符串的后一半从哪里开始。选 <code>0^p1^p0^p1^p</code> 的目的，是用 <code>|xy|≤p</code> 把 y 锁在最左边的 0 区域。泵 y 后，整个中点移动到第一段 1 里，右半开头变成 1。卷面上最容易漏的是 r 奇偶分类；不分类就不能严谨解释泵后为什么一定不在语言里。</p>
             </div>
 
             <h3>Sample B Q1(a)：证明 unary block 语言不是 regular</h3>
             <div class="answer-box">
+              <p><strong>核心思路 — 短尺子锁死第一块：</strong>同样，<code>|xy| ≤ p</code> 这把短尺子只能量到第一个 <code>#</code> 之前的 a 区域。选 <code>a^p#a^p</code>（只保留一对相等的相邻块），泵 y 后第一块变长、第二块不变，唯一可验证的那个相等 pair 就被破坏了。如果选更多块，泵坏一对还有其他对可能相等，反而留下漏洞。</p>
+            </div>
+            <div class="answer-box">
               <p><strong>完整中文答案：</strong>令 L = {<code>w1#w2#...#w2n</code> : 每个 wi ∈ {a}*, n &gt; 0，并且存在某个奇数 i 使 <code>wi = w(i+1)</code>}。假设 L regular，令 p 为泵长。取 <code>s = a^p#a^p</code>。这是两个 unary blocks，n = 1，奇数 i = 1，且 w1 = w2，所以 s ∈ L。</p>
               <p>由 pumping lemma，s = xyz，满足 |xy| ≤ p 且 |y| &gt; 0。因为前 p 个字符都是第一个 block 里的 a，所以 y = a^r，其中 r &gt; 0。取 i = 2，得到 <code>xy^2z = a^(p+r)#a^p</code>。此时只有两个 blocks，唯一可检查的奇数相邻对是 w1 与 w2，但二者长度不同，所以不存在奇数 i 使 wi = w(i+1)。泵后字符串不在 L，与引理矛盾。因此 L 不是 regular。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>这里 witness 必须只保留一个相等的 odd pair。不要选 <code>a^p#a^p#a^p#a^p</code>，因为泵坏第一对后第三、第四块仍然相等，字符串可能还在 L。选 <code>a^p#a^p</code> 是最干净的：泵坏唯一 pair，语言条件直接消失。</p>
             </div>
 
             <h3>Sample A Q1(b)：证明 L = {u#v : |u|=|v| 且 u/v 恰好一个位置不同} 不是 CFL</h3>
             <div class="answer-box">
-              <p><strong>完整中文答案：</strong>假设 L 是 context-free，令 p 为 CFL pumping length。取字符串 <code>s = 0^p1^p#0^p1^(p-1)0</code>。左边 A = <code>0^p1^p</code>，右边 B = <code>0^p1^(p-1)0</code>，二者长度都是 2p，且只有最后一个字符不同，所以 s ∈ L。</p>
+              <p><strong>核心思路 — CFL 版短尺子：</strong>CFL pumping lemma 的 <code>|vxy| ≤ p</code> 也是一把长度为 p 的短尺子，但它不钉在开头——它可以"浮"在字符串的任意位置。关键洞察：这把尺子太短了，无法同时覆盖 # 左侧一大段和 # 右侧一大段。所以 vxy 只有三种可能：全在左、全在右、跨 #（但只能跨一小段）。证明策略就是穷举这三种情况，每种都找到泵法让字符串离开语言。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>完整中文答案：</strong>假设 L 是 context-free，令 p 为 CFL pumping length。取字符串 <code>s = a^p b^{p-1} a # a^p b^p</code>。左边 u = <code>a^p b^{p-1} a</code>，右边 v = <code>a^p b^p</code>，二者长度都是 2p，且只有最后一个字符不同（a vs b），所以 s ∈ L。</p>
               <p>由 CFL pumping lemma，s 可以写成 <code>uvxyz</code>，满足 <code>|vxy| ≤ p</code>、<code>|vy| &gt; 0</code>，并且所有 i ≥ 0 都有 <code>uv^i x y^i z ∈ L</code>。考虑 vxy 的位置。</p>
               <p>第一，如果 vxy 完全在 # 左侧，取 i = 2 会只改变左半长度，右半不变，因此 |u| ≠ |v|，不在 L。第二，如果 vxy 完全在 # 右侧，同理只改变右半长度，也不在 L。</p>
               <p>第三，如果 vxy 跨过 #。若 v 或 y 含有 #，取 i = 2 会产生多个 #，格式错误，不在 L。若只有 x 含有 #，则 v 在 # 左边的一段 1 中，y 在 # 右边的一段 0 中。取 i = 0 删除 v 和 y。如果删除数量不同，两边长度不同；如果删除数量相同且大于 0，左边会少一些 1，右边会少一些 0，对齐后至少多出一个新的不同位置，而原来的最后一位不同仍然存在，因此不再是“恰好一个位置不同”。所以也不在 L。</p>
               <p>所有可能的切分都能找到泵法使字符串离开 L，矛盾。因此 L 不是 context-free。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>CFL 泵引理是五段式，泵的是 v 和 y，不泵 x。<code>|vxy|≤p</code> 是一把可以漂在中间的短尺，不像 regular 的 <code>|xy|≤p</code> 一定钉在开头。证明 not CFL 必须排除所有可能的 vxy 位置：左边、右边、跨 #。跨 # 时还要分清 # 在 v/y 里还是只在 x 里。</p>
             </div>
 
             <h3>Sample B Q1(b)：选择 L1Ba，证明 repeated word 语言不是 CFL</h3>
             <div class="answer-box">
+              <p><strong>核心思路 — 短尺子够不着两边：</strong>CFL 的浮动短尺子 <code>|vxy| ≤ p</code> 无法同时覆盖 # 左右两边的对应区域。选 <code>a^p b^p # a^p b^p</code> 是因为两个词都很长（各自 2p），而尺子只有 p——它最多在一侧动一小块，一动就破坏 w1 = w2 的精确相等关系。PDA 的栈天然擅长反向匹配（如 w#w^R），但对"正向复制"（w#w）无能为力——这也是泵引理能抓住的软肋。</p>
+            </div>
+            <div class="answer-box">
               <p><strong>完整中文答案：</strong>选择 <code>L1Ba = {w1#w2#...#wn : wi ∈ {a,b}* 且存在 j&gt;i 使 wi=wj}</code>。假设它是 CFL，令 p 为泵长。取 <code>s = a^p b^p # a^p b^p</code>。这里 w1 = w2 = <code>a^p b^p</code>，所以 s ∈ L1Ba。</p>
               <p>由 CFL pumping lemma，s = uvxyz，且 |vxy|≤p、|vy|&gt;0。若 vxy 完全在 # 左边，泵 i=0 或 i=2 只改变 w1，w2 不变，所以二者不再相等。若 vxy 完全在 # 右边，同理只改变 w2，也不再相等。若 vxy 跨 #，如果 v 或 y 包含 #，泵会删除或复制 #，导致格式错误；如果只有 x 包含 #，则 v 位于左边末尾的 b 中，y 位于右边开头的 a 中，泵 i=0 会从左词删除一些 b、从右词删除一些 a，左右词不可能继续相等。矛盾。因此 L1Ba 不是 context-free。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>这是“正向复制”题。PDA 的栈能天然处理反向匹配，但对 <code>w#w</code> 这种原样复制很吃力。选 <code>a^p b^p#a^p b^p</code> 是为了让短尺 vxy 无法同时修改左右两边的对应区域；它只能局部动一小块，一动就破坏两边完全相等。</p>
             </div>
           </section>
@@ -112,7 +125,7 @@
               <p><strong>完整中文答案：</strong>构造 decider D。输入 &lt;M&gt;，先检查 M 是否是 finite automaton 的合法编码，不合法则 reject。构造一个 DFA B，它接受所有长度大于 5 的字符串。再构造乘积自动机 C，使 <code>L(C)=L(M)∩L(B)</code>。也就是说，C 只接受那些既被 M 接受、又长度大于 5 的 word。最后运行 FA emptiness decider <code>E_DFA</code> 检查 L(C) 是否为空。如果 L(C) 非空，则 accept；如果为空，则 reject。</p>
               <p>因为构造 B、构造交集自动机 C、运行 <code>E_DFA</code> 都会在有限步骤内停机，所以 D 对所有输入都停机并正确判断。因此 L2A 是 decidable。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>FA 题证明 decidable 的核心是“外包拼图”：把题面条件做成一个新 FA，然后把它丢给已知可判定工具，例如 emptiness。这里“长度大于 5”本身是 regular；和 M 求交集后，问是否存在这样的 word，就变成检查交集语言是否为空。</p>
             </div>
 
@@ -120,7 +133,7 @@
             <div class="answer-box">
               <p><strong>完整中文答案：</strong>构造 decider D。输入 &lt;M&gt;，检查 M 是否是 alphabet {a,b} 上的 finite automaton。若不是，reject。若是，把 M 看成一张有向图，从 start state 出发做 BFS/DFS，检查是否能到达某个 accepting state。如果能到达，说明存在一个 word 被 M 接受，accept；如果所有可达状态都搜完仍然没有 accepting state，reject。状态数有限，图搜索必然停机，所以 L2A decidable。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>FA 的非空性不是靠“试所有字符串”，而是靠状态图可达性。一个 accepting state 可达，就必然有路径标签对应某个 word；不可达，就没有任何 word 能让机器接受。这是有限对象，所以能判定。</p>
             </div>
 
@@ -130,13 +143,21 @@
               <p>Sample A 的 <code>a+b=c</code> 版本：每执行一步后读取变量 a,b,c 的当前值；如果某一时刻满足 <code>a+b=c</code>，立刻 accept。若程序终止且从未满足条件，则 reject。若程序永远运行且从不满足条件，则 T 也永远运行。</p>
               <p>Sample B 的 files 版本可以选 L2Ba：模拟 J，记录已经打开了多少个文件以及当前打开文件数。当第 n 个文件已经被打开以后，如果某一时刻当前打开文件数不等于 n，则 accept。若事件永不出现，模拟可能永远继续。因此该语言 Turing-recognisable。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>recognisable 的关键词是“抓现行”。只要题面说的是 eventually / at least once / after some event later happens，yes instance 会在有限时间暴露证据。模拟器看见证据就 accept；看不见时可以一直等。这和 decidable 的区别是：decider 必须对 no instance 也停机。</p>
             </div>
           </section>
 
           <section id="q3" class="section">
             <h2>Q3：Undecidable Mapping Reduction</h2>
+            <div class="answer-box">
+              <p><strong>核心思路 — 特洛伊木马模型：</strong>HALT 归约的核心构造模式是"先模拟、后触发"。想象我们造了一匹特洛伊木马（程序 N）：木马肚子里先执行 M(w) 的模拟，模拟结束后才触发目标动作（抛异常、执行某行、破坏某性质）。模拟 M(w) 就是一道无限高的墙——</p>
+              <ul>
+                <li><strong>M(w) 停机 → 墙倒塌 →</strong>程序继续执行，触发目标动作</li>
+                <li><strong>M(w) 不停机 → 墙永远不倒 →</strong>目标动作永远执行不到</li>
+              </ul>
+              <p>为什么这样构造？因为 HALT 问题本身不可判定。我们把"判断 M 是否在 w 上停机"偷偷塞进"判断 N 是否触发目标动作"里——如果后者有 decider，就能用它判定 HALT，矛盾。这就是 mapping reduction 的本质：不是直接解决目标问题，而是把 HALT 伪装成目标问题。</p>
+            </div>
             <h3>Sample A Q3：Java 不抛 Exception21 是 undecidable</h3>
             <div class="answer-box">
               <p><strong>完整中文答案：</strong>令 <code>L3 = {&lt;J&gt; : J 是无输入 Java 程序，运行时不抛 Exception21}</code>。它的补集是：<code>Complement L3 = {&lt;J&gt; : J 运行时会抛 Exception21}</code>。在证明中取 <code>L = Complement L3</code>。</p>
@@ -154,13 +175,21 @@
               <p><strong>完整中文答案：</strong>令 <code>L3 = {&lt;M&gt; : M 是 alphabet {a,b} 上的 TM 且 L(M) 非空}</code>。从 HALT 归约。假设 L3 decidable。给定 &lt;M,w&gt;，构造 TM N：N 在任意输入 x 上，忽略 x，模拟 M(w)；如果 M(w) 停机，则 accept x；如果 M(w) 不停机，则 N 也不停机。</p>
               <p>若 M(w) 停机，则 N 至少接受一个字符串，事实上接受所有输入，因此 &lt;N&gt; ∈ L3。若 M(w) 不停机，则 N 不接受任何字符串，L(N)=∅，所以 &lt;N&gt; ∉ L3。于是 <code>&lt;N&gt; ∈ L3 iff &lt;M,w&gt; ∈ HALT</code>。若 L3 decidable，则 HALT decidable，矛盾。因此 L3 undecidable。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>mapping reduction 的思路不是“解决目标题”，而是把 HALT 偷塞进目标题。如果假设目标题有黑盒 decider，那么通过构造 f 和这个黑盒就能解决 HALT。这个结论不可能成立，所以目标题不可能 decidable。</p>
             </div>
           </section>
 
           <section id="q4" class="section">
             <h2>Q4：Turing-recognisable / Not Turing-recognisable</h2>
+            <div class="answer-box">
+              <p><strong>核心思路 — 排除法：</strong>Q4 不要求你凭空判断 L 和 Complement L 谁 T-r。方法是"排除法"——两扇门，先推开能推开的那扇：</p>
+              <ol>
+                <li><strong>先找 eventually observable 的一侧：</strong>yes instance 是否会在有限时间内暴露证据？抛异常、accept 某个 word、出现坏状态——这些都能被模拟器"抓到现行"，所以那一侧是 T-r。</li>
+                <li><strong>再用定理反推另一侧：</strong>定理说"L 和 Complement L 都 T-r → L decidable"。Q3 已证 L undecidable，所以另一侧必然不是 T-r。</li>
+              </ol>
+              <p>记法：能抓现行的是 T-r，另一侧用排除法定为 not T-r。</p>
+            </div>
             <h3>Sample A：Exception21 版本</h3>
             <div class="answer-box">
               <p><strong>完整中文答案：</strong>Q3 中的 L3 是“不抛 Exception21”。先证明 Complement L3 Turing-recognisable。构造 TM R：输入 &lt;J&gt;，模拟 J 的运行；若某一步 J 抛出 Exception21，则 accept；若 J 永远不抛，R 就一直模拟。这样 R 识别 Complement L3。</p>
@@ -172,13 +201,17 @@
               <p><strong>完整中文答案：</strong>这里 L3 是“TM 接受至少一个 word”。构造 recogniser R：输入 &lt;M&gt;，枚举 {a,b}* 中所有字符串，并采用 dovetailing 方式并行模拟 M 在这些字符串上的运行；只要发现某个字符串被 M accept，就 accept &lt;M&gt;。若 L(M) 非空，迟早能发现一个 accepted word；若 L(M) 为空，R 可能永远运行。因此 L3 是 Turing-recognisable。</p>
               <p>又因为 Q3 已证 L3 undecidable。如果 Complement L3 也 Turing-recognisable，那么 L3 和 Complement L3 都 T-r，会推出 L3 decidable，矛盾。因此 Complement L3 不是 Turing-recognisable。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>Q4 不要背“L3 是 TR 还是补集是 TR”。先看 yes condition 是否 eventually observable。会抛异常、会接受某个 word、会出现坏状态，这些都能被模拟抓到，所以是 T-r。永远不发生某事、语言为空、性质 throughout 一直成立，通常不是直接 T-r，要用 “both T-r implies decidable” 反推。</p>
             </div>
           </section>
 
           <section id="q5" class="section">
             <h2>Q5：第二个 Undecidable Reduction</h2>
+            <div class="answer-box">
+              <p><strong>核心思路 — 特洛伊木马（后置触发版）：</strong>Q5 和 Q3 用同一套特洛伊木马模式，但 Q5 常考"性质破坏"型：让程序在模拟 M(w) 期间保持目标性质（比如 line n 从未被执行、b &lt; mean(c) 始终成立），模拟一旦结束就立刻破坏性质。墙倒塌的瞬间，性质从"成立"变成"不成立"——这就是后置触发。</p>
+              <p>关键技巧：如果题面是"never / throughout / always"（否定性条件），通常归约到它的 complement（"eventually / at some point"），因为后者更容易构造触发动作。</p>
+            </div>
             <h3>Sample A：line number n is never executed</h3>
             <div class="answer-box">
               <p><strong>完整中文答案：</strong>令 <code>L5 = {&lt;J,n&gt; : J 无输入，运行时 line n never executed}</code>。取 <code>L = Complement L5</code>，即 line n 会被执行。假设 L decidable。从 HALT 构造归约：给定 &lt;M,w&gt;，构造无输入程序 N：</p>
@@ -200,19 +233,28 @@
 }</code></pre>
               <p>如果 M(w) 停机，N 执行到 <code>b=2.0</code>，违反 b &lt; mean(c)，所以 &lt;N,b,c&gt; ∈ Complement L5。如果 M(w) 不停机，N 永远停留在模拟中，b=0、mean(c)=1，性质始终成立，所以 &lt;N,b,c&gt; ∉ Complement L5。于是 <code>&lt;N,b,c&gt; ∈ Complement L5 iff &lt;M,w&gt; ∈ HALT</code>。若 Complement L5 decidable，则 HALT decidable，矛盾。因此 L5 undecidable。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>Q5 常考“后置触发”。先让程序在模拟 M(w) 前后保持目标性质，等 M 真停机后才触发陷阱。若 M 不停机，陷阱永远不到；若 M 停机，陷阱必定发生。line never executed 和 throughout property 都是这套结构。</p>
             </div>
           </section>
 
           <section id="q6" class="section">
             <h2>Q6：Prove in NP</h2>
+            <div class="answer-box">
+              <p><strong>核心思路 — 懒惰验收员模型：</strong>NP 的 verifier 像一个懒惰的验收员——它自己不动手算答案，而是要求别人把证书（certificate）递到它手上。它的全部工作就三件事：</p>
+              <ol>
+                <li><strong>收证书：</strong>明确证书是什么（一个子集、一条路径、一个 assignment）</li>
+                <li><strong>验证书：</strong>逐条检查证书是否满足题面条件</li>
+                <li><strong>算时间：</strong>确认整个验收过程在多项式时间内完成</li>
+              </ol>
+              <p>考场铁律：<strong>Q6 不要解题，只验收。</strong>你不需要写算法去找那个子集/路径/assignment——那是证书提供者的事。你只负责验收别人递来的答案对不对。</p>
+            </div>
             <h3>Sample A Q6(a)：两个 possibly overlapping proper subsets</h3>
             <div class="answer-box">
               <p><strong>完整中文答案：</strong>证明 L6A ∈ NP。证书 c 是两个集合 Y 和 Z。Verifier M6A 在输入 &lt;A,c&gt; 上执行：检查 c 是否确实编码两个集合 Y,Z；检查 Y 和 Z 都是 A 的 proper subsets；检查 A 的每个元素至少出现在 Y 或 Z 中，即 <code>Y∪Z=A</code>；分别计算 sum(Y) 和 sum(Z)；若两者相等且前面检查都通过，则 accept，否则 reject。</p>
               <p>若 A 有 m 个元素，检查子集关系、覆盖关系和求和都可以通过有限扫描完成，例如保守写成 O(m²)，这是多项式。因此该 TM 在多项式时间内验证 L6A，所以 L6A ∈ NP。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>这题不是让你找 Y/Z。NP 证明只问：如果别人把 Y/Z 给你，你能不能快速验收。注意 Y 和 Z 可以重叠，例子里 1 同时在 Y 和 Z。真正要检查的是 proper subset、union 覆盖 A、sum 相等。</p>
             </div>
 
@@ -233,17 +275,7 @@
               <p><strong>完整中文答案：</strong>证书 c 是 k 部 phones 的集合 S。Verifier 输入 &lt;V,E,k&gt; 和 S，检查 S 是否包含 k 个来自 V 的 phones；然后遍历每条 communication pair (u,v) ∈ E，检查 u∈S 或 v∈S。如果某条边两端都不在 S 中，reject；全部边都被覆盖则 accept。</p>
               <p>按参考答案的保守时间写法：设 n=|V|、m=|E|。检查证书元素是否合法可写 O(nk)。对每条边检查两个端点是否在 S 中，扫描 S 最多 2k，所以总时间 <code>nk + 2mk + 1</code>，多项式。因此 phone vertex cover ∈ NP。</p>
             </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr><th>参考图</th><th>卷面要学什么</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td><img src="605sampleq6a.jpg" alt="CS605 Sample Q6a reference answer" style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px"></td><td>Clique verifier 查的是 S 内部所有 pair 是否都有 edge。不要写成检查所有图中边。</td></tr>
-                  <tr><td><img src="605sampleq6b.jpg" alt="CS605 Sample Q6b reference answer" style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px"></td><td>Vertex cover verifier 查的是图中每条 edge 是否至少一端在 S。不要写成检查 S 内部两两相连。</td></tr>
-                </tbody>
-              </table>
-            </div>
+            <div class="answer-box"><p><strong>答题要点回顾：</strong>Q6a Clique verifier 查的是 S 内部所有 pair 是否都有 edge——不要写成检查所有图中边。Q6b Vertex cover verifier 查的是图中每条 edge 是否至少一端在 S——不要写成检查 S 内部两两相连。两题最容易把检查对象写反。</p></div>
           </section>
 
           <section id="q7" class="section">
@@ -255,18 +287,26 @@
               <p>正确性：若 C satisfiable，按 satisfying assignment 选择每个变量为 true 的 literal player，得到 y 个 players。它们 hit 每个 variable match，也因为每个 clause 至少有一个 true literal，所以 hit 每个 clause match。反过来，若存在 size y 的 players 集合 H hit 所有 matches，因为有 y 个 variable matches 且每个都必须被 hit，H 必须从每对 {vi,¬vi} 中恰好选一个。这定义了一个一致 truth assignment。又因为 H hit 每个 clause match，每个 clause 至少有一个被选中的 true literal，所以 C satisfiable。</p>
               <p>构造只为每个变量和 clause 建常数个对象，时间 O(x+y)，是多项式。3-SAT ≤p L7，所以 L7 NP-hard。结合 L7 ∈ NP，L7 NP-complete。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>概念解释：</strong>这题本质是 Hitting Set。k=y 是核心：它把“每个变量至少选一个”压成“每个变量恰好选一个”，从而强制形成 truth assignment。Variable match 负责一致性，clause match 负责满足性。</p>
             </div>
 
             <h3>Sample B Q7(a)：3-SAT 到 CARA clique</h3>
+            <div class="answer-box">
+              <p><strong>核心思路 — 边规则只记两句：</strong>3-SAT 到 Clique 的图构造只需记住两条规则，一句口诀：<strong>"跨子句连线，相反不连线"。</strong></p>
+              <ul>
+                <li><strong>规则一：跨子句连线</strong>——只在来自不同 clause 的 literal 之间加边，同一 clause 内的不连。这保证了每个 clause 最多被选一个 literal（因为 clique 内部必须两两有边，同 clause 内无边就无法同时选）。</li>
+                <li><strong>规则二：相反不连线</strong>——互补 literals（x 和 ¬x）之间不连边。这保证了选中的 literals 不会同时包含一个变量和它的否定（维持 truth assignment 的一致性）。</li>
+              </ul>
+              <p>目标 k = clause 数 m，因为 clique 必须恰好每个 clause 选一个 literal，自然形成满足赋值。</p>
+            </div>
             <div class="answer-box">
               <p><strong>完整中文答案：</strong>从 Q6(a) 已知 L6A ∈ NP。下面从已知 NP-complete 的 3-SAT 归约到 L6A。给定 3-CNF formula φ，有 m 个 clauses。为每个 clause 中的每个 literal occurrence 建一个 vertex，所以每个 clause 产生 3 个 vertices。设目标 k=m。</p>
               <p>加边规则：对任意两个来自不同 clauses 的 literal vertices，如果它们不是同一变量的互补形式，例如不是 x 与 ¬x，就加 edge。同一个 clause 内不加 edge。最后输出图 G 与 k。</p>
               <p>正确性：若 φ satisfiable，则每个 clause 至少有一个 true literal。每个 clause 选一个 true literal 对应的 vertex。它们来自不同 clauses，并且两个 true literals 不可能互为 complement，所以根据边规则两两有边，形成 size m 的 clique。反过来，若 G 有 size m clique，因为同 clause 内没有边，clique 最多从每个 clause 取一个 vertex；size=m 又等于 clauses 数，所以它恰好每个 clause 取一个。clique 中任意两点有边，因此没有互补 literals。把选中的 literals 设为 true，就得到一致 assignment，并且每个 clause 至少一个 literal true，所以 φ satisfiable。</p>
               <p>构造有 3m 个 vertices，edges 至多 O(m²)，多项式。因此 3-SAT ≤p L6A，L6A NP-hard。结合 L6A ∈ NP，L6A NP-complete。</p>
             </div>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>Q7B 最新校正：</strong>完整边规则是：each literal should be connected to every other literal in a different clause from itself other than its own complement。也就是说，每个 literal 要连到所有其他 clause 的 literal，唯一不连的是自己的 complement；同 clause 内也不连。不要只画被选中的边、不要只连相邻 clause，也不要画成 Vertex Cover 的变量 gadget。</p>
             </div>
 
@@ -275,17 +315,7 @@
               <p><strong>完整中文答案：</strong>如果题面给 <code>C=(l11∨l12∨l13)∧...∧(lm1∨lm2∨lm3)</code>，输出图应这样写：vertices 是所有 literal occurrences，记作 <code>v(i,lij)</code>。即使两个 clauses 中都出现 a，也要当成两个不同 vertices，因为它们属于不同 clause occurrence。</p>
               <p>Edges 列法：对每一对 <code>v(i,l)</code> 与 <code>v(j,r)</code>，只要 i≠j 且 l 不是 r 的 complement，就加入 edge。若 i=j，不连；若 l=x 且 r=¬x，不连。目标 k = clause 数 m。画图时把每个 clause 画成一列三个点，跨列尽量全连，只漏掉互补冲突线。</p>
             </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr><th>参考图</th><th>卷面要学什么</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td><img src="605sampleq7a.jpg" alt="CS605 Sample Q7a reference answer" style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px"></td><td>Q7(a) 必须写 reduction construction、polynomial size、iff 两个方向。只说“3-SAT 到 clique”不够。</td></tr>
-                  <tr><td><img src="605sampleq7b.jpg" alt="CS605 Sample Q7b graph construction reference" style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px"></td><td>Q7(b) 画图的关键是完整 cross-clause non-complement edges。missing edge 必须有理由：same clause 或 complement conflict。</td></tr>
-                </tbody>
-              </table>
-            </div>
+            <div class="answer-box"><p><strong>答题要点回顾：</strong>Q7(a) 必须写 reduction construction、polynomial size、iff 两个方向。Q7(b) 画图的关键是完整 cross-clause non-complement edges——missing edge 必须有理由：same clause 或 complement conflict。</p></div>
           </section>
 
           <section class="section">
