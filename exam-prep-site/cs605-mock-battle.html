@@ -298,12 +298,13 @@
               <ol class="rung-list">
                 <li><strong>Start empty:</strong> Create empty sets V and E.</li>
                 <li><strong>Set target:</strong> Let k be the number of clauses in φ.</li>
-                <li><strong>Process each clause:</strong> For each clause (x<sub>1</sub> ∨ x<sub>2</sub> ∨ x<sub>3</sub>), compare each of its three literal vertices with every vertex already in V.</li>
-                <li><strong>Add cross-clause edges:</strong> If the old vertex is not the complement of the new literal, add an edge between them. Do not add edges between literals in the same clause.</li>
-                <li><strong>Add vertices:</strong> After checking against earlier clauses, add the three new vertices labelled x<sub>1</sub>, x<sub>2</sub>, x<sub>3</sub> to V.</li>
+                <li><strong>Create literal vertices:</strong> For every clause C<sub>i</sub> and every literal ℓ in that clause, create one vertex v<sub>i,ℓ</sub> and add it to V. Literal occurrences in different clauses are different vertices, even if they have the same label.</li>
+                <li><strong>Add complete cross-clause edges:</strong> For every pair of vertices v<sub>i,ℓ</sub> and v<sub>j,r</sub> with i ≠ j, add an edge unless ℓ and r are complements of the same variable, such as x and ¬x.</li>
+                <li><strong>No same-clause edges:</strong> Never add edges between two vertices from the same clause.</li>
                 <li><strong>Return:</strong> Output &lt;G,k&gt; where G = (V,E).</li>
               </ol>
-              <p><strong>Why the "already in V" detail matters:</strong> At the moment a clause is processed, V contains only vertices from earlier clauses. Therefore the construction automatically avoids edges inside the same clause. Edges only go between different clauses, and only when the two literals are not complementary.</p>
+              <p><strong>Q7B 最新校正：</strong>完整图的规则是：each literal should be connected to every other literal in a different clause from itself, other than its own complement. 这不是只连图上看起来被选中的边，也不是只连相邻 clause；C<sub>1</sub> 的每个 literal 都要检查 C<sub>2</sub>, C<sub>3</sub>, ..., C<sub>m</sub> 的所有 literal，只跳过同 clause 和互补 literal 对。</p>
+              <p><strong>Why the "already in V" detail matters:</strong> It is only a sequential implementation of the same complete rule. If the construction processes clauses one by one, V contains only earlier clauses, so comparing each new literal with every old vertex eventually creates every cross-clause non-complement edge exactly once. It must not be read as "connect only to a few old vertices".</p>
               <p><strong>Polynomial size:</strong> |V| = 3m, |E| ≤ (3m)² = 9m². In the reference answer, the construction time is written as a quadratic bound such as <code>9m² + 3m + 5 = O(m²)</code>. The exact constants do not matter; what matters is that the graph is only polynomially larger than the 3-SAT formula.</p>
               <p><strong>Correctness proof — iff BOTH directions:</strong></p>
               <div class="table-wrap">
@@ -312,7 +313,7 @@
                     <tr><th>Direction</th><th>Proof</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>(⇒) φ satisfiable ⇒ G has k-clique</td><td>Let τ be a satisfying assignment. In each clause C<sub>j</sub>, at least one literal is true under τ. Pick ONE such true literal per clause. The corresponding k = m vertices form a clique: (1) they come from different clauses, so the different-clause condition holds; (2) if two selected literals were complementary (x and ¬x), they couldn't both be true under τ — contradiction. So all edges exist.</td></tr>
+                    <tr><td>(⇒) φ satisfiable ⇒ G has k-clique</td><td>Let τ be a satisfying assignment. In each clause C<sub>j</sub>, at least one literal is true under τ. Pick ONE such true literal per clause. The corresponding k = m vertices form a clique: (1) they come from different clauses; (2) if two selected literals were complementary (x and ¬x), they could not both be true under τ. Therefore every selected pair is a different-clause non-complement pair, so the edge rule guarantees an edge between every pair.</td></tr>
                     <tr><td>(⇐) G has k-clique ⇒ φ satisfiable</td><td>Let the k-clique be S. Since vertices from the SAME clause have NO edges between them (by construction — clause condition fails the "different clauses" requirement), the clique can contain at most one vertex per clause. With |S| = k = m clauses, the clique must contain <strong>exactly one</strong> vertex from each clause. Let τ be the assignment that makes all selected literals true (set x = true if literal is x, x = false if literal is ¬x). This assignment is consistent: if two selected literals were complementary (x and ¬x), there would be no edge between them by construction, contradicting that S is a clique. Thus every clause has at least one true literal — φ is satisfiable.</td></tr>
                   </tbody>
                 </table>
@@ -321,7 +322,7 @@
               <p><strong>得分关键：</strong></p>
               <ol class="rung-list">
                 <li><strong>必须引用 Q6 的 NP membership</strong> —— "From Q6a, L<sub>6A</sub> ∈ NP." 这告诉阅卷人你知道 NP-complete 需要两半。</li>
-                <li><strong>构造必须明确：</strong>每 clause 3 个 vertex；同一 clause 内不加边；不同 clause 的 vertex 仅在 literal 不冲突（非互补）时加边；k = clause 数。</li>
+                <li><strong>构造必须明确：</strong>每 clause 3 个 vertex；同一 clause 内不加边；不同 clause 的每一对 literal vertices 都要检查，除互补 literal 对外全部加边；k = clause 数。</li>
                 <li><strong>iff 两个方向都需要解释 clique 和 satisfying assignment 之间的对应</strong> —— (⇒) 从赋值选 literal 构成 clique；(⇐) 从 clique 的 literal 读出赋值。</li>
                 <li><strong>(⇐) 方向要论证 "每 clause 恰好一个 vertex"</strong> —— 这需要用到 clause 内无边 + clique 大小 = clause 数。</li>
                 <li><strong>多项式时间</strong> —— 需要说明构造规模（|V| = 3m, |E| ≤ 9m²，多项式）。</li>
@@ -332,8 +333,8 @@
                     <tr><th>参考答案照片</th><th>这张图要你学什么</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td><img src="605sampleq7a.jpg" alt="CS605 Sample Q7a reference answer" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:8px"></td><td>Q7(a) 的 reduction 要写成一台构造 TM F：输入 3-SAT formula，建立 V/E，k=clause 数；每个 clause 的 3 个 literal 变 3 个 vertex；只和旧 clause 中非互补的 literal 连边；最后说明 <code>&lt;G,k&gt; ∈ L6A iff C ∈ 3-SAT</code>，构造 polynomial。</td></tr>
-                    <tr><td><img src="605sampleq7b.jpg" alt="CS605 Sample Q7b graph construction reference" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:8px"></td><td>Q7(b) 图示的读法：每组/每列代表一个 clause 的 literal vertices；选一个 literal per clause。能选出互不矛盾且两两有边的一组，就对应 satisfying assignment；图里的 forbidden/conflicting literal 对不连边。</td></tr>
+                    <tr><td><img src="605sampleq7a.jpg" alt="CS605 Sample Q7a reference answer" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:8px"></td><td>Q7(a) 的 reduction 要写成一台构造 TM F：输入 3-SAT formula，建立 V/E，k=clause 数；每个 clause 的 3 个 literal 变 3 个 vertex；最终规则是“不同 clause 的每一对非互补 literal 都连边”；最后说明 <code>&lt;G,k&gt; ∈ L6A iff C ∈ 3-SAT</code>，构造 polynomial。</td></tr>
+                    <tr><td><img src="605sampleq7b.jpg" alt="CS605 Sample Q7b graph construction reference" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:8px"></td><td>Q7(b) 图示的读法：每组/每列代表一个 clause 的 literal vertices；每个 literal 应该连到所有其他 clause 的 literal，唯一不连的是自己的 complement（以及同 clause 内不连）。能选出互不矛盾且两两有边的一组，就对应 satisfying assignment；missing edges 不是随便省略，而是 same-clause 或 complement conflict。</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -486,7 +487,7 @@
                     <tr><th>From</th><th>To</th><th>核心构造思路</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>3-SAT</td><td>Clique</td><td>每 clause 3 个 literal vertex；不同 clause 的非互补 literal 连边；k = 从句数。</td></tr>
+                    <tr><td>3-SAT</td><td>Clique</td><td>每 clause 3 个 literal vertex；不同 clause 的每一对非互补 literal 全部连边；k = 从句数。</td></tr>
                     <tr><td>3-SAT</td><td>Vertex Cover</td><td>每个 variable 建 True/False gadget（两个 vertex 一条 edge）；每个 clause 建三角形；variable-clause 之间连边对应 literal 出现。k = |variables| + 2|clauses|。</td></tr>
                     <tr><td>3-SAT</td><td>Independent Set</td><td>和 Clique 互补：在 reduction graph 的 complement（补图）上找 independent set。</td></tr>
                     <tr><td>3-SAT</td><td>Set Cover / Hitting Set</td><td>每个 clause 对应一个 set（包含其 3 个 literal）；universe = 所有 literal；找 hitting set 覆盖所有 clause。</td></tr>

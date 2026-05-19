@@ -711,4 +711,13 @@
 - 照片中的关键校准：
   - Q6A clique verifier：certificate 是 size `k` 的 vertex subset `S`；检查 `S` 来自 `V`，再检查 `S` 内每对点是否有 edge；参考 runtime `sk + k²·2f + 1`。
   - Q6B vertex cover verifier：certificate 是 size `k` 的 phone subset `S`；遍历每条 communication pair，检查至少一端在 `S`；参考 runtime `nk + 2mk + 1`。
-  - Q7 3-SAT→clique：按 clause 建 literal vertices；只和 already-in-`V` 的旧 clause vertices 比较，非互补才加 edge；`k` 为 clauses 数；构造 polynomial，正确性是 satisfiable iff size-`k` clique。
+  - Q7 3-SAT→clique：按 clause 建 literal vertices；最终完整规则是每个 literal vertex 连接到所有其他 clause 的 literal vertices，唯一例外是自己的 complement；`already in V` 只是逐 clause 实现方法；`k` 为 clauses 数；构造 polynomial，正确性是 satisfiable iff size-`k` clique。
+
+### 2026-05-19 20:06 CS605 Q7B 边规则校正
+
+- 最新情报：Q7B 不是“只连某些代表性边”。完整 graph 中，each literal should be connected to every other literal in a different clause from itself, other than its own complement。
+- 已更新：
+  - `exam-prep-site/cs605-mock-battle.html`：Q7 构造改成完整 cross-clause non-complement edge rule，并给出 “already in V” 只是顺序实现的说明。
+  - `exam-prep-site/cs605.html`：NP section 与 Q7 过关题同步加入完整边规则。
+  - `exam-prep-site/cs605-linear.html`：线性学习页的 Q7 构造、小题解释同步校正。
+- 考场写法：每 clause 每 literal occurrence 建 vertex；同 clause 内不连边；不同 clause 的每一对 vertices 都加边，除非它们是 `x` 与 `¬x` 这种互补 literal；目标 `k` 是 clauses 数。

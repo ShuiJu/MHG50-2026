@@ -759,8 +759,9 @@
             <h3>最新参考答案：Q7 3-SAT 到 Clique 的构造写法</h3>
             <div class="answer-box">
               <p><strong>先写 reduction source：</strong>We reduce from the known NP-complete problem <code>3-SAT</code> to <code>L6A</code> (CARA clique).</p>
-              <p><strong>构造 TM F：</strong>On input a 3-CNF formula <code>C</code> with <code>k</code> clauses, create empty sets <code>V</code> and <code>E</code>. For each clause <code>(x1 ∨ x2 ∨ x3)</code>, consider its three literals. For each new literal, compare it with every vertex already in <code>V</code>. If the old vertex is not the complement of the new literal, add an edge. After that, add the three new literal vertices to <code>V</code>. Return <code>&lt;G,k&gt;</code> where <code>G=(V,E)</code>.</p>
-              <p><strong>为什么这正好构造 clique：</strong><code>already in V</code> 只包含更早 clauses 的 literal vertices，所以不会在同一 clause 内加边。不同 clause 的两个 literal 只要不是互补，就连边。于是选出一个 size <code>k</code> clique 等价于从每个 clause 选一个互不矛盾的 literal。</p>
+              <p><strong>构造 TM F：</strong>On input a 3-CNF formula <code>C</code> with <code>k</code> clauses, create one vertex in <code>V</code> for every literal occurrence in every clause. For every pair of literal vertices from different clauses, add an edge unless the two literals are complements of the same variable, such as <code>x</code> and <code>¬x</code>. Add no edges between vertices from the same clause. Return <code>&lt;G,k&gt;</code> where <code>G=(V,E)</code>.</p>
+              <p><strong>Q7B 最新校正：</strong>完整 graph 的边规则是“each literal should be connected to every other literal in a different clause from itself other than its own complement”。所以不是只连少数代表边，也不是只连相邻 clause；每个 literal 都要和所有其他 clauses 的 literals 配对检查。</p>
+              <p><strong>为什么这正好构造 clique：</strong><code>already in V</code> 可以作为逐 clause 实现方法：新 literal 与所有旧 clause vertices 比较，最终等价于“所有不同 clause 的非互补 literal 对都连边”。于是选出一个 size <code>k</code> clique 等价于从每个 clause 选一个互不矛盾的 literal。</p>
               <p><strong>正确性一句话：</strong><code>&lt;G,k&gt; ∈ L6A iff C ∈ 3-SAT</code>。若公式可满足，每个 clause 选一个 true literal 得到 clique；若图有 k-clique，因为同 clause 内无边，clique 必须每个 clause 恰好选一个 vertex，且这些 literal 互不矛盾，所以能读回 satisfying assignment。</p>
               <p><strong>Polynomial time：</strong>每个 clause 只产生 3 个 vertices，总 vertices 是 <code>3k</code>，edges 最多 <code>O(k²)</code>。照片参考答案写成类似 <code>9k² + 3k + 5 = O(k²)</code> 的 bound；常数不重要，必须明确 construction polynomial。</p>
             </div>
@@ -946,7 +947,7 @@
           <p><strong>标准答案（先写结论）：</strong>先 Q6 证明 in NP，再 Q7 从 3-SAT reduce 证明 NP-complete。</p>
           <p><strong>为什么这是对的：</strong>Q6 和 Q7 是连贯两个子题共同证明某语言 NP-complete。Q6 证 in NP（certificate+verifier），Q7 证 NP-hard（3-SAT reduction）。两步缺一不可——只两问都完成才得 NP-complete 结论。和 Q3/Q4/Q5 不同——Q6/Q7 只围一个 language 而 Q3/Q5 是不同 language。</p>
           <p><strong>题目语境怎么用：</strong>Sample B Q6/Q7 是一张卷最后两题最综合题型——先证 in NP 后证 NP-hard。Sample A Q6/Q7 同理但用不同例子（hitting set 或 sports scheduling）。</p>
-          <p><strong>卷面写法：</strong>Q6：L in NP: certificate=... verifier=... Q7：From Q6 L in NP. NP-hard: reduce 3-SAT to L. Construction: for each clause add gadget vertices; add edges unless conflict. Phi satisfiable iff exists target solution。</p>
+          <p><strong>卷面写法：</strong>Q6：L in NP: certificate=... verifier=... Q7：From Q6 L in NP. NP-hard: reduce 3-SAT to L. Construction: for each clause add gadget vertices; add every cross-clause edge unless the literals are complements. Phi satisfiable iff exists target solution。</p>
           <p><strong>常见失分点：</strong>Q7 不引用 Q6 结果从头再证 in NP 浪费时间；3-SAT reduction 中 clause gadget 和 variable consistency 处理搞混；忘证 reduction 多项式。</p>
         </div>
       </article>
@@ -1106,9 +1107,9 @@
         <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q7(a)：证明 CARA clique NP-complete，从 3-SAT reduction 的第一步是建什么结构？literal 和 clause 映射到图的什么？目标 k 怎么定？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先引用 Q6 已证 in NP，再从 3-SAT 构造 CARA clique 实例，并证明 formula satisfiable iff clique exists。</p>
-          <p><strong>为什么这是对的：</strong>Sample B Q7 证明 CARA clique NP-complete。第一步：From Q6 CARA-clique in NP. We now prove NP-hardness。第二步：reduce from 3-SAT。给定 3-CNF formula with k clauses 构造 CARA 图 G：每 clause 每 literal 变 vertex，不同 clause 的 literal vertices 间加 edge（除非冲突如 x 和 not x）。Target=k。Phi satisfiable iff G has k-clique。Construction polynomial。</p>
+          <p><strong>为什么这是对的：</strong>Sample B Q7 证明 CARA clique NP-complete。第一步：From Q6 CARA-clique in NP. We now prove NP-hardness。第二步：reduce from 3-SAT。给定 3-CNF formula with k clauses 构造 CARA 图 G：每 clause 每 literal 变 vertex；每一对来自不同 clause 的 literal vertices 都连边，唯一例外是互补冲突如 x 和 not x。Target=k。Phi satisfiable iff G has k-clique。Construction polynomial。</p>
           <p><strong>题目语境怎么用：</strong>3-SAT→Clique 是 NP-complete 证明中最经典 reduction。核心技巧：clause=必须至少选一个；literal conflict=不能同时选。把 logic 转成 graph 语言。</p>
-          <p><strong>卷面写法：</strong>From Q6 L in NP. NP-hard: Given 3-CNF phi=C1 ^ ... ^ Ck construct G: For each literal l in each Ci create vertex v_{i,l}. Add edge (v_{i,l},v_{j,m}) if i!=j and l != not m. Set target=k. Then phi satisfiable iff G has k-clique. Construction polynomial. Therefore NP-complete。</p>
+          <p><strong>卷面写法：</strong>From Q6 L in NP. NP-hard: Given 3-CNF phi=C1 ^ ... ^ Ck construct G: For each literal l in each Ci create vertex v_{i,l}. For every pair (v_{i,l},v_{j,m}) with i!=j, add edge iff l is not the complement of m. Set target=k. Then phi satisfiable iff G has k-clique. Construction polynomial. Therefore NP-complete。</p>
           <p><strong>常见失分点：</strong>忘 same-clause vertices 间不能有 edge（否则 trivial）；conflict 条件只处理 x 和 not x 忽略其他约束；忘证 iff 双向。</p>
         </div>
       </article>
@@ -1215,9 +1216,9 @@
         <button class="qa-question" type="button" aria-expanded="false">考试5. CS605 Sample B Q7(a)：证明 CARA clique NP-complete，从 3-SAT reduction 的第一步是建什么结构？literal 和 clause 映射到图的什么？目标 k 怎么定？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>先引用 Q6 已证 in NP，再从 3-SAT 构造 CARA clique 实例，并证明 formula satisfiable iff clique exists。</p>
-          <p><strong>为什么这是对的：</strong>Sample B Q7 NP-complete 第一步引用 Q6 已证 in NP。第二步 reduce from 3-SAT：每 clause 每 literal 变 vertex；不同 clause 的 literal 间加 edge（除非冲突）。Target=k(clause count)。Phi satisfiable iff G has k-clique。第三步证 construction polynomial time。第四步合 in NP+NP-hard=>NP-complete。</p>
+          <p><strong>为什么这是对的：</strong>Sample B Q7 NP-complete 第一步引用 Q6 已证 in NP。第二步 reduce from 3-SAT：每 clause 每 literal 变 vertex；每一对不同 clause 的 literal 都连边，除非两者互为 complement。Target=k(clause count)。Phi satisfiable iff G has k-clique。第三步证 construction polynomial time。第四步合 in NP+NP-hard=>NP-complete。</p>
           <p><strong>题目语境怎么用：</strong>Q7 NP-complete 证明四步走：(1)引用 Q6 in NP (2)3-SAT reduction 构造 (3)证 iff 和 polynomial time (4)合 in NP+NP-hard=>NP-complete。不要跳步。</p>
-          <p><strong>卷面写法：</strong>From Q6 L in NP. NP-hard: reduce from 3-SAT. Given phi with k clauses construct G: vertices=all literals; edges between literals from different clauses unless conflicting. Target=k. Phi satisfiable iff G has k-clique. Construction O(k*m) vertices and edges where m=clause length. Hence NP-complete。</p>
+          <p><strong>卷面写法：</strong>From Q6 L in NP. NP-hard: reduce from 3-SAT. Given phi with k clauses construct G: vertices=all literal occurrences; for every pair from different clauses add an edge unless the literals are complements. Target=k. Phi satisfiable iff G has k-clique. Construction polynomial. Hence NP-complete。</p>
           <p><strong>常见失分点：</strong>Q7 NP-complete 四步跳步最常见——直接写 NP-complete 没引 Q6 或没证 polynomial construction。</p>
         </div>
       </article>

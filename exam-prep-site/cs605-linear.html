@@ -260,7 +260,7 @@
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>如果 3-SAT formula satisfiable，则构造图有 clique；如果图有目标 clique，则能读回 satisfying assignment。</p>
           <p><strong>为什么这是对的：</strong>NP-hard reduction 的 correctness 要求 x&isin;3-SAT &hArr; f(x)&isin;CLIQUE。(→) 在 satisfying assignment 下，每个 clause 至少一个 literal 为 true——每 clause 选一个 true literal 对应的 vertex，它们之间互不冲突（冲突 literal 之间无边），构成 k-clique。(←) 如果图中有 k-clique，因每 clause 内无边，clique 必须每 clause 恰好选一个 vertex。这些 vertex 对应的 literal 不冲突，设为 true 就是合法赋值。</p>
-          <p><strong>题目语境怎么用：</strong>Sample B Q7 要求把 3-SAT 转成图并证明 correctness。要先描述 reduction 构造（每个 clause 的 3 个 literal → 3 个 vertex，clause 内不连边，不同 clause 的 literal 如果不冲突就连边），再证两个方向。</p>
+          <p><strong>题目语境怎么用：</strong>Sample B Q7 要求把 3-SAT 转成图并证明 correctness。要先描述 reduction 构造（每个 clause 的 3 个 literal → 3 个 vertex，clause 内不连边；不同 clause 的每一对 literal vertices 都要连边，除非两者互为 complement），再证两个方向。</p>
           <p><strong>卷面写法：</strong>(⇒) Assume φ satisfiable. Pick one true literal per clause; corresponding vertices form k-clique. (⇐) Assume k-clique exists. One vertex per clause (no intra-clause edges). Set those literals true; they don't conflict, so assignment satisfies φ.</p>
           <p><strong>常见失分点：</strong>只证一个方向。或证 ← 时说"literal 不冲突所以 assignment 合法"但忘了论证每 clause 恰好选一个——这需要用到 clause 内部无边 + clique 大小 = clause 数。</p>
         </div>
@@ -1141,9 +1141,9 @@
             </ol>
             <h3>新增参考答案照片：3-SAT 到 CARA clique 的机械构造</h3>
             <div class="answer-box">
-              <p><strong>构造要按 clause 一组一组写：</strong>输入 3-SAT formula <code>C</code>，先建空的 <code>V,E</code>，令 <code>k</code> 等于 clauses 数。处理每个 clause <code>(x1∨x2∨x3)</code> 时，把三个 literal 看成即将加入的新 vertices；每个新 literal 都和 <code>V</code> 里已经存在的旧 vertices 比较，如果不是互补 literal，就加 edge。最后把这三个新 vertices 加入 <code>V</code>。</p>
-              <p><strong>关键细节：</strong>“already in <code>V</code>” 这个写法很重要，因为它自动保证同一个 clause 内的三个 vertices 之间没有边。这样 size <code>k</code> clique 不可能从同一个 clause 选两个 vertex，只能每个 clause 选一个。</p>
-              <p><strong>正确性：</strong>若 3-SAT formula 可满足，则每个 clause 选一个 true literal；它们不互补，所以两两有边，形成 clique。反过来，若有 size <code>k</code> clique，则每个 clause 恰好选一个 literal，且 clique 中没有互补 literal；把这些 literal 设为 true 就得到 satisfying assignment。</p>
+              <p><strong>构造要按完整边规则写：</strong>输入 3-SAT formula <code>C</code>，令 <code>k</code> 等于 clauses 数。每个 clause 的每个 literal occurrence 建一个 vertex。然后对每一对来自不同 clause 的 vertices 加 edge，唯一例外是它们互为 complement（例如 <code>x</code> 和 <code>¬x</code>）。同一个 clause 内的 vertices 不加边。</p>
+              <p><strong>Q7B 最新校正：</strong>“already in <code>V</code>” 只是逐 clause 实现方法：新 literal 和所有旧 clause vertices 比较，最终会得到完整的 cross-clause non-complement edge set。卷面上不要写成只连某些旧点；应该明确 each literal connects to every other literal in a different clause, except its own complement。</p>
+              <p><strong>正确性：</strong>若 3-SAT formula 可满足，则每个 clause 选一个 true literal；两个同时为 true 的 selected literals 不可能互补，所以完整边规则保证它们两两有边，形成 clique。反过来，若有 size <code>k</code> clique，则每个 clause 恰好选一个 literal，且 clique 中没有互补 literal；把这些 literal 设为 true 就得到 satisfying assignment。</p>
               <p><strong>时间：</strong>每个 clause 只产生 3 个 vertices，总共 <code>3k</code> 个 vertices，最多二次方数量 edges；可以写成 <code>O(k²)</code>，或像照片参考答案一样写一个具体多项式界例如 <code>9k²+3k+5</code>。</p>
             </div>
             <div class="answer-box">
@@ -1199,7 +1199,7 @@
         <button class="qa-question" type="button" aria-expanded="false">考试2. Sample B Q7(b) 小题：给公式 <code>(b&or;a&or;c)...</code> 要求 reduction output，考的是什么？</button>
         <div class="qa-answer">
           <p><strong>标准答案（先写结论）：</strong>考你是否真的会把 clauses/literals 转成 clique construction 的 vertices 和 edges，而不是只背模板。</p>
-          <p><strong>为什么这是对的：</strong>这道题不再让你描述 reduction 的一般方法，而是给一个具体的 3-CNF formula，要求你输出对应的图（列出 vertices 和 edges）以及 k 值。这是验证你"真的会构造"而不是"只会说构造方法"。你需要：每个 clause 的 3 个 literal → 3 个 vertex（标记为 literal 名）；同一 clause 内的 vertex 之间不加边；不同 clause 的 vertex 之间，如果对应的 literal 不冲突（不是 x 和 ¬x 的关系），就连边。k = clause 数。</p>
+          <p><strong>为什么这是对的：</strong>这道题不再让你描述 reduction 的一般方法，而是给一个具体的 3-CNF formula，要求你输出对应的图（列出 vertices 和 edges）以及 k 值。这是验证你"真的会构造"而不是"只会说构造方法"。你需要：每个 clause 的 3 个 literal → 3 个 vertex（标记为 literal 名和 clause 编号）；同一 clause 内的 vertex 之间不加边；不同 clause 的每一对 vertex 都要考虑，只有对应 literal 是 x 和 ¬x 这种互补关系时才不连边。k = clause 数。</p>
           <p><strong>题目语境怎么用：</strong>Sample B Q7(b) — 给了具体公式如 (b∨a∨c)∧(¬b∨a∨¬c)...，你要画出 vertices 列表和 edges 列表。</p>
           <p><strong>卷面写法：</strong>Vertices: (b,1), (a,1), (c,1), (¬b,2), (a,2), (¬c,2), ... where (ℓ,i) means literal ℓ from clause i. Edges: (ℓ,i)–(ℓ´,j) for i≠j and ℓ ≠ ¬ℓ´. k = number of clauses.</p>
           <p><strong>常见失分点：</strong>忘记同一 clause 内部的 literal 之间不加边。或者加边规则搞反——把冲突 literal 连上了。</p>
