@@ -1,6 +1,6 @@
 # 2026 May Exam Prep 制作计划 / TODO
 
-更新时间：2026-05-18 21:22
+更新时间：2026-05-19 19:34
 
 ## 项目目标
 
@@ -695,3 +695,20 @@
   - Q3 变体：ProductsController、ReportsController、Strategy、Observer、Rails route top-down 匹配。
   - Q4 变体：canary rollback、monitoring vs observability、CI test strategy、observability cost/privacy/SLO。
 - 已更新 CS615 模拟战页导航、侧边目录和首页关键词，让 `变体题库` 可被搜索和跳转。
+
+### 2026-05-19 19:34 CS605 Q6/Q7 参考答案照片
+
+- 用户新增 4 张 CS605 参考答案照片：
+  - `exam-prep-site/605sampleq6a.jpg`
+  - `exam-prep-site/605sampleq6b.jpg`
+  - `exam-prep-site/605sampleq7a.jpg`
+  - `exam-prep-site/605sampleq7b.jpg`
+- 已读取照片内容并更新 CS605 页面：
+  - `exam-prep-site/cs605-mock-battle.html`：Q6/Q7 部分加入照片对照、exact verifier steps、保守 worst-case runtime。
+  - `exam-prep-site/cs605.html`：NP section 加入 Q6A/Q6B 和 Q7 最新参考答案校准。
+  - `exam-prep-site/cs605-linear.html`：complexity/NP-complete 线性学习页加入 Q6 verifier 时间和 3-SAT→clique 构造说明。
+  - `exam-prep-site/index.html`：CS605 搜索关键词加入 Q6/Q7、clique、vertex cover、3-SAT。
+- 照片中的关键校准：
+  - Q6A clique verifier：certificate 是 size `k` 的 vertex subset `S`；检查 `S` 来自 `V`，再检查 `S` 内每对点是否有 edge；参考 runtime `sk + k²·2f + 1`。
+  - Q6B vertex cover verifier：certificate 是 size `k` 的 phone subset `S`；遍历每条 communication pair，检查至少一端在 `S`；参考 runtime `nk + 2mk + 1`。
+  - Q7 3-SAT→clique：按 clause 建 literal vertices；只和 already-in-`V` 的旧 clause vertices 比较，非互补才加 edge；`k` 为 clauses 数；构造 polynomial，正确性是 satisfiable iff size-`k` clique。

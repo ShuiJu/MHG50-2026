@@ -244,6 +244,7 @@
             <div class="note">
               <p><strong>题面预测 Q6a: CARA clique</strong> — G = (V,E) student friendship graph, ∃ k students all pairwise friends.</p>
               <p><strong>题面预测 Q6b: Phone vertex cover</strong> — Phones = vertices, communication pairs = edges, ∃ k phones covering all pairs.</p>
+              <p><strong>最新参考答案校准：</strong>新增照片显示阅卷答案更喜欢写成“TM verifier + certificate + worst-case running time”的形式。不要只写 <code>O(k²)</code> 或 <code>O(|E|)</code> 一句，要把检查集合大小、检查元素属于 <code>V</code>、逐对/逐边扫描的时间拆开写。</p>
             </div>
 
             <div class="answer-box">
@@ -252,25 +253,35 @@
               <p><strong>Certificate:</strong> A set S ⊆ V of k students.</p>
               <p><strong>Verifier V:</strong> "On input (&lt;G,k&gt;, S):</p>
               <ol class="rung-list">
-                <li><strong>Check size:</strong> Verify that |S| = k. If not, reject.</li>
-                <li><strong>Check membership:</strong> Verify that all vertices in S are in V. If not, reject.</li>
-                <li><strong>Check pairwise edges:</strong> For every pair of distinct vertices u, v ∈ S, check that (u,v) ∈ E. If any pair lacks an edge, reject.</li>
+                <li><strong>Check size and membership:</strong> If S does not contain exactly k elements from V, reject.</li>
+                <li><strong>Check pairwise edges:</strong> For every pair of distinct vertices u, v ∈ S, check whether (u,v) ∈ E or (v,u) ∈ E. If neither direction appears in E, reject.</li>
                 <li><strong>Accept</strong> if all checks pass.</li>
               </ol>
-              <p><strong>Runtime analysis:</strong> Step 1: O(1). Step 2: O(k). Step 3: there are C(k,2) = k(k-1)/2 pairs. Each edge lookup is O(1) with an adjacency matrix, or O(log|V|) with a hash set. Total: O(k²) ≤ O(|V|²). Since the input size is polynomial in |V| + |E|, the verifier runs in polynomial time. Therefore L<sub>6A</sub> ∈ NP. ∎</p>
+              <p><strong>Runtime analysis matching the reference answer:</strong> Let s = |V| and f = |E|. Checking that each of the k certificate elements is really in V can be done by scanning V, so O(sk). There are at most k² ordered pairs from S; for each pair, a conservative verifier can scan the edge list for (u,v) and (v,u), costing at most 2f. So the worst-case time is <code>sk + k²·2f + 1</code>. Let p = max(s,k,f). Then <code>sk + 2k²f + 1 ≤ p² + 2p³ + 1</code>, which is polynomial. Therefore L<sub>6A</sub> ∈ NP. ∎</p>
 
               <p><strong>Q6b — Phone Vertex Cover ∈ NP (标准答案)：</strong></p>
               <p><strong>Language:</strong> L<sub>6B</sub> = {&lt;G,k&gt; : G = (V,E) where V = phones, E = communication pairs, and ∃ k phones such that every communication pair involves at least one of those phones}.</p>
               <p><strong>Certificate:</strong> A set S ⊆ V of k phones.</p>
               <p><strong>Verifier V:</strong> "On input (&lt;G,k&gt;, S):</p>
               <ol class="rung-list">
-                <li><strong>Check size:</strong> Verify that |S| = k.</li>
-                <li><strong>Check coverage:</strong> For each edge (u,v) ∈ E, check that u ∈ S or v ∈ S (at least one endpoint must be in S). If any edge has neither endpoint in S, reject.</li>
+                <li><strong>Check size and membership:</strong> If S is not exactly k elements from V, reject.</li>
+                <li><strong>Check coverage:</strong> For each communication pair (u,v) ∈ E, check that u ∈ S or v ∈ S. If neither phone is in S, reject.</li>
                 <li><strong>Accept</strong> if all edges are covered.</li>
               </ol>
-              <p><strong>Runtime analysis:</strong> Step 1: O(1). Step 2: iterate over all |E| edges, each membership check O(1) using a hash set for S. Total: O(|E|) ≤ O(|V|²). Polynomial time. Therefore L<sub>6B</sub> ∈ NP. ∎</p>
+              <p><strong>Runtime analysis matching the reference answer:</strong> Let n = |V| phones and m = |E| communication pairs. Checking the k certificate phones are valid can be done in O(nk). Then for each of the m communication pairs, scan S to test whether the first endpoint is in S and scan S again for the second endpoint, costing at most 2k per edge. Worst-case time: <code>nk + 2mk + 1</code>, which is polynomial in n, m, and k. Therefore L<sub>6B</sub> ∈ NP. ∎</p>
 
-              <p><strong>得分关键（两张证 in NP 通用）：</strong>三要素不可缺一 — (1) certificate 精确定义，(2) verifier 步骤逐条写，(3) 多项式时间分析。不能只说 "guess a solution and verify"。Vertex cover 的验证条件是 "至少一个端点在 S" 而非 "两个都在"——这块写反直接零分。</p>
+              <p><strong>得分关键（两张证 in NP 通用）：</strong>三要素不可缺一 — (1) certificate 精确定义，(2) verifier 步骤逐条写，(3) 多项式时间分析。不能只说 "guess a solution and verify"。Clique 查的是 certificate 内<strong>每一对</strong>都有边；vertex cover 查的是图中<strong>每条边</strong>至少一端在 S。两题最容易把检查对象写反。</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>参考答案照片</th><th>这张图要你学什么</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><img src="605sampleq6a.jpg" alt="CS605 Sample Q6a reference answer" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:8px"></td><td>Q6a 的完整写法：certificate 是 size k 的 subset S；verifier 先查 S 是否来自 V，再查 S 内每对 vertex 是否有 edge；running time 写成 <code>sk + k²·2f + 1</code> 再说明 polynomial。</td></tr>
+                    <tr><td><img src="605sampleq6b.jpg" alt="CS605 Sample Q6b reference answer" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:8px"></td><td>Q6b 的完整写法：certificate 是 size k 的 phone subset S；verifier 遍历每条 communication pair，要求至少一个端点在 S；running time 写成 <code>nk + 2mk + 1</code>。</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <!-- Q7: NP-complete -->
@@ -285,16 +296,15 @@
               <p><strong>Part 2 — NP-hardness: Reduction from 3-SAT to CARA Clique</strong></p>
               <p><strong>Reduction construction (多项式时间):</strong> Given a 3-CNF formula φ with m clauses C<sub>1</sub>, C<sub>2</sub>, ..., C<sub>m</sub>, where each clause C<sub>j</sub> = (ℓ<sub>j1</sub> ∨ ℓ<sub>j2</sub> ∨ ℓ<sub>j3</sub>) and each literal ℓ is either a variable x or its negation ¬x. Construct a graph G = (V,E) and integer k as follows:</p>
               <ol class="rung-list">
-                <li><strong>Vertices:</strong> For each literal occurrence in φ, create a vertex labelled by (literal, clause_number). There are exactly 3m vertices — 3 per clause.</li>
-                <li><strong>Edges:</strong> Connect two vertices (ℓ<sub>i</sub>, C<sub>p</sub>) and (ℓ<sub>j</sub>, C<sub>q</sub>) if and only if:
-                  <ul>
-                    <li>They are from <strong>different clauses</strong> (p ≠ q), AND</li>
-                    <li>Their literals are <strong>NOT complementary</strong> — i.e., it is NOT the case that one is x and the other is ¬x for the same variable x.</li>
-                  </ul>
-                </li>
-                <li><strong>k:</strong> Set k = m (the number of clauses).</li>
+                <li><strong>Start empty:</strong> Create empty sets V and E.</li>
+                <li><strong>Set target:</strong> Let k be the number of clauses in φ.</li>
+                <li><strong>Process each clause:</strong> For each clause (x<sub>1</sub> ∨ x<sub>2</sub> ∨ x<sub>3</sub>), compare each of its three literal vertices with every vertex already in V.</li>
+                <li><strong>Add cross-clause edges:</strong> If the old vertex is not the complement of the new literal, add an edge between them. Do not add edges between literals in the same clause.</li>
+                <li><strong>Add vertices:</strong> After checking against earlier clauses, add the three new vertices labelled x<sub>1</sub>, x<sub>2</sub>, x<sub>3</sub> to V.</li>
+                <li><strong>Return:</strong> Output &lt;G,k&gt; where G = (V,E).</li>
               </ol>
-              <p><strong>Polynomial size:</strong> |V| = 3m, |E| ≤ (3m)² = 9m². The construction is clearly polynomial in the size of φ.</p>
+              <p><strong>Why the "already in V" detail matters:</strong> At the moment a clause is processed, V contains only vertices from earlier clauses. Therefore the construction automatically avoids edges inside the same clause. Edges only go between different clauses, and only when the two literals are not complementary.</p>
+              <p><strong>Polynomial size:</strong> |V| = 3m, |E| ≤ (3m)² = 9m². In the reference answer, the construction time is written as a quadratic bound such as <code>9m² + 3m + 5 = O(m²)</code>. The exact constants do not matter; what matters is that the graph is only polynomially larger than the 3-SAT formula.</p>
               <p><strong>Correctness proof — iff BOTH directions:</strong></p>
               <div class="table-wrap">
                 <table>
@@ -316,6 +326,17 @@
                 <li><strong>(⇐) 方向要论证 "每 clause 恰好一个 vertex"</strong> —— 这需要用到 clause 内无边 + clique 大小 = clause 数。</li>
                 <li><strong>多项式时间</strong> —— 需要说明构造规模（|V| = 3m, |E| ≤ 9m²，多项式）。</li>
               </ol>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr><th>参考答案照片</th><th>这张图要你学什么</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><img src="605sampleq7a.jpg" alt="CS605 Sample Q7a reference answer" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:8px"></td><td>Q7(a) 的 reduction 要写成一台构造 TM F：输入 3-SAT formula，建立 V/E，k=clause 数；每个 clause 的 3 个 literal 变 3 个 vertex；只和旧 clause 中非互补的 literal 连边；最后说明 <code>&lt;G,k&gt; ∈ L6A iff C ∈ 3-SAT</code>，构造 polynomial。</td></tr>
+                    <tr><td><img src="605sampleq7b.jpg" alt="CS605 Sample Q7b graph construction reference" style="max-width:100%;height:auto;border:1px solid var(--border);border-radius:8px"></td><td>Q7(b) 图示的读法：每组/每列代表一个 clause 的 literal vertices；选一个 literal per clause。能选出互不矛盾且两两有边的一组，就对应 satisfying assignment；图里的 forbidden/conflicting literal 对不连边。</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
           </section>

@@ -1010,6 +1010,12 @@
                 </tbody>
               </table>
             </div>
+            <h3>新增参考答案照片：Q6 verifier 要保守写时间</h3>
+            <div class="answer-box">
+              <p><strong>Sample B Q6A CARA clique：</strong>证书是 size <code>k</code> 的学生集合 <code>S</code>。Verifier 先检查 <code>S</code> 是否恰好由 <code>V</code> 中 <code>k</code> 个点组成；再对 <code>S</code> 中每对不同点 <code>a,b</code> 检查 <code>(a,b)</code> 或 <code>(b,a)</code> 是否在 <code>E</code>。照片里的 runtime 写法是：若 <code>s=|V|</code>, <code>f=|E|</code>，则 worst case <code>sk + k²·2f + 1</code>，再用 <code>p=max(s,k,f)</code> 说明它是 polynomial。</p>
+              <p><strong>Sample B Q6B phone vertex cover：</strong>证书是 size <code>k</code> 的 phone 集合 <code>S</code>。Verifier 先检查 <code>S</code> 是否来自 <code>V</code>；再遍历每条 communication pair <code>(a,b)</code>，检查 <code>a∈S</code> 或 <code>b∈S</code>。若 <code>n=|V|</code>, <code>m=|E|</code>，照片里的 worst case 是 <code>nk + 2mk + 1</code>。</p>
+              <p><strong>为什么值得按照片写：</strong>这不是为了追求最优算法，而是为了让阅卷人看到你真的写了 polynomial-time verifier。保守扫描 edge list / certificate set 比直接说“hash lookup O(1)”更贴参考答案。</p>
+            </div>
             <p>对应材料：<code>2026-03-25-Notes-CCT-intro_annotated.pdf</code>、<code>2026-03-25-Notes-CCT_asymptotic_analysis_annotated.pdf</code>、<code>2026-03-25-Notes-CCT_PTIME_annotated.pdf</code>、<code>2026-04-01-Notes-CCT_NP_annotated.pdf</code>、<code>Growth rates.pdf</code>。</p>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">
@@ -1133,6 +1139,13 @@
               <li><strong>证明 yes 反推 yes。</strong>如果新问题有解，怎样读回原公式的 satisfying assignment。</li>
               <li><strong>说明规模。</strong>每个 variable 和 clause 只产生多项式数量的新对象，所以 reduction polynomial。</li>
             </ol>
+            <h3>新增参考答案照片：3-SAT 到 CARA clique 的机械构造</h3>
+            <div class="answer-box">
+              <p><strong>构造要按 clause 一组一组写：</strong>输入 3-SAT formula <code>C</code>，先建空的 <code>V,E</code>，令 <code>k</code> 等于 clauses 数。处理每个 clause <code>(x1∨x2∨x3)</code> 时，把三个 literal 看成即将加入的新 vertices；每个新 literal 都和 <code>V</code> 里已经存在的旧 vertices 比较，如果不是互补 literal，就加 edge。最后把这三个新 vertices 加入 <code>V</code>。</p>
+              <p><strong>关键细节：</strong>“already in <code>V</code>” 这个写法很重要，因为它自动保证同一个 clause 内的三个 vertices 之间没有边。这样 size <code>k</code> clique 不可能从同一个 clause 选两个 vertex，只能每个 clause 选一个。</p>
+              <p><strong>正确性：</strong>若 3-SAT formula 可满足，则每个 clause 选一个 true literal；它们不互补，所以两两有边，形成 clique。反过来，若有 size <code>k</code> clique，则每个 clause 恰好选一个 literal，且 clique 中没有互补 literal；把这些 literal 设为 true 就得到 satisfying assignment。</p>
+              <p><strong>时间：</strong>每个 clause 只产生 3 个 vertices，总共 <code>3k</code> 个 vertices，最多二次方数量 edges；可以写成 <code>O(k²)</code>，或像照片参考答案一样写一个具体多项式界例如 <code>9k²+3k+5</code>。</p>
+            </div>
             <div class="answer-box">
               <p><strong>NP-complete 模板：</strong>First, prove <code>L∈NP</code> by giving a polynomial-time verifier. Second, prove NP-hardness by reducing from a known NP-complete problem <code>A</code>. Given an instance <code>x</code> of <code>A</code>, construct an instance <code>f(x)</code> of <code>L</code> in polynomial time. Show <code>x∈A iff f(x)∈L</code>. Therefore <code>L</code> is NP-hard. Since <code>L∈NP</code>, <code>L</code> is NP-complete.</p>
             </div>

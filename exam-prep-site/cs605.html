@@ -740,6 +740,13 @@
               <p>On input <code>x</code> and certificate <code>c</code>, verifier <code>V</code> first checks that <code>c</code> has the required form and size. Then it checks the condition in the language definition directly. If all checks pass, accept; otherwise reject.</p>
               <p>The checks use loops over the input objects, such as vertices, edges, sets, or numbers. This takes polynomial time in the input size. Therefore <code>L</code> is in NP.</p>
             </div>
+            <h3>最新参考答案：Q6A/Q6B 要写出具体 worst-case time</h3>
+            <div class="answer-box">
+              <p><strong>Q6A Clique 照片校准：</strong>certificate <code>c</code> 是 size <code>k</code> 的 vertex subset <code>S</code>。Verifier on <code>&lt;G,k,c&gt;</code>：先检查 <code>S</code> 是否真由 <code>V</code> 中恰好 <code>k</code> 个元素组成；然后对 <code>S</code> 中每一对不同点 <code>(a,b)</code>，检查 <code>(a,b)</code> 或 <code>(b,a)</code> 是否在 edge set <code>E</code> 中；若某对没有边，reject；否则 accept。</p>
+              <p><strong>卷面 runtime 写法：</strong>令 <code>s=|V|</code>, <code>f=|E|</code>。检查证书元素属于 <code>V</code> 可写 <code>sk</code>；检查 <code>k²</code> 对点时，每对最坏扫描两次 edge list，写 <code>k²·2f</code>；所以总时间 <code>sk + k²·2f + 1</code>。再令 <code>p=max(s,k,f)</code>，说明它被 <code>p² + 2p³ + 1</code> 这类多项式界住。</p>
+              <p><strong>Q6B Vertex Cover 照片校准：</strong>certificate <code>c</code> 是 size <code>k</code> 的 phone subset <code>S</code>。Verifier：先检查 <code>S</code> 是否是 <code>V</code> 中恰好 <code>k</code> 个 phones；再遍历每条 communication pair <code>(a,b)∈E</code>，检查 <code>a∈S</code> 或 <code>b∈S</code>；若某条边两端都不在 <code>S</code>，reject；否则 accept。runtime 写 <code>nk + 2mk + 1</code>，其中 <code>n=|V|</code>, <code>m=|E|</code>。</p>
+              <p><strong>为什么要这样写：</strong>照片里的参考答案没有假设 adjacency matrix 或 hash set，而是用“扫描集合/边表”的保守算法。这样写不会因为数据结构假设不明而丢分，而且 polynomial time 论证更清楚。</p>
+            </div>
             <h3>NP-complete 证明</h3>
             <p>
               NP-complete 证明有两半。第一，证明这个问题在 NP：给你答案你能快速检查。第二，证明它 NP-hard：把一个已知 NP-complete 问题，例如 3-SAT，polynomial-time reduce 到它。
@@ -748,6 +755,14 @@
               <p>To prove <code>L</code> is NP-complete, first prove <code>L ∈ NP</code> using a polynomial-time verifier.</p>
               <p>Then prove <code>L</code> is NP-hard by giving a polynomial-time reduction from a known NP-complete problem such as <code>3-SAT</code>. The reduction converts an instance <code>C</code> of <code>3-SAT</code> into an instance <code>f(C)</code> of <code>L</code>.</p>
               <p>Show correctness: <code>f(C) ∈ L</code> iff <code>C ∈ 3-SAT</code>. Show the construction runs in polynomial time. Therefore <code>L</code> is NP-hard. Since <code>L</code> is also in NP, <code>L</code> is NP-complete.</p>
+            </div>
+            <h3>最新参考答案：Q7 3-SAT 到 Clique 的构造写法</h3>
+            <div class="answer-box">
+              <p><strong>先写 reduction source：</strong>We reduce from the known NP-complete problem <code>3-SAT</code> to <code>L6A</code> (CARA clique).</p>
+              <p><strong>构造 TM F：</strong>On input a 3-CNF formula <code>C</code> with <code>k</code> clauses, create empty sets <code>V</code> and <code>E</code>. For each clause <code>(x1 ∨ x2 ∨ x3)</code>, consider its three literals. For each new literal, compare it with every vertex already in <code>V</code>. If the old vertex is not the complement of the new literal, add an edge. After that, add the three new literal vertices to <code>V</code>. Return <code>&lt;G,k&gt;</code> where <code>G=(V,E)</code>.</p>
+              <p><strong>为什么这正好构造 clique：</strong><code>already in V</code> 只包含更早 clauses 的 literal vertices，所以不会在同一 clause 内加边。不同 clause 的两个 literal 只要不是互补，就连边。于是选出一个 size <code>k</code> clique 等价于从每个 clause 选一个互不矛盾的 literal。</p>
+              <p><strong>正确性一句话：</strong><code>&lt;G,k&gt; ∈ L6A iff C ∈ 3-SAT</code>。若公式可满足，每个 clause 选一个 true literal 得到 clique；若图有 k-clique，因为同 clause 内无边，clique 必须每个 clause 恰好选一个 vertex，且这些 literal 互不矛盾，所以能读回 satisfying assignment。</p>
+              <p><strong>Polynomial time：</strong>每个 clause 只产生 3 个 vertices，总 vertices 是 <code>3k</code>，edges 最多 <code>O(k²)</code>。照片参考答案写成类似 <code>9k² + 3k + 5 = O(k²)</code> 的 bound；常数不重要，必须明确 construction polynomial。</p>
             </div>
     <!-- qa-hardcoded:start -->
     <div class="qa-set" aria-label="过关问答">
