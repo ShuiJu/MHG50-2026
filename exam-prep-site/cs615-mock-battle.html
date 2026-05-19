@@ -16,6 +16,7 @@
           <a href="cs615-linear.html">CS615 线性页</a>
           <a href="cs615.html">CS615 题型页</a>
           <a href="#strategy">样卷规则</a>
+          <a href="#foundation">教材地基</a>
           <a href="#q1">Q1 FinTrack</a>
           <a href="#q2">Q2 AI Agents</a>
           <a href="#q3">Q3 Rails</a>
@@ -32,6 +33,7 @@
         <p class="lead">根据最新消息，CS615 会完全按 <code>CS615Sample.pdf</code> 的形式出题。所以这一页不再按以前的"题型预测概率"来组织，而是把样卷的四道题逐题拆开，给你讲清楚每道题在问什么、该怎么答。核心思路很简单：Q1 是必答题，40 分稳稳拿到；再从 Q2、Q3、Q4 里挑两道你最稳的，搞定 60 分。三小时，就这么分配。</p>
         <div class="tag-list">
           <a class="tag" href="#strategy">3 小时作战顺序</a>
+          <a class="tag" href="#foundation">教材知识地基</a>
           <a class="tag" href="#q1">Q1 FinTrack 40 marks</a>
           <a class="tag" href="#q2">Q2 AI Agents 30 marks</a>
           <a class="tag" href="#q3">Q3 Rails SRP 30 marks</a>
@@ -68,52 +70,122 @@
             </div>
           </section>
 
+          <section id="foundation" class="section">
+            <h2>0.1 教材知识地基：架构模式是什么</h2>
+            <p class="eyebrow">CS615 的 Q1 是整个考试的地基。下面这些概念来自教材 <code>ArchitecturalPatterns.pdf</code>，是回答 Q1（以及 Q1 变体）必须吃透的东西。</p>
+
+            <h3>Pattern（模式）和 Framework（框架）的区别</h3>
+            <div class="answer-box">
+              <p><strong>Pattern（模式）</strong>是一个可复用的、解决某类反复出现的问题的概念模板。它不是代码，不绑定任何语言，而是一种抽象的设计方案。比如 MVC（Model-View-Controller）就是一个模式：它告诉你应该把数据（Model）、界面（View）、用户交互逻辑（Controller）分成三个部分，各自负责不同的事。但它不给你任何具体代码——你可以在 Rails 里实现 MVC（Ruby），也可以在 Spring 里实现 MVC（Java），也可以在 Express 里实现（JavaScript），甚至可以在一个 iOS app 里实现（Swift）。模式是<strong>抽象的、跨平台的、概念层面的</strong>。</p>
+              <p><strong>Framework（框架）</strong>则是一个<strong>具体的、可执行的骨架</strong>，它以代码的形式实现了某种模式。你下载它、安装它、按照它规定的目录结构和命名约定往里填你自己的业务逻辑。比如 Rails 是一个框架，它内置了 MVC 模式——你不需要从零实现 MVC 的分发逻辑、不用自己写 router、不用自己管理数据库连接。Rails 已经替你把这些都做好了，你只需要在 <code>app/models/</code> 里写 Model，在 <code>app/views/</code> 里写 View，在 <code>app/controllers/</code> 里写 Controller。框架给了你结构（skeleton），你往里填内容。</p>
+              <p><strong>关键区分：</strong>Pattern 是"思想"，Framework 是"工具"。你用 Framework 来实现 Pattern。同一个 Pattern 可以用不同的 Framework 来实现。考试中如果让你比较两种方案（比如 Approach A vs Approach B），它们可能在用不同的 Pattern（如 layered architecture vs event-driven architecture），也可能在用同一个 Pattern 但实现方式不同——理解这一点非常重要。</p>
+            </div>
+
+            <h3>Logical Architecture（逻辑架构）和 Physical Architecture（物理架构）的区别</h3>
+            <div class="answer-box">
+              <p><strong>Logical Architecture（逻辑架构）</strong>回答的是"系统在概念上分为哪几层，每一层负责什么职责"。经典的三层逻辑架构（3-Tier Logical Architecture）将系统分为：</p>
+              <ol class="rung-list">
+                <li><strong>Presentation Tier（展示层）：</strong>负责与用户交互——显示界面、接收用户输入、展示数据。在 Web 系统中，这一层通常是浏览器端运行的 HTML/CSS/JavaScript 或 React SPA。</li>
+                <li><strong>Application / Business Logic Tier（应用/业务逻辑层）：</strong>负责处理业务规则——用户认证、订单计算、价格策略、数据校验。它不直接操作数据库，而是通过数据访问层。在 Spring Boot 中，这一层由 Controller、Service、Repository 组件构成。</li>
+                <li><strong>Data Tier（数据层）：</strong>负责数据的持久化存储和检索——数据库、文件系统、缓存。它不关心数据怎么展示，也不关心业务规则怎么变，只负责把数据安全地存好、准确地读出。</li>
+              </ol>
+              <p>逻辑架构是<strong>关于"WHAT"</strong>——每层干什么。它不关心这些层跑在哪台机器上。</p>
+              <p><strong>Physical Architecture（物理架构）</strong>回答的是"这些逻辑层分别部署在哪些物理机器（或容器、云实例）上"。同样的三层逻辑架构，可以有完全不同的物理部署形态：</p>
+              <ul>
+                <li><strong>单机部署：</strong>三层全跑在一台服务器上——浏览器访问该服务器，服务器内部完成所有逻辑和数据库操作。这是最简单的物理架构。</li>
+                <li><strong>双机部署：</strong>展示层在浏览器，应用层在一台服务器上，数据层在另一台独立的数据库服务器上。这是很多中小系统的典型部署方式。</li>
+                <li><strong>多机/集群部署：</strong>应用层部署在多个服务器上（前面加负载均衡器），数据层用主从复制或多节点集群。每层都可以独立扩容。</li>
+                <li><strong>微服务部署：</strong>应用层被拆成多个独立的 service，每个 service 有自己的数据库实例。展示层通过 API Gateway 聚合多个 service 的数据。</li>
+              </ul>
+              <p>物理架构是<strong>关于"WHERE"</strong>——每层跑在哪。它决定了网络延迟、容错能力、扩容方式。</p>
+              <p><strong>为什么这个区分对考试至关重要：</strong>在 Q1 中，Approach A 和 Approach B 拥有<strong>相同的逻辑架构</strong>（都是三层：展示、应用、数据），但拥有<strong>完全不同的物理架构</strong>（A 的应用层是一个 monolithic 进程，B 的应用层是多个独立的 service 进程）。正因为逻辑架构相同，它们都能被映射到三层；正因为物理架构不同，它们在 scalability、resilience、deployment 上表现截然不同。考试要求你同时理解这两个层面，并据此做出架构推荐——这就是整道 Q1 的核心命题。</p>
+            </div>
+
+            <h3>CS615 教材中覆盖的关键架构模式</h3>
+            <div class="answer-box">
+              <p>以下七个模式是 CS615 的整个"架构板块"的骨架。Q1 的答案会直接调用其中好几个：</p>
+              <ol class="rung-list">
+                <li><strong>Layered / Tiered Architecture（分层/多层架构）</strong>——最基础的架构模式。将系统按职责分为多个层次，上层依赖下层，下层不依赖上层。CS615 里讲的"三层架构"就是它的具体体现：Presentation → Application → Data。Approach A 完全遵循这个模式在一个进程内。</li>
+                <li><strong>MVC（Model-View-Controller）</strong>——Web 应用的主导模式。Model 管数据，View 管界面，Controller 管协调用户交互。Rails 和 Spring MVC 都是这个模式的实现。Q3 的 OrdersController 代码审查核心就是 MVC 的职责划分是否被破坏。</li>
+                <li><strong>REST（Representational State Transfer）</strong>——无状态、面向资源的 API 设计风格。通过 HTTP method（GET/POST/PUT/DELETE）操作资源，用 URI 标识资源，用状态码表示结果。Spring REST Controller 是它的实现。在 Approach B 中，各 service 之间通过 REST 通信。</li>
+                <li><strong>Microservices（微服务架构）</strong>——将应用拆分为多个小型、独立部署的服务，每个服务专注于一个业务能力（bounded context）。服务间通过网络通信。Approach B 就是微服务架构的体现。优势是独立部署和独立扩容；代价是分布式系统的所有复杂度（网络、一致性、服务发现、分布式追踪）。</li>
+                <li><strong>Event-Driven Architecture（事件驱动架构）</strong>——服务间不直接调用，而是通过发布/订阅事件来通信。当某个服务状态发生变化，它发布一个事件，其他感兴趣的服务异步响应。这种方式实现了更高级的解耦，但引入了 eventual consistency（最终一致性）——数据变化后不会立刻在所有服务间同步。</li>
+                <li><strong>Observer / Pub-Sub（观察者/发布订阅模式）</strong>——一种解耦"核心逻辑"和"副作用"的模式。当核心事件发生（如订单创建），触发多个订阅者的响应（发邮件、记 analytics、扣库存），但核心逻辑本身不依赖这些订阅者的存在。Q3 重构中，发邮件和 analytics 就应该用这个模式从 controller 里抽出来。</li>
+                <li><strong>Strategy / Policy Object（策略/策略对象模式）</strong>——将一组可互换的算法（如不同的折扣规则）封装成独立的对象，运行时根据需要选择。取代冗长的 <code>if/elsif/else</code> 链。Q3 的折扣计算重构就是对这个模式的直接应用。</li>
+              </ol>
+              <p><strong>考试用法：</strong>Q1 需要用 1、3、4、5 来分析两种方案；Q3 需要用 2、6、7 来识别违规并给出重构方案。这些不是在考你背定义——是在考你能不能在实际场景中识别出什么时候该用哪个模式、为什么。</p>
+            </div>
+          </section>
+
           <section id="q1" class="section">
             <h2>Q1. FinTrack 架构比较 [40 marks]</h2>
             <div class="answer-box">
               <p><strong>题目在问什么：</strong>FinTrack 是一个实时金融 dashboard。它要展示股票和加密货币的实时价格（高频更新）、支持用户自己定义复杂的筛选条件、还要严格记录每一笔交易历史——不能丢、不能错、不能对不上。现在给了两种技术方案让你比较。</p>
               <p><strong>方案 A：</strong>React 前端 + Spring Boot 后端 + PostgreSQL 数据库。所有东西打包成一个应用，运行在一台机器上（可以升级配置，但始终是一个整体）。</p>
               <p><strong>方案 B：</strong>React SPA 前端 + 多个 Node.js 微服务 + NoSQL 文档数据库。后端拆成了好几个独立的小服务，各管各的事，各用各的数据库。</p>
-              <p><strong>配分：</strong>(a) 把两种方案映射到三层架构，分析应用层通信差异 [10]；(b) 从 scalability/performance、resilience、development velocity/deployment 三个维度比较 [15]；(c) 推荐一个方案并论证 [15]。</p>
+              <p><strong>配分：</strong>(a) 把两种方案映射到三层架构，分析应用层通信差异 [10] (总共约10个给分点，每个关键点约1分)；(b) 从 scalability/performance、resilience、development velocity/deployment 三个维度比较 [15] (每个维度约5个给分点)；(c) 推荐一个方案并论证 [15] (推荐明确+理由充分+trade-off+migration path+总结)。</p>
             </div>
 
-            <h3>Q1(a) 三层映射和通信流的差异 [10]</h3>
+            <h3>Q1(a) 三层映射和通信流的差异 —— 完整标准答案 [10 marks]</h3>
             <div class="answer-box">
-              <p>先想清楚一件事：所谓"三层架构"只是逻辑上的划分——展示层管界面，应用层管业务逻辑，数据层管存储。任何 Web 系统都能这么分。所以两种方案都能映射到三层，区别不在这，而在<strong>应用层是一个整体还是拆成了多个服务</strong>。</p>
-              <p>方案 A 就像一个完整的工具箱。所有工具都在一个箱子里——前端 React 管界面，后端 Spring Boot 一个进程处理所有业务逻辑（实时价格、用户过滤、交易记录全在一起），数据库用 PostgreSQL 管所有数据。用户打开 dashboard，流程很直：</p>
-              <p><code>React → Spring Boot Controller → Service → Repository → PostgreSQL → 返回 JSON</code></p>
-              <p>每一步都是进程内的方法调用，速度快，出错了也好查——日志在一个地方，调试不用跨服务。</p>
-              <p>方案 B 像把工具分到了不同的抽屉里。每个抽屉独立存在——price-service 管价格、portfolio-service 管持仓、filter-service 管筛选、transaction-service 管交易记录。每个 service 有自己的 NoSQL 数据库。用户打开 dashboard，流程变成：</p>
-              <p><code>React SPA → API Gateway → price-service + portfolio-service + transaction-service → 各自查各自的 NoSQL → Gateway（或前端）汇总结果</code></p>
-              <p>这里的每一步都是网络调用。网络有延迟、有超时、有丢包。出问题了，你得靠分布式追踪才能搞清楚是哪个 service 挂了。</p>
+              <p><strong>第一步：明确两个方案的逻辑架构是相同的。</strong>无论采用 Approach A 还是 Approach B，FinTrack 在逻辑上都遵循三层架构（3-Tier Architecture）。三层架构将系统按职责分为：Presentation Tier（展示层）——负责仪表盘 UI、图表渲染、用户交互；Application Tier（应用层）——负责价格推送逻辑、用户筛选规则、交易记录处理、认证授权；Data Tier（数据层）——负责数据的持久化存储和查询。两种方案都能完整映射到这三个逻辑层，区别不在于"逻辑上有没有分三层"，而在于<strong>应用层是一个整体还是拆成了多个独立部署的单元</strong>——也就是物理架构的差异。</p>
+
+              <p><strong>第二步：逐一映射两种方案到三层。</strong></p>
               <div class="table-wrap">
                 <table>
                   <thead>
-                    <tr><th>层</th><th>方案 A（单体）</th><th>方案 B（微服务）</th></tr>
+                    <tr><th>层 (Tier)</th><th>方案 A（Monolithic）</th><th>方案 B（Microservices）</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>Presentation</td><td>React 前端，负责仪表盘 UI、图表、筛选表单</td><td>React SPA，通过 REST/GraphQL/WebSocket 调 API Gateway 或各 service</td></tr>
-                    <tr><td>Application</td><td>一个 Spring Boot 后端，controller、service、security、过滤逻辑、交易逻辑都在同一个部署单元里</td><td>多个 Node.js 服务，每个服务管一小块业务能力，通过网络互相调用</td></tr>
-                    <tr><td>Data</td><td>PostgreSQL 关系数据库，外键、事务、SQL join 支撑交易记录和复杂过滤</td><td>NoSQL 文档数据库，每个 service 有自己的 data store，跨服务 join/事务困难</td></tr>
+                    <tr><td><strong>Presentation</strong><br>（展示层）</td>
+                      <td>React 前端应用。运行在用户浏览器中，负责渲染仪表盘界面（K 线图、价格列表、筛选器表单、交易记录表格）。通过 HTTP/HTTPS 发送 RESTful API 请求到 Spring Boot 后端。只做展示和用户交互，不直接访问数据库。</td>
+                      <td>React SPA（Single Page Application）。同样运行在浏览器中，但数据来源更复杂：可能通过 API Gateway 统一获取来自多个后端 service 的数据，也可能前端直接调用多个 service 的 API（需处理 CORS）。展示层需要在前端做数据聚合——把 price-service、portfolio-service、transaction-service 的多个响应拼成一个完整的 dashboard 页面。</td>
+                    </tr>
+                    <tr><td><strong>Application</strong><br>（应用/业务逻辑层）</td>
+                      <td><strong>一个 Spring Boot 单体进程。</strong>所有业务逻辑都在同一个 JVM 进程内运行：Controller 接收 HTTP 请求并做参数校验；Service 层实现价格计算、用户筛选、交易记录管理等核心业务逻辑；Repository 层通过 JPA/Hibernate 与数据库交互。所有组件之间的调用都是<strong>进程内的方法调用（in-process method call）</strong>——没有网络开销，不需要序列化/反序列化，不经过任何网络协议栈。</td>
+                      <td><strong>多个 Node.js 服务进程。</strong>每个服务是一个独立的 Node.js 进程，专注于单一业务能力：price-service 负责市场行情数据的接收、缓存和推送；portfolio-service 负责用户持仓数据的计算和管理；filter-service 负责用户自定义筛选条件的执行；transaction-service 负责交易记录的创建、查询和审计。服务之间的协作通过<strong>跨网络的 HTTP/REST 或 gRPC 调用</strong>来实现——每个调用都要经过 DNS 解析、TCP 握手、HTTP 请求/响应、序列化/反序列化等完整网络栈。</td>
+                    </tr>
+                    <tr><td><strong>Data</strong><br>（数据层）</td>
+                      <td><strong>单一 PostgreSQL 关系数据库。</strong>所有数据——用户信息、市场行情、交易记录、筛选条件——都存储在同一个 PostgreSQL 实例中。利用关系数据库的核心能力：外键约束保证引用完整性；ACID 事务保证"一笔交易的明细和总额同时写入或不写入"；SQL JOIN 让复杂的跨表查询（如"找出 premium 用户在最近 30 天内金额超过 $500 的交易"）在一个查询语句中完成，高效且正确。</td>
+                      <td><strong>多个独立 NoSQL 文档数据库。</strong>每个 service 拥有自己的数据库实例（Database per Service 模式）。price-service 可能用 Redis 存实时行情（高速读写、TTL 自动过期）；transaction-service 可能用 MongoDB 存交易记录（文档结构灵活、适合半结构化数据）。但这种架构失去了关系数据库的跨表 join 能力和 ACID 跨服务事务支持——需要应用层自己实现数据聚合和一致性保证。</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
+
+              <p><strong>第三步：详细分析应用层通信模式的本质差异——这是本题的核心给分点。</strong></p>
+
+              <p><strong>通信机制：</strong>在 Approach A 中，当用户打开 dashboard，请求沿着一条清晰的路径流转：<code>React → HTTP Request → Spring Boot Controller → Service Layer → Repository → PostgreSQL → 返回 JSON Response</code>。每一步都是<strong>同步的、进程内的方法调用</strong>。Controller 调用 Service 的方法是直接的 Java 方法调用，Service 调用 Repository 也是直接的 Java 方法调用。不需要考虑网络延迟、超时重试、序列化格式。整个请求处理在几十微秒级别内完成。</p>
+              <p>在 Approach B 中，同一个用户体验的请求变成了一条跨多个网络的分布式调用链：<code>React → API Gateway → (并发调用) price-service + portfolio-service + transaction-service → 各 service 查各自的数据库 → 各 service 返回结果 → Gateway 聚合（或前端聚合）→ 渲染 dashboard</code>。每个 <code>→</code> 都是一次<strong>网络调用</strong>，跨越进程甚至机器边界。每次网络调用都引入：DNS 解析时间（~1-5ms）、TCP 三次握手（~1-5ms）、HTTP 请求序列化、网络传输延迟（~1-10ms 局域网内，公网更高）、HTTP 响应反序列化。如果用户 dashboard 需要从 5 个 service 获取数据，这些延迟会<strong>累计叠加</strong>，导致端到端响应时间显著增加。</p>
+
+              <p><strong>事务边界：</strong>这是两种方案最本质的区别之一。Approach A 中，创建一笔交易记录的操作完全在一个数据库事务内完成：Spring 的 <code>@Transactional</code> 注解确保"插入交易主记录 + 插入交易明细行 + 更新用户余额"要么全部成功提交，要么全部回滚。ACID 事务在数据库层面保证了原子性（Atomicity）——不会出现"主记录写入了但明细行没写入"的中间状态。对金融系统来说，这种保证不是可选的——是底线。</p>
+              <p>Approach B 中，一笔交易的完成可能会跨越三个 service（transaction-service 记录交易、portfolio-service 更新持仓、notification-service 发确认通知）。每个 service 有自己的数据库，不存在一个统一的 ACID 事务能覆盖所有这些操作。要保证跨服务的一致性，必须引入<strong>Saga（分布式事务编排）模式</strong>：将一笔全局交易拆成多个本地事务，每个本地事务完成后发布一个事件触发下一个步骤。如果中间某步失败，需要执行<strong>补偿事务（compensating transaction）</strong>来回滚前面已经完成的操作。比如：第 1 步 transaction-service 写入交易记录成功 → 第 2 步 portfolio-service 更新持仓失败 → 必须自动触发补偿操作，将 transaction-service 中已写入的交易记录标记为"已撤销"。这个编排逻辑本身就是一个需要设计、开发、测试、维护的复杂系统。对于 FinTrack 这种强一致性场景，Approach B 的事务方案是一个显著的成本和风险来源。</p>
+
+              <p><strong>调试和可观测性：</strong>Approach A 中，一个请求从头到尾的日志都在一个进程的一条日志流里——你用 <code>grep</code> 搜请求 ID 就能看到完整链路。出问题时，开发者打开一个日志文件就能追踪整个调用过程。Approach B 中，同一个用户请求在 API Gateway 产生一条日志、在 price-service 产生一条、在 transaction-service 产生一条——分布在不同的机器上、不同的日志文件里。你必须依赖<strong>分布式追踪系统（如 Jaeger / Zipkin）</strong>，通过 trace ID 把分散的日志串起来。而且你需要先在头脑中还原出请求的实际路径——"它先经过了 gateway，然后 split 成三个并发的子调用，其中一个超时了……"。调试一个微服务系统的故障比调试一个单体系统要复杂一个数量级。</p>
+
+              <p><strong>总结 Q1(a)：</strong>两种方案在逻辑上都遵循三层架构，都能映射到 Presentation、Application、Data 三层。区别在于物理架构——Approach A 的应用层是一个紧耦合的 in-process 单体，所有调用都是同步方法调用，事务管理简单可靠；Approach B 的应用层是一个松耦合的分布式系统，所有服务间通信都是跨网络的异步/同步调用，带来更高的延迟、更复杂的事务模型、更高的操作复杂度。</p>
             </div>
 
-            <h3>Q1(b) 三个维度逐一比较 [15]</h3>
+            <h3>Q1(b) 三个维度逐一比较 —— 完整标准答案 [15 marks]</h3>
             <div class="answer-box">
-              <p><strong>维度一：扩容和性能。</strong></p>
-              <p>方案 A 扩容靠垂直升级——CPU 不够了换更好的 CPU，内存不够了加内存。简单，但也有个尴尬的地方：可能只有"实时价格推送"这个模块特别忙，但你没办法只给这一个模块加资源，得把整个后端一起升级。</p>
-              <p>方案 B 可以水平扩容——哪个 service 忙就给哪个 service 加实例。如果 price-service 扛不住高频行情，就给它单独加几个实例，transaction-service 不用跟着动。但代价是：跨多个 service 拼一个 dashboard 页面时，网络延迟是累加的。而且 NoSQL 里做跨集合查询（类似"找出所有满足用户自定义筛选条件的交易记录"）比 SQL join 笨重得多。</p>
 
-              <p><strong>维度二：出错了谁扛得住。</strong></p>
-              <p>方案 A 的故障模式很简单：一个程序、一个数据库。出问题容易定位，容易回滚。但单体进程或单机挂了，整个系统都没了。</p>
-              <p>方案 B 的故障隔离更好：price-service 挂了，transaction history 理论上还能查。但麻烦在数据一致性上。一笔交易可能要改好几个 service 的数据——PostgreSQL 的 ACID 事务能保证要么全成功要么全失败；NoSQL 跨服务一致性得靠 saga、补偿事务、最终一致性，出错面大多了。</p>
-              <p>对 FinTrack 来说，价格可以延迟几秒，用户察觉不到；但交易记录一旦出错——半写入、重复扣款、总额和明细对不上——用户信任就崩了。所以方案 A 的强一致事务是很大的优势。</p>
+              <p><strong>维度一：Scalability（可扩展性）和 Performance（性能）（约 5 分）</strong></p>
+              <p>首先要区分两种扩容方式。Vertical Scaling（垂直扩容）指的是升级单台机器的硬件配置——更多的 CPU 核心、更大的内存、更快的 SSD。Horizontal Scaling（水平扩容）指的是增加机器的数量——用两台、四台、十台机器分担负载，前面加一个 Load Balancer 分发请求。</p>
+              <p>Approach A 的扩容路径主要是垂直扩容。Spring Boot 单体运行在一台服务器上（或有几台完全相同的实例）。当 FinTrack 的用户量增长，价格推送频率升高，单台机器的 CPU 或内存不够用时，升级到更高配置的机器。这种方式<strong>简单直接</strong>——不需要改代码，不需要重新设计架构，买更好的机器就行。但也有一个结构性的尴尬：<strong>扩容是粗粒度的</strong>。假设 FinTrack 只有"实时价格推送"这个模块特别吃 CPU（因为要每秒处理几千条行情数据），而"交易记录查询"和"用户管理"负载很低。在 Approach A 中，你无法只给 price 模块加资源——你只能克隆整个单体应用，让每个实例都包含交易查询和用户管理等低负载模块。这意味着你为不需要扩容的部分也支付了额外的计算资源。</p>
+              <p>Approach B 的扩容路径是水平扩容且<strong>精细化的</strong>。每个 service 是独立部署的进程，你可以单独给 price-service 加 10 个实例来扛高频行情，而 transaction-service 只保留 2 个实例。扩容的粒度更细，资源利用率更高。但是，这种精细扩容是有代价的：<strong>网络延迟的累积效应</strong>。用户打开 dashboard 需要同时从 price-service、portfolio-service、filter-service、transaction-service 等多个服务获取数据。假设每个 service 调用的平均网络延迟是 5ms，串行调用 4 个服务就是 20ms，并行调用也至少有最慢那个服务的延迟。而且网络延迟本身有不稳定性（jitter）——同一个调用有时候 2ms 有时候 20ms，导致用户体验不可预测。</p>
+              <p><strong>FinTrack 的关键判断：</strong>价格推送的高频特性确实支持 Approach B——你可以给 price-service 单独配更多资源。但是 FinTrack 的另一核心功能——"用户自定义复杂筛选条件并查询历史交易记录"——在 Approach A 中有显著优势。PostgreSQL 的单表扫描和多表 JOIN 在一个数据库实例内完成，不需要跨网络搬运大量数据再在应用层做过滤。而在 Approach B 中，跨 service 的数据聚合查询非常笨重——你可能需要把 transaction-service 和 portfolio-service 的数据都拉到 Gateway 层再做筛选，网络传输量巨大。这个维度的判断不是非黑即白的，需要承认两边各有适用的子场景。</p>
 
-              <p><strong>维度三：开发速度和部署。</strong></p>
-              <p>方案 A 初期更快：一个代码仓库、一次构建、一个部署包。团队小的时候不用纠结 service contract、API 版本、服务发现这些事。</p>
-              <p>方案 B 长期看有优势：不同小队可以各管各的 service，独立发布，互不阻塞。但这是有前提的——你得先把 CI/CD、容器编排、服务发现、API 版本管理、分布式追踪都搭好。这些都是前期成本，在 startup 阶段可能不划算。</p>
+              <p><strong>维度二：Resilience（韧性 / 容错能力）（约 5 分）</strong></p>
+              <p>Resilience 是指系统在面对故障时的存活能力和恢复能力——某个组件挂了，系统还能继续提供服务吗？能多快恢复？数据会不会丢？</p>
+              <p>Approach A 的韧性模型是<strong>"单点简单"</strong>型的。单体进程或单台服务器宕机会导致整个 FinTrack 不可用——用户看不到价格、查不了交易记录、无法下单。这是明显的单点故障（Single Point of Failure）。但它的优势在于<strong>故障诊断极其直接</strong>：出问题时只有一个进程要排查，一个日志文件要分析，一个数据库要检查。从发现故障到定位根因的时间通常很短。而且 PostgreSQL 的 ACID 事务保证在故障恢复后，数据是一致的——要么事务完全提交了，要么完全没提交，不存在中间状态。这对金融交易记录来说是至关重要的底线保障。可以通过部署多个应用实例 + 负载均衡器来缓解单点故障风险——这比完全拆成微服务要简单得多。</p>
+              <p>Approach B 的韧性模型是<strong>"分而治之"</strong>型的。price-service 挂了，transaction-service 照样能查询历史记录——用户虽然暂时看不到实时价格，但至少能查交易（这叫 partial availability，部分可用性）。这是微服务架构在故障隔离上的核心优势。但是，分布式系统引入了<strong>全新的、更复杂的故障模式</strong>：网络分区（network partition）——两个 service 之间的网络断了，双方都在等对方的响应，但谁也不知道对方是挂了还是只是网络不通；级联超时（cascading timeout）——service A 调用 service B，B 调用 C，C 慢了导致 B 超时，B 超时又导致 A 超时，形成"雪崩"；分布式一致性问题——创建一笔交易需要更新多个 service，如果半途中某个 service 挂了，已经写过的 service 怎么办？需要 rollback 吗？Rollback 的步骤谁来做？补偿逻辑本身失败了怎么办？</p>
+              <p><strong>FinTrack 的关键判断：</strong>在金融系统中，<strong>数据一致性比部分可用性更重要</strong>。价格数据可以延迟几秒甚至几分钟，用户通常感知不到——因为这属于"软实时"需求。但交易记录一旦出错——比如用户账户显示扣了款但实际订单状态是"未支付"，或者交易总额和明细行对不上——这是不可接受的故障。事后修复极为困难，且可能涉及法律和合规问题。Approach A 的 ACID 事务天然保证"一笔交易要么完全记录了，要么完全没有"，不需要额外的 saga 编排和补偿逻辑。对 FinTrack 这类 startup 阶段的金融产品来说，Approach A 在 resilience 上更可靠——不是因为单体更不容易坏，而是因为<strong>坏了之后更容易确定坏在哪、数据更容易保证正确</strong>。</p>
+
+              <p><strong>维度三：Development Velocity（开发速度）和 Deployment（部署）（约 5 分）</strong></p>
+              <p>Development velocity 衡量的是团队把想法变成生产环境代码的速度。部署衡量的是把新代码安全、可靠地上线的能力。</p>
+              <p>Approach A 在开发初期的速度优势明显：<strong>一个 Git 仓库、一次 build、一个 deployable artifact</strong>。5 个人的小团队在一套代码基础上协作：新功能加在 <code>service/</code> 目录下，新的数据库迁移直接写 migration 文件，CI/CD pipeline 只需要定义一条流水线——拉代码、跑测试、打包 jar、部署到服务器。不需要操心 service contract 的向后兼容（backward compatibility），不需要实现 service discovery（服务发现），不需要维护 API Gateway 的路由规则，不需要写分布式调用的 fallback 和 retry 逻辑。团队的精力可以集中在 FinTrack 的核心业务功能上——价格展示、筛选逻辑、交易记录——而不是花在基础设施的搭建和维护上。</p>
+              <p>Approach B 在开发中期（团队扩大到 15-30 人后）展现出优势：不同的小团队可以在不同的 service 上并行工作——A 组改 price-service 不影响 B 组改 transaction-service，各自独立上线。但是，<strong>这个优势有高额的前置成本</strong>。在采用 Approach B 之前，团队必须先搭建或学会：容器化（Docker）、容器编排（Kubernetes 或 Docker Compose for dev）、服务注册和发现（Consul / Eureka / Kubernetes Service）、API 版本管理和兼容性策略、分布式追踪基础设施、统一日志收集（ELK / Loki）、跨服务的认证/授权机制、CI/CD 的并行多流水线。对一个 startup 阶段的 5 人团队来说，搭建和学会这些基础设施本身就是几周到几个月的工作量，而这些时间里产品功能 0 进展。</p>
+              <p><strong>FinTrack 的关键判断：</strong>Startup 阶段的核心目标是<strong>用最快速度验证产品在市场上是否可行</strong>（product-market fit）。采用 Approach A，团队可以把每周的工程时间几乎全部投入在业务功能上——这个筛选条件好不好用？交易记录展示够不够清晰？如果采用 Approach B，大量工程时间会消耗在与业务无关的基础设施上——而这恰恰是 startup 最不该做的事。当 FinTrack 验证了市场、用户量进入快速增长期、团队也扩张到 10 人以上时，再考虑渐进式拆分更有意义。</p>
 
               <div class="table-wrap">
                 <table>
@@ -121,79 +193,108 @@
                     <tr><th>维度</th><th>方案 A 优势</th><th>方案 B 优势</th><th>FinTrack 的关键判断</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>扩容/性能</td><td>进程内调用快，SQL join/filter 在一个 DB 内完成</td><td>热点服务独立扩容，不浪费资源</td><td>价格推送支持 B，但交易查询和复杂过滤支持 A</td></tr>
-                    <tr><td>容错</td><td>ACID 事务保证交易记录强一致，故障易定位</td><td>故障隔离好，一个服务挂了不影响其他</td><td>交易记录一致性 &gt; 价格可用性，A 更稳</td></tr>
-                    <tr><td>开发速度</td><td>单一 repo/build/deploy，早期迭代快</td><td>团队大了以后可并行开发、独立部署</td><td>Startup 阶段快速验证 &gt; 长期并行效率</td></tr>
+                    <tr><td>扩容/性能</td><td>进程内调用极快；SQL JOIN 在单个 DB 内完成复杂过滤，不搬数据跨网络</td><td>热点服务独立扩容，不浪费资源；price-service 可单独加 10+ 实例</td><td>价格推送的高频特征支持 B，但交易记录的复杂过滤和关联查询在 A 中天然高效。两方各自有适用子场景</td></tr>
+                    <tr><td>韧性/容错</td><td>ACID 事务保证交易记录强一致；故障诊断直接、恢复路径清晰</td><td>故障隔离好——一个 service 挂了不影响其他；partial availability</td><td>金融系统中数据一致性压倒一切。ACID 的简洁保证比 saga 的复杂编排更适合 startup 阶段的 FinTrack</td></tr>
+                    <tr><td>开发速度/部署</td><td>单 repo/build/deploy；团队无需学习服务发现、分布式追踪等基础设施；早期迭代极快</td><td>团队大了以后可并行开发、独立部署；不同 service 可用不同技术栈</td><td>Startup 阶段的首要目标是验证产品。基础设施的前期投入会挤占业务开发时间，推迟上线，延迟市场反馈</td></tr>
                   </tbody>
                 </table>
               </div>
+
+              <p><strong>总结 Q1(b)：</strong>三个维度并不一致地指向同一个方案。Scalability 上 Approach B 有精细扩容的优势；Resilience 上 Approach A 的数据一致性简洁性在金融场景中更珍贵；Development Velocity 上 Approach A 的快速迭代能力对 startup 阶段更关键。一个好的答案应该承认这种张力，而不是简单地说某一边在所有维度上完胜。</p>
             </div>
 
-            <h3>Q1(c) 推荐方案并论证 [15]</h3>
+            <h3>Q1(c) 推荐方案并完整论证 —— 完整标准答案 [15 marks]</h3>
             <div class="answer-box">
-              <p><strong>我的推荐：先选方案 A，但把代码写"松"一点——做成模块化单体（modular monolith），为以后可能拆成微服务留后路。</strong></p>
-              <p>为什么不是直接选 B？因为这道题里最危险的数据不是实时价格，而是交易记录。价格可以延迟、可以缓存、可以重试——用户可能根本注意不到。但交易记录一旦出问题——半写入、重复扣款、总额和明细对不上——用户信任就没了，审计也过不了。PostgreSQL 的事务、唯一约束、外键、SQL join 就是为这种场景设计的。</p>
-              <p>但选 A 不等于放弃性能。你可以在 Spring Boot 内部用好几种低复杂度手段来应对高频更新：用 Redis 做价格缓存、用 WebSocket 或 SSE 推送实时数据、用后台 worker 定时拉取行情、用只读副库分担查询压力。这些手段投入小、见效快。只有当 price feed 真的变成明确瓶颈了，再把价格模块抽成独立的 service。</p>
-              <p><strong>必须写的 trade-off：</strong>选 A 牺牲了独立扩容的弹性——将来用户暴增时可能需要拆服务。选 B 牺牲了数据一致性的简洁保障——现在就背上分布式系统的复杂度。对于 startup 阶段的 FinTrack——团队小、需要快速验证产品、数据一致性要求极高——方案 A 的简单性和可靠性比方案 B 的弹性更重要。</p>
-              <p><strong>收束句：</strong>这不是拒绝微服务，而是分阶段走的架构决策。先用模块化单体保住一致性和交付速度，在实际运行中观察真正的瓶颈，等到规模和团队成熟度值得承担运维成本时，再把高频价格模块单独抽出来。</p>
+              <p><strong>明确推荐：我建议 FinTrack 采用 Approach A（Modular Monolith），并将代码按业务模块组织好，为未来的渐进式拆分预留接口。</strong></p>
+
+              <p><strong>理由一：交易记录的数据一致性是 FinTrack 的核心资产，不容妥协。</strong>金融产品的一切建立在用户信任之上。用户打开 FinTrack 看交易记录，期待看到的每一笔数据都准确无误——金额、时间、状态、明细。PostgreSQL 的 ACID 事务通过原子性（Atomicity）和持久性（Durability）保证"一笔交易及其所有明细行要么同时持久化，要么同时不存在"。这个保证来得几乎零成本——一条 <code>@Transactional</code> 注解即可。而 Approach B 的 NoSQL + 微服务架构需要 saga 模式来模拟跨服务事务：编写协调逻辑、处理每一步的补偿、设计重试和幂等策略、测试各种中间状态的恢复路径。对于 FinTrack ——一个正在争取第一批用户的 startup——在交易一致性这件事上增加复杂度是最大的战略错误。用户不会原谅你的交易记录错误，无论你解释说"这是微服务架构下的事件最终一致性导致的问题"。</p>
+
+              <p><strong>理由二：Approach A 让团队把有限的工程时间用在刀刃上。</strong>FinTrack 作为一个 startup，其核心风险不是"未来用户量暴增时系统扛不住"，而是"用户根本不来、或者来了发现产品不够好用"。5 人团队每周有大约 200 小时的工程时间。如果采用 Approach B，搭建 Kubernetes 集群、配置服务网关、设置分布式追踪、管理多个数据库——这些基础设施任务至少要吃掉前 2-3 周的全部时间。而这些时间本来应该用来：优化筛选条件的交互体验、让实时价格图表更流畅、完善交易记录的审计日志、对接更多交易所的行情数据。选择 Approach A，意味着把时间投在用户能看到、能感受到的功能上。</p>
+
+              <p><strong>理由三：Approach A 的性能瓶颈可以通过低成本手段解决，不必然需要拆微服务。</strong>实时价格推送的负载确实可能成为瓶颈——但这不等于必须立刻切换到 Approach B。在 Approach A 的基础上，可以采用以下优化手段：①价格数据存储在 Redis 缓存中，后端 worker 定时从行情源拉取并更新缓存，前端通过 WebSocket 或 Server-Sent Events (SSE) 实时接收推送——这样高频更新不会每次都击穿到 PostgreSQL；②对"用户自定义筛选"查询，在 PostgreSQL 上创建合理的索引，并结合物化视图预先计算常用聚合数据；③对不常变的数据（如交易历史只读查询）做 HTTP 缓存和 CDN 缓存。这些优化手段投入小、见效快，完全可以在单体架构内解决性能问题——只有当这些手段都用尽、且监控数据显示价格模块的确是唯一的不可修复瓶颈时，才值得考虑将价格模块独立拆分为一个 service。</p>
+
+              <p><strong>理由四：Modular Monolith 为未来拆分预留了低成本路径。</strong>"选 Approach A"不等于"永远不解耦"。关键是在写代码时就保持模块边界清晰：价格逻辑在 <code>pricing</code> 包内，交易逻辑在 <code>transaction</code> 包内，筛选逻辑在 <code>filter</code> 包内。包之间的依赖通过接口（interface）而不是具体实现——今天它们是同一个 JVM 内的方法调用，明天如果决定拆分，只需要把接口的实现替换为通过 REST 或 gRPC 调用远程 service。这个拆分成本远低于把一个混乱的、没有模块边界的老单体硬拆成微服务。</p>
+
+              <p><strong>明确说出 trade-off（必须写）：</strong>选择 Approach A 意味着放弃了精细化的独立扩容能力——如果价格模块真的成为性能瓶颈，升级整台服务器比只加一个 price-service 成本更高。也意味着放弃了对不同模块采用不同技术栈的灵活性——整个后端必须统一用 Java/Spring Boot。但这两项代价在 FinTrack 的 startup 阶段是完全可以接受的——因为"单台机器扛不住"的问题还没发生，而"用 Rust 重写价格计算模块以获得极致性能"这种优化对于第一批用户来说毫无意义。</p>
+
+              <p><strong>迁移路径（Migration Path）：</strong>这不是一个"永久选择 A"的决定，而是一个分阶段的架构演进策略。当前的架构决策应该这样表述：<strong>阶段 1（现在 → 产品验证期）：</strong>采用 Modular Monolith（Approach A），在 Spring Boot 内保持模块边界清晰，用 Redis 缓存和 WebSocket 推送应对高频行情需求。<strong>阶段 2（用户增长期，当单台机器确实成为瓶颈时）：</strong>观察生产环境的性能数据，确认真正的瓶颈是哪个模块。如果是价格推送，首先为单体应用增加多实例 + 负载均衡器——对于 Web 应用这是标准操作。只有当价格模块独立扩容的需求变得不可回避时，才按照早已预留好的模块边界将 price-service 拆出为独立服务。<strong>阶段 3（多团队并行期）：</strong>如果 FinTrack 团队扩大到 15 人以上，且不同小组需要独立发布，再按照 bounded context（有界上下文）逐步将其他模块拆分为独立的微服务。每个阶段的决策都基于实际的、观察到的瓶颈，而不是基于对未来可能发生的问题的过度防御。</p>
+
+              <p><strong>收束句：</strong>Architecture is about making informed trade-offs, not about chasing the latest trend. 对于 FinTrack 这样一个数据一致性需求极高、团队规模较小、尚在验证产品市场匹配度的金融 startup，Modular Monolith 提供的简单性、可靠性、快速迭代能力，远胜过微服务架构提供的弹性。选择 Approach A 不是因为微服务不好——微服务在正确的场景中非常好——而是因为 FinTrack 当前所处的阶段、团队规模、和核心约束（交易一致性），使得微服务架构的成本超过其收益。架构决策永远应该遵循一个原则：选择当前阶段最合适的技术复杂度，而不是未来某个阶段可能需要的复杂度。</p>
             </div>
           </section>
 
           <section id="q2" class="section">
             <h2>Q2. AI Agents 进入软件开发生命周期 [30 marks]</h2>
             <div class="answer-box">
-              <p><strong>题目在问什么：</strong>AI Agent 不只是聊天——它能自动执行多步骤的任务。比如你说"给电商平台加一个登录页"，它不只是生成代码，还能自动写表单验证、API 对接、单元测试、甚至部署到 staging 环境。题目要求你分析这种能力进入大型 e-commerce 平台 SDLC 的优势和风险，讨论 Agent 把 legacy monolith 重构成微服务时产生的"看不懂的优化代码"（opaque code）问题，最后评价"AI 会取代初级开发者"这个说法。</p>
+              <p><strong>题目在问什么：</strong>AI Agent 不只是聊天——它能自动执行多步骤的任务。比如你说"给电商平台加一个登录页"，它不只是生成代码，还能自动写表单验证、API 对接、单元测试、甚至部署到 staging 环境。题目要求你分析这种能力进入大型 e-commerce 平台 SDLC（Software Development Life Cycle）的优势和风险，讨论 Agent 把 legacy monolith 重构成微服务时产生的"看不懂的优化代码"（opaque code）问题，最后批判性评价"AI 会取代初级开发者"这个说法。</p>
               <p><strong>配分：</strong>(a) 3 个优势 + 3 个风险 [10]；(b) opaque code 对 maintainability/technical debt 的影响 + 管控策略 [10]；(c) 批判性评价初级开发者是否会被取代 [10]。</p>
             </div>
 
-            <h3>Q2(a) 三个优势、三个风险 [10]</h3>
+            <h3>Q2(a) 三个优势、三个风险 —— 完整标准答案 [10 marks]</h3>
             <div class="answer-box">
-              <p>先说好处。</p>
-              <p><strong>优势一：吞吐量上去了。</strong>一个大电商平台有几十个后台管理页面——商品管理、订单列表、优惠券配置、用户管理——每一个都是类似的 CRUD 套路。传统做法是开发者手动切换：写页面 → 写 API → 写校验 → 写测试 → 改 CI。AI Agent 可以把这些串成一个自动化流程，快速出第一版。人的时间省下来想真正难的事情：支付安全怎么做？库存扣减怎么保证不出错？秒杀场景怎么扛？</p>
-              <p><strong>优势二：代码风格统一了。</strong>每个开发者有自己的习惯——有人用这种 validation 模式，有人用那种。Agent 可以按团队定好的模板生成代码，保证所有表单校验、所有 API 错误处理都是同一个套路。对几十人的大团队来说，这种一致性本身就是质量。</p>
-              <p><strong>优势三：反馈变快了。</strong>Agent 生成代码后能立刻跑测试、lint、类型检查，失败了还能自己改一轮。你不用等半天才能看到一个能跑的原型——几分钟就有了。这让开发者能更快地判断方向对不对，不用在"这个方案能不能跑通"上耗太久。</p>
+              <p><strong>优势一：显著提升常规开发任务的吞吐量（Throughput）。</strong>在大型电商平台的 SDLC 中，存在大量常规但耗时的开发任务——几十个后台管理页面（商品管理、订单列表、优惠券配置、用户管理、退款审核），每一个都是相似的 CRUD 模板：定义数据模型 → 写 API endpoint → 写前端表单和表格 → 加输入校验 → 写单元测试。传统做法下，一个开发者可能在"订单列表页面"上花两天——写 controller、service、前端组件、测试。AI Agent 可以把这个流程自动化：你描述"需要一个订单列表页，支持按日期范围和状态筛选，显示金额和用户信息"，Agent 自动生成 model、API、前端组件、校验逻辑和测试用例的初始版本。开发者的时间从"我一行一行敲出来"变为"我审核 AI 输出的质量，修正不符合业务需求的地方，补上安全相关的逻辑"。这种分工将人的精力释放到高价值的思考上：支付安全架构怎么设计？秒杀场景下库存扣减怎么保证不超卖？多仓库环境下配送优先级怎么算？——这些才是真正需要工程经验的难题。</p>
 
-              <p>再说风险——每一个都和好处一样真实。</p>
-              <p><strong>风险一：代码能跑，但不安全。</strong>Agent 可能会把 JWT 存到 localStorage 里——能跑啊，功能看起来也对，但遇到 XSS 攻击就完了。或者忘了加 CSRF 保护、忘了做输入校验。电商平台的登录和支付页面——安全不是可选配置，是底线。</p>
-              <p><strong>风险二：架构层面的错误代价巨大。</strong>Agent 为了"优化"可能会搞出过度复杂的抽象。比如在拆 legacy monolith 的时候，把订单、支付、库存拆成十几个微服务——每个都"解耦"了，每个都"独立"了，但团队要维护十几套 API 协议、处理分布式事务、排查跨服务 bug。这种 architectural tech debt 要还很久。</p>
-              <p><strong>风险三：责任说不清楚。</strong>Agent 生成的代码谁负责？出了生产事故找谁？它还可能生成一些来路不明的代码片段，或者不小心把业务数据发到外部 API。大平台的合规团队一定会问：audit trail 在哪？谁批准了这次变更？</p>
+              <p><strong>优势二：强制性地统一代码风格和架构约定（Consistency）。</strong>在拥有 30-50 个开发者的电商平台团队中，代码风格和架构一致性是一个持续的挑战——有人把 validation 写在 controller 里，有人写在 model 里；有人用 Promise 链，有人用 async/await；有人用三层嵌套 if，有人用 early return。AI Agent 可以配置为遵循团队制定的 coding standard 和架构模板来生成代码——所有 API 的 error response 格式统一、所有表单校验遵循同一套规则、所有 service 层的调用模式一致。这种自动化的一致性不仅仅减少了 code review 中关于"风格"的争论，更重要的是降低了新成员理解代码的心智负担——每个模块看起来都是"同一种表达方式"。在大团队中，一致性本身就是可维护性的前置条件。</p>
+
+              <p><strong>优势三：极速缩短从"想法"到"可运行原型"的反馈循环（Feedback Loop）。</strong>传统开发流程中，一个功能从构思到看到一个能跑的版本可能需要几小时到几天。AI Agent 可以在几分钟内生成一个可运行的原型（尽管不完美），并立即在该原型上跑测试、lint、类型检查——失败了还能自己迭代修改。这意味着开发者和产品经理可以更快地判断"方向对不对"：这个交互流程是否符合用户预期？这个 API 的数据结构是否完整？这个性能表现是否达标？快速的反馈循环极大地降低了"花了一周才发现方向错了"的沉没成本——这在 startup 和大型项目的早期探索阶段尤为重要。</p>
+
+              <p><strong>风险一：可运行的代码不等于安全的代码（Security Blind Spots）。</strong>AI Agent 生成的代码最常出现的安全问题集中在身份认证和输入处理上：把 JWT token 存到 localStorage（面临 XSS 攻击风险）而不是 httpOnly cookie；忘记在 API endpoint 上加 authorization 检查；未对用户输入做 SQL injection 防护；将敏感数据（如支付金额）放在客户端可篡改的隐藏字段里。这些漏洞在功能测试中不会暴露——因为代码能跑、页面能跳转、数据也能显示。但在真实生产环境中，它们就是安全灾难的入口。对于电商平台——涉及用户资金、个人信息、支付卡号——安全不是"nice to have"，而是法律和合规的硬性要求。AI 不会主动说"这里应该加 CSP header"或"这个转账操作需要二次确认"——这需要人的安全审查。</p>
+
+              <p><strong>风险二：高层级架构错误带来的技术债务（Architectural Technical Debt）。</strong>代码层面的 bug 通常影响范围有限，修起来也相对快。但架构层面的错误决策——比如不当的服务拆分导致数据一致性无法保证、过度工程化的抽象层次让业务逻辑散落在十几个文件里、错误的数据模型设计导致未来扩展时被迫大量迁移数据——这些错误的修复成本极高。AI Agent 在"优化"代码结构时，可能会建议把一个原本清晰的业务逻辑拆成过多的 service、层次、抽象类，理由可能是"这样更解耦"——但它不理解"解耦到什么程度才是恰到好处"这个工程判断是依赖具体团队规模和业务复杂度的。在拆 legacy monolith 时，Agent 可能会盲目追求"每个 service 只做一件事"，导致 20 个微服务维护 20 套 API contract、20 个 CI pipeline、20 个数据库 schema——这个运维复杂度可能比原单体的维护成本还高。这种"为了微服务而微服务"的架构债，等团队发现时需要数月甚至更长时间来偿还。</p>
+
+              <p><strong>风险三：责任归属和合规审计的模糊地带（Accountability Gap）。</strong>当一段代码主要由 AI 生成、人类审核后批准上线、三个月后在生产环境引发数据丢失事故——谁负责？是批准上线的开发者？是写 prompt 的产品经理？是提供 AI 工具的平台方？在高度受监管的行业（金融、医疗、支付），合规审计团队会要求明确的答案：每一行代码的变更记录、审批人、测试结果、风险评估。如果 audit trail 中写的是"由 AI Agent 生成，开发者审核通过"，监管者会追问：开发者审核了什么？审核到了什么深度？有没有证据证明他理解了每一段逻辑？更严重的是，Agent 可能在不经意间将内部业务数据（如测试用的用户邮箱、订单格式）发送到外部 AI 服务商的 API——这直接触发数据隐私法规（如 GDPR）的合规风险。</p>
+
+              <p><strong>总结 Q2(a)：</strong>AI Agent 在 SDLC 中是一个强力加速器——提升常规任务吞吐量、统一代码风格、缩短反馈循环。但加速不等于替代工程判断：安全审查、架构决策、责任归属仍然是且必须是人来承担的。对大型电商平台来说，AI 应该在既定的安全标准和架构约束下工作，而非无边界地自由发挥。</p>
             </div>
 
-            <h3>Q2(b) Opaque code：为什么看不懂的代码比写错的代码更可怕 [10]</h3>
+            <h3>Q2(b) Opaque Code：为什么看不懂的代码比写错的代码更可怕 —— 完整标准答案 [10 marks]</h3>
             <div class="answer-box">
-              <p>Opaque code 就是那种"高度优化但你根本看不懂"的代码。正常开发者写代码的时候，你大概能猜到他的思路——为什么用这个数据结构、为什么拆成这个函数。但 AI 生成的优化代码可能完全是黑箱：你知道它跑得快，但不知道为什么快，更不知道什么情况下会出错。</p>
-              <p>这有多可怕？想象一个场景：AI 帮你把 legacy monolith 拆成了微服务。它写了一堆 service 之间的调用逻辑、缓存策略、异步重试机制。代码跑起来了，性能还不错。三个月后，用户投诉说订单被重复扣款了。你翻代码想找原因，发现某个 retry 逻辑写得极其晦涩——你看不懂它在什么条件下会重试，也判断不了重试是不是幂等的。这就是 opaque code 真正的杀伤力：<strong>出事了你修不了，因为你看不懂。</strong></p>
-              <p><strong>对 maintainability 的影响：</strong>新同事入职，看这段代码完全懵了。老同事也解释不清——因为不是人写的。bug 修不了，新功能不敢加，因为你不知道改了这里会不会崩那里。系统从"难维护"变成了"不可维护"。</p>
-              <p><strong>对 technical debt 的影响：</strong>legacy monolith 本身就有历史债。拆微服务本身又加了一层运维债——网络故障、最终一致性、分布式追踪。如果拆的过程中又引入看不懂的优化代码，团队等于背着三层债在跑。原 monolith 的历史债没有真正消失，新微服务的运维债又来了，再加上 AI 生成的"黑箱债"——这就是技术破产的路线。</p>
-              <p><strong>怎么办？五条底线策略：</strong></p>
+              <p><strong>Opaque Code（不透明代码）</strong>指的是"功能正确但逻辑难以理解"的代码——你知道它跑出来的结果是对的，但你不理解它是怎么做到的，也预测不了它在边缘条件下会怎么表现。这不同于"写错的代码"——写错的代码至少能通过观察错误行为来反向推理逻辑，而 opaque code 的问题在于：<strong>它正确的时候你不需要理解它，它出错的时候你理解不了它。</strong></p>
+
+              <p><strong>Opaque code 的典型来源：</strong>当 AI Agent 被要求"优化"一段已有代码时，它可能会：替换算法为更高效但更抽象的实现（如把显式的 for 循环替换为递归 + memoization，人脑追踪递归栈比追踪循环难得多）；引入复杂的设计模式（如多层 decorator + chain of responsibility，为了"可扩展"但在 5 行业务逻辑上堆了 50 行框架代码）；或者生成一段依赖特定 API 隐式行为才能正确运行的代码（如依赖 JavaScript 的自动类型转换来实现"优雅"的比较逻辑——但只有一种特定输入组合下才是正确的）。这些"优化"在功能测试中表现正常，但可读性被严重牺牲。</p>
+
+              <p><strong>具体场景——把 legacy monolith 拆成微服务时：</strong>假设一个电商平台的老系统（Java monolithic backend）需要拆成微服务。AI Agent 负责生成拆分后的 service 代码，包括服务间的调用逻辑、缓存策略、异步重试机制、幂等性保证。三个月后，用户投诉"下单后余额被扣了两次"。你开始排查，发现 payment-service 和 order-service 之间的某段调用逻辑中，AI 实现了一个"自动重试"机制——当第一次调用超时时，代码会重试两次。但 AI 生成的代码中重试条件的判断逻辑被写在一个复杂的条件链中，利用了一些隐含状态标志——你需要花几个小时才能确认："到底在什么条件下这个重试会触发？触发后它确保了幂等性吗？如果第一次调用其实成功了但网络延迟导致客户端以为是失败（这是分布式系统中极其常见的场景），重试会不会导致重复扣款？"</p>
+              <p>这就是 opaque code 最致命的杀伤力：<strong>事故发生了你无法快速定位原因，因为你看不懂代码的意图和边界条件</strong>。正常的人类开发者写重试逻辑时，会写注释说明幂等策略（"通过 idempotency key 去重"或"在数据库层面用 unique constraint 防止重复写入"）。AI 生成的 opaque code 可能功能上也是幂等的（通过某种隐蔽的方式），但你作为后续维护者无法确认这一点——这意味着面对每一个 bug 报告，你都得花大量的时间"反向工程"AI 的代码来推测它的设计意图。</p>
+
+              <p><strong>Opaque code 对 Maintainability（可维护性）的影响：</strong>可维护性的核心是"新成员能多快理解代码并安全地做出修改"。Opaque code 直接摧毁了这个前提：新同事面对一段逻辑不明的代码完全无从下手；老同事也解释不清——因为代码不是人写的；修改任何一行都如同拆弹——你不知道改了这里会不会在一个你没见过的边缘场景下触发完全不可预期的行为。系统从"难维护"降级为"不可维护"——区别在于，难维护至少还能慢慢修，不可维护意味着每次修改都像是在赌博。</p>
+
+              <p><strong>Opaque code 对 Technical Debt（技术债务）的影响：</strong>在拆 legacy monolith 的过程中，技术债务的发生是有层级的。第一层：原来的 monolith 本身积累的历史债——多年的补丁、不规范的代码、没有被文档化的隐含依赖。第二层：拆分成微服务的过程引入的运维债——分布式系统的网络故障处理、跨服务数据一致性、API 版本管理。第三层：AI Agent 在拆分过程中生成的 opaque code——这些代码虽然能跑，但团队不理解。当这三层债务叠加，团队实际上背着比拆分前更重的包袱在跑——第一层债没有消失（只是被拆到了不同 service 里），第二层债是主动选择的代价，第三层债是完全意外且无法偿还的枷锁。</p>
+
+              <p><strong>管控策略——五条不可妥协的底线：</strong></p>
               <ol class="rung-list">
-                <li><strong>人先定边界，AI 再执行。</strong>不要让 AI 自己决定怎么拆服务。人先把 bounded context 划清楚——商品、购物车、订单、支付——然后让 AI 在既定边界内干活。架构决策必须是人做的。</li>
-                <li><strong>用 Strangler Pattern 渐进替换。</strong>别一次性重写整个 monolith。先抽一个低风险模块，通过 facade 或 API gateway 逐步替换旧代码，保留随时回滚的能力。</li>
-                <li><strong>强制写 ADR。</strong>AI 生成的关键设计必须配 Architecture Decision Record：为什么这样拆？替代方案是什么？trade-off 是什么？如果解释不清楚，说明这个设计本身就有问题。</li>
-                <li><strong>测试不过不准合。</strong>对每个新 service 要有 contract test、integration test、security test 和性能冒烟测试。AI 生成的代码只有全部通过 CI pipeline 才能进入主干。</li>
-                <li><strong>从第一天就做可观测性。</strong>每个 service 必须有 structured log、metrics、trace ID。不然拆完之后出问题你连哪里坏了都不知道。</li>
+                <li><strong>人先定边界（Bounded Context），AI 后执行。</strong>服务拆分的决策——哪个模块应该独立为一个 service？service 之间的数据怎么共享？——必须由人类架构师基于对业务的理解来确定。AI 的角色是在既定的边界内部生成实现代码，而不是自行决定怎么拆系统。架构决策必须有 ADR（Architecture Decision Record）记录。</li>
+                <li><strong>用 Strangler Fig Pattern 渐进替换，不做"大爆炸式"重写。</strong>每次只拆分一个低风险的模块（如从 user profile service 开始，而不是从 payment service 开始）。通过 facade 或 API Gateway 将流量逐步从旧系统切到新 service。每个模块拆分后，必须通过完整的回归测试并观察生产环境运行至少一周，确认无误后再拆下一个。保留随时可以回滚到旧系统的能力——在旧代码上装一个"断路开关"比赌新代码完全正确要安全得多。</li>
+                <li><strong>AI 生成的每一段关键代码，开发者在合入主分支前必须能口头向另一个同事解释其逻辑。</strong>如果解释不了——如果你只能说"AI 生成的，能跑"——那这段代码不能合入。这不是对 AI 的不信任，而是对可维护性的基本要求：代码的维护者必须理解代码。可以辅以 AI 要求它"用自然语言解释这段代码的逻辑、假设和已知局限"作为辅助理解的手段。</li>
+                <li><strong>测试是第一道防线，也是最不可压缩的防线。</strong>每拆分出一个新 service，CI pipeline 中必须包含：contract test（验证 service 的 API 契约没有被意外改变）、integration test（验证 service 和数据库、依赖的 service 之间的真实交互）、security scan（SQL 注入、XSS、依赖库已知漏洞扫描）、performance smoke test（确保 p95 延迟没有较拆分前显著恶化）。所有测试必须全绿才能合入主分支——不允许"挂了但重跑就好"的 flaky test。</li>
+                <li><strong>从第一天起就建立完整的可观测性（Observability）。</strong>每个 service 必须输出 structured logs（JSON 格式，带 trace ID、service name、operation），暴露关键 metrics（请求数、错误数、p50/p95/p99 延迟），并在所有跨 service 调用中传递 trace context。没有可观测性的微服务就是黑盒子——出问题时你不仅看不懂代码，你连请求去了哪些 service 都不知道。</li>
               </ol>
-              <p><strong>收束句：</strong>把 AI Agent 当加速器，别当自动驾驶。它可以生成代码和迁移脚本，但人必须掌控 service boundary、正确性、安全性和长期的可维护性。</p>
+
+              <p><strong>收束句：</strong>AI Agent 应当被定位为一个"加速器"而非"自动驾驶"——它可以在人类划定好的边界内快速生成代码和迁移脚本，但 service boundary 的决策、正确性的最终验证、安全性的审查、以及长期可维护性的保障，必须牢牢掌握在工程团队手中。Opaque code 的根源不在于 AI 不够好，而在于人类放弃了对代码的理解和审查责任。</p>
             </div>
 
-            <h3>Q2(c) AI 会取代初级开发者吗？[10]</h3>
+            <h3>Q2(c) AI 会取代初级开发者吗？—— 批判性评价 [10 marks]</h3>
             <div class="answer-box">
-              <p><strong>我的立场：这个说法太绝对了。AI 会改变初级开发者的工作，但不会让这个岗位消失。</strong></p>
-              <p>为什么不会完全取代？因为初级开发者做的事远不止敲样板代码。他们在学习业务规则、排查生产事故、理解用户需求、写测试、做 code review、和团队沟通。AI Agent 可以生成代码初稿，但它不知道真实的业务优先级——是修这个 bug 重要还是上新功能重要？它也不能为生产事故负责。责任，最终永远在人身上。</p>
-              <p>但角色确实在变。以前初级开发者的工作可能是"从空白文件写第一版"。以后会变成"写 prompt、审核输出、验证正确性、修 AI 没发现的 bug"。他们需要能回答这些问题：AI 生成的代码有没有破坏 MVC 分层？有没有漏掉输入校验？有没有引入 SQL 注入或 XSS？实现能力依然重要，但<strong>验证能力和判断能力变得比以前更关键了</strong>。</p>
-              <p><strong>一个平衡的结论：</strong>AI 会吃掉低价值的重复劳动，让初级开发者更快接触真正的系统问题。但如果团队只让他们接收 AI 输出而不训练他们理解架构、做 code review、分析 trade-off，长期会严重削弱工程判断力。最好的组织会把 AI 当成结对编程的伙伴和导师，同时保留人类 mentorship、严格 review 和明确的 ownership——工具变了，但培养人的逻辑没有变。</p>
+              <p><strong>核心立场：这个说法过于绝对和简化。AI 正在深刻地改变初级开发者的工作内容，但并不等于使初级开发者的岗位消失。更准确的表述是：AI 在消除某些次要工作内容的同时，也在创造新的、不同性质的工作要求。</strong></p>
+
+              <p><strong>初级开发者做的事从来不只是"敲代码"。</strong>一个初入电商平台团队的初级开发者，其日常工作中包含：理解业务需求（"这个优惠券活动为什么这么设计"）、参与 code review（"这段代码的 edge case 考虑到了吗"）、排查生产环境的小问题（"这个 500 错误是哪个参数引起的"）、学习和遵守团队的架构约定（"为什么 controller 不能直接调第三方 API"）、参与事故复盘（"这次订单丢失的根因是什么"）。AI Agent 可以生成代码初稿——表单校验、API endpoint、单元测试——这些确实是初级开发者传统上会花大量时间做的事情。但它不能替代的，是这个过程中培养出的<strong>工程直觉和判断力</strong>：通过反复手写代码积累的对语言特性的深层理解、通过修 bug 积累的对系统行为的直觉、通过挨 leader 骂积累的对"为什么不能这样写"的肌肉记忆。这些无法从"审核 AI 输出"中自然获得。</p>
+
+              <p><strong>角色正在从"生产者"向"验证者"转变。</strong>未来的初级开发者可能不再从空白文件写第一版代码，而是：① 将业务需求编写为清晰的 specification（AI 需要精确的上下文和要求才能生成正确的代码）；② 审查 AI 生成的代码——验证架构是否正确（MVC 分层有没有被破坏）、安全是否到位（输入校验、授权检查、敏感数据处理）、性能是否合理（有没有不必要的 N+1 查询）；③ 编写 AI 没有覆盖的测试用例（特别是边缘场景和错误路径）；④ 在 production bug 发生时排查根因（需要同时理解代码、日志和 trace）。这种角色要求的能力组合与 2020 年的初级开发者不同——<strong>验证能力和诊断能力的重要性正在超过纯粹的"实现能力"</strong>。不是说实现能力不重要了，而是说"能不能写出来"不再是最稀缺的能力——"能不能判断写得好不好"变得更加关键。</p>
+
+              <p><strong>长期风险：如果团队只用初级开发者来审核 AI 输出而不提供系统培养，会产生严重的工程能力断档。</strong>今天的高级开发者是十年来从写基础代码开始，逐步通过实践积累经验的。如果初级开发者从入门第一天就依赖 AI 生成代码，他们可能永远无法真正理解底层机制——不知道一个 HTTP 请求在到达 controller 之前经历了哪些层、不知道数据库索引的选择是怎么影响查询计划的、不知道分布式系统中为什么"至多一次"和"至少一次"不能同时保证。五年后，当这代人需要做架构决策时，缺乏基础理解的代价会暴露——他们可能无法独立判断 AI 提出的架构方案的好坏，因为他们从未亲自在没有 AI 的条件下思考过这些方案。这不是对 AI 的否定，而是对教育和培养方式的警示。</p>
+
+              <p><strong>平衡的结论：</strong>AI 正在消除低价值的重复性编码，这从整体上对行业是正向的——它让开发者（无论初级还是资深）都能将更多精力放在真正需要人类判断的任务上：理解用户真正需要什么、设计正确的交互和数据模型、在冲突的 trade-off 中做出上下文相关的决策、为生产事故负责。但这个转变是有前提的：组织和团队必须有意识地为初级开发者提供结构化的学习路径——包括人为的 mentorship、要求他们理解代码而不仅仅是审核代码、为他们创造在没有 AI 辅助的情况下解决复杂问题的练习机会。把 AI 视为结对编程的伙伴和导师（它在某些方面知识丰富但缺乏上下文的工程判断），同时保留人类导师、严格的 code review 流程、和明确的代码 ownership——工作的工具在变化，但培养卓越工程师的核心原则没有改变。</p>
             </div>
           </section>
 
           <section id="q3" class="section">
             <h2>Q3. Rails Controller 代码审查：MVC 和 SRP [30 marks]</h2>
             <div class="answer-box">
-              <p><strong>题目在问什么：</strong>给你一段真实的 Rails controller 代码——<code>OrdersController#create</code> 方法。表面上看它能跑：创建订单、算折扣、保存、发邮件、记 analytics、跳转页面。但仔细看，一个方法干了五件事。题目要求你指出 MVC 和 Single Responsibility Principle 的违规，提出重构方案，并说明重构后折扣逻辑的单元测试会发生什么变化。</p>
+              <p><strong>题目在问什么：</strong>给你一段真实的 Rails controller 代码——<code>OrdersController#create</code> 方法。表面上看它能跑：创建订单、算折扣、保存、发邮件、记 analytics、跳转页面。但仔细看，一个方法干了五件事。题目要求你指出 MVC 和 Single Responsibility Principle 的违规，提出重构方案（要求命名具体的 design patterns），并说明重构后折扣逻辑的单元测试会发生什么变化。</p>
               <p><strong>配分：</strong>(a) 识别 MVC/SRP 违规 [10]；(b) 重构并提 design patterns [14]；(c) 测试的变化 [6]。</p>
             </div>
 
             <div class="answer-box">
-              <p><strong>先看题面代码——问题都在这几行里：</strong></p>
+              <p><strong>先看题面代码——所有问题都在这十几行里：</strong></p>
               <pre><code>class OrdersController &lt; ApplicationController
   def create
     @order = Order.new(order_params)
@@ -215,70 +316,176 @@
 end</code></pre>
             </div>
 
-            <h3>Q3(a) 违规识别——如果是 code review，我会这样说 [10]</h3>
+            <h3>Q3(a) 违规识别 —— 如果在 code review 中看到这段代码，我会逐条指出 [10 marks]</h3>
             <div class="answer-box">
-              <ol class="rung-list">
-                <li><strong>折扣计算写在了 controller 里。</strong>这一段 <code>if @order.total &gt; 1000 && @order.user.premium?</code> 是定价规则——纯业务逻辑。Controller 的职责应该是"接收 HTTP 请求、调合适的服务、返回 HTTP 响应"，不应该拥有价格策略。哪天折扣规则变了（比如加了"新用户首单 8 折"），你要改 controller——但 controller 的 HTTP 处理逻辑一点没变啊。</li>
-                <li><strong>Controller 对 model 内部知道得太多了。</strong>它直接读 <code>@order.total</code>、调 <code>@order.user.premium?</code>。这意味着 controller 被迫理解了订单的内部结构和用户等级规则。将来 model 重构了，controller 也得跟着改——两个本应独立的层耦合了。</li>
-                <li><strong>同步发邮件是隐患。</strong><code>deliver_now</code> 意味着用户要等邮件发完才能看到成功页面。如果邮件服务挂了或者慢了，用户明明已经下单成功，却看到错误页面——合理吗？邮件应该用后台任务异步处理。</li>
-                <li><strong>Analytics 是横切关注点。</strong>记 analytics 和创建订单是两个完全不同的职责。有一天 analytics 的 API 变了，你又要改 controller——但 create order 的逻辑没变。这就是 SRP 违规的典型症状：<strong>一个类有不止一个变化的原因</strong>。</li>
-                <li><strong>SRP 的大问题。</strong>这个 action 至少有三个变化原因：折扣规则变、邮件模板变、analytics schema 变。加上保存逻辑和 redirect/render 行为——一个方法承担了太多责任，任何一个方向的变化都会迫你修改这个方法。</li>
-              </ol>
-              <p><strong>一句话总结：</strong>这个 controller 已经不是"协调者"了。它变成了一个 HTTP 处理、定价策略、持久化、副作用全搅在一起的杂物堆。</p>
+              <p><strong>1. 折扣计算逻辑写在了 Controller 中——这是最严重的 MVC 违规。</strong>MVC 模式的核心原则是职责分离：Controller 的职责是"接收 HTTP 请求的参数、调用适当的业务逻辑、根据返回结果选择合适的 HTTP 响应（redirect 或 render）"。它不应该知道任何具体的业务规则。而 <code>if @order.total &gt; 1000 && @order.user.premium?</code> 这段代码完全是定价策略（Pricing Strategy）——属于 Model 层的核心业务逻辑。Controller 拥有了"如何计算折扣"的知识，这意味着：每当折扣规则变化（如加入"新用户首单 8 折"、"Black Friday 全场 7 折"、"满 300 减 30"），你必须修改 Controller——但 HTTP 请求的处理逻辑（参数接收、response 选择）完全没有变。这说明 Controller 有了一个与它的核心职责无关的、独立的变化原因——这正是 Single Responsibility Principle（单一职责原则）所警告的状况。</p>
+
+              <p><strong>2. Controller 对 Model 内部结构知道得太多——违反封装原则。</strong>代码中 Controller 直接访问 <code>@order.total</code>、调用 <code>@order.user.premium?</code>，这导致 Controller 耦合到了 Order 和 User 两个 Model 的内部实现细节。如果将来 Order 的数据结构变了（比如 <code>total</code> 改为 <code>subtotal</code> + <code>tax</code>），或者 User 的等级判断逻辑变了（<code>premium?</code> 方法被重命名为 <code>premium_tier?</code> 或判断标准改变），Controller 也必须跟着修改——尽管它处理 HTTP 请求的核心职责没有任何变化。两个本应在逻辑上独立的层通过具体实现细节耦合在一起了。</p>
+
+              <p><strong>3. 同步发邮件造成用户体验和可靠性问题。</strong><code>Mailer.send_receipt(@order).deliver_now</code> 使用 <code>deliver_now</code> 意味着邮件在 HTTP 请求的处理线程中同步发送。用户必须等待邮件服务器响应才能看到"下单成功"的页面。如果邮件服务器响应慢了（SMTP 服务器可能耗时 100ms 到 2s），用户的等待时间被无谓增加。如果邮件服务器临时宕机或超时，用户明明已经下单成功，却可能看到错误页面——因为邮件发送失败异常会向上传播。邮件发送是下单成功的"副作用"（side effect），不应该阻塞下单成功这个核心流程。邮件应该通过后台作业（Background Job）异步处理——失败时可以有独立的 retry 策略，而不影响用户的即时体验。</p>
+
+              <p><strong>4. Analytics 跟踪是一个典型的"横切关注点"（Cross-Cutting Concern）。</strong>记录 analytics 和创建订单是两个完全不同的职责，它们的变化速度和变化原因截然不同。Analytics 的 tracking API 可能因为第三方服务升级而需要修改参数格式、tracking key 可能因为市场团队的策略变化而调整——这些变化不应该出现在创建订单的 Controller 里。将 analytics 逻辑与核心业务逻辑耦合在一起，会因为一个层面的变化而迫使另一个层面也不得不动——这是 SRP 违规的经典症状：<strong>一个类有不止一个需要改变的理由</strong>。</p>
+
+              <p><strong>5. SRP 的系统性违规——一个 Action 承担了太多独立职责。</strong>分析这个 <code>create</code> action，它实际承担了多少项独立的责任？(a) 接收并解析 HTTP 请求参数；(b) 构造 Order 对象；(c) 执行折扣计算策略；(d) 触发数据持久化；(e) 发送邮件通知；(f) 记录 analytics 事件；(g) 根据结果做 HTTP 路由决策（redirect/render）。一项 HTTP action 同时承担了七件事。每一项都可能因为不同的业务需求而独立变化——折扣规则因为运营策略而变、邮件模板因为 UX 设计而变、analytics schema 因为数据团队的需求而变、HTTP 路由因为页面流程而变。从 SRP 的角度，任何一个变化原因都会迫你重新打开这个 Controller 文件——这意味着这个类的"变更风险表面积"非常大，每次改动都可能意外影响其他六项功能。</p>
+
+              <p><strong>一句话总结 Q3(a)：</strong>这个 Controller 的 <code>create</code> action 已经严重违背了 MVC 的分层职责和 SRP 的单一变化原因原则。它从"请求协调者"退化成了一个"杂物堆积点"——HTTP 处理、定价策略、持久化、邮件、分析五件事混在一个方法里，每一件都不应该在这里。</p>
             </div>
 
-            <h3>Q3(b) 重构：把每种责任分给专门的对象 [14]</h3>
+            <h3>Q3(b) 重构方案 —— 把每种责任分给专门的对象，命名具体 Design Patterns [14 marks]</h3>
             <div class="answer-box">
-              <p>重构思路很简单：<strong>一个类只做一件事</strong>。每种责任分给一个专门的对象。</p>
+              <p><strong>重构的核心思路：一个类只做一件事，一种变化原因只影响一个地方。</strong>将 Controller 中混杂的七项职责拆分到五个专门的、职责单一的对象中。每个对象对应一种变化原因——当需求变化时，你只需要修改变化相关的那个对象。</p>
+
               <div class="table-wrap">
                 <table>
                   <thead>
-                    <tr><th>原问题</th><th>移到哪里</th><th>用的模式</th></tr>
+                    <tr><th>原问题</th><th>重构目标</th><th>使用的 Design Pattern</th><th>Pattern 在此处的具体作用</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>折扣规则</td><td><code>DiscountPolicy</code></td><td>Strategy / Policy Object——不同折扣规则可独立替换，互不影响</td></tr>
-                    <tr><td>创建订单流程</td><td><code>CreateOrderService</code></td><td>Service Object / Command——封装整个 use case 的编排</td></tr>
-                    <tr><td>发邮件</td><td><code>OrderReceiptJob</code></td><td>Background Job——异步执行，失败可重试，不阻塞用户请求</td></tr>
-                    <tr><td>Analytics</td><td><code>OrderCreated</code> 事件的 subscriber</td><td>Observer / Pub-Sub——横切关注点和核心逻辑解耦</td></tr>
+                    <tr>
+                      <td>折扣规则混杂在 Controller 的 if/elsif 中</td>
+                      <td><code>DiscountPolicy</code> 类</td>
+                      <td><strong>Strategy / Policy Object</strong><br>（策略 / 策略对象模式）</td>
+                      <td>将不同的折扣算法封装为可互换的对象，每个策略实现统一接口 <code>apply(order)</code>。新增折扣类型只需新增一个策略类，不需要修改 Controller 或 Service。Controller 完全不知道折扣规则的存在。</td>
+                    </tr>
+                    <tr>
+                      <td>创建订单的完整流程分散在 Controller</td>
+                      <td><code>CreateOrderService</code> 类</td>
+                      <td><strong>Service Object / Command</strong><br>（服务对象 / 命令模式）</td>
+                      <td>封装整个"创建订单"的 use case 编排：build order → apply discount → save（在数据库事务中）→ publish domain event → enqueue background job。Controller 只需调用这一个 Service，根据结果选择 HTTP response。</td>
+                    </tr>
+                    <tr>
+                      <td>邮件在 Controller 中同步发送</td>
+                      <td><code>OrderReceiptJob</code> 类</td>
+                      <td><strong>Background Job</strong><br>（后台作业模式）</td>
+                      <td>将邮件发送从 HTTP 请求线程中移出，放入后台队列异步执行。使用 ActiveJob（Rails 内建）或 Sidekiq（Redis-backed job queue）。失败自动重试，不影响用户下单体验。</td>
+                    </tr>
+                    <tr>
+                      <td>Analytics 跟踪硬编码在 Controller</td>
+                      <td><code>OrderCreated</code> 事件的 subscriber</td>
+                      <td><strong>Observer / Pub-Sub</strong><br>（观察者 / 发布订阅模式）</td>
+                      <td>核心逻辑（CreateOrderService）在订单创建成功后发布一个 <code>order.created</code> 事件，Analytics subscriber 监听该事件并执行追踪。核心逻辑不依赖 subscriber 的存在——明天要新增"给用户推送 app 通知"作为另一个 subscriber，核心逻辑一行不用改。</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
-              <p>重构之后，controller 变得极薄——只做它该做的事：接请求、调 service、根据结果决定跳转或渲染。</p>
-              <pre><code>def create
-  result = CreateOrderService.call(order_params, current_user)
 
-  if result.success?
-    redirect_to result.order, notice: "Success"
-  else
-    @order = result.order
-    render :new, status: :unprocessable_entity
-  end
-end</code></pre>
-              <p>折扣规则单独抽出来，变成一个纯粹的 Ruby 对象：</p>
-              <pre><code>class DiscountPolicy
-  def self.apply(order)
-    if order.total &gt; 1000 &amp;&amp; order.user.premium?
-      order.total * 0.9
-    elsif order.total &gt; 500
-      order.total - 50
+              <p><strong>重构后的 Controller——变得极薄，只做它该做的事：</strong></p>
+              <pre><code>class OrdersController &lt; ApplicationController
+  def create
+    result = CreateOrderService.call(order_params, current_user)
+
+    if result.success?
+      redirect_to result.order, notice: "订单创建成功"
     else
-      order.total
+      @order = result.order
+      render :new, status: :unprocessable_entity
     end
   end
 end</code></pre>
-              <p><code>CreateOrderService</code> 负责整个流程的编排：build order → apply discount → save（在事务里）→ publish <code>OrderCreated</code> event → enqueue receipt job。Controller 只关心一件事：成功还是失败，据此决定 response。</p>
-              <p><strong>高分提醒：</strong>不要把所有代码简单塞进 model 里然后说"fat model, skinny controller"。更好的答案是把 pricing policy、workflow orchestration、side effects 分开——因为它们变化的原因不同，变化的速度不同，修改其中一个不应该影响其他的。</p>
+
+              <p><strong>重构后的 DiscountPolicy——纯业务对象，没有任何框架依赖：</strong></p>
+              <pre><code>class DiscountPolicy
+  def self.apply(order)
+    rules = [
+      PremiumOrderDiscount.new,
+      LargeOrderDiscount.new,
+      NoDiscount.new
+    ]
+    rules.each do |rule|
+      return rule.calculate(order) if rule.applies_to?(order)
+    end
+  end
+end
+
+class PremiumOrderDiscount
+  def applies_to?(order)
+    order.total &gt; 1000 &amp;&amp; order.user.premium?
+  end
+  def calculate(order)
+    order.total * 0.9
+  end
+end
+
+class LargeOrderDiscount
+  def applies_to?(order)
+    order.total &gt; 500
+  end
+  def calculate(order)
+    order.total - 50
+  end
+end
+
+class NoDiscount
+  def applies_to?(order) = true
+  def calculate(order) = order.total
+end</code></pre>
+
+              <p><strong>重构后的 CreateOrderService——整个用例的编排中心：</strong></p>
+              <pre><code>class CreateOrderService
+  def self.call(order_params, user)
+    order = Order.new(order_params)
+    order.user = user
+    order.total = DiscountPolicy.apply(order)
+
+    ActiveRecord::Base.transaction do
+      order.save!
+      EventBus.publish(:order_created, order: order)
+    end
+
+    OrderReceiptJob.perform_later(order.id)
+    ServiceResult.success(order: order)
+  rescue ActiveRecord::RecordInvalid =&gt; e
+    ServiceResult.failure(order: order, error: e.message)
+  end
+end</code></pre>
+
+              <p><strong>重构后的 Observer 模式——横切关注点与核心逻辑完全解耦：</strong></p>
+              <pre><code>EventBus.subscribe(:order_created) do |event|
+  Analytics.track("order_created", event.order)
+end
+
+EventBus.subscribe(:order_created) do |event|
+  InventoryService.decrement(event.order)
+end</code></pre>
+
+              <p><strong>为什么这样重构比"把所有逻辑塞进 Model（Fat Model, Skinny Controller）"更好？</strong>把折扣逻辑放进 Order model、把邮件放进 callback——这确实比放在 Controller 里好一些，但它只是把责任从 Controller 挪到了 Model，而 Model 本身又承载了太多职责。Fat Model 的问题在于：一个 Order 类现在同时负责数据映射、验证规则、折扣计算、回调触发——变化原因同样过多。更好的做法是将 Pricing Policy（策略对象）、Workflow Orchestration（服务对象）、Side Effects（事件/Observer）分别封装为独立的类。它们变化的速度不同、原因不同——修改定价不应该碰到 order workflow，修改 analytics 配置不应该碰到定价。</p>
+
+              <p><strong>高分提醒：</strong>考试中明确指出具体 Pattern 名称就能得分。Strategy 用于可互换的折扣规则；Command/Service Object 用于封装 use case 编排；Observer/Pub-Sub 用于解耦副作用。同时说明为什么选择这些模式——因为它们各自解决了一类"变化原因"的隔离问题。</p>
             </div>
 
-            <h3>Q3(c) 单元测试会怎么变 [6]</h3>
+            <h3>Q3(c) 重构后单元测试的变化 —— 完整分析 [6 marks]</h3>
             <div class="answer-box">
-              <p><strong>重构前，测试是一个噩梦。</strong>想测折扣逻辑？你得通过 controller request 来测——构造 order params、模拟 user session、准备数据库、还得处理 email 和 analytics 的副作用。测试慢、脆弱、失败时分不清是折扣算错了还是数据库连不上还是邮件服务器挂了。</p>
-              <p><strong>重构后，一切变简单了。</strong>折扣逻辑是纯业务对象，没有任何外部依赖：</p>
-              <pre><code>it "gives 10% discount to premium orders over 1000" do
-  order = build_order(total: 1200, premium: true)
+              <p><strong>重构前的测试是一个紧耦合的噩梦。</strong>在原始代码中，如果你要测试"premium 用户订单满 $1000 时打九折"这个逻辑，你必须通过 Controller 的 request spec 来测试：构造完整的 HTTP POST 请求、set up 已认证的 user session（带 premium 标记）、准备 order params、插入测试数据库、还得处理 mailer 和 analytics 调用的 stub（否则测试会因为试图真的发邮件或调外部 API 而失败）。测试运行缓慢（涉及数据库和 HTTP 栈）、脆弱（外部的 mock 配置一有变动就得改测试）、失败时无法快速定位——是折扣算错了、还是数据库连接断了、还是邮件 stub 配置不对？</p>
+
+              <p><strong>重构后的测试——清晰、快速、稳定、各自独立：</strong></p>
+
+              <p><strong>1. DiscountPolicy 的 Unit Test——最快、最纯、最易维护：</strong></p>
+              <pre><code>it "对 premium 用户满 1200 的订单打九折" do
+  order = build(:order, total: 1200, user: build(:user, tier: :premium))
   expect(DiscountPolicy.apply(order)).to eq(1080)
+end
+
+it "满 600 的非 premium 用户减 50" do
+  order = build(:order, total: 600, user: build(:user, tier: :regular))
+  expect(DiscountPolicy.apply(order)).to eq(550)
+end
+
+it "不满 500 的订单不打折" do
+  order = build(:order, total: 300)
+  expect(DiscountPolicy.apply(order)).to eq(300)
+end
+
+it "premium 用户满 900（未满 1000）适用普通满减" do
+  order = build(:order, total: 900, user: build(:user, tier: :premium))
+  expect(DiscountPolicy.apply(order)).to eq(850)
 end</code></pre>
-              <p><strong>测试分层清晰了：</strong>DiscountPolicy 的 unit test 只测价格规则——快、稳、纯；CreateOrderService 的 integration test 测完整编排流程——保存、事件发布、job 入队；Controller test 只验证一件事——success 时 redirect、failure 时 render <code>:new</code> 并返回 unprocessable_entity。每一层测什么一目了然，出问题也能立刻定位到是哪个层坏了。</p>
+              <p>这些测试<strong>不依赖数据库、不依赖 HTTP 请求、不依赖 Rails 框架</strong>——纯 Ruby 对象，毫秒级执行，可并行运行。每个测试用例独立验证一种边界条件。当折扣规则改变时，只有这个测试文件需要调整。</p>
+
+              <p><strong>2. CreateOrderService 的 Integration Test——测完整的编排流程：</strong>验证在数据库事务中 order 被正确保存、event 被正确发布（通过 event bus mock 验证发布的 event 类型和 payload）、background job 被正确入队（通过 ActiveJob adapter 验证入队参数）。不涉及真实邮件发送或 analytics 调用——这些在 unit test 层级分别验证。</p>
+
+              <p><strong>3. Controller Test——只验证 HTTP 层面的行为：</strong>验证 success 场景返回 302 redirect 并带有正确的 notice flash；failure 场景返回 422 unprocessable_entity 并 render <code>:new</code> 模板。不需要 stub mailer 或 analytics——因为 Controller 不再直接调用它们。</p>
+
+              <p><strong>测试分层清晰后的三大收益：</strong>① 定位故障更快——测试失败时，你能立刻判断是哪个层出了问题（定价规则错了 → 看 DiscountPolicy test；下单流程编排错了 → 看 CreateOrderService test；页面跳转错了 → 看 Controller test）；② 测试运行更快——纯 Ruby unit test 占大多数，毫秒级完成；③ 新成员理解系统更容易——测试本身就是文档，每个 test 文件清楚展示了对应模块的职责和边界。</p>
             </div>
           </section>
 
@@ -289,18 +496,23 @@ end</code></pre>
               <p><strong>配分：</strong>(a) 定义 CI/CD 和 Observability [6]；(b) 区分 Observability 和 Monitoring [4]；(c) 分析它们如何配合 [10]；(d) 战略层面的 trade-off 和挑战 [10]。</p>
             </div>
 
-            <h3>Q4(a) 用一句话讲清楚每个概念 [6]</h3>
+            <h3>Q4(a) 用具体、可操作的描述定义每个概念 [6 marks]</h3>
             <div class="answer-box">
-              <p>先从一个真实场景开始：<strong>你 push 了一行代码，然后发生了什么？</strong></p>
-              <p><strong>CI（持续集成）</strong>就是 push 之后自动发生的那件事：服务器拉取你的代码，跑 lint、跑单元测试、跑集成测试。全过了，代码合进主分支。有任何一个挂了，打回去修。目的很简单：别让每个人的分支越飘越远，把集成问题尽早揪出来。</p>
-              <p><strong>CD（持续交付/部署）</strong>接着 CI 干：测试通过的代码，自动打包，推送到 staging 环境，再推到 production。持续交付可能在发布前保留一个人工审批按钮；持续部署则是全自动——检查过了就直接上线。</p>
-              <p><strong>Observability（可观测性）</strong>解决另一个问题：代码上线了，你怎么知道它跑得好不好？它让你通过系统对外暴露的信号——日志（logs）、指标（metrics）、分布式追踪（traces）——来理解系统内部的真实状态。比如某个用户说"我的订单打不开"，你能顺着 trace ID 看到他的请求经过了哪些服务、哪个步骤卡住了、为什么卡住了。</p>
+              <p>从一个日常场景开始理解这三个概念：<strong>你 push 了一行代码，然后发生了一系列自动化事件和后续观察。</strong></p>
+
+              <p><strong>CI（Continuous Integration，持续集成）</strong>是在每次代码提交后自动触发的一套验证流程。具体步骤：开发者将代码 push 到远程仓库 → CI 服务器（如 GitHub Actions、Jenkins、GitLab CI）自动检测到变更 → 拉取最新代码 → 按预定顺序执行：静态分析（lint / type check）→ 单元测试 → 集成测试 → 依赖漏洞扫描。如果任何一步失败，开发者收到通知，代码不能合入主分支（master/main）。如果全部通过，代码被自动合并或标记为可合并。CI 的核心价值在于<strong>尽早发现集成冲突</strong>——把"每个人在自己的分支上开发，最后合并时发现冲突或测试失败"这种最痛苦的集成问题，变成"每次提交就验证一次"的小问题。反馈循环从几天（或几周）缩短到几分钟。</p>
+
+              <p><strong>CD（Continuous Delivery / Continuous Deployment，持续交付/持续部署）</strong>紧接着 CI。它确保任何通过 CI 验证的代码变更都能安全地上线。CD 的自动化流程包括：将应用打包为可部署的 artifact（Docker image、jar/war、静态资源）；部署到 staging 环境（与 production 完全一致的环境配置）；在 staging 上运行冒烟测试（smoke test）或端到端测试；如果通过，进入 production 部署流程。Continuous Delivery（持续交付）在部署到 production 前保留一个人工审批的按钮——团队可以决定"现在发布"的时机。Continuous Deployment（持续部署）则将最后这一步也自动化——所有通过测试的变更自动上线，无需人工干预。两者的共同前提是：部署过程本身必须完全自动化、可重复、可回滚。CD 的核心价值在于<strong>让上线从"高风险事件"变成"日常工作"</strong>——如果一次部署只包含少量变更（因为每天部署多次），出问题时排查和回滚都非常快。</p>
+
+              <p><strong>Observability（可观测性）</strong>解决"代码上线之后怎么了"的问题。它是系统的一种属性：你能通过系统暴露的外部信号，推断出系统内部的真实运行状态。这个定义强调了两个关键点：一是"通过外部信号"——你不应该需要 SSH 到服务器上看内部状态文件，而应该通过 API 端点获取结构化的遥测数据；二是"推断"——你最需要的信息往往没有直接记录，必须在已有的遥测数据中通过关联和推理来获得。Observability 的三根支柱（three pillars）是：<strong>Logs（日志）</strong>——不可变的、带时间戳的事件记录，每个事件包含具体的上下文信息（如"用户 12345 的订单创建失败了，原因是库存不足"）；<strong>Metrics（指标）</strong>——时间序列的聚合数值，如"过去 1 分钟内 POST /orders 的 p95 延迟是 320ms"、"当前活跃 WebSocket 连接数是 4500"；<strong>Traces（分布式追踪）</strong>——一次请求在跨越多个服务时产生的完整调用链路，每个 span 记录一个操作（HTTP 调用、数据库查询、缓存读写）的起止时间、成功状态、元数据。这三者配合才能完整回答"系统中发生了什么"。</p>
             </div>
 
-            <h3>Q4(b) Observability 和 Monitoring 不是一回事 [4]</h3>
+            <h3>Q4(b) Observability 和 Monitoring 不是一回事——清晰地、有例子地区分 [4 marks]</h3>
             <div class="answer-box">
-              <p>Monitoring 是"盯着你知道该盯的东西"。你预先定好指标——CPU 不能超过 90%、错误率不能超过 2%、磁盘不能快满——然后系统帮你盯着。一旦超标，报警。它回答的问题是：<strong>"系统现在还健康吗？"</strong></p>
-              <p>Observability 是"调查你不知道的问题"。你无法预先把所有可能的故障模式都列出来。真正的生产事故往往是你没想到的那种。Observability 给你的是探索未知的工具——通过日志、指标和追踪，你可以问：<strong>"为什么这个用户的请求失败了？到底是哪个环节出了问题？"</strong></p>
+              <p><strong>Monitoring（监控）</strong>是基于<strong>预定义的、已知的故障模式</strong>来追踪系统状态。它的工作方式是：你提前设定好一批指标和对应的阈值——"CPU 使用率不能超过 90%超过 5 分钟"、"5xx 错误率不能超过 2%"、"磁盘剩余空间不能低于 10%"——然后监控系统持续采集这些指标，一旦超过阈值就触发告警。监控回答的问题是：<strong>"系统现在健康吗？"</strong> 它是"告警导向"的。</p>
+
+              <p><strong>Observability（可观测性）</strong>是用来调查<strong>未知的、你事先没有想到的</strong>问题。在一个由几十个服务组成的复杂系统中，你不可能穷举所有可能的故障模式——真实的 production incident 往往出在没人预料的模块组合和交互边界上。Observability 给你的是<strong>探索未知的工具</strong>——有了 logs、metrics、traces，你不需要提前定义"什么算坏"，而是可以在问题出现后问：<strong>"为什么这个特定用户在这个时间点发起的这个请求失败了？到底经过了哪些 service，每步花了多少时间，哪个环节出了问题？"</strong> 它是"调查导向"的。</p>
+
               <div class="table-wrap">
                 <table>
                   <thead>
@@ -310,52 +522,85 @@ end</code></pre>
                     <tr><td>追踪已知指标，和预设阈值比较</td><td>支持对未知问题的开放式调查</td></tr>
                     <tr><td>回答"系统健康吗？"</td><td>回答"为什么这个请求慢了/失败了？"</td></tr>
                     <tr><td>告警导向——告诉你出事了</td><td>调查导向——帮你找出为什么出事</td></tr>
+                    <tr><td>基于 dashboard 和 alert rule</td><td>基于 ad-hoc query 和 trace exploration</td></tr>
+                    <tr><td>例：CPU 超 90% → PagerDuty 告警</td><td>例：通过 trace ID 追踪用户订单请求的完整调用链，发现 payment-service → tax-service 的 HTTP 调用缺少 timeout 配置</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p><strong>一句话区分：</strong>Monitoring 告诉你出事了；Observability 帮你找出为什么出事。</p>
+
+              <p><strong>一句话总结：</strong>Monitoring 告诉你"出事了"（you have a problem）；Observability 帮你找出"为什么出事"（why you have a problem）。两者不是互相替代的关系，而是互补关系——你通过 monitoring 先知道有问题，再通过 observability 定位根因。没有 monitoring 你可能很久都不知道系统出了问题；没有 observability 你知道有问题但根本找不到原因。</p>
             </div>
 
-            <h3>Q4(c) CI/CD 和 Observability 怎么配合：一个闭环 [10]</h3>
+            <h3>Q4(c) CI/CD 和 Observability 怎么配合——一个持续运转的质量闭环 [10 marks]</h3>
             <div class="answer-box">
-              <p>它们不是两件独立的事，而是一个持续运转的闭环。</p>
+              <p><strong>它们不是两件独立的事情，而是一个持续运转、不断自我纠正的闭环。</strong>这个闭环由四个阶段组成，信息在其中持续流动——每一个阶段都在为下一个阶段提供输入。</p>
+
               <ol class="rung-list">
-                <li><strong>上线前——CI 挡住低级错误。</strong>每次 commit 先过 lint、单元测试、集成测试、安全检查，烂代码根本进不了主分支。这一步把大部分显而易见的 bug 消灭在开发阶段。</li>
-                <li><strong>发布中——CD 让上线可控。</strong>Pipeline 用完全相同的步骤部署 staging 和 production，不会出现"我本地能跑啊"这种经典问题。再用 canary release 或 blue-green deployment，让新版本先影响 5% 的用户，跑一段时间没问题再全量。</li>
-                <li><strong>上线后——Observability 验证真实效果。</strong>对比发布前后的错误率、p95 延迟、吞吐量。如果变差了，trace 能帮你精准定位是哪个 service、哪个调用变慢了，log 能告诉你具体报了什么错。</li>
-                <li><strong>把事故变成预防——闭环合上。</strong>如果 observability 发现了一个 production bug，把这个失败场景写成 integration test 或 regression test 放进 CI pipeline。下一次任何人提交代码，这个 bug 都不会再次上线。</li>
+                <li><strong>阶段一：上线前——CI 作为质量守门人。</strong>每次代码提交触发 CI pipeline，在代码到达 production 之前设置多层检查：静态分析（lint、type check）在语法和类型层面发现明显错误；单元测试验证每个函数和类的逻辑正确性；集成测试验证组件之间的交互（如 service 和数据库的交互、service 之间的 API 契约）；安全扫描检查依赖库是否存在已知漏洞（如 CVE 漏洞数据库中记录的漏洞）以及代码是否存在常见安全问题（XSS、SQL 注入、硬编码密钥）。任何一个检查失败，代码就不能进入下一阶段。CI 把"寻找 bug"从上线后的被动补救，变成上线前的主动预防。</li>
+
+                <li><strong>阶段二：发布中——CD 让上线过程可控和安全。</strong>通过 CI 验证的代码进入 CD pipeline，采用<strong>金丝雀发布（Canary Release）</strong>或<strong>蓝绿部署（Blue-Green Deployment）</strong>策略来逐步验证生产环境中的表现。Canary Release 的具体做法：新版本先只接收 5% 的用户流量，旧版本处理其余 95%。在 5% 流量上运行 5-10 分钟，对比新旧版本的关键指标——如果新版本的 error rate 或 p95 延迟显著高于旧版本（或超过预设阈值如"SLO —— Service Level Objective 的 violation budget 被消耗过快"），则<strong>自动触发回滚</strong>，将所有流量切回旧版本。那 5% 的用户只受到短暂影响，绝大多数用户无感知。如果 5% 金丝雀表现正常，逐步提升流量比例至 25%、50%、100%。这个过程确保了每一个上线决策都有真实的生产数据作为支撑，而不是靠"我本地能跑"或"staging 上试过了"这样的不充分验证。</li>
+
+                <li><strong>阶段三：上线后——Observability 验证真实效果并发现未知问题。</strong>新代码在生产环境全量运行后，Observability 提供三种手段来实时评估：① Metrics 看聚合趋势——对比发布前后的 error rate、p50/p95/p99 latency、throughput、resource usage（CPU/memory）。如果这些数据发生了变化，立即触发调查；② Traces 定位具体问题——如果 p95 延迟突然飙升，通过 trace 分析找出是哪个 service 的哪个操作变慢了。是新增的数据库查询缺少索引导致全表扫描？还是某个 HTTP 调用缺少 timeout 配置导致线程阻塞？③ Logs 提供具体上下文——trace 指向了问题位置，log 告诉你具体的错误信息："ERROR: payment-service: upstream tax-service timeout after 2000ms"。这个组合使团队能从"系统有点慢"这样的模糊感知，进化到"支付服务调用税务服务时缺少超时配置导致线程池耗尽"这样的精准诊断。</li>
+
+                <li><strong>阶段四：把事故转化为预防——闭环合上（Close the Loop）。</strong>这是整个闭环最容易被省略、但最有长期价值的一步。当 Observability 帮助团队定位到了一个 production bug 的根因后，团队必须完成三件事：① Hotfix：立即修复生产问题（回滚版本或紧急修复）；② Root Cause Analysis + Regression Test：分析为什么这个 bug 逃过了 CI pipeline 的层层检查，并将这次事故的具体场景写成新的测试用例——integration test 或 e2e test——加入到 CI pipeline 中。例如：Observability 发现 production 中 payment-service 调用 tax-service 时因为缺少 HTTP timeout 导致线程阻塞 → 在 CI 的 integration test suite 中加入一个测试：模拟 tax-service 延迟 5 秒才响应，验证 payment-service 是否正确触发 timeout 和 fallback 逻辑；③ Documentation / ADR：记录这次事故的过程、根因、修复方案和预防措施。</li>
               </ol>
-              <p><strong>一个具体的例子把这个闭环走通：</strong></p>
-              <p>你们上线了新版的 checkout service。几分钟后，metrics 显示 p95 延迟从 300ms 飙升到 2 秒。Trace 显示请求卡在 payment-service 调 tax-service 的 HTTP 调用上。Log 显示新版本漏配了 HTTP timeout，导致线程一直傻等。你马上回滚这个部署。然后做三件事：加上 timeout 和 fallback 逻辑；写一个 integration test 来模拟 tax-service 延迟；通过 CI/CD 发布修复版本。从此以后，任何人改动 checkout 代码，这个 test 都会跑，同一个坑不会再掉进去。</p>
-              <p>这就是闭环的威力：CI 防患于未然，CD 让发布可靠，Observability 让问题被发现并追溯到根因，测试把教训固化进流水线。</p>
+
+              <p><strong>具体例子——把这个闭环从头到尾走一遍：</strong>假设你的团队负责一个电商平台的 checkout service。某天下午 3:15，你部署了新版本（通过 CI → CD → Canary 到 production 全量）。3:20，Metrics dashboard 的 p95 latency 曲线从 300ms 突然跳到 2200ms。Monitoring 触发告警。你打开 Trace explorer（如 Jaeger），按时间范围和 "checkout" service 过滤，看到所有缓慢的 trace 中都有一个共同的 span——"payment-service → tax-service HTTP call"——耗时 2000ms。你打开对应的 Log（如通过 Grafana Loki），搜索同一 trace ID，看到错误信息："tax-service connection timeout at 2000ms"。你检查新版本的代码 diff，发现这次部署中 payment-service 的 HTTP client 配置被误删了——原来有 500ms timeout 的配置，在新版本中丢失。你立即回滚 deployment（因为 CD 的可回滚设计，这在 30 秒内完成）。然后你跟团队一起：写一个 integration test 模拟 tax-service 延迟，验证 payment-service 在 500ms 后触发 timeout 和 fallback；将该 test 加入 CI pipeline；记录这次事故的 timeline 和教训。从此以后，任何人修改 payment-service 的 HTTP 客户端配置，这个 test 都会跑——同一个坑不会再掉进去。这个闭环从观测到问题，到修复，到固化预防措施，整个过程在几小时内完成——这就是 CI/CD + Observability 配合的真正威力。</p>
             </div>
 
-            <h3>Q4(d) 推行这套体系的 trade-off 和挑战 [10]</h3>
+            <h3>Q4(d) 推行这套体系的 Trade-off 和组织挑战 [10 marks]</h3>
             <div class="answer-box">
-              <p>CI/CD 和 Observability 听起来很美好，但真推起来到处都是坑。</p>
+              <p><strong>推行 CI/CD 和 Observability 不仅是技术实施，更是一系列战略权衡和组织层面的变革。</strong>以下六个挑战每一个背后都是一个"选择A还是选择B"的决策。</p>
+
               <div class="table-wrap">
                 <table>
                   <thead>
-                    <tr><th>挑战</th><th>为什么棘手</th><th>怎么应对</th></tr>
+                    <tr><th>挑战维度</th><th>为什么棘手</th><th>在真实工程团队中怎么应对</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>速度 vs 安全</td><td>自动部署快，但错误也传播得快。一次坏部署可能直接炸生产。</td><td>Staged rollout、canary、feature flag、基于指标的自动回滚——出问题立刻刹车。</td></tr>
-                    <tr><td>Flaky tests</td><td>不稳定的测试会让团队不再信任 CI。一旦习惯"挂了就重跑"，pipeline 形同虚设。</td><td>保持测试确定性，隔离不稳定的测试单独修复，别让 flaky test 留在主干 pipeline 里。</td></tr>
-                    <tr><td>可观测性成本</td><td>日志、指标、追踪的数据量是指数增长的。存和查都很贵。</td><td>采样策略、保留期限、结构化日志。不是所有 span 都值得存，只存高价值的。</td></tr>
-                    <tr><td>告警疲劳</td><td>太多低价值告警会让工程师麻木，真正的事故被淹没在噪音里。</td><td>只对用户真正受影响的情况告警——比如 SLO 被突破——而不是每个内部指标抖动都喊人。</td></tr>
-                    <tr><td>隐私和安全</td><td>日志里可能包含邮箱、token、支付卡号。日志泄露就是数据泄露。</td><td>脱敏、权限控制、加密、绝对禁止在日志里打印密码和密钥。</td></tr>
-                    <tr><td>组织变革</td><td>CI/CD 和 observability 要求开发者对生产环境负责——不再是"代码写完扔给运维"。</td><td>Shared ownership、runbook、事故复盘、上线纪律——这是文化问题，不是工具问题。</td></tr>
+                    <tr>
+                      <td><strong>1. 速度 vs 安全<br>(Speed vs Safety)</strong></td>
+                      <td>完全自动化的部署让代码上线极快——但也意味着错误代码上线同样极快。CI 能捕捉到的错误是有限的（测试不能覆盖所有边缘场景），一次有缺陷的部署可能在几分钟内传播到所有用户。快的反面是"错误也传播得快"。如果回滚机制不够自动化，一次坏部署可能导致长达一小时的 downtime。</td>
+                      <td>采用 Staged Rollout（分阶段发布）：Canary → 5% → 25% → 100%；每一阶段都有预设的"刹车条件"——如果 error rate 或 latency 超过基线值，自动终止发布并回滚；Feature Flag 将代码部署和功能开启解耦——新代码可以在 production 中存在但处于关闭状态,出问题时关掉 flag 即可,不需要重新部署。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>2. Flaky Tests（不稳定的测试）</strong></td>
+                      <td>某些测试时过时挂——同一个测试代码,在没有代码变更的情况下,这次跑绿下次跑红。原因可能是:依赖了随机数据（未指定 seed）；依赖了外部服务但没有正确 stub；依赖了时间（如"created_at"的毫秒级差异）；数据库事务隔离级别导致的竞态条件。一旦团队习惯了"挂红就重跑一次,第二次就绿了",CI 的信任就崩溃了——没人会认真看失败原因,真正的 bug 被淹没在 false positive 里。</td>
+                      <td>Flaky test 必须从 CI pipeline 中隔离出来,放入单独的 quarantine suite,修复后再回归主 pipeline。养成习惯:CI 失败先假设是真的 bug,排除后再考虑 flaky。对依赖时间、随机数、外部服务的测试,使用可控的 fake（如 Timecop、factory 的 sequence、stub 外部调用）而不是真实的。定期统计每个测试的 pass/fail 率,自动标记 pass 率低于 98% 的测试为可疑。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3. Observability 数据量失控<br>(Data Volume &amp; Cost)</strong></td>
+                      <td>在生产环境中,一个中等规模系统每天可能产生 TB 级别的日志和 GB 级别的 trace 数据。全部存储和索引的成本极高——查询也很慢。但你又不知道哪些数据在未来的事故调查中会用得上。这是典型的"你可能永远用不上,但需要的时候找不到就是致命的"。</td>
+                      <td>采用分层存储策略:最近 3-7 天的日志和 trace 全量索引（用于实时排查当前事故）→ 7-30 天保留 sampled traces 和 error-level 日志 → 30 天以上仅保留 metrics 聚合数据和 critical 事件。Trace 使用 Head/Tail-based sampling:只对所有请求中的 1-10% 进行完整 trace,优先采样包含 error 或慢请求的 trace。Log 使用结构化格式（JSON）,按 field 索引,按需查询。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>4. Alert Fatigue（告警疲劳）</strong></td>
+                      <td>如果团队设置了几十个告警规则——CPU > 80%、内存 > 80%、连接池 > 70%、queue depth > 1000——每个轻微抖动都发一次消息。工程师的手机、邮件、Slack 全天被低价值告警轰炸,人的本能反应是"全部静音"。真正的严重事故被淹没在噪音中,团队对告警产生了"狼来了"效应。</td>
+                      <td>告警只绑定到 SLO（Service Level Objective）——即你对用户做出的可用性承诺。例如:"99.9% 的 HTTP 请求在 500ms 内成功返回"。告警的触发条件不是某个内部指标的暂时抖动,而是 SLO 的 error budget 被消耗过快（如"过去 1 小时内用了这个月 error budget 的 20%"）。内部指标（CPU、内存、连接池）只做 dashboard 展示和趋势分析,不直接触发实时告警。告警也必须是可执行的（actionable）——"memory 用了 81%" 不可执行,"checkout latency 超过 SLO,过去 5 分钟已有 200 位用户受影响"可执行。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>5. Privacy &amp; Security<br>（隐私和安全）</strong></td>
+                      <td>日志、trace 和 error message 中可能无意中记录了敏感数据:用户邮箱、IP 地址、JWT token、支付卡号的部分位数、甚至密码（如果开发者写了类似 <code>logger.debug("params: #{params}")</code> 的代码）。日志泄露即数据泄露——GDPR、CCPA 等法规对此有严格要求和巨额罚款。并且日志系统本身也是攻击面——如果日志存储系统被攻破,大量的用户操作记录和系统内部信息就暴露了。</td>
+                      <td>所有遥测数据在写入之前必须经过脱敏管道（PII scrubbing / redaction）——自动检测并替换邮箱、手机号、身份证号、token、密钥为 <code>[REDACTED]</code>。绝对禁止在日志中打印 request body 或 HTTP params（或仅打印 sanitized 版本）。日志存储系统实施严格的访问控制——不是所有开发者都能查看所有日志;生产日志的访问必须有 audit trail。日志和 trace 的保留期必须定义并在到期后自动删除——不能"先存着再说",这违反数据最小化原则。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>6. Organizational Change<br>（组织变革——最根本的挑战）</strong></td>
+                      <td>CI/CD 和 Observability 不仅是工具,它们要求改变团队的工作方式。在传统的 "开发扔给运维" 模式中,开发者写完代码就撒手不管——运维负责部署、监控、处理事故。在 CI/CD + Observability 的团队中,开发者也必须对生产环境中的代码负责:理解部署流程、在事故发生时参与排查（on-call rotation）、从事故中学习并改进 pipeline 和测试。这个转变是<strong>文化问题,不是工具问题</strong>——买来最好的 CI 服务器和 observability 平台,如果团队的 mindset 还是"我写完代码就完事了",这些工具就形同虚设。</td>
+                      <td>推行 "You build it, you run it" 的理念（也是 DevOps 的核心信条）。具体措施:每个小队有自己的 on-call rotation,自己负责自己 service 的事故应急;建立清晰的 runbook（应急操作手册）——"当 checkout service 的延迟飙升时,第一步做什么,第二步做什么"等内容;每次事故后进行 blameless postmortem（无指责事故复盘）——重点不是"谁写错了代码",而是"什么流程和防护机制让这个错误到达了 production,我们怎么改进流程来防止同类问题";把 CI pipeline 的搭建和维护视为开发团队的职责,而不是"运维部门"的职责。</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
-              <p>每个挑战的背后都是一个选择题：你要在某个方面做出权衡。比如"速度 vs 安全"——你想更快上线，就得接受自动部署带来的风险，然后用 canary 和自动回滚来对冲。不存在"又快又零风险"的方案。</p>
-              <p><strong>收束句：</strong>CI/CD 和 observability 真正改变的从来不是工具本身，而是团队怎么发布、怎么发现问题、怎么从事故中学习。收益是更快更安全的交付——但前提是团队愿意在测试质量、遥测质量、隐私控制和运维纪律上持续投入。这些投入省不了，省了就是假 CI、假 observability。</p>
+
+              <p><strong>每个挑战背后的本质：</strong>每一个挑战都在问同一个问题——"你在某个方面愿意付出多少,以换取另一个方面的收益？" 速度 vs 安全的权衡意味着你需要承认 100% 安全是不可能的,然后通过 canary + 自动回滚来管理剩余风险。Observability 成本意味着你需要承认你不可能存储所有数据,然后通过采样和分层策略在成本和诊断能力之间找到平衡。告警疲劳意味着你需要承认"团队对告警的注意力是稀缺资源",然后严格限制告警的范围,使其与用户的真实体验挂钩。组织变革是最难的——因为它要求改变人的行为和思维,而这些改变无法通过安装工具来实现。</p>
+
+              <p><strong>收束句：</strong>CI/CD 和 Observability 从来不是一个"买工具→安装→搞定"的项目。它们真正改变的是团队如何发布代码、如何发现问题、如何从事故中学习、如何在速度和安全之间做持续的权衡。推行成功的关键不是技术选型（GitHub Actions vs Jenkins, Datadog vs Grafana）——这些是次要的。真正的关键是:团队是否愿意为测试质量持续投入（而不是容忍 flaky test）、是否愿意为高质量的遥测数据持续投入（而不是"报错就加一行 log"）、是否愿意接受对生产环境的 ownership 和责任。这些投入省不了——省了就是 fake CI（CI 跑了但没人看结果）、fake observability（数据存了但出事故时查不出根因）。只有团队在人和流程层面上接受了这些原则,工具才能真正发挥价值。</p>
             </div>
           </section>
 
           <section class="section">
-            <h2>最后过一遍：上考场前必须能默写的东西</h2>
-            <p>不是说逐字背——而是脑子里要有清晰的结构，看到题就知道从哪几个方向写。</p>
+            <h2>最后过一遍：上考场前脑子里必须有这几样东西</h2>
+            <p>不是说逐字背下来——而是看到题就知道答案该往哪个方向写、从哪几个角度展开。</p>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -372,10 +617,10 @@ end</code></pre>
           </section>
 
           <section id="variants" class="section">
-            <h2>5. Sample 同形式变体题库：它还能怎么出？</h2>
+            <h2>5. 它还能怎么出？—— Sample 同形式变体题库</h2>
             <div class="answer-box">
-              <p><strong>为什么要练变体：</strong><code>CS615Sample.pdf</code> 给的是形式和能力点，不一定逐字照抄。真正的考试很可能把 FinTrack、AI Agent、Rails Controller、CI/CD Observability 的场景换一下，但仍然考同一批教材能力：三层架构、逻辑/物理架构、SQL/NoSQL 权衡、Rails MVC、Active Record、Service layer、Strategy/Observer、CI/CD、logs/metrics/traces、人类审查 AI 输出。</p>
-              <p><strong>使用方法：</strong>下面每个变体都不是新知识，而是把样卷问题换皮。看到新题先别慌，先问：它对应 Q1/Q2/Q3/Q4 哪个骨架？然后套同一个答案结构。</p>
+              <p><strong>为什么要练变体：</strong><code>CS615Sample.pdf</code> 展示的是题型和能力点，考试不会逐字照抄。真实的考题很可能把 FinTrack 换成 HealthTrack（病人记录系统），把 AI Agent 换成 AI-assisted workflow，把 OrdersController 换成 ProductsController——场景换了，但考的永远是同一批教材能力：三层架构怎么分层、单体 vs 微服务怎么选、Controller 为什么不该做业务逻辑、CI/CD 和 observability 怎么串成闭环。</p>
+              <p><strong>怎么用这一节：</strong>下面每个变体都不是新知识。看到新题先别慌，问自己：它对应样卷的 Q1、Q2、Q3 还是 Q4？归类之后，套同一个答案骨架——场景名词换掉，推理逻辑不变。</p>
             </div>
 
             <h3>Q1 变体：换业务场景，但仍考架构比较</h3>
@@ -387,8 +632,8 @@ end</code></pre>
                 <tbody>
                   <tr>
                     <td>HealthTrack：病人记录系统，要实时预约提醒、医生 dashboard、严格保护医疗记录。比较 3-tier monolith 和 microservices。</td>
-                    <td><code>ArchitecturalPatterns.pdf</code> 的 logical vs physical architecture、n-tier、microservices；<code>DB_WS_C.pdf</code> 的 SQL/NoSQL、ACID、CAP。</td>
-                    <td>先映射 Presentation/Application/Data。再说病人记录和审计日志强一致，SQL/ACID 更重要；实时提醒可用 queue/cache 解决，不必一开始拆微服务。推荐 modular monolith，后续可拆 notification-service。</td>
+                    <td><code>ArchitecturalPatterns.pdf</code> 的逻辑架构 vs 物理架构；<code>DB_WS_C.pdf</code> 的 SQL/NoSQL、ACID。</td>
+                    <td>先映射三层。病人记录和审计日志需要强一致——一条记录不能丢、不能错——所以 SQL/ACID 比弹性更重要。实时提醒可以用消息队列或缓存解决，不需要一开始就拆微服务。推荐 modular monolith，后续可单独拆 notification-service。</td>
                   </tr>
                   <tr>
                     <td>ShopPulse：电商平台要实时库存、个性化推荐、订单支付历史。问 SQL、NoSQL 或 polyglot persistence 怎么选。</td>
@@ -398,12 +643,12 @@ end</code></pre>
                   <tr>
                     <td>同样是 FinTrack，但题目把 Approach B 改成 event-driven microservices，用 message queue 同步价格、portfolio 和 alerts。</td>
                     <td>Architectural patterns 里的 event-driven architecture、network boundaries、asynchronous interactions。</td>
-                    <td>先承认 event-driven 能解耦和吸收高频 price updates；再指出 eventual consistency、消息重复、顺序问题、debug 难度。交易历史仍要强一致，不能让“消息最终会到”替代金融 transaction。</td>
+                    <td>先承认 event-driven 能解耦和吸收高频 price updates；再指出 eventual consistency、消息重复、顺序问题、debug 难度。交易历史仍要强一致，不能让"消息最终会到"替代金融 transaction。</td>
                   </tr>
                   <tr>
                     <td>问 logical architecture 和 physical architecture 的区别，并用 Sample 的 Approach A/B 举例。</td>
-                    <td><code>ArchitecturalPatterns.pdf</code> 明确区分 logical architecture 和 physical architecture。</td>
-                    <td>Logical 是 Presentation/Business Logic/Data Access 这些职责划分；Physical 是它们部署在哪些服务器、容器、cloud services、databases 上。Approach A 逻辑三层可能物理上在一台实例；Approach B 逻辑上仍三层，但 application/data 在多个 services 和 stores 上物理分散。</td>
+                    <td><code>ArchitecturalPatterns.pdf</code> 明确区分 logical（逻辑上分几层、各自什么职责）和 physical（这几层分别部署在哪些机器上）。</td>
+                    <td>逻辑架构说的是职责划分——展示、业务逻辑、数据访问各管各的，不管部署。物理架构说的是部署形态——三层可以全在一台服务器上，也可以分散在多台机器、多个容器、多个云服务上。Approach A 逻辑上分三层，物理上可能就一台机器；Approach B 逻辑上也分三层，但应用层和数据层在物理上被拆到了多个 service 和数据库实例上。</td>
                   </tr>
                 </tbody>
               </table>
@@ -417,24 +662,24 @@ end</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>团队用 AI 工具从空白开始生成 full-stack app。分析一个可靠 AI-native workflow 应该怎么设计。</td>
-                    <td><code>VibeCoding.pdf</code> 的 7-step workflow：Analyse, PRD, Tech Plan, Align, AI Plan, Build, Verify。</td>
-                    <td>不要让 AI 直接写完整系统。先分析数据和用户问题，写 PRD，再写技术计划，让 AI 复述理解，分步骤 build，每一步后测试。核心句：AI can build fast, but humans must define requirements, approve architecture and verify each step。</td>
+                    <td>团队用 AI 工具从空白开始生成一个 full-stack 应用。分析怎么设计一个可靠的 AI-native 开发流程。</td>
+                    <td><code>VibeCoding.pdf</code> 的七步法：Analyse → PRD → Tech Plan → Align → AI Plan → Build → Verify。</td>
+                    <td>不要上来就让 AI 写整个系统——那等于把架构决策权交给了工具。正确顺序：先分析数据和用户问题（Understand the problem）→ 写产品需求文档（PRD）→ 写技术计划（Tech Plan：用什么技术栈、怎么分层、数据怎么流）→ 让 AI 复述你的计划确认理解一致（Align）→ AI 写实现计划（AI Plan：先做哪个模块、后做哪个）→ 分步 Build，每步跑测试 → 最后 Verify：代码能跑吗？测试过了吗？安全吗？解释得清楚吗？核心句：AI 能让你建得飞快，但人必须定义需求、审批架构、验证每一步。</td>
                   </tr>
                   <tr>
                     <td>AI 生成了一个 800 行单文件应用，能跑但难维护。讨论 technical debt。</td>
-                    <td>VibeCoding 里的 “The code works. The architecture is yours to maintain forever.” 和 Design before build。</td>
+                    <td>VibeCoding 里的 "The code works. The architecture is yours to maintain forever." 和 Design before build。</td>
                     <td>先说可运行不等于可维护。问题：分层缺失、测试困难、下一位开发者读不懂、每次加功能都更乱。策略：拆层、写 tests、建立 module boundaries、让 AI 一次只改一个模块并解释 plan。</td>
                   </tr>
                   <tr>
-                    <td>AI Agent 接入 MCP/浏览器/数据库/部署工具，可以自动操作外部系统。讨论收益和安全风险。</td>
-                    <td>VibeCoding 的 MCP/tools；Forms and Security 的认证、授权、token/security。</td>
-                    <td>收益：能读取真实数据、跑测试、部署、反馈。风险：权限过大、误操作生产、泄露 API key/用户数据、prompt injection。策略：least privilege、sandbox、approval gates、audit logs、secret redaction、CI/CD checks。</td>
+                    <td>AI Agent 接入 MCP/浏览器/数据库/部署工具，可以自动操作外部系统。讨论功能收益和安全风险。</td>
+                    <td><code>VibeCoding.pdf</code> 的 MCP/tools 部分；<code>Forms and Security.pdf</code> 的认证、授权、token 安全。</td>
+                    <td>收益：Agent 能读真实数据，跑真实测试，自动部署，根据部署结果自我修正。但风险同样大：Agent 权限太高可能误删数据或误操作生产环境；API key 和用户数据可能在 prompt 或日志里泄露；外部输入可能注入恶意指令（prompt injection）。应对策略：最小权限原则（只给 Agent 完成任务必须的最小权限）、操作前加人工审批闸门、所有 Agent 操作留 audit log、绝对不在 prompt 里传密钥、所有生成的代码必须过 CI 检查。</td>
                   </tr>
                   <tr>
-                    <td>评价 “developer 的价值从会写语法变成会写清楚 specification”。</td>
-                    <td>VibeCoding 强调 clarity of specification、PRD、Tech Plan、Verify。</td>
-                    <td>同意但要平衡。语法负担下降，但工程判断上升：需求拆解、边界设计、测试、debug、安全、review。Junior 不消失，但工作从纯实现转向 orchestration and verification。</td>
+                    <td>"开发者的核心价值从会写语法变成了会写清楚的 specification"。你怎么评价这句话？</td>
+                    <td><code>VibeCoding.pdf</code> 强调 specification 的清晰度、PRD、Tech Plan、Verify。</td>
+                    <td>方向对，但不能一概而论。语法负担确实在下降——AI 能帮你写代码、写测试、写配置，你不用纠结某个 API 的参数顺序。但工程判断的需求反而上升了：你怎么把模糊的需求拆成清晰的模块？你怎么验证 AI 的架构决策没坑？你怎么保证安全和正确性？Junior 不会消失，但工作重心会从"我怎么能写出这段代码"转向"我怎么描述清楚要做什么、怎么验证 AI 做对了"——实现能力仍然重要，但验证能力和判断能力变得比以往更关键。</td>
                   </tr>
                 </tbody>
               </table>
@@ -449,7 +694,7 @@ end</code></pre>
                 <tbody>
                   <tr>
                     <td><code>ProductsController#update</code> 同时检查 admin 权限、上传图片、调整价格、发库存告警、写 analytics。</td>
-                    <td>Rails MVC；REST Architecture with Spring 的 Controller -> Service -> Repository；Design Patterns 的 Observer。</td>
+                    <td>Rails MVC；REST Architecture with Spring 的 Controller → Service → Repository；Design Patterns 的 Observer。</td>
                     <td>Controller 只该接 request、调 use case、返回 response。权限移到 Policy/Authorisation；图片处理移到 job/storage service；价格规则移到 PricingService/Strategy；库存告警和 analytics 用 event/observer。</td>
                   </tr>
                   <tr>
@@ -468,9 +713,9 @@ end</code></pre>
                     <td>核心操作是 create order；邮件/库存/日志/通知是 reactions。发布 <code>order.created</code> event，多个 subscribers 分别处理。这样新增 notification 不必修改创建订单核心代码。</td>
                   </tr>
                   <tr>
-                    <td>Rails route 匹配错误：通用 route 放在具体 route 上面，导致请求走错 action。</td>
-                    <td><code>Rails Routes and Active Record.pdf</code>：routes top-down，most specific routes first。</td>
-                    <td>说明 Rails 从上到下找第一条匹配 route。具体 route 应放在通用 route 前面。答题时把 URL、expected action、actual action、修复后的 route order 写清楚。</td>
+                    <td>Rails 里 route 匹配错了：一条通用 route 放在具体 route 上面，导致请求被通用 route 先截走，走错了 action。</td>
+                    <td><code>Rails Routes and Active Record.pdf</code>：Rails 从上到下找第一条匹配的 route，所以具体的必须写在通用的前面。</td>
+                    <td>先解释 Rails 的匹配机制——从上到下，命中即停。然后把题面里的 URL、期望走到哪个 action、实际走到的 action 写清楚，再把修正后的 route 顺序写出来。关键句：most specific routes first。</td>
                   </tr>
                 </tbody>
               </table>
@@ -484,31 +729,31 @@ end</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>新版本 canary 给 5% 用户后 error rate 上升。说明 CI/CD 和 observability 如何自动回滚。</td>
-                    <td><code>CICDOBS.pdf</code> 的 canary releases、automated rollback、metrics/logs/traces。</td>
-                    <td>CI 先跑 tests/security scan；CD canary 只放 5% 流量；observability 监测 error rate/latency/SLO burn；超过阈值自动 rollback；trace/logs 定位根因；把事故写成 regression test。</td>
+                    <td>新版本 canary 给 5% 用户后 error rate 上升。说明整套 CI/CD 和 observability 如何发现并自动回滚。</td>
+                    <td><code>CICDOBS.pdf</code> 的 canary release、自动回滚、metrics/logs/traces。</td>
+                    <td>先说 CI 在上线前做了什么——跑完所有测试和安全检查，代码才能进发布管道。再说 CD 怎么做的——canary release 先放 5% 流量，observability 实时对比新旧版本的 error rate、延迟、吞吐量。一旦超过阈值——自动回滚到旧版本，5% 用户只受了短暂影响。然后用 trace 和 log 定位根因：是哪个 service、哪行代码引入的问题。最后把这次事故写成 regression test 放进 CI——同一个坑不会再踩。</td>
                   </tr>
                   <tr>
-                    <td>公司有 monitoring，但线上问题仍难排查。问还缺什么。</td>
-                    <td>Monitoring tells you when; Observability tells you why。</td>
-                    <td>Monitoring 有 CPU/error threshold，只能说“出事了”。还需要 structured logs、metrics、distributed traces、correlation/request ID，才能回答哪个 deploy、哪个 service、哪条 request 出错。</td>
+                    <td>公司有 monitoring——CPU、内存、错误率都有监控——但线上出了问题还是很难排查。问还缺什么。</td>
+                    <td>Monitoring 只能告诉你"出事了"；Observability 才能告诉你"为什么出事"。</td>
+                    <td>先说 monitoring 能做到什么：设阈值，超标报警，能判断系统健不健康。再说它做不到什么：看不了单条请求的完整路径，不知道报错发生在哪个 service 的哪行代码。所以还需要 structured logs（带 request ID 的日志）、metrics（每个 service 各自的延迟和错误率）、distributed traces（一次请求横跨多个服务的完整轨迹）。三者配合才能回答"为什么这个用户的这个请求失败了"。</td>
                   </tr>
                   <tr>
-                    <td>设计一条 CI pipeline，要求覆盖 unit、integration、E2E、security、performance。</td>
-                    <td>CICDOBS 的 layered testing strategy：goal is confidence in critical paths。</td>
-                    <td>Unit tests 快速验证函数/策略；integration tests 验证 service + DB；E2E 覆盖关键用户路径但少而精；security scans 如 dependency audit；performance smoke tests 验 p95 latency。不要追 100% coverage，要保护 critical path。</td>
+                    <td>设计一条 CI pipeline，要求覆盖 unit tests、integration tests、E2E tests、security scans、performance tests。每类测试分别保护什么？</td>
+                    <td><code>CICDOBS.pdf</code> 的分层测试策略——不同层测不同风险，不用追求 100% 覆盖率。</td>
+                    <td>Unit tests：最快最便宜，测函数和业务规则的正确性。Integration tests：测 service 和数据库、service 和 service 之间的交互是否正常。E2E tests：只覆盖最关键的用户路径（登录→加购→支付），量少而精。Security scans：检查依赖库是否有已知漏洞，代码有没有常见安全问题。Performance smoke tests：每次部署后跑一下，保证 p95 延迟没有突然飙升。关键一句：不是所有代码都需要 E2E 测试，但所有关键路径都需要至少一层保护。</td>
                   </tr>
                   <tr>
-                    <td>实施 full observability stack 的成本和隐私挑战。</td>
-                    <td>CICDOBS 的 observability at scale、logs/metrics/traces、trade-offs。</td>
-                    <td>成本：数据量、存储、查询、采样。隐私：日志可能含 email/token/payment data。组织挑战：alert fatigue、SLO 定义、开发者生产责任。策略：sampling、retention、redaction、access control、SLO-based alerts。</td>
+                    <td>实施完整 observability stack 面临哪些成本、隐私和组织挑战？</td>
+                    <td><code>CICDOBS.pdf</code> 的 observability at scale——logs/metrics/traces 不是免费的。</td>
+                    <td>成本方面：日志和 trace 的数据量增长极快，存储和查询都很烧钱，需要采样和保留策略来控制。隐私方面：日志里可能夹带用户邮箱、支付 token、甚至密码——必须做脱敏和权限控制。组织方面：告警太多导致疲劳（前面说过了），SLO 怎么定才合理，以及最关键的文化问题——以前开发者写完代码就扔给运维，现在要求他们对生产环境负责。不是买几个工具就搞定了。</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
             <div class="answer-box">
-              <p><strong>最后的变体识别口诀：</strong>看到“比较两个架构”就是 Q1；看到“AI 帮开发但有风险”就是 Q2；看到“controller 里塞了太多事”就是 Q3；看到“上线、测试、监控、追踪、回滚”就是 Q4。</p>
+              <p><strong>最后的变体识别口诀：</strong>看到"比较两个架构"就是 Q1；看到"AI 帮开发但有风险"就是 Q2；看到"controller 里塞了太多事"就是 Q3；看到"上线、测试、监控、追踪、回滚"就是 Q4。</p>
               <p><strong>最重要的一步：</strong>变体题不要重新发明答案。先归类到样卷四题之一，再换掉场景名词，保留同一套骨架：定义职责 → 分析机制 → 贴题面数据 → 写 trade-off → 给 recommendation。</p>
             </div>
           </section>
@@ -518,6 +763,7 @@ end</code></pre>
           <h2>Sample 顺序</h2>
           <ol>
             <li><a href="#strategy">样卷规则</a></li>
+            <li><a href="#foundation">教材知识地基</a></li>
             <li><a href="#q1">Q1 FinTrack 架构比较</a></li>
             <li><a href="#q2">Q2 AI Agents</a></li>
             <li><a href="#q3">Q3 Rails Controller</a></li>
