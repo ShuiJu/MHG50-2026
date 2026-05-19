@@ -721,3 +721,15 @@
   - `exam-prep-site/cs605.html`：NP section 与 Q7 过关题同步加入完整边规则。
   - `exam-prep-site/cs605-linear.html`：线性学习页的 Q7 构造、小题解释同步校正。
 - 考场写法：每 clause 每 literal occurrence 建 vertex；同 clause 内不连边；不同 clause 的每一对 vertices 都加边，除非它们是 `x` 与 `¬x` 这种互补 literal；目标 `k` 是 clauses 数。
+
+### 2026-05-19 22:44 CS605 模拟考页重做
+
+- 新增来源文档：`exam-prep-site/gemini.txt`，内容是用户与 Gemini 关于 CS605 Sample A/B、pumping lemma、decidable/TR、HALT reductions、NP 与 NP-complete 的复习对话；越靠下的信息优先级越高。
+- 已结合本地 `2-CS605/CS605_2026_Sample_A.pdf` 与 `2-CS605/CS605_2026_Sample_B.pdf` 重新审视题面。
+- 已重做 `exam-prep-site/cs605-mock-battle.html`：
+  - 从“题型预测页”改为“Sample Paper 临考止慌版”。
+  - 每题按 Q1-Q7 排列，先给可直接写在卷面的中文完整答案，再给概念解释。
+  - Q1 修正 witness：Sample B unary block 题用 `a^p#a^p`，避免旧写法泵坏第一对后仍有备用相等 pair。
+  - Q1(b) 使用真正的五段 CFL pumping case analysis，区分 v/y 含 `#` 与只有 x 含 `#` 的情况。
+  - Q6/Q7 同时覆盖 Sample A 的 overlapping subsets / multi-FA / hitting set，以及 Sample B 的 CARA clique / phone vertex cover / 3-SAT-to-clique。
+  - Q7B 保留最新校正：不同 clause 的所有非互补 literal vertices 都要连边。
