@@ -67,6 +67,61 @@
               <h3>Q1: Climate.determine() BVA（25 marks）</h3>
               <p><strong>预测：</strong><code>Climate.determine(int temp, int humidity)</code>。Spec: temp 范围 -130..60，&lt;16 需 HEAT；humidity 范围 0..100，&gt;60 需 AC；超出范围 &rarr; ERROR。</p>
               <p><strong>子题：</strong>(a) [5] 为什么穷举测试不可行？ (b) [5] Value lines + input/output partitions。 (c) [15] BVA 测试用例（不含 error values）：TCI 表、selected equivalence values、test cases。</p>
+              <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+                <div class="mechanic-head">
+                  <p><span class="mechanic-kicker">判分要点</span><br><strong>Q1 的核心动作：先画 value line 找到边界和阈值，再为每个边界选 just below/on/above 三个具体值。</strong></p>
+                  <span class="mechanic-status" data-scenario-status>1/3</span>
+                </div>
+                <div class="mechanic-toolbar">
+                  <button class="mechanic-button" type="button" data-scenario-button>Value lines</button>
+                  <button class="mechanic-button" type="button" data-scenario-button>One fault assumption</button>
+                  <button class="mechanic-button" type="button" data-scenario-button>输出覆盖</button>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="string-track">
+                        <span class="token is-broken">&lt;-130</span><span class="token is-focus">-130</span><span class="token">15</span><span class="token is-focus">16</span><span class="token">17</span><span class="token is-focus">60</span><span class="token is-broken">&gt;60</span>
+                      </div>
+                      <div class="string-track">
+                        <span class="token is-broken">&lt;0</span><span class="token is-focus">0</span><span class="token">59</span><span class="token is-focus">60</span><span class="token">61</span><span class="token is-focus">100</span><span class="token is-broken">&gt;100</span>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p><strong>判分点：</strong>value line 必须写端点和阈值。BVA 的 “on / just below / just above” 都要落在具体数字上，不要只写“边界附近”。</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="check-list">
+                        <div class="check-row"><span>测 temp 边界</span><span class="verdict-pill">humidity=50 nominal</span></div>
+                        <div class="check-row"><span>测 humidity 边界</span><span class="verdict-pill">temp=20 nominal</span></div>
+                        <div class="check-row"><span>同时变两个输入</span><span class="verdict-pill is-no">除非为了覆盖输出组合</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>One fault assumption 的意思是：每次只让一个参数靠近边界，另一个参数固定在普通有效值，这样失败时知道是哪条边界导致。</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="check-list">
+                        <div class="check-row"><span>temp≥16, humidity≤60</span><span class="verdict-pill">NONE</span></div>
+                        <div class="check-row"><span>temp&lt;16, humidity≤60</span><span class="verdict-pill">HEAT_ONLY</span></div>
+                        <div class="check-row"><span>temp≥16, humidity&gt;60</span><span class="verdict-pill">AC_ONLY</span></div>
+                        <div class="check-row"><span>temp&lt;16, humidity&gt;60</span><span class="verdict-pill">HEAT_AND_AC</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>如果只按单变量 BVA 做，不去专门测两个参数同时越过阈值的组合，就会漏掉 HEAT_AND_AC 这个输出。最后要专门加一条组合测试覆盖这个 output partition。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <h4>(a) 模型答案：穷举测试不可行</h4>
               <div class="table-wrap">
@@ -195,6 +250,61 @@
               <div class="micro-check">
                 <p><strong>教师批注校准：</strong>不要把 Q2 写成一段解释。先列 Conditions/TCI/Test Cases 三张表；TCI 表只放 line number 和 test case 编号，不抄 source code；测试表列名用 Expected Results。</p>
               </div>
+              <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+                <div class="mechanic-head">
+                  <p><span class="mechanic-kicker">判分要点</span><br><strong>Q2 的核心动作：不是解释覆盖率概念，而是根据 JaCoCo 颜色补全未覆盖的分支。</strong>先读颜色，再写 Conditions / TCI / Test Cases 三张表。</p>
+                  <span class="mechanic-status" data-scenario-status>1/3</span>
+                </div>
+                <div class="mechanic-toolbar">
+                  <button class="mechanic-button" type="button" data-scenario-button>JaCoCo 颜色</button>
+                  <button class="mechanic-button" type="button" data-scenario-button>Short-circuit</button>
+                  <button class="mechanic-button" type="button" data-scenario-button>三表结构</button>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="check-list">
+                        <div class="check-row"><span>green line</span><span class="verdict-pill">executed, branches covered</span></div>
+                        <div class="check-row"><span>yellow line</span><span class="verdict-pill">some branch missed</span></div>
+                        <div class="check-row"><span>red line</span><span class="verdict-pill is-no">not executed</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>Additional tests 的目标不是“多写几个输入”，而是让 red line 执行、yellow branch 补齐。</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="machine-flow">
+                        <span class="flow-node is-active">enabled?</span><span class="flow-arrow">→</span><span class="flow-node is-active">exists?</span><span class="flow-arrow">→</span><span class="flow-node is-active">if body</span>
+                      </div>
+                      <div class="check-list">
+                        <div class="check-row"><span><code>enabled=false</code></span><span class="verdict-pill">exists not evaluated</span></div>
+                        <div class="check-row"><span><code>enabled=true, exists=false</code></span><span class="verdict-pill">right side evaluated</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>JaCoCo 的 branch count 来自 bytecode jump，不只来自源码里的一个 if。短路表达式要用不同输入逼右侧条件被评估。</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="check-list">
+                        <div class="check-row"><span>Conditions</span><span class="verdict-pill">ID / Line / Condition</span></div>
+                        <div class="check-row"><span>TCI</span><span class="verdict-pill">TCI / Line / Test Case</span></div>
+                        <div class="check-row"><span>Test Cases</span><span class="verdict-pill">Expected Results</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>教师批注明确要求表格。TCI 表不要抄 source code；Expected Result 这个列名要写对。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <h4>(a) 模型答案：Additional Tests for Full Branch Coverage</h4>
               <p><strong>Coverage gaps 分析：</strong></p>
@@ -264,6 +374,63 @@
               <p><strong>子题：</strong>(a) [10] 比较 static 与 instance method 的测试写法。 (b) [15] Braking.decide() 在 class context 中的 EP 测试。</p>
               <div class="micro-check">
                 <p><strong>教师批注校准：</strong>Class context 题练 2018、2020-2025；state-based 题补 2016、2017。Jan 2017 Q3(b) 若已有 <code>isShipped()</code>/<code>isReturned()</code> 就用它们识别状态；Q3(c) 才要求 full signatures。</p>
+              </div>
+              <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+                <div class="mechanic-head">
+                  <p><span class="mechanic-kicker">判分要点</span><br><strong>Q3 的核心不是“会写 JUnit”，而是会把对象状态摆出来。</strong>先判断 static / instance，再写 create-set-call-observe。</p>
+                  <span class="mechanic-status" data-scenario-status>1/3</span>
+                </div>
+                <div class="mechanic-toolbar">
+                  <button class="mechanic-button" type="button" data-scenario-button>Static vs Instance</button>
+                  <button class="mechanic-button" type="button" data-scenario-button>Class Context</button>
+                  <button class="mechanic-button" type="button" data-scenario-button>State Signatures</button>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="check-list">
+                        <div class="check-row"><span><code>Numbers.isNeg(-1)</code></span><span class="verdict-pill">one call</span></div>
+                        <div class="check-row"><span><code>new Numbers()</code></span><span class="verdict-pill">object exists</span></div>
+                        <div class="check-row"><span><code>n.setValue(-1)</code></span><span class="verdict-pill">state prepared</span></div>
+                        <div class="check-row"><span><code>n.isNegative()</code></span><span class="verdict-pill">observe result</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>static method 的测试值直接放进参数；instance method 的测试值必须先进入对象字段。卷面上只写 <code>x=-1</code> 不够，因为阅卷人看不到对象怎么到达这个状态。</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="machine-flow">
+                        <span class="flow-node is-active">construct</span><span class="flow-arrow">→</span><span class="flow-node is-active">mutate state</span><span class="flow-arrow">→</span><span class="flow-node is-active">call method</span><span class="flow-arrow">→</span><span class="flow-node is-active">observe accessor</span>
+                      </div>
+                      <div class="check-list">
+                        <div class="check-row"><span>EP: danger 10+</span><span class="verdict-pill">setDangerLevel(12)</span></div>
+                        <div class="check-row"><span>EP: override</span><span class="verdict-pill">setOverride(true)</span></div>
+                        <div class="check-row"><span>Expected</span><span class="verdict-pill">from spec, not coverage</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>class context 的答案要像小脚本：对象如何创建、哪个 mutator 设置状态、调用哪个 method、最后用返回值或 accessor 断言什么。这样 EP 表里的每个 partition 才真正落到可执行测试。</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="check-list">
+                        <div class="check-row"><span>Q3(b) 已给 <code>isShipped()</code></span><span class="verdict-pill">use it</span></div>
+                        <div class="check-row"><span>Q3(b) 已给 <code>isReturned()</code></span><span class="verdict-pill">use it</span></div>
+                        <div class="check-row"><span>Q3(c) 问 signatures</span><span class="verdict-pill">write full signatures</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>Stephen Brown 的批注重点是“按题目要求写”。如果题面已经提供状态识别方法，Q3(b) 用这些方法描述状态即可；只有题目要求 modified signatures 时，才把参数、receiver state、return state 全部展开。</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <h4>(a) 模型答案：Static vs Instance Testing</h4>
@@ -337,6 +504,62 @@
               <h3>Q4: PV.exportPower() Random Testing（25 marks）</h3>
               <p><strong>预测：</strong><code>PV.exportPower(boolean enabled, int nettPower)</code>。enabled && nettPower &gt; 0 &rarr; true，否则 &rarr; false。</p>
               <p><strong>子题：</strong>(a) [9] 从 spec 推导 Decision Table rules + 每条 rule 的随机数据生成标准。 (b) [10] Automated test pseudo-code。 (c) [6] 随机测试三大问题（data/oracle/completion）及解决方案。</p>
+              <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+                <div class="mechanic-head">
+                  <p><span class="mechanic-kicker">判分要点</span><br><strong>Q4 Random Testing 的答案骨架是 DT rule 驱动。</strong>随机只负责多取样，expected result 仍然必须由 spec 先算好。</p>
+                  <span class="mechanic-status" data-scenario-status>1/3</span>
+                </div>
+                <div class="mechanic-toolbar">
+                  <button class="mechanic-button" type="button" data-scenario-button>DT Oracle</button>
+                  <button class="mechanic-button" type="button" data-scenario-button>Random Loop</button>
+                  <button class="mechanic-button" type="button" data-scenario-button>三大问题</button>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="check-list">
+                        <div class="check-row"><span><code>enabled=true, nettPower&gt;0</code></span><span class="verdict-pill">true</span></div>
+                        <div class="check-row"><span><code>enabled=true, nettPower&lt;=0</code></span><span class="verdict-pill is-no">false</span></div>
+                        <div class="check-row"><span><code>enabled=false, any nettPower</code></span><span class="verdict-pill is-no">false</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>Oracle 不是“把随机输入喂给函数看它说什么”。Oracle 是 decision table 的 expected column：输入落在哪条 rule，就直接知道应该 assert true 还是 false。</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="machine-flow">
+                        <span class="flow-node is-active">choose rule</span><span class="flow-arrow">→</span><span class="flow-node is-active">generate in range</span><span class="flow-arrow">→</span><span class="flow-node is-active">assert expected</span><span class="flow-arrow">→</span><span class="flow-node is-active">count hits</span>
+                      </div>
+                      <div class="check-list">
+                        <div class="check-row"><span>R1 range</span><span class="verdict-pill">1 .. MAX</span></div>
+                        <div class="check-row"><span>R2/R4 range</span><span class="verdict-pill">MIN .. 0</span></div>
+                        <div class="check-row"><span>completion</span><span class="verdict-pill">100 hits per rule</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>写 pseudo-code 时每条 rule 单独循环最清楚：固定 boolean cause，随机生成合法范围内的 numeric value，然后用该 rule 的 expected result 断言。停止条件按 rule 覆盖，而不是“总共跑 400 次”。</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mechanic-panel" data-scenario-panel>
+                  <div class="mechanic-grid">
+                    <div class="mechanic-stage">
+                      <div class="check-list">
+                        <div class="check-row"><span>Test data</span><span class="verdict-pill">range from rule</span></div>
+                        <div class="check-row"><span>Oracle</span><span class="verdict-pill">expected from spec</span></div>
+                        <div class="check-row"><span>Completion</span><span class="verdict-pill">coverage target</span></div>
+                      </div>
+                    </div>
+                    <div class="mechanic-explain">
+                      <p>随机测试的三问可以直接背成三列：怎么生成数据、怎么判断对错、什么时候停止。每一列都要贴回本题，例如 <code>nettPower&gt;0</code> 的范围、R1 的 true、每条 rule 100 次。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <h4>(a) 模型答案：DT Rules &amp; Random Criteria</h4>
               <p><strong>Decision Table：</strong></p>

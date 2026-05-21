@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
@@ -49,7 +49,7 @@
               <li><strong>交叉对比。</strong>把本页模型答案和 <a href="cs603-linear.html">线性精讲</a> 中对应小节对比看，确保理解"为什么这样答"而不只是"答什么"。</li>
               <li><strong>计时模拟。</strong>建议在考前 3 天做一次完整的 2 小时模拟（四道题连做），训练时间分配。</li>
             </ol>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>阅卷人视角：</strong>CS603 阅卷看重结构清晰（分点写、标 (a)(b)(c)(d)），公式准确（量词、implication、temporal operators 不写错），解释到位（不只写"定义"还要写"为什么这个例子属于这个类别"）。本页所有 model answer 都按这个标准组织。</p>
             </div>
           </section>
@@ -64,6 +64,78 @@
           <section id="s1-q1" class="section">
             <h2>Q1: Predicate Logic + Hoare Logic — Find Method (25 marks)</h2>
             <p><strong>预测子题结构：</strong>(a)[4] 英语译谓词逻辑（两小题）；(b)[3] tautology / satisfiable / unsatisfiable 定义与例子；(c)[5] 逻辑等价性检查；(d)[9] Find(a:array&lt;int&gt;) 的 Hoare 证明 (partial correctness)；(e)[4] Partial vs total correctness，补充 variant 并解释。</p>
+            <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+              <div class="mechanic-head">
+                <p><span class="mechanic-kicker">判分要点</span><br><strong>Q1 需要完成四个独立的子任务：</strong>把英语翻译成逻辑公式、判断公式属于哪一类、做等价变形、用 Hoare logic 的三步法证明循环正确性。</p>
+                <span class="mechanic-status" data-scenario-status>1/4</span>
+              </div>
+              <div class="mechanic-toolbar">
+                <button class="mechanic-button" type="button" data-scenario-button>量词翻译</button>
+                <button class="mechanic-button" type="button" data-scenario-button>公式分类</button>
+                <button class="mechanic-button" type="button" data-scenario-button>Hoare Invariant</button>
+                <button class="mechanic-button" type="button" data-scenario-button>Total Correctness</button>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="check-list">
+                      <div class="check-row"><span><strong>Every person...</strong></span><span class="verdict-pill"><code>∀x(Person(x) → ...)</code></span></div>
+                      <div class="check-row"><span><strong>Somebody...</strong></span><span class="verdict-pill"><code>∃x(Person(x) ∧ ...)</code></span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p><strong>判分点：</strong>every / 所有 后面跟 ∀ 和 →（implication）；somebody / 存在 后面跟 ∃ 和 ∧（conjunction）。如果你把 “every person is walking” 写成 <code>∀x(Person(x) ∧ Walking(x))</code>，意思是“宇宙里每个东西都是人而且都在走路”——这显然是错的。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="check-list">
+                      <div class="check-row"><span><code>P ∨ ¬P</code></span><span class="verdict-pill">tautology</span></div>
+                      <div class="check-row"><span><code>P ∧ Q</code></span><span class="verdict-pill">satisfiable</span></div>
+                      <div class="check-row"><span><code>P ∧ ¬P</code></span><span class="verdict-pill is-no">unsatisfiable</span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>这道题不考背诵定义。卷面上要给一个具体的变量赋值（assignment），用它来证明 satisfiable；给两个 assignment 或逻辑理由说明 tautology / unsat。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="machine-flow">
+                      <span class="flow-node is-active">init</span><span class="flow-arrow">→</span><span class="flow-node is-active">preserve</span><span class="flow-arrow">→</span><span class="flow-node is-active">exit</span>
+                    </div>
+                    <div class="check-list">
+                      <div class="check-row"><span>range</span><span class="verdict-pill"><code>1 ≤ i ≤ a.Length</code></span></div>
+                      <div class="check-row"><span>meaning</span><span class="verdict-pill"><code>∀k&lt;i. min≤a[k]</code></span></div>
+                      <div class="check-row"><span>origin</span><span class="verdict-pill"><code>∃k&lt;i. min=a[k]</code></span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p><strong>Find 题核心：</strong>invariant 不是直接把 postcondition 抄过来——它描述的是循环每轮迭代后已经处理完的那一段满足什么性质。退出时用 <code>i=a.Length</code> 把前缀扩成全数组。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="string-track">
+                      <span class="token">V=a.Length-i</span><span class="token is-focus">i:=i+1</span><span class="token is-ok">V'=V-1</span>
+                    </div>
+                    <div class="check-list">
+                      <div class="check-row"><span>partial correctness</span><span class="verdict-pill">postcondition if terminates</span></div>
+                      <div class="check-row"><span>total correctness</span><span class="verdict-pill">partial + variant</span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>Total correctness 要多写 termination：variant 非负、每轮严格下降、well-founded。Find 的标准 variant 是 <code>a.Length - i</code>。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <h3>Model Answer — (a) 英语译谓词逻辑 [4 marks]</h3>
             <p><strong>(i) "If John is right, somebody took his pen"</strong></p>
@@ -171,6 +243,62 @@ while (i &lt; a.Length) {
           <section id="s1-q2" class="section">
             <h2>Q2: Dafny — Ackermann + BankAccount (25 marks)</h2>
             <p><strong>预测子题结构：</strong>(a)[6] Ackermann decreases clause — 为什么用 tuple（词典序 / lexicographic ordering）而不用单参数？(b)[5] 找出 Dafny 代码中的错误，并给出正确的 invariant + variant。(c)[8] BankAccount 类：定义 ghost predicate Valid()，写 constructor / deposit / withdraw 的完整 contracts。(d)[6] Deductive verifier（Dafny verifier + Z3）如何检查 class invariants。</p>
+            <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+              <div class="mechanic-head">
+                <p><span class="mechanic-kicker">判分要点</span><br><strong>Q2 的判分中心是 proof obligations。</strong>Dafny 题不是解释代码，而是逐条说明 verifier 要证明什么。</p>
+                <span class="mechanic-status" data-scenario-status>1/3</span>
+              </div>
+              <div class="mechanic-toolbar">
+                <button class="mechanic-button" type="button" data-scenario-button>Ackermann decreases</button>
+                <button class="mechanic-button" type="button" data-scenario-button>Loop invariant</button>
+                <button class="mechanic-button" type="button" data-scenario-button>Class Valid()</button>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="check-list">
+                      <div class="check-row"><span><code>Ack(m-1,1)</code></span><span class="verdict-pill"><code>m</code> decreases</span></div>
+                      <div class="check-row"><span><code>Ack(m,n-1)</code></span><span class="verdict-pill"><code>m same, n decreases</code></span></div>
+                      <div class="check-row"><span><code>decreases m+n</code></span><span class="verdict-pill is-no">may not decrease</span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p><strong>卷面句：</strong><code>decreases m,n</code> uses lexicographic ordering. First component decreasing is enough; otherwise second component must decrease.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="machine-flow">
+                      <span class="flow-node is-active">range</span><span class="flow-arrow">→</span><span class="flow-node is-active">meaning</span><span class="flow-arrow">→</span><span class="flow-node is-active">variant</span>
+                    </div>
+                    <div class="check-list">
+                      <div class="check-row"><span>数组安全</span><span class="verdict-pill"><code>0≤i≤n</code></span></div>
+                      <div class="check-row"><span>已处理部分</span><span class="verdict-pill"><code>a[0..i)</code></span></div>
+                      <div class="check-row"><span>终止</span><span class="verdict-pill"><code>decreases n-i</code></span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>不要写只等于 postcondition 的 invariant。Dafny 需要一个循环中间态也成立的“前缀事实”。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="check-list">
+                      <div class="check-row"><span>constructor</span><span class="verdict-pill">establishes <code>Valid()</code></span></div>
+                      <div class="check-row"><span>Deposit / Withdraw</span><span class="verdict-pill">preserve <code>Valid()</code></span></div>
+                      <div class="check-row"><span>Withdraw precondition</span><span class="verdict-pill"><code>amount≤Balance</code></span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p><code>Valid()</code> 是 class invariant 的集中表达。每个 public method 都要在结束时重新建立它；ghost fields 只是证明账本，不是运行时功能。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <h3>Model Answer — (a) Ackermann decreases with tuple [6 marks]</h3>
             <p><strong>Ackermann 函数递归调用：</strong></p>
@@ -265,7 +393,7 @@ while (i &lt; a.Length) {
     withdrawals := withdrawals + [amount];
   }
 }</code></pre>
-            <div class="note">
+            <div class="answer-box">
               <p><strong>关键得分点 (逐条检查)：</strong></p>
               <ol>
                 <li><code>Valid()</code> 的核心等式：<code>Balance == deposits.total - withdrawals.total</code>（一致性）+ <code>Balance &gt;= 0</code>（非负性，可选但加了更完整）。</li>
@@ -293,6 +421,81 @@ while (i &lt; a.Length) {
             <p><strong>预测子题结构：</strong>(a)[8] Event-B 系统建模 — contexts、machines、invariants、events、proof obligations；(b)[6] Data Refinement — 抽象到具体的映射，gluing invariant，coded example；(c)[5] FRET — 如何将 natural language requirements 转化为 temporal logic 支持 model checking；(d)[6] CDCL SAT solver — 算法流程 + 相比 stochastic search 的本质优势。</p>
             <div class="micro-check">
               <p><strong>最新情报校准：</strong>Rossane 提到 NN verification relevant。若 Q3 把 CDCL/Z3 应用换成 neural network verification，答案不要写成机器学习泛泛介绍；按 SAT/SMT 应用写：input region + network constraints + negated safety property，然后解释 <code>sat</code> 是 counterexample/adversarial input，<code>unsat</code> 是 bounded region 内 verified。</p>
+            </div>
+            <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+              <div class="mechanic-head">
+                <p><span class="mechanic-kicker">判分要点</span><br><strong>Q3 要区分建模层、精化层、求解层。</strong>每层的“证据”不一样，不要混成一段泛泛解释。</p>
+                <span class="mechanic-status" data-scenario-status>1/4</span>
+              </div>
+              <div class="mechanic-toolbar">
+                <button class="mechanic-button" type="button" data-scenario-button>Event-B</button>
+                <button class="mechanic-button" type="button" data-scenario-button>Data refinement</button>
+                <button class="mechanic-button" type="button" data-scenario-button>CDCL</button>
+                <button class="mechanic-button" type="button" data-scenario-button>NN verification</button>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="machine-flow">
+                      <span class="flow-node is-active">Context</span><span class="flow-arrow">→</span><span class="flow-node is-active">Machine</span><span class="flow-arrow">→</span><span class="flow-node is-active">Events</span><span class="flow-arrow">→</span><span class="flow-node is-active">POs</span>
+                    </div>
+                    <div class="check-list">
+                      <div class="check-row"><span>static facts</span><span class="verdict-pill">sets/constants/axioms</span></div>
+                      <div class="check-row"><span>state facts</span><span class="verdict-pill">variables/invariants</span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>Event-B 的分数来自“结构词”：context、machine、invariant、event、proof obligation。写成软件开发流程介绍会丢分。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="machine-flow">
+                      <span class="flow-node is-active">abstract set</span><span class="flow-arrow">→</span><span class="flow-node is-active">gluing invariant</span><span class="flow-arrow">→</span><span class="flow-node is-active">array[0..size)</span>
+                    </div>
+                    <div class="string-track">
+                      <span class="token">contents</span><span class="token is-cut">=</span><span class="token is-ok">{arr[0..size)}</span>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>Data refinement 的核心不是“换数据结构”，而是用 gluing invariant 证明具体操作在抽象观察下等价。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="machine-flow">
+                      <span class="flow-node is-active">decide</span><span class="flow-arrow">→</span><span class="flow-node is-active">BCP</span><span class="flow-arrow">→</span><span class="flow-node is-danger">conflict</span><span class="flow-arrow">→</span><span class="flow-node is-active">learn clause</span>
+                    </div>
+                    <div class="check-list">
+                      <div class="check-row"><span>DPLL</span><span class="verdict-pill is-no">chronological backtrack</span></div>
+                      <div class="check-row"><span>CDCL</span><span class="verdict-pill">learn + backjump</span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>CDCL 的优势是记住冲突模式，避免重复走同一条死路。Stochastic search 没有 UNSAT 完整证明能力。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="machine-flow">
+                      <span class="flow-node is-active">input region</span><span class="flow-arrow">→</span><span class="flow-node is-active">network constraints</span><span class="flow-arrow">→</span><span class="flow-node is-danger">¬ safety</span><span class="flow-arrow">→</span><span class="flow-node is-active">SAT/UNSAT</span>
+                    </div>
+                    <div class="check-list">
+                      <div class="check-row"><span><code>sat</code></span><span class="verdict-pill is-no">counterexample</span></div>
+                      <div class="check-row"><span><code>unsat</code></span><span class="verdict-pill">verified in region</span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>NN verification 要按 SAT/SMT verification 写，不要写成 AI 泛论。关键词是 bounded input region、constraints、negated safety property。</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <h3>Model Answer — (a) Event-B 系统建模 [8 marks]</h3>
@@ -372,6 +575,56 @@ while (i &lt; a.Length) {
           <section id="s1-q4" class="section">
             <h2>Q4: Spin Model Checking + LTL Formulae (25 marks)</h2>
             <p><strong>预测子题结构：</strong>(a)[7] Spin 如何验证 temporal properties — 从 system model 到 counterexample 的完整流程；(b)[6] NuSMV vs Spin — 至少 4 个差异维度；(c)[4] 两种应对 state explosion 的方法（解释原理）；(d)[8] 给出 4 条自然语言性质，写出对应的 LTL formula 并解释每个 operator 的含义。</p>
+            <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+              <div class="mechanic-head">
+                <p><span class="mechanic-kicker">判分要点</span><br><strong>Q4 按“模型 + 性质 + 反例”写。</strong>LTL 公式题要先判断 safety/liveness，再选 G/F/X/U/W。</p>
+                <span class="mechanic-status" data-scenario-status>1/3</span>
+              </div>
+              <div class="mechanic-toolbar">
+                <button class="mechanic-button" type="button" data-scenario-button>Spin 流程</button>
+                <button class="mechanic-button" type="button" data-scenario-button>Spin vs NuSMV</button>
+                <button class="mechanic-button" type="button" data-scenario-button>LTL 模板</button>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="machine-flow">
+                      <span class="flow-node is-active">Promela model</span><span class="flow-arrow">→</span><span class="flow-node is-active">LTL</span><span class="flow-arrow">→</span><span class="flow-node is-active">negate</span><span class="flow-arrow">→</span><span class="flow-node is-danger">counterexample?</span>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>Spin 找的是“原性质的反例”。如果 product automaton 有 accepting cycle，就输出 trace；没有则性质成立。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="check-list">
+                      <div class="check-row"><span>Spin</span><span class="verdict-pill">explicit-state / Promela / LTL</span></div>
+                      <div class="check-row"><span>NuSMV</span><span class="verdict-pill">symbolic BDD / SMV / LTL+CTL</span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>不要只写“两个都是 model checker”。至少给四个维度：语言、状态表示、逻辑支持、擅长场景。</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mechanic-panel" data-scenario-panel>
+                <div class="mechanic-grid">
+                  <div class="mechanic-stage">
+                    <div class="check-list">
+                      <div class="check-row"><span>bad never happens</span><span class="verdict-pill"><code>G ¬bad</code></span></div>
+                      <div class="check-row"><span>request eventually response</span><span class="verdict-pill"><code>G(req → F resp)</code></span></div>
+                      <div class="check-row"><span>until response</span><span class="verdict-pill"><code>busy U response</code></span></div>
+                    </div>
+                  </div>
+                  <div class="mechanic-explain">
+                    <p>Safety 通常是 <code>G¬bad</code>；liveness 通常有 <code>F</code>。Strong until 的右边必须最终发生，weak until 不要求。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <h3>Model Answer — (a) Spin 验证 temporal properties 的流程 [7 marks]</h3>
             <ol class="rung-list">
