@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
@@ -67,7 +67,35 @@
               <h3>Q1: Climate.determine() BVA（25 marks）</h3>
               <p><strong>预测：</strong><code>Climate.determine(int temp, int humidity)</code>。Spec: temp 范围 -130..60，&lt;16 需 HEAT；humidity 范围 0..100，&gt;60 需 AC；超出范围 &rarr; ERROR。</p>
               <p><strong>子题：</strong>(a) [5] 为什么穷举测试不可行？ (b) [5] Value lines + input/output partitions。 (c) [15] BVA 测试用例（不含 error values）：TCI 表、selected equivalence values、test cases。</p>
-              <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+              <div class="bridge-box">
+                <h4>先降坡：这题到底让你做什么</h4>
+                <p>这不是让你随便挑几个温度和湿度测试。题目给了两个整数输入，每个输入都有<strong>有效范围边界</strong>和<strong>业务阈值</strong>，BVA 要你把这些危险位置系统地挑出来。</p>
+                <div class="bridge-grid">
+                  <div class="bridge-step">
+                    <strong>1. 先找数字</strong>
+                    <p>temp 的关键数字是 -130、16、60；humidity 的关键数字是 0、60、100。没有数字就没有 BVA。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>2. 再判断含义</strong>
+                    <p>-130 和 60 是 temp 的合法端点；16 是 HEAT 开关阈值。0 和 100 是 humidity 合法端点；60 是 AC 阈值。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>3. 每个边界取具体值</strong>
+                    <p>例如 16 的附近不是写 “near 16”，而是写 15、16、17。60 的湿度阈值则是 59、60、61。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>4. 预期输出从 spec 推</strong>
+                    <p><code>temp=15, humidity=50</code>：temp&lt;16 所以 HEAT；humidity≤60 所以不 AC；Expected Result 是 HEAT_ONLY。</p>
+                  </div>
+                </div>
+                <p><strong>卷面思路：</strong>先用一句话说明 exhaustive testing 要 191×101 个组合，所以不可行；再画两条 value line；最后用 one fault assumption 生成测试表，并额外补 HEAT_AND_AC 的组合输出。</p>
+              </div>
+              <div class="answer-box">
+                <h4>先搞懂这件事在干嘛</h4>
+                <p><strong>宝宝级解释：</strong>想象你是一个质检员，你要测试一台空调遥控器。遥控器上有一个温度旋钮和一个湿度旋钮。说明书说：温度低于16度要开暖气，湿度高于60%要开除湿。你要怎么测？测一次？把所有可能的温度和湿度组合都试一遍？那有一万多种组合，天都黑了。BVA 的思路是：程序员最容易在"刚好在边界上"写错代码。比如说明书写"低于16度开暖气"——程序员可能写成"低于等于16度"。所以你要重点测15度、16度、17度这三个值。15是"刚好低于"，16是"刚好等于"，17是"刚好高于"。这三个值抓住了边界上最容易出错的三个位置。</p>
+                <p><strong>考场视角：</strong>现在把刚才的直觉翻译成考试要交的东西：你要画两条 value line（温度和湿度各一条），标出范围端点和阈值；然后列三张表——TCI 表（我要覆盖哪些测试目标）、selected values 表（每个目标用哪个具体数字）、test cases 表（输入什么，期望输出什么）。</p>
+              </div>
+              <div class="mechanic-demo" data-scenario-demo>
                 <div class="mechanic-head">
                   <p><span class="mechanic-kicker">判分要点</span><br><strong>Q1 的核心动作：先画 value line 找到边界和阈值，再为每个边界选 just below/on/above 三个具体值。</strong></p>
                   <span class="mechanic-status" data-scenario-status>1/3</span>
@@ -247,10 +275,38 @@
               <h3>Q2: decideWrite() JaCoCo White-box（25 marks）</h3>
               <p><strong>预测：</strong><code>Filestore.decideWrite(boolean enabled, boolean exists, boolean overwrite)</code>。JaCoCo 报告：line 28 yellow、line 32 yellow、line 33 red。</p>
               <p><strong>子题：</strong>(a) [15] Additional tests 实现 full BRANCH coverage。 (b) [5] 解释 "1 of 4 branches missed"（short-circuit）。 (c) [5] Black-box vs white-box 四点区别。</p>
+              <div class="bridge-box">
+                <h4>先降坡：白盒题先读报告，不先背定义</h4>
+                <p>JaCoCo 报告已经告诉你哪里没覆盖。yellow 不是“这行错了”，而是“这行执行过，但分支方向没全走到”；red 是“这行完全没执行”。所以 additional tests 的任务是补<strong>控制流缺口</strong>。</p>
+                <div class="bridge-grid">
+                  <div class="bridge-step">
+                    <strong>Line 28 yellow</strong>
+                    <p>说明 <code>if (enabled && exists)</code> 的某个方向缺失。要用输入让 true 和 false 两种结果都出现。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Line 32 yellow</strong>
+                    <p>说明 <code>else if (overwrite)</code> 的某个方向缺失。要让程序真的走到 line 32，再分别让 overwrite 为 true / false。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Line 33 red</strong>
+                    <p>说明末端 return 从未执行。典型补法是让前面所有条件失败，例如 <code>false,false,false</code>。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Short-circuit 为什么会考</strong>
+                    <p><code>enabled=false</code> 时 <code>exists</code> 不会被评估；因此同一个源码 if 在 bytecode 里可能有多个 branch。</p>
+                  </div>
+                </div>
+                <p><strong>卷面思路：</strong>不要写成散文。先列 Conditions table，再列 TCI table，最后列 Test Cases，且每条测试必须有 input 和 Expected Results。</p>
+              </div>
               <div class="micro-check">
                 <p><strong>教师批注校准：</strong>不要把 Q2 写成一段解释。先列 Conditions/TCI/Test Cases 三张表；TCI 表只放 line number 和 test case 编号，不抄 source code；测试表列名用 Expected Results。</p>
               </div>
-              <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+              <div class="answer-box">
+                <h4>先搞懂这件事在干嘛</h4>
+                <p><strong>宝宝级解释：</strong>JaCoCo 就像一个代码染色器。你跑了一遍测试后，它把代码染成三种颜色：绿色（跑了）、黄色（跑了一半，比如 if 条件只测了 true 没测 false）、红色（完全没跑）。你的任务是看报告，找出黄色和红色的行，然后设计新的输入让它们变绿。红色行最简单——写一个能让程序走到那行的输入就行。黄色行需要动脑筋——你得搞清楚是条件的哪一侧没走到。</p>
+                <p><strong>考场视角：</strong>考场上的白盒题不是让你背覆盖率定义。卷面上你要做三件事：①先看 JaCoCo 报告，分析每行 yellow / red 是哪条分支没走到；②列三张表——Conditions table（行号和条件）、TCI table（要覆盖的测试目标）、Test Cases table（输入和预期输出）；③最后用四点对比表说清楚黑盒和白盒的区别（发现的错不一样、要不要看代码、能不能先写、覆盖能不能量化）。</p>
+              </div>
+              <div class="mechanic-demo" data-scenario-demo>
                 <div class="mechanic-head">
                   <p><span class="mechanic-kicker">判分要点</span><br><strong>Q2 的核心动作：不是解释覆盖率概念，而是根据 JaCoCo 颜色补全未覆盖的分支。</strong>先读颜色，再写 Conditions / TCI / Test Cases 三张表。</p>
                   <span class="mechanic-status" data-scenario-status>1/3</span>
@@ -372,10 +428,38 @@
               <h3>Q3: Numbers Class Context（25 marks）</h3>
               <p><strong>预测：</strong>Numbers 类有 static method <code>isNeg(int x)</code> 和 instance methods <code>setValue(int v)</code>、<code>isNegative()</code>、<code>getResult()</code>。</p>
               <p><strong>子题：</strong>(a) [10] 比较 static 与 instance method 的测试写法。 (b) [15] Braking.decide() 在 class context 中的 EP 测试。</p>
+              <div class="bridge-box">
+                <h4>先降坡：Class context 题不是“多写一行 new”</h4>
+                <p>这类题的核心是：方法的输出是否依赖对象内部状态。static method 通常只看参数；instance method 要先把对象放进目标状态，再调用被测方法，再观察结果。</p>
+                <div class="bridge-grid">
+                  <div class="bridge-step">
+                    <strong>Static method</strong>
+                    <p><code>Numbers.isNeg(-1)</code> 这种题，输入就在括号里。测试重点是参数分区：负数、零、正数。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Instance method</strong>
+                    <p><code>n.isNegative()</code> 没有显式参数，但它读取 <code>n.value</code>。因此先 <code>setValue(-1)</code> 才能测试负数状态。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Class context EP</strong>
+                    <p>EP 仍然来自 spec，但 test case 要写调用序列：constructor / setter / method call / assertion。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>State-based 批注</strong>
+                    <p>如果题面给 <code>isShipped()</code>，就用它识别状态；只有题目问 signatures 时才展开 full signatures。</p>
+                  </div>
+                </div>
+                <p><strong>卷面思路：</strong>先解释 static vs instance 的依赖差异，再把 EP 表转成可执行调用序列。阅卷人要看到“对象如何进入这个状态”。</p>
+              </div>
               <div class="micro-check">
                 <p><strong>教师批注校准：</strong>Class context 题练 2018、2020-2025；state-based 题补 2016、2017。Jan 2017 Q3(b) 若已有 <code>isShipped()</code>/<code>isReturned()</code> 就用它们识别状态；Q3(c) 才要求 full signatures。</p>
               </div>
-              <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+              <div class="answer-box">
+                <h4>先搞懂这件事在干嘛</h4>
+                <p><strong>宝宝级解释：</strong>static 方法和 instance 方法的区别就像公共电话和个人手机。公共电话（static）谁打都一样，不依赖任何个人信息。个人手机（instance）的行为取决于你是谁——你之前存了什么联系人、设了什么壁纸。测试 static 方法就是一行调用——把参数塞进去，看返回值。测试 instance 方法要先创建一个对象（new）、设置它的状态（setValue）、调用方法（isNegative）、查看结果（getResult）——四步走。没有了对象，instance 方法就像没有主人的手机，根本没法用。</p>
+                <p><strong>考场视角：</strong>考场上你先判断是哪一种方法：括号里有参数的通常是 static，没有参数但方法名暗示它读对象状态的就是 instance。static 方法直接写 EP 分区表（负数 / 零 / 正数），每个分区挑一个代表值。instance 方法要写调用序列——对象怎么创建、状态怎么设置、调用哪个方法、断言什么结果。每个 test case 必须让阅卷人看到对象从出生到被检验的完整过程。</p>
+              </div>
+              <div class="mechanic-demo" data-scenario-demo>
                 <div class="mechanic-head">
                   <p><span class="mechanic-kicker">判分要点</span><br><strong>Q3 的核心不是“会写 JUnit”，而是会把对象状态摆出来。</strong>先判断 static / instance，再写 create-set-call-observe。</p>
                   <span class="mechanic-status" data-scenario-status>1/3</span>
@@ -504,7 +588,35 @@
               <h3>Q4: PV.exportPower() Random Testing（25 marks）</h3>
               <p><strong>预测：</strong><code>PV.exportPower(boolean enabled, int nettPower)</code>。enabled && nettPower &gt; 0 &rarr; true，否则 &rarr; false。</p>
               <p><strong>子题：</strong>(a) [9] 从 spec 推导 Decision Table rules + 每条 rule 的随机数据生成标准。 (b) [10] Automated test pseudo-code。 (c) [6] 随机测试三大问题（data/oracle/completion）及解决方案。</p>
-              <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+              <div class="bridge-box">
+                <h4>先降坡：Random testing 不是“随机猜答案”</h4>
+                <p>随机测试只是在每个规则范围内多抽样。真正决定 expected result 的仍然是 specification 或 decision table。也就是说，random 负责<strong>输入生成</strong>，DT 负责<strong>oracle</strong>。</p>
+                <div class="bridge-grid">
+                  <div class="bridge-step">
+                    <strong>先写规则</strong>
+                    <p><code>enabled=true</code> 且 <code>nettPower&gt;0</code> 才 true；其他三种组合都是 false。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>再写随机范围</strong>
+                    <p>R1/R3 的 nettPower 从正数范围抽；R2/R4 从 ≤0 范围抽。不能全整数乱抽，否则覆盖不可控。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Oracle 怎么来</strong>
+                    <p>对 R1 assert true；对 R2/R3/R4 assert false。这个判断来自题面规则，不来自被测函数。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>何时停止</strong>
+                    <p>写每条 rule 100 次，比“总共循环 400 次”更好，因为它保证每条规则都被覆盖。</p>
+                  </div>
+                </div>
+                <p><strong>卷面思路：</strong>先列 DT rules，再列每条 rule 的 random generation criteria，最后用伪代码显示循环、断言和完成标准。</p>
+              </div>
+              <div class="answer-box">
+                <h4>先搞懂这件事在干嘛</h4>
+                <p><strong>宝宝级解释：</strong>随机测试不是真的随便乱测。你要回答三个问题：①随机生成什么样的数据？（data——按 DT 规则限定范围，不是完全随机。比如 R1 的 nettPower 只从正数里随机抽，R2 的 nettPower 只从 ≤0 里抽，不会从全部整数里乱抽）②怎么判断结果对不对？（oracle——从 spec 或 DT 推导 expected result。R1 的 expected 永远是 true，R2/R3/R4 永远是 false。这个判断不依赖被测函数，而是来自题目规则）③什么时候算测够了？（completion——不是"跑 400 次"，而是"每条 rule 被随机命中 100 次"）</p>
+                <p><strong>考场视角：</strong>考场上先别急着写随机循环。第一步把 spec 翻成 Decision Table：enabled 和 nettPower 各有两个状态，但 DT 会告诉你只有四行是有意义的（R1 到 R4）。第二步每条 rule 写好随机生成的范围——R1 的 nettPower 只抽正数（1..MAX），R2 和 R4 只抽 ≤0 的数（MIN..0）。第三步写伪代码时每条 rule 单独一个 for 循环，循环 100 次，断言值从 DT 的 expected column 直接拿。第四步回答三大问题时，data 贴回你的 DT rule 范围，oracle 贴回 R1 是 true / R2-R4 是 false，completion 贴回每条 rule 100 次。</p>
+              </div>
+              <div class="mechanic-demo" data-scenario-demo>
                 <div class="mechanic-head">
                   <p><span class="mechanic-kicker">判分要点</span><br><strong>Q4 Random Testing 的答案骨架是 DT rule 驱动。</strong>随机只负责多取样，expected result 仍然必须由 spec 先算好。</p>
                   <span class="mechanic-status" data-scenario-status>1/3</span>

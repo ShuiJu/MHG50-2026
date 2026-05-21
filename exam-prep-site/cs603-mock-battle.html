@@ -64,7 +64,36 @@
           <section id="s1-q1" class="section">
             <h2>Q1: Predicate Logic + Hoare Logic — Find Method (25 marks)</h2>
             <p><strong>预测子题结构：</strong>(a)[4] 英语译谓词逻辑（两小题）；(b)[3] tautology / satisfiable / unsatisfiable 定义与例子；(c)[5] 逻辑等价性检查；(d)[9] Find(a:array&lt;int&gt;) 的 Hoare 证明 (partial correctness)；(e)[4] Partial vs total correctness，补充 variant 并解释。</p>
-            <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+            <div class="answer-box">
+              <h3>先搞懂这件事在干嘛</h3>
+              <p>先想清楚一个问题：为什么测试100个例子说"程序没问题"，不如用数学证明"所有情况都不会出错"？测试就像你在高速公路上随机拦10辆车检查有没有超速——这10辆都没超，不代表第11辆不超。形式化验证就是写一个数学公式说"在这条高速公路上，不管谁、什么时候开、开多快，都绝对不会超过限速"。要写这种公式，你需要两样东西：①把"所有/存在/如果/并且"翻译成数学符号（谓词逻辑）；②用一套规则证明"如果程序开始时满足条件A，运行结束后就一定满足条件B"（Hoare logic）。</p>
+              <p>这道题就是把这两个技能拆成小问题考你：(a)给你一句英语，你能翻译成∀、∃、→、∧吗？(b)给一个逻辑公式，你能判断它是永远真（tautology）、有时候真（satisfiable）、还是永远假（unsatisfiable）？(c)两个长得不一样的公式，你能说清它们是不是一回事（逻辑等价）？(d)给一段 while 循环，你能按"初始化→保持→退出"三步证明它正确吗？(e)怎么证明循环一定会停（total correctness），要加什么东西（variant）？</p>
+              <p><strong>一句话记住 Q1：</strong>谓词逻辑把"话"变成"公式"，Hoare logic 把"公式"变成"证明"。题型固定，换汤不换药。</p>
+            </div>
+            <div class="bridge-box">
+              <h4>先降坡：Q1 其实是四种小技能拼在一起</h4>
+              <p>这题看起来从谓词逻辑跳到程序证明，很吓人；但卷面上每一问都有固定动作。不要试图“一口气理解全部形式化验证”，先把每个子题的输入和输出拆开。</p>
+              <div class="bridge-grid">
+                <div class="bridge-step">
+                  <strong>英语句子 → 逻辑公式</strong>
+                  <p>“Every A is B” 用 <code>∀x(A(x) → B(x))</code>；“Some A is B” 用 <code>∃x(A(x) ∧ B(x))</code>。关键是 every 配 implication，some 配 conjunction。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>公式分类</strong>
+                  <p>Tautology 是所有赋值都真；satisfiable 是至少一个赋值真；unsatisfiable 是没有赋值真。卷面最好配一个具体 assignment。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>Hoare invariant</strong>
+                  <p>Invariant 不是最终目标本身，而是“已经扫描过的前缀满足什么”。Find/minimum 题通常写范围 + 已扫描元素都 ≥ min + min 来自已扫描位置。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>Total correctness</strong>
+                  <p>Partial correctness 只证明“如果停了，答案对”；total correctness 还要证明会停。循环题用 variant，例如 <code>a.Length - i</code>。</p>
+                </div>
+              </div>
+              <p><strong>卷面顺序：</strong>翻译题直接给公式和一句解释；Hoare 题按 initialization / preservation / exit 三段写；total correctness 额外写 variant 非负且严格下降。</p>
+            </div>
+            <div class="mechanic-demo" data-scenario-demo>
               <div class="mechanic-head">
                 <p><span class="mechanic-kicker">判分要点</span><br><strong>Q1 需要完成四个独立的子任务：</strong>把英语翻译成逻辑公式、判断公式属于哪一类、做等价变形、用 Hoare logic 的三步法证明循环正确性。</p>
                 <span class="mechanic-status" data-scenario-status>1/4</span>
@@ -243,7 +272,36 @@ while (i &lt; a.Length) {
           <section id="s1-q2" class="section">
             <h2>Q2: Dafny — Ackermann + BankAccount (25 marks)</h2>
             <p><strong>预测子题结构：</strong>(a)[6] Ackermann decreases clause — 为什么用 tuple（词典序 / lexicographic ordering）而不用单参数？(b)[5] 找出 Dafny 代码中的错误，并给出正确的 invariant + variant。(c)[8] BankAccount 类：定义 ghost predicate Valid()，写 constructor / deposit / withdraw 的完整 contracts。(d)[6] Deductive verifier（Dafny verifier + Z3）如何检查 class invariants。</p>
-            <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+            <div class="answer-box">
+              <h3>先搞懂这件事在干嘛</h3>
+              <p>Dafny 就像一个超严格的编译器。普通编译器只检查你有没有写错语法（少了个分号、变量名拼错了）。Dafny 还检查你有没有写错逻辑——比如你说"这个方法返回数组最小值"，Dafny 会用数学证明你真的做到了。你在代码里写 <code>requires</code>（调用前必须满足什么）、<code>ensures</code>（调用后必须保证什么）、<code>invariant</code>（循环每一轮后必须保持什么性质）、<code>decreases</code>（什么东西在严格变小，保证循环不会永远跑下去），Dafny 把这些翻译成数学公式扔给底下的 Z3 求解器。Z3 如果找不到反例，就说明你的代码确实满足你写的 specification。</p>
+              <p>这道题考四个方面的能力：(a)Ackermann 函数有两个参数 m 和 n，递归时有些分支 m 变小、有些分支 m 不变但 n 变小。只盯一个参数 Dafny 会说"我没法证明这个递归会停"，所以要用 tuple（词典序）同时看两个参数。(b)给你一段有 bug 的 Dafny 代码，你能找出哪里不对并给出正确的 invariant 和 variant 吗？(c)BankAccount 类——你能用 ghost predicate Valid() 表达"余额永远等于存款总和减取款总和"，并写出 constructor、deposit、withdraw 的完整 contracts 吗？(d)解释 Dafny verifier + Z3 在背后怎么一步步检查你的代码。</p>
+              <p><strong>一句话记住 Q2：</strong>Dafny 是你写合同，Z3 是法官。contracts 写得越清楚，法官判得越快。</p>
+            </div>
+            <div class="bridge-box">
+              <h4>先降坡：Dafny 题不是写程序，是替 verifier 交证明材料</h4>
+              <p>Dafny 的难点不是语法，而是你要知道 verifier 在怀疑什么。每个 <code>requires</code>、<code>ensures</code>、<code>invariant</code>、<code>decreases</code> 都是在回答一个 proof obligation。</p>
+              <div class="bridge-grid">
+                <div class="bridge-step">
+                  <strong>Ackermann 为什么 tuple</strong>
+                  <p>有些递归调用让 <code>m</code> 下降；有些调用让 <code>m</code> 不变但 <code>n</code> 下降。单独看 <code>m</code> 不够，所以用词典序 <code>decreases m, n</code>。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>Loop invariant 怎么想</strong>
+                  <p>先写范围保证数组访问安全，例如 <code>0≤i≤n</code>；再写已处理部分的语义；最后写 <code>decreases n-i</code> 证明终止。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>Class invariant 怎么想</strong>
+                  <p><code>Valid()</code> 是对象一直要保持的健康条件。constructor 建立它；每个 public method 假设进入时有效，退出时必须重新保证有效。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>Ghost 是什么</strong>
+                  <p>ghost field / ghost predicate 用来证明，不参与运行时功能。它们让 verifier 看见“余额没有凭空变化”这类数学事实。</p>
+                </div>
+              </div>
+              <p><strong>卷面顺序：</strong>每问都先说 verifier 要证明什么，再给 Dafny 写法。这样比只贴代码更容易拿解释分。</p>
+            </div>
+            <div class="mechanic-demo" data-scenario-demo>
               <div class="mechanic-head">
                 <p><span class="mechanic-kicker">判分要点</span><br><strong>Q2 的判分中心是 proof obligations。</strong>Dafny 题不是解释代码，而是逐条说明 verifier 要证明什么。</p>
                 <span class="mechanic-status" data-scenario-status>1/3</span>
@@ -419,10 +477,39 @@ while (i &lt; a.Length) {
           <section id="s1-q3" class="section">
             <h2>Q3: Event-B + Data Refinement + CDCL SAT (25 marks)</h2>
             <p><strong>预测子题结构：</strong>(a)[8] Event-B 系统建模 — contexts、machines、invariants、events、proof obligations；(b)[6] Data Refinement — 抽象到具体的映射，gluing invariant，coded example；(c)[5] FRET — 如何将 natural language requirements 转化为 temporal logic 支持 model checking；(d)[6] CDCL SAT solver — 算法流程 + 相比 stochastic search 的本质优势。</p>
+            <div class="answer-box">
+              <h3>先搞懂这件事在干嘛</h3>
+              <p>这道题把四个看似不相干的东西放在一起——Event-B、Data Refinement、FRET、CDCL SAT——但它们其实是一条链上的四颗珠子，从系统需求一步步走到数学证明。</p>
+              <p>分开看：①<strong>Event-B</strong> 是一种建模语言。Context 放静态的东西（比如"图书馆有哪些类型的书"），Machine 放会变的东西（比如"当前借出了几本"）和改变状态的 Events。每个 Event 有 guard（触发条件）和 action（状态怎么变），所有 Event 都绝不能破坏 invariant。②<strong>Data Refinement</strong> 解决一个实际问题：抽象模型说"我有一个集合 contents"，但代码实现用的是数组和 size 变量——你怎么证明数组没有背叛集合的承诺？答案是用 gluing invariant 把两边拴在一起，然后检查每个操作在两种表示下效果等价。③<strong>FRET</strong> 是一根翻译管道：把"当用户点击按钮，系统必须在 5 秒内响应"这种人类需求，自动翻译成模型检查器能看懂的时间逻辑公式。④<strong>SAT solver</strong> 就像超级数独求解器——你给它一堆约束条件（"第3行第5列不能是7"、"第1行第1列必须是3"），它告诉你有没有一种填法让所有条件同时成立。CDCL 是其中最聪明的解法：它每撞一次墙，就把"这个组合行不通"记成一个新规则（learned clause），下次不再走同一条死路。</p>
+              <p><strong>一句话记住 Q3：</strong>Event-B 建模，Refinement 精化，FRET 翻译需求，CDCL 求解。四个阶段、四种工具、四道独立子题。</p>
+            </div>
+            <div class="bridge-box">
+              <h4>先降坡：Q3 是三层东西，不是一团术语</h4>
+              <p>这题最容易陡峭，是因为 Event-B、refinement、FRET、CDCL 都在同一题里出现。可以先把它们分层：Event-B 是建模语言，refinement 是抽象到具体的正确性关系，FRET 是需求到形式公式，CDCL 是 SAT 求解算法。</p>
+              <div class="bridge-grid">
+                <div class="bridge-step">
+                  <strong>Event-B 建模层</strong>
+                  <p>Context 放静态东西：sets、constants、axioms。Machine 放会变化的东西：variables、invariants、events。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>Refinement 连接层</strong>
+                  <p>抽象模型可能说“集合 contents”；具体实现可能用 array 和 size。gluing invariant 说明两者表示同一个状态。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>FRET 需求层</strong>
+                  <p>自然语言需求先变成结构化 requirement，再翻成 temporal logic，才能交给 model checker 检查。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>CDCL 求解层</strong>
+                  <p>CDCL 不是随机试值。它 decide、传播、遇冲突、分析冲突、学习 clause、非时序回跳。</p>
+                </div>
+              </div>
+              <p><strong>卷面顺序：</strong>每个术语都用“它负责什么 + 它产生什么证据”解释。例如 Event-B 产生 proof obligations；refinement 需要 gluing invariant；CDCL 的证据是 learned clauses 和最终 SAT/UNSAT。</p>
+            </div>
             <div class="micro-check">
               <p><strong>最新情报校准：</strong>Rossane 提到 NN verification relevant。若 Q3 把 CDCL/Z3 应用换成 neural network verification，答案不要写成机器学习泛泛介绍；按 SAT/SMT 应用写：input region + network constraints + negated safety property，然后解释 <code>sat</code> 是 counterexample/adversarial input，<code>unsat</code> 是 bounded region 内 verified。</p>
             </div>
-            <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+            <div class="mechanic-demo" data-scenario-demo>
               <div class="mechanic-head">
                 <p><span class="mechanic-kicker">判分要点</span><br><strong>Q3 要区分建模层、精化层、求解层。</strong>每层的“证据”不一样，不要混成一段泛泛解释。</p>
                 <span class="mechanic-status" data-scenario-status>1/4</span>
@@ -575,7 +662,37 @@ while (i &lt; a.Length) {
           <section id="s1-q4" class="section">
             <h2>Q4: Spin Model Checking + LTL Formulae (25 marks)</h2>
             <p><strong>预测子题结构：</strong>(a)[7] Spin 如何验证 temporal properties — 从 system model 到 counterexample 的完整流程；(b)[6] NuSMV vs Spin — 至少 4 个差异维度；(c)[4] 两种应对 state explosion 的方法（解释原理）；(d)[8] 给出 4 条自然语言性质，写出对应的 LTL formula 并解释每个 operator 的含义。</p>
-            <div class="mechanic-demo" data-scenario-demo data-scenario-interval="9999000">
+            <div class="answer-box">
+              <h3>先搞懂这件事在干嘛</h3>
+              <p>Model checking 就像穷举法验证：你把一个系统所有可能的状态全部列出来（比如红绿灯的"红→绿→黄→红"），然后检查在所有可能的路径上，某个坏事情是不是永远不会发生（比如"不会出现两个方向同时绿灯"）。Spin 就是做这件事的工具——你用 Promela 语言描述系统，用 LTL 写你想验证的性质，Spin 把整个状态空间跑一遍，要么说"性质成立"，要么给你一条具体路径说"你看，走到这里就坏了"（这叫 counterexample）。</p>
+              <p>LTL 是你用来描述"什么算好、什么算坏"的语言。它只有五个核心符号：<code>G</code>（"永远"——从现在到世界末日都成立）、<code>F</code>（"最终"——在未来的某个时刻会成立）、<code>X</code>（"下一步"——紧接着的下一个状态）、<code>U</code>（"直到……才……"——我撑着伞直到雨停，且雨必须最终停）、<code>W</code>（"除非……"——我撑着伞除非雨停，但雨可能永远不停）。模式很简单：Safety（坏事永不发生）写成 <code>G ¬bad</code>；Liveness（好事终会发生）写成 <code>G(trigger → F response)</code>。</p>
+              <p>这道题还考两个实用问题：Spin 和 NuSMV 有什么不同（一个显式逐个状态存，一个用 BDD 压缩存）？状态太多内存装不下怎么办（state explosion 的四种解法：抽象化、偏序归约、对称归约、有界模型检查）？</p>
+              <p><strong>一句话记住 Q4：</strong>系统模型 + LTL 性质 + 穷举搜索 = model checking。记住五个符号和两个模板，LTL 题就稳了。</p>
+            </div>
+            <div class="bridge-box">
+              <h4>先降坡：Model checking 先记住“模型 + 性质 + 反例”</h4>
+              <p>Q4 不是让你背 Spin 手册。它考的是：把系统行为建成有限状态模型，把要求写成 temporal property，然后让工具穷举状态空间找反例。</p>
+              <div class="bridge-grid">
+                <div class="bridge-step">
+                  <strong>Spin 流程</strong>
+                  <p>Promela 写系统；LTL 写性质；Spin 检查取反性质是否有可接受路径；有 trace 就是 counterexample。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>Spin vs NuSMV</strong>
+                  <p>Spin 偏 explicit-state、Promela、异步并发、LTL；NuSMV 偏 symbolic、SMV module、同步状态机、LTL/CTL。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>LTL 怎么选 operator</strong>
+                  <p>“永远不坏”用 <code>G ¬bad</code>；“请求后最终响应”用 <code>G(req → F resp)</code>；“直到”用 <code>U</code>。</p>
+                </div>
+                <div class="bridge-step">
+                  <strong>State explosion 怎么解释</strong>
+                  <p>并发交错和变量组合导致状态数爆炸。答案要说方法和原理，例如 partial order reduction 合并等价交错，BDD 符号压缩状态集合。</p>
+                </div>
+              </div>
+              <p><strong>卷面顺序：</strong>先写验证 pipeline，再写工具差异表，最后写 LTL 模板。不要把 safety、liveness、fairness 混成一句话。</p>
+            </div>
+            <div class="mechanic-demo" data-scenario-demo>
               <div class="mechanic-head">
                 <p><span class="mechanic-kicker">判分要点</span><br><strong>Q4 按“模型 + 性质 + 反例”写。</strong>LTL 公式题要先判断 safety/liveness，再选 G/F/X/U/W。</p>
                 <span class="mechanic-status" data-scenario-status>1/3</span>
