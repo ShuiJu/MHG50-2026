@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CS608 模拟战：题型预测与标准答案</title>
     <link rel="stylesheet" href="assets/styles.css">
+    <style>
+      td code, p code, .check-row code, .mechanic-explain code { white-space: nowrap; }
+    </style>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
@@ -42,6 +45,11 @@
           <section id="teacher-notes" class="section">
             <h2>先看教师批注：模拟战的判分校准</h2>
             <p>模拟战负责押题和演练，但 Stephen Brown 的批注负责修正交卷格式。下面几条要在做题前先锁住：表格、术语、signature 边界，比多背一段泛泛解释更容易直接涨分。</p>
+            <div class="answer-box">
+              <h4>用人话讲就是</h4>
+              <p>老师改卷子的时候。是在找特定的格式。你答对了内容。但格式不对。也会扣分。比如Q2的附加测试（Additional Tests）。你不写成三张表。而写成一大段话。老师直接扣分。再比如Q3的状态题。题目给了<code>isShipped()</code>方法。你就直接用。别自己发明新方法。这几条批注。就像考前注意事项清单。先锁格式。再填内容。</p>
+              <p><strong>为什么这样写能拿分：</strong>批注全是往年扣分点。Stephen Brown 标出来。就是告诉你"别踩坑"。列名写错一个。把 <code>Expected Results</code> 写成 <code>Expected Result</code>。就可能丢分。注意——Q2(b)如果只考SC（语句覆盖）。就不需要short-circuit分析。Q3(c)只在你被要求写 signatures 时才写。</p>
+            </div>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -69,7 +77,7 @@
               <p><strong>子题：</strong>(a) [5] 为什么穷举测试不可行？ (b) [5] Value lines + input/output partitions。 (c) [15] BVA 测试用例（不含 error values）：TCI 表、selected equivalence values、test cases。</p>
               <div class="bridge-box">
                 <h4>先降坡：这题到底让你做什么</h4>
-                <p>这不是让你随便挑几个温度和湿度测试。题目给了两个整数输入，每个输入都有<strong>有效范围边界</strong>和<strong>业务阈值</strong>，BVA 要你把这些危险位置系统地挑出来。</p>
+                <p>这不是让你随便挑几个温度和湿度测试。题目给了两个整数输入，每个输入都有<strong>有效范围边界</strong>和<strong>业务阈值</strong>，BVA（边界值分析，Boundary Value Analysis）要你把这些危险位置系统地挑出来。</p>
                 <div class="bridge-grid">
                   <div class="bridge-step">
                     <strong>1. 先找数字</strong>
@@ -81,19 +89,19 @@
                   </div>
                   <div class="bridge-step">
                     <strong>3. 每个边界取具体值</strong>
-                    <p>例如 16 的附近不是写 “near 16”，而是写 15、16、17。60 的湿度阈值则是 59、60、61。</p>
+                    <p>例如 16 的附近不是写 "near 16"，而是写 15、16、17。60 的湿度阈值则是 59、60、61。</p>
                   </div>
                   <div class="bridge-step">
                     <strong>4. 预期输出从 spec 推</strong>
                     <p><code>temp=15, humidity=50</code>：temp&lt;16 所以 HEAT；humidity≤60 所以不 AC；Expected Result 是 HEAT_ONLY。</p>
                   </div>
                 </div>
-                <p><strong>卷面思路：</strong>先用一句话说明 exhaustive testing 要 191×101 个组合，所以不可行；再画两条 value line；最后用 one fault assumption 生成测试表，并额外补 HEAT_AND_AC 的组合输出。</p>
+                <p><strong>卷面思路：</strong>先用一句话说明 exhaustive testing 要 191×101 个组合，所以不可行；再画两条 value line；最后用 one fault assumption（单故障假设，每次只让一个参数靠近边界）生成测试表，并额外补 HEAT_AND_AC 的组合输出。</p>
               </div>
               <div class="answer-box">
                 <h4>先搞懂这件事在干嘛</h4>
                 <p><strong>宝宝级解释：</strong>想象你是一个质检员，你要测试一台空调遥控器。遥控器上有一个温度旋钮和一个湿度旋钮。说明书说：温度低于16度要开暖气，湿度高于60%要开除湿。你要怎么测？测一次？把所有可能的温度和湿度组合都试一遍？那有一万多种组合，天都黑了。BVA 的思路是：程序员最容易在"刚好在边界上"写错代码。比如说明书写"低于16度开暖气"——程序员可能写成"低于等于16度"。所以你要重点测15度、16度、17度这三个值。15是"刚好低于"，16是"刚好等于"，17是"刚好高于"。这三个值抓住了边界上最容易出错的三个位置。</p>
-                <p><strong>考场视角：</strong>现在把刚才的直觉翻译成考试要交的东西：你要画两条 value line（温度和湿度各一条），标出范围端点和阈值；然后列三张表——TCI 表（我要覆盖哪些测试目标）、selected values 表（每个目标用哪个具体数字）、test cases 表（输入什么，期望输出什么）。</p>
+                <p><strong>考场视角：</strong>现在把刚才的直觉翻译成考试要交的东西：你要画两条 value line（数值线，温度和湿度各一条），标出范围端点和阈值；然后列三张表——TCI 表（测试覆盖项表，我要覆盖哪些测试目标）、selected values 表（每个目标用哪个具体数字）、test cases 表（输入什么，期望输出什么）。</p>
               </div>
               <div class="mechanic-demo" data-scenario-demo>
                 <div class="mechanic-head">
@@ -116,7 +124,7 @@
                       </div>
                     </div>
                     <div class="mechanic-explain">
-                      <p><strong>判分点：</strong>value line 必须写端点和阈值。BVA 的 “on / just below / just above” 都要落在具体数字上，不要只写“边界附近”。</p>
+                      <p><strong>判分点：</strong>value line 必须写端点和阈值。BVA 的 "on / just below / just above" 都要落在具体数字上，不要只写"边界附近"。</p>
                     </div>
                   </div>
                 </div>
@@ -152,6 +160,12 @@
               </div>
 
               <h4>(a) 模型答案：穷举测试不可行</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>你有一个函数。它有两个输入。温度和湿度。如果你想每一种组合都试。就得测191×101=19291次。两万次。你写得完吗。跑得完吗。就算跑完了。每一组的"应该输出什么"。你都得事先算好。这根本不现实。所以必须用聪明办法。只挑最可能出错的那几个组合。去测它们。这就是BVA和EP（等价类划分，Equivalence Partitioning）的意义。</p>
+                <p><strong>考试时你这么写：</strong>先列每个变量的可能取值数。再算组合总数。然后从两个角度说不可行。一是设计时间不够（design time）。二是执行时间不够（execution time）。最后提一句替代方案——systematic methods。比如BVA、EP、DT（决策表，Decision Table）。</p>
+                <p><strong>为什么这样写能拿分：</strong>这题5分。老师看三样东西。你算对了组合数（191×101=19291）。你说了设计和执行两个层面。你提到了替代方法。缺一个扣1-2分。注意——不要只写"太多组合"。必须写出具体数字19291。</p>
+              </div>
               <div class="table-wrap">
                 <table>
                   <thead>
@@ -171,6 +185,12 @@
               </ol>
 
               <h4>(b) 模型答案：Value Lines &amp; Partitions</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>你要画两条数轴。一条表示温度。一条表示湿度。每条数轴上。把关键数字标出来。温度轴上有三个关键点。-130是合法最低温。16是暖气开关线。60是合法最高温。湿度轴上有三个关键点。0是合法最低湿。60是除湿开关线。100是合法最高湿。每个关键点把数轴切成几个区。每个区代表一种程序行为。画完这两条数轴。你就知道测试的重点在哪里了。</p>
+                <p><strong>考试时你这么写：</strong>先画temp的value line。写-130——16——60。再画humidity的value line。写0——60——100。然后每个变量列一张分区表。表里有四列：分区名、范围、行为。注意——每个变量还要列出超出合法范围的ERROR区。虽然题目说"不含error values"。但(b)问要你展示input/output partitions。ERROR区属于input partition。必须写出来。</p>
+                <p><strong>为什么这样写能拿分：</strong>(b)问只要5分。但它是(c)问的基础。value line画对了。分区表才不会漏。常见错误有两种。一是漏掉合法端点（-130、60、0、100）。二是输出分区表漏了HEAT_AND_AC那行。注意——输出分区（output partitions）必须列出四种组合。因为两个条件各有两个状态。2×2=4种输出。</p>
+              </div>
               <p><strong>temp value line：</strong></p>
               <pre>-130 ──────────── 16 ──────────── 60</pre>
               <div class="table-wrap">
@@ -211,6 +231,12 @@
               </div>
 
               <h4>(c) 模型答案：BVA 测试用例</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>现在你要写三张表。第一张叫TCI表（测试覆盖项，Test Coverage Items）。它回答"我要测哪些目标"。比如"temp刚好低于16"是一个目标。"humidity刚好高于60"是另一个目标。第二张叫选定值表（Selected Values）。它回答"每个目标我用什么数字去测"。同时它体现一个规则。叫单故障假设（one fault assumption）。意思是每次只让一个变量去碰边界。另一个变量保持安全值。第三张叫测试用例表（Test Cases）。它回答"具体怎么调函数。期望输出是什么"。</p>
+                <p><strong>考试时你这么写：</strong>TCI表有14行。前10行是10个input边界目标（BV1到BV10）。后4行是4个output目标（OUT1到OUT4）。Selected Values表只有两行。一行说明测temp边界时humidity固定为50。另一行说明测humidity边界时temp固定为20。Test Cases表有11行。TC1到TC10遵循one fault assumption。TC11故意打破它。同时让temp=15和humidity=61。专门覆盖HEAT_AND_AC。</p>
+                <p><strong>为什么这样写能拿分：</strong>15分的大题。判分看三样。TCI表有没有覆盖input和output两类目标。Selected Values表的nominal值选得对不对。Test Cases的Expected Result是向spec推导的还是瞎猜的。漏掉output TCI（OUT1-OUT4）直接扣5分。漏掉TC11扣2-3分。注意——test cases表里的Test Call列要写成函数调用的形式。比如<code>determine(-130, 50)</code>。不要只写数字。</p>
+              </div>
               <p><strong>TCI Table（Test Coverage Items）：</strong></p>
               <div class="table-wrap">
                 <table>
@@ -264,7 +290,11 @@
                   </tbody>
                 </table>
               </div>
-              <p><strong>说明：</strong>TC1-TC10 遵循 one fault assumption——每次只让一个变量靠边界、另一个取 nominal；TC11 故意打破 one fault assumption，同时让两个变量取边界附近值，专门覆盖 HEAT_AND_AC 这个输出 partition（OUT4）。</p>
+              <div class="answer-box">
+                <h4>用人话讲就是：为什么有TC11</h4>
+                <p>单故障假设有盲区。它只让你每次动一个参数。但有些bug必须两个参数同时越过阈值才触发。比如暖气坏了。只有"温度低"加"湿度高"才会同时触发。单变量BVA测不到这种情况。所以你要额外加一条TC11。同时把temp放到15（低于16）。把humidity放到61（高于60）。这条用例专门覆盖HEAT_AND_AC。打破one fault assumption是允许的。但只在为了覆盖output partition时这样做。</p>
+                <p><strong>注意——</strong>TC1-TC10 遵循 one fault assumption——每次只让一个变量靠边界、另一个取 nominal；TC11 故意打破 one fault assumption，同时让两个变量取边界附近值，专门覆盖 HEAT_AND_AC 这个输出 partition（OUT4）。</p>
+              </div>
               <div class="micro-check">
                 <p><strong>判分关键：</strong>不要漏掉 temp 的有效最小值 (-130) 和有效最大值 (60) 两个端点；不要漏掉湿度端点 0 和 100；TC11 必须给出以覆盖所有四种输出。</p>
               </div>
@@ -277,7 +307,7 @@
               <p><strong>子题：</strong>(a) [15] Additional tests 实现 full BRANCH coverage。 (b) [5] 解释 "1 of 4 branches missed"（short-circuit）。 (c) [5] Black-box vs white-box 四点区别。</p>
               <div class="bridge-box">
                 <h4>先降坡：白盒题先读报告，不先背定义</h4>
-                <p>JaCoCo 报告已经告诉你哪里没覆盖。yellow 不是“这行错了”，而是“这行执行过，但分支方向没全走到”；red 是“这行完全没执行”。所以 additional tests 的任务是补<strong>控制流缺口</strong>。</p>
+                <p>JaCoCo 报告已经告诉你哪里没覆盖。yellow 不是"这行错了"，而是"这行执行过，但分支方向没全走到"；red 是"这行完全没执行"。所以 additional tests 的任务是补<strong>控制流缺口</strong>。</p>
                 <div class="bridge-grid">
                   <div class="bridge-step">
                     <strong>Line 28 yellow</strong>
@@ -326,7 +356,7 @@
                       </div>
                     </div>
                     <div class="mechanic-explain">
-                      <p>Additional tests 的目标不是“多写几个输入”，而是让 red line 执行、yellow branch 补齐。</p>
+                      <p>Additional tests 的目标不是"多写几个输入"，而是让 red line 执行、yellow branch 补齐。</p>
                     </div>
                   </div>
                 </div>
@@ -363,6 +393,12 @@
               </div>
 
               <h4>(a) 模型答案：Additional Tests for Full Branch Coverage</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>你面前有一份代码染色报告。第28行是黄色。第32行是黄色。第33行是红色。第28行的条件是"开关开了而且文件存在"。如果之前只测了true的情况。那false的情况还是黄的。第32行的条件是"开关没开。但覆盖开关开了"。同样缺了一个方向。第33行是红的。说明从没被跑到。你需要给三个布尔参数。分别是enabled、exists、overwrite。一组一组地试。直到所有行都变绿。</p>
+                <p><strong>考试时你这么写：</strong>第一步。列出三行各自缺什么。用文字说清楚。第二步。写TCI表（测试覆盖项表）。每行一个TCI编号和覆盖目标。比如TCI1覆盖第28行true分支。TCI4覆盖第33行的执行。第三步。写Test Cases表。每条测试有四个要素。TCI编号、输入参数、期望输出、为什么这条能补上缺口。</p>
+                <p><strong>为什么这样写能拿分：</strong>15分。三分之一判给coverage gap分析。三分之一判给TCI表结构。三分之一判给test cases的完整性和expected result。注意——Expected Result必须从spec推导。不能因为"这是补覆盖的"就不写。不写Expected Result那行直接0分。</p>
+              </div>
               <p><strong>Coverage gaps 分析：</strong></p>
               <ul>
                 <li><strong>Line 28 yellow：</strong><code>if (enabled && exists)</code> — 其中一个 branch 方向未被覆盖（例如 enabled&&exists 为 true 的分支已被测，但对应 false 的分支未走）。</li>
@@ -400,6 +436,12 @@
               </div>
 
               <h4>(b) 模型答案：Short-circuit &amp; "1 of 4 branches missed"</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>代码里写的是<code>enabled && exists</code>。看起来只有一个if。但Java编译成机器码（bytecode）后。它变成了多个跳转指令。想象你走一条路。第一个路口判断"enabled是true吗"。如果不是。直接绕开。连"exists"都不看。这就是短路（short-circuit）。JaCoCo按机器码计数。所以源码里一个if。在报告里可能显示4个分支。你只测了其中3个。它就报"4个分支里漏了1个"。</p>
+                <p><strong>考试时你这么写：</strong>列出四路分支。第一路enabled是false。跳过exists。第二路enabled是true但exists是false。第三路两个都是true。第四路是隐式分支。再说明怎么补。用不同输入让每一路都被执行。</p>
+                <p><strong>为什么这样写能拿分：</strong>5分题。老师看你是否理解"源码一个if≠bytecode一个branch"。你列出四路分支就拿到主要分。再用一行话说明short-circuit的含义。</p>
+              </div>
               <p><code>&&</code> 在 bytecode 层面产生多个 conditional jump 指令，JaCoCo 按字节码插桩计数：</p>
               <ol class="rung-list">
                 <li><strong>Branch 1：</strong>!enabled &rarr; 跳转到 L1（不评估 exists）</li>
@@ -410,6 +452,12 @@
               <p>如果现有测试只击中了部分 branch（例如 enabled=false 时 exists 从未被 evaluated），JaCoCo 就报 "1 of 4 branches missed"。补测的方法：提供让 missing branch 被触发的输入，使得被短路的子条件得到 evaluation。</p>
 
               <h4>(c) 模型答案：Black-box vs White-box 四点对比</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>黑盒测试（BB）就像你不用打开手机壳。只看说明书就测功能。白盒测试（WB）就像你打开手机壳。看着电路板找哪里可能断线。黑盒能发现"说明书写错了"这种问题。白盒能发现"某行代码从来没跑过"这种问题。黑盒可以写代码前就写好。白盒必须等代码写完了才能测。黑盒很难说"我测了百分之多少"。白盒有工具告诉你具体覆盖率数字。</p>
+                <p><strong>考试时你这么写：</strong>列四点对比表。每点包括黑盒和白盒两列。四点分别是：发现的错误类型、代码变更影响、能否先于代码编写、coverage可测量性。表后附一句：两者互补。不能互相替代。</p>
+                <p><strong>为什么这样写能拿分：</strong>5分题。四点各1分。最后一句"两者互补"再1分。每点必须有具体的对比内容。不能只写"黑盒不看代码白盒看代码"——太泛了。注意——用词要区分：黑盒叫spec-based。白盒叫code-based。</p>
+              </div>
               <div class="table-wrap">
                 <table>
                   <thead><tr><th>维度</th><th>Black-box</th><th>White-box</th></tr></thead>
@@ -429,7 +477,7 @@
               <p><strong>预测：</strong>Numbers 类有 static method <code>isNeg(int x)</code> 和 instance methods <code>setValue(int v)</code>、<code>isNegative()</code>、<code>getResult()</code>。</p>
               <p><strong>子题：</strong>(a) [10] 比较 static 与 instance method 的测试写法。 (b) [15] Braking.decide() 在 class context 中的 EP 测试。</p>
               <div class="bridge-box">
-                <h4>先降坡：Class context 题不是“多写一行 new”</h4>
+                <h4>先降坡：Class context 题不是"多写一行 new"</h4>
                 <p>这类题的核心是：方法的输出是否依赖对象内部状态。static method 通常只看参数；instance method 要先把对象放进目标状态，再调用被测方法，再观察结果。</p>
                 <div class="bridge-grid">
                   <div class="bridge-step">
@@ -449,7 +497,7 @@
                     <p>如果题面给 <code>isShipped()</code>，就用它识别状态；只有题目问 signatures 时才展开 full signatures。</p>
                   </div>
                 </div>
-                <p><strong>卷面思路：</strong>先解释 static vs instance 的依赖差异，再把 EP 表转成可执行调用序列。阅卷人要看到“对象如何进入这个状态”。</p>
+                <p><strong>卷面思路：</strong>先解释 static vs instance 的依赖差异，再把 EP 表转成可执行调用序列。阅卷人要看到"对象如何进入这个状态"。</p>
               </div>
               <div class="micro-check">
                 <p><strong>教师批注校准：</strong>Class context 题练 2018、2020-2025；state-based 题补 2016、2017。Jan 2017 Q3(b) 若已有 <code>isShipped()</code>/<code>isReturned()</code> 就用它们识别状态；Q3(c) 才要求 full signatures。</p>
@@ -461,7 +509,7 @@
               </div>
               <div class="mechanic-demo" data-scenario-demo>
                 <div class="mechanic-head">
-                  <p><span class="mechanic-kicker">判分要点</span><br><strong>Q3 的核心不是“会写 JUnit”，而是会把对象状态摆出来。</strong>先判断 static / instance，再写 create-set-call-observe。</p>
+                  <p><span class="mechanic-kicker">判分要点</span><br><strong>Q3 的核心不是"会写 JUnit"，而是会把对象状态摆出来。</strong>先判断 static / instance，再写 create-set-call-observe。</p>
                   <span class="mechanic-status" data-scenario-status>1/3</span>
                 </div>
                 <div class="mechanic-toolbar">
@@ -511,13 +559,19 @@
                       </div>
                     </div>
                     <div class="mechanic-explain">
-                      <p>Stephen Brown 的批注重点是“按题目要求写”。如果题面已经提供状态识别方法，Q3(b) 用这些方法描述状态即可；只有题目要求 modified signatures 时，才把参数、receiver state、return state 全部展开。</p>
+                      <p>Stephen Brown 的批注重点是"按题目要求写"。如果题面已经提供状态识别方法，Q3(b) 用这些方法描述状态即可；只有题目要求 modified signatures 时，才把参数、receiver state、return state 全部展开。</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <h4>(a) 模型答案：Static vs Instance Testing</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>static方法像计算器。你输入-1。它输出true。结果只取决于你给它的数字。instance方法像温度计。你先要把它插到被测物里（setValue）。它才知道当前温度是多少。然后你问它"现在是负数吗"（isNegative）。它才能回答。测试时。static方法一行搞定。instance方法要走四步。new出来、设状态、调方法、看结果。缺一步都不行。</p>
+                <p><strong>考试时你这么写：</strong>列一张四行对比表。行分别是：调用方式、测试步骤、行为依赖、实例代码。每行写清楚static和instance的区别。最后写一句核心区别：static是纯函数。instance是有状态方法。</p>
+                <p><strong>为什么这样写能拿分：</strong>10分题。表占6分。核心区别句占2分。实例代码的完整调用序列占2分。注意——instance的代码示例必须包含四步。缺一步扣1分。比如只写了<code>n.isNegative()</code>。前面没有<code>setValue(-1)</code>。阅卷人不知道对象状态。</p>
+              </div>
               <div class="table-wrap">
                 <table>
                   <thead><tr><th></th><th>Static Method (isNeg)</th><th>Instance Method (isNegative)</th></tr></thead>
@@ -532,10 +586,16 @@
               <p><strong>核心区别：</strong>static method 是纯函数——输入直接决定输出，不涉及对象状态；instance method 是有状态方法——结果取决于对象字段的当前值，必须先通过序列调用将对象置于目标状态。</p>
 
               <h4>(b) 模型答案：Braking.decide() EP Testing in Class Context</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>想象你是刹车测试员。你的任务是测<code>Braking.decide()</code>这个方法。它不接收参数。但它的行为取决于两个内部状态。一个是危险等级（dangerLevel）。另一个是手动覆盖开关（override）。还有紧急刹车开关（emergencyBrake）。你要测的不是"输入什么数字"。而是"把刹车系统设置成什么状态。再问它要不要刹"。比如先把危险等级设成12。override设成false。然后调用decide()。看它是不是说"急刹"。</p>
+                <p><strong>考试时你这么写：</strong>分四步。第一步。识别mutator（设置状态的方法）和accessor（读取状态的方法）。第二步。画出dangerLevel的value line。标明三个分区。SAFE是0-4。CAUTION是5-9。DANGER是10+。第三步。列EP覆盖表。五种场景。加上override和emergencyBrake的附加情况。第四步。写test cases。每个test case写出完整的调用序列。从new开始到decide()结束。</p>
+                <p><strong>为什么这样写能拿分：</strong>15分。分区识别（5分）+EP表（5分）+调用序列（5分）。最常见的错误是只写参数值不写调用顺序。比如只写"dangerLevel=12"。不写怎么设进去的。注意——instance method的test case必须让阅卷人看到对象从创建到被检验的全过程。</p>
+              </div>
               <p><strong>Step 1 — 识别 accessor methods：</strong></p>
               <ul>
-                <li><strong>Mutators：</strong><code>setOverride(boolean)</code>、<code>setDangerLevel(int)</code>（或 constructor）</li>
-                <li><strong>Accessors：</strong><code>getDangerLevel()</code>、<code>isEmergencyBrake()</code>、<code>decide()</code> 返回值</li>
+                <li><strong>Mutators：</strong><code>setOverride(boolean)</code>、<code>setDangerLevel(int)</code>（或 constructor）——这些方法改变对象状态。</li>
+                <li><strong>Accessors：</strong><code>getDangerLevel()</code>、<code>isEmergencyBrake()</code>、<code>decide()</code> 返回值——这些方法读取或判断对象状态。</li>
               </ul>
 
               <p><strong>Step 2 — dangerLevel value line &amp; partitions：</strong></p>
@@ -544,9 +604,9 @@
                 <table>
                   <thead><tr><th>Partition</th><th>范围</th><th>语义</th></tr></thead>
                   <tbody>
-                    <tr><td>DL1</td><td>0–4</td><td>SAFE</td></tr>
-                    <tr><td>DL2</td><td>5–9</td><td>CAUTION</td></tr>
-                    <tr><td>DL3</td><td>10+</td><td>DANGER</td></tr>
+                    <tr><td>DL1</td><td>0–4</td><td>SAFE（安全，不刹车）</td></tr>
+                    <tr><td>DL2</td><td>5–9</td><td>CAUTION（注意，轻刹）</td></tr>
+                    <tr><td>DL3</td><td>10+</td><td>DANGER（危险，急刹）</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -589,7 +649,7 @@
               <p><strong>预测：</strong><code>PV.exportPower(boolean enabled, int nettPower)</code>。enabled && nettPower &gt; 0 &rarr; true，否则 &rarr; false。</p>
               <p><strong>子题：</strong>(a) [9] 从 spec 推导 Decision Table rules + 每条 rule 的随机数据生成标准。 (b) [10] Automated test pseudo-code。 (c) [6] 随机测试三大问题（data/oracle/completion）及解决方案。</p>
               <div class="bridge-box">
-                <h4>先降坡：Random testing 不是“随机猜答案”</h4>
+                <h4>先降坡：Random testing 不是"随机猜答案"</h4>
                 <p>随机测试只是在每个规则范围内多抽样。真正决定 expected result 的仍然是 specification 或 decision table。也就是说，random 负责<strong>输入生成</strong>，DT 负责<strong>oracle</strong>。</p>
                 <div class="bridge-grid">
                   <div class="bridge-step">
@@ -606,7 +666,7 @@
                   </div>
                   <div class="bridge-step">
                     <strong>何时停止</strong>
-                    <p>写每条 rule 100 次，比“总共循环 400 次”更好，因为它保证每条规则都被覆盖。</p>
+                    <p>写每条 rule 100 次，比"总共循环 400 次"更好，因为它保证每条规则都被覆盖。</p>
                   </div>
                 </div>
                 <p><strong>卷面思路：</strong>先列 DT rules，再列每条 rule 的 random generation criteria，最后用伪代码显示循环、断言和完成标准。</p>
@@ -636,7 +696,7 @@
                       </div>
                     </div>
                     <div class="mechanic-explain">
-                      <p>Oracle 不是“把随机输入喂给函数看它说什么”。Oracle 是 decision table 的 expected column：输入落在哪条 rule，就直接知道应该 assert true 还是 false。</p>
+                      <p>Oracle 不是"把随机输入喂给函数看它说什么"。Oracle 是 decision table 的 expected column：输入落在哪条 rule，就直接知道应该 assert true 还是 false。</p>
                     </div>
                   </div>
                 </div>
@@ -653,7 +713,7 @@
                       </div>
                     </div>
                     <div class="mechanic-explain">
-                      <p>写 pseudo-code 时每条 rule 单独循环最清楚：固定 boolean cause，随机生成合法范围内的 numeric value，然后用该 rule 的 expected result 断言。停止条件按 rule 覆盖，而不是“总共跑 400 次”。</p>
+                      <p>写 pseudo-code 时每条 rule 单独循环最清楚：固定 boolean cause，随机生成合法范围内的 numeric value，然后用该 rule 的 expected result 断言。停止条件按 rule 覆盖，而不是"总共跑 400 次"。</p>
                     </div>
                   </div>
                 </div>
@@ -674,6 +734,12 @@
               </div>
 
               <h4>(a) 模型答案：DT Rules &amp; Random Criteria</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>你有一个太阳能板导出函数。它有两个输入。一个是开关（enabled）。一个是净功率（nettPower）。只有开关开了。而且功率是正数。函数才返回true。其他情况都是false。你要先掰开来。写成四行规则。每行规则告诉你。在什么输入条件下。输出应该是什么。然后你给每行规则指派一个随机范围。比如R1说"开关开、功率正"。你就在正数里随机抽功率。R2说"开关开、功率非正"。你就在零和负数里随机抽。</p>
+                <p><strong>考试时你这么写：</strong>先画DT表。四行。列名是Rule、enabled、nettPower、Expected Result。然后画随机标准表。四行。列名是Rule、fixed cause、nettPower random range、Expected。每条rule的随机范围要具体。比如R1写"1..Integer.MAX_VALUE"。不要写"positive numbers"。最后写一句completion标准。每条rule命中100次。</p>
+                <p><strong>为什么这样写能拿分：</strong>9分。DT表3分（四行规则都对）。随机标准表3分（每行范围具体）。completion标准3分（说清楚是基于rule覆盖而不是总次数）。注意——R2和R4的范围要写对。都是≤0。不要不小心写成≥0。</p>
+              </div>
               <p><strong>Decision Table：</strong></p>
               <div class="table-wrap">
                 <table>
@@ -701,6 +767,12 @@
               <p>Completion criterion：每条 rule 命中 100 次，而非固定总次数（coverage-based completion）。</p>
 
               <h4>(b) 模型答案：Automated Test Pseudo-code</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>你要写一段伪代码。让计算机会自动测这个函数。不是只测一次。而是每条规则随机测100次。伪代码的结构很固定。new一个随机数生成器。然后for循环。每次循环。生成一个符合规则范围的功率值。再用那条规则的期望输出去断言。比如R1的循环。固定enabled=true。随机生成功率在1到MAX之间。然后用assertTrue断言。因为R1的期望就是true。四条规则各写一个for循环。</p>
+                <p><strong>考试时你这么写：</strong>写四个独立的for循环。每个循环上面标清楚是R1/R2/R3/R4。循环体内三步：生成随机值、调用被测函数、用assert断言。断言消息里加上np的实际值。方便失败时定位。注意R2和R4的随机生成要处理好正负号。确保最终值≤0。</p>
+                <p><strong>为什么这样写能拿分：</strong>10分。伪代码结构（4分）+每个循环的正确性（4分）+断言带消息（2分）。注意——不要写一个大循环里面挑rule。要写四个小循环。因为这样阅卷人一眼看出每条rule都被覆盖了。</p>
+              </div>
               <pre><code>Random rand = new Random();
 
 // R1: enabled=true, nettPower > 0, expect true
@@ -730,6 +802,12 @@ for (int i = 0; i &lt; 100; i++) {
 }</code></pre>
 
               <h4>(c) 模型答案：三大问题及解决方案</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>随机测试有三个坑。第一个坑是数据问题（data）。你不能满世界乱生数字。因为大部分数字测不到新东西。你必须按规则限定生成范围。第二个坑是裁判问题（oracle）。计算机不知道怎么判断"对还是错"。你不能让它调用被测函数自己判断自己。你必须从规格说明或决策表里预先写出正确答案。第三个坑是停止问题（completion）。你不知道测多久算够。你得定一个覆盖目标。比如每条规则被命中100次。</p>
+                <p><strong>考试时你这么写：</strong>三列表。问题列、描述列、解决方案列。每行的解决方案必须具体到本题。不能写泛泛的"用spec判断"。要写"R1→true, R2-R4→false"。因为阅卷人要看你会不会把抽象概念落实到具体函数上。</p>
+                <p><strong>为什么这样写能拿分：</strong>6分。三个问题各2分。每个问题的解决方案必须是针对PV.exportPower的具体方案。不是泛泛的定义。如果解决方案里没有提到具体函数名和具体规则编号。会扣分。注意——oracle的解决方案中。必须写明"不依赖被测函数自身"。这是核心考点。</p>
+              </div>
               <div class="table-wrap">
                 <table>
                   <thead><tr><th>问题</th><th>描述</th><th>解决方案</th></tr></thead>
@@ -752,6 +830,16 @@ for (int i = 0; i &lt; 100; i++) {
               <h3>boilerSetting() Decision Table（Q1 变体）</h3>
               <p><strong>触发条件：</strong>如果 Q1 不考 BVA 而考 Decision Table。</p>
               <p><strong>Spec：</strong><code>boilerSetting(int t, boolean isOn)</code>。输出 NONE / LOW / HIGH。</p>
+              <div class="answer-box">
+                <h4>先搞懂：BVA 和 Decision Table 什么时候用谁</h4>
+                <p><strong>宝宝级解释：</strong>BVA 和 DT 的区别就像两种不同的测试策略。BVA 适合"一个参数的不同区间"——比如温度低于16度开暖气、高于60度关暖气，边界是单个数字，你测那个数字的前后左右就行。DT 适合"多个条件组合起来决定结果"——比如温度高不高 <strong>而且</strong> 开关有没有开，这两个条件组合起来才决定到底加热还是不加热。boilerSetting 就是典型的 DT 场景：温度有三个区间（极低/低温/高温），开关有两个状态（开/关）。你不可能单独测温度或单独测开关——"开关关了温度再低也没用"这种逻辑只有 DT 能覆盖。</p>
+                <p><strong>考场翻译：</strong>拿到 spec 先看有没有 boolean 开关（isOn）配合数值区间。如果有，八成是 DT。做法三步：①列出所有 causes（条件）和 effects（输出）；②算出全部组合 2^4=16，标记哪些组合不可能同时成立（比如温度不可能既低于1度又高于25度），划掉这些 infeasible（不可行的）；③剩下的 feasible rules 每条做一个 test case，选具体数值塞进去。</p>
+              </div>
+
+              <div class="answer-box">
+                <h4>用人话讲就是：causes/effects/infeasible 的完整走法</h4>
+                <p>你要搞懂DT的三个核心步骤。第一步。列出原因和结果。原因就是你输入的各个条件。比如"温度低于1度吗"是一个原因。结果就是程序产出的行动。比如"不加热"是一个结果。第二步。找出哪些原因不能同时成立。比如温度不可能同时低于1度又高于25度。这种叫互斥条件（mutually exclusive）。把含有互斥条件的规则列划掉。标上INFEASIBLE。第三步。剩下可用的规则。每条选一个具体温度值。搭配开关状态。写出期望输出。比如R1是"极低温+开启→LOW"。你挑t=-50。isOn=true。期望LOW。</p>
+              </div>
 
               <h4>标准答案结构</h4>
               <p><strong>Step 1 — 定义 Causes &amp; Effects：</strong></p>
@@ -803,13 +891,111 @@ for (int i = 0; i &lt; 100; i++) {
                 </table>
               </div>
               <div class="micro-check">
-                <p><strong>判分关键：</strong>必须标注 C1/C2/C3 互斥并划线 infeasible；每 feasible rule 给一个具体 t 值和 expected effect；-50 和 +50 来源于 very low / very high 的代表值选取。</p>
+                <p><strong>判分关键：</strong>必须标注 C1/C2/C3 互斥并划线 infeasible；每 feasible rule 给一个具体 t 值和 expected effect；-50 和 +50 来源于 very low / very high 的代表值选取。注意——infeasible的论证不能省略。这是DT区别于普通条件组合的关键步骤。不标infeasible至少扣3分。</p>
               </div>
             </section>
 
             <section id="s2-oracle" class="section">
               <h3>isSquare() Oracle + whatSpeed() Random EP</h3>
               <p><strong>触发条件：</strong>Q4 考 oracle 设计或随机 EP，而非 PV.exportPower。</p>
+
+              <div class="bridge-box">
+                <h4>先降坡：isSquare() 题先别急着写代码</h4>
+                <p><code>isSquare(x)</code> 的功能听起来很简单：如果 x 是完全平方数就返回 true，否则返回 false。真正的考点不是平方根，而是<strong>全自动随机测试为什么会卡在三个问题上</strong>。你可以把它想成一个测试机器人：机器人能乱生成数字，但它不知道该生成哪些数字、不知道标准答案，也不知道什么时候该停。</p>
+                <div class="bridge-grid">
+                  <div class="bridge-step">
+                    <strong>1. Data problem：机器人会漏掉稀有输入</strong>
+                    <p>在很大的 int 范围里，完全平方数很少。纯随机可能生成 5、-88、10243 这种非平方数很多次，却一次都没生成 4、9、8281。这样 false path 被跑烂了，true path 仍然没测到。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>2. Oracle problem：机器人不知道标准答案</strong>
+                    <p>如果随机得到 8281，脚本要写 <code>assertEquals(expected, isSquare(8281))</code>。问题是 expected 从哪里来？不能直接调用被测函数自己，也不能靠猜。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>3. Completion problem：机器人不知道什么时候测完</strong>
+                    <p>跑 100000 次没失败，不代表测完。它可能从没测到 0、负数、最大整数、最大可平方边界、溢出附近这些关键点。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>4. 结构化解法：EP + oracle + quota</strong>
+                    <p>把输入分区：negative、zero、positive non-square、positive square、large boundary。每个分区随机抽样，并给每个分区设完成数量，而不是全范围盲抽。</p>
+                  </div>
+                </div>
+                <p><strong>一句话总答案：</strong>fully automated random testing 的难点不是"能不能随机生成输入"，而是能不能保证生成到有价值的输入、能不能独立判断 expected result、能不能定义合理的停止条件。</p>
+              </div>
+
+              <div class="answer-box">
+                <h4>用人话讲就是：为什么不能直接调isSquare自己当裁判</h4>
+                <p>假设你要测一个判断平方数的函数。你写了一个测试脚本。随机生成了数字8281。你把这数字同时喂给被测函数和被当作裁判的函数。如果裁判和被测量是同一个函数。那不管函数代码错成什么样。裁判都会说"对"。就等于自己给自己批卷子。永远100分。真正的oracle（裁判机制）必须独立。它要从数学定义出发。用其他方法验证。比如用数学库计算平方根。再反向验证。这样就算被测函数有bug。裁判能独立发现。</p>
+              </div>
+
+              <div class="sim-panel" data-square-sim>
+                <h4>手动模拟器：纯随机为什么很容易测不到 true path</h4>
+                <p>点击运行后，下面会随机生成一批整数。绿色数字是完全平方数，也就是会走 <code>isSquare()</code> 的 true path；普通数字和浅黄负数都会走 false path。这个模拟器不自动跑，只有你点击才会重新抽样。</p>
+                <div class="sim-controls">
+                  <label class="sim-control">
+                    测试次数
+                    <input type="number" min="1" max="200000" value="1000" data-square-count>
+                  </label>
+                  <label class="sim-control">
+                    随机范围
+                    <select data-square-range>
+                      <option value="-2147483648,2147483647">32-bit int 全范围</option>
+                      <option value="0,1000000">0 .. 1,000,000</option>
+                      <option value="0,1000">0 .. 1,000</option>
+                      <option value="-100,100">-100 .. 100</option>
+                    </select>
+                  </label>
+                  <button class="sim-button" type="button" data-square-run>运行随机测试</button>
+                </div>
+                <div class="sim-stats">
+                  <div class="sim-stat"><strong data-square-hits>0 / 0</strong><span>true path hits</span></div>
+                  <div class="sim-stat"><strong data-square-ratio>0%</strong><span>hit rate</span></div>
+                  <div class="sim-stat"><strong data-square-expected>0 expected</strong><span>expected hits</span></div>
+                  <div class="sim-stat"><strong>48 shown</strong><span>first samples below</span></div>
+                </div>
+                <p data-square-message>点击运行随机测试。</p>
+                <div class="sample-strip" data-square-samples></div>
+                <p><strong>读法：</strong>如果 1000 次随机测试在 32-bit 全范围里命中 0 个平方数，这不是模拟器坏了，而是 test data problem 本身。解决方法不是"再盲跑久一点"，而是先按 EP 制造 square partition，例如随机选 k，再令 x = k*k。</p>
+              </div>
+
+              <h4>三大问题的考场写法：先讲翻车，再讲修法</h4>
+              <div class="answer-box">
+                <h4>用人话讲就是：数据问题</h4>
+                <p>你随机抽数字。在-21亿到+21亿的范围里。完全平方数只有大约46340个。占全部整数的十万分之一。你抽1000次。大概率一次平方数都抽不到。这意味着isSquare的true分支从来没跑过。你测了1000次其实只测了false分支。这叫数据问题。解法不是继续盲抽。而是主动制造平方数。比如随机选k。然后算x=k*k。保证x一定是平方数。</p>
+              </div>
+              <div class="answer-box">
+                <h4>用人话讲就是：裁判问题</h4>
+                <p>你生成了8281。怎么判断isSquare(8281)应该返回true还是false。你不能调用isSquare自己来判断。因为你测的就是它。如果它有bug。它会说false。然后你拿这个false当"正确答案"。test就永远pass。这叫裁判问题。解法是用独立的数学方法。Math.sqrt算出平方根。取整后反算。如果r*r等于x。那x就是平方数。这个判断完全不依赖被测函数。</p>
+              </div>
+              <div class="answer-box">
+                <h4>用人话讲就是：停止问题</h4>
+                <p>你跑了100000次都没报错。是不是就测完了。不一定。可能你从没测过x=0。也可能从没测过负数。还可能没测过46340²这种边界大数。这叫停止问题。解法不是跑更多次。而是提前定义好"每个输入类型至少被测了N次"。比如负数100次。零至少1次。平方数100次。非平方数100次。边界值全部到位。全部达标了才算测完。</p>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>问题</th><th>isSquare() 翻车现场</th><th>卷面满分句子</th><th>对应修法</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Test Data Problem</strong></td>
+                      <td>纯随机在巨大整数范围里大多抽到非平方数，true path 可能长期不执行。</td>
+                      <td>Pure random generation may fail to hit sparse input classes. For <code>isSquare()</code>, perfect squares are rare in a large integer range, so many random tests may only exercise the false branch.</td>
+                      <td>按 EP 分区生成：负数、0、正平方数、正非平方数、边界值；平方数分区用 <code>x=k*k</code> 主动制造。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Test Oracle Problem</strong></td>
+                      <td>脚本抽到 8281 时，不会天然知道 expected 是 true。</td>
+                      <td>The automated script can generate inputs, but it does not inherently know the correct expected output. An independent oracle is required to decide whether each random input is a square.</td>
+                      <td>用独立数学性质做 oracle：<code>r=floor(sqrt(x))</code> 后检查 <code>r*r==x</code> 或 <code>(r+1)*(r+1)==x</code>。</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Test Completion Problem</strong></td>
+                      <td>跑 100000 次没失败，也可能没测到 0、负数、MAX、溢出边界。</td>
+                      <td>Random testing has no built-in stopping criterion. A large number of executions does not guarantee that important partitions or boundary cases have been covered.</td>
+                      <td>定义 completion criteria：每个 partition 至少 N 次；再补固定边界值，如 -1、0、1、46340²、46340²+1、Integer.MAX_VALUE。</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
               <h4>isSquare(int x) Oracle</h4>
               <p><strong>题目：</strong>对随机 x 判断是否为完全平方数，如何设计 oracle？</p>
@@ -819,9 +1005,33 @@ int r = (int) Math.sqrt(x);
 boolean expected = (r * r == x) || ((r + 1) * (r + 1) == x);
 assertEquals(expected, isSquare(x));</code></pre>
               <p>原理：用 <code>Math.sqrt(x)</code>（独立于被测函数的数学库）计算平方根，取整后反算验证 r&sup2; == x。同时检查 (r+1)&sup2; 以处理浮点截断问题（sqrt(25) 可能返回 4.999999）。此 oracle 完全不依赖被测 isSquare() 函数的输出。</p>
+              <div class="answer-box">
+                <p><strong>为什么这比"再写一个 isSquare2"更好：</strong>考试里不要说"我再实现一遍同样的 algorithm"。更稳的说法是：oracle 来自独立的数学定义，完全平方数满足 <code>∃k. k*k=x</code>；测试代码用库函数 <code>sqrt</code> 找到最接近的 k，再用乘法反查。这和被测函数的实现路径分离，能独立产生 expected result。</p>
+                <p><strong>边界提醒：</strong>若 x&lt;0，expected 必须是 false；若 x=0，expected 通常是 true，因为 0=0²；若接近 <code>Integer.MAX_VALUE</code>，要避免 <code>(r+1)*(r+1)</code> 溢出，真实代码里可用 <code>long</code> 做乘法。</p>
+              </div>
+
+              <h4>isSquare() 的结构化随机测试计划</h4>
+              <p>如果题目问你"如何避免纯随机盲抽的问题"，答案不是完全放弃随机，而是把随机放进每个 partition 里。</p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Partition</th><th>如何生成随机数据</th><th>Expected</th><th>为什么必须有</th></tr></thead>
+                  <tbody>
+                    <tr><td>Negative</td><td>随机取 <code>-MAX .. -1</code></td><td>false</td><td>防止 sqrt 处理负数时报错或误判。</td></tr>
+                    <tr><td>Zero</td><td>固定取 <code>0</code></td><td>true</td><td>0 是特殊边界；很多同学会忘记 0=0²。</td></tr>
+                    <tr><td>Small squares</td><td>随机取 k in 1..100，然后 x=k*k</td><td>true</td><td>主动覆盖 true branch，而不是等纯随机撞上。</td></tr>
+                    <tr><td>Small non-squares</td><td>随机取正数 x，若是平方数就 +1</td><td>false</td><td>覆盖普通 false branch。</td></tr>
+                    <tr><td>Large boundary</td><td><code>46340*46340</code>、<code>46340*46340+1</code>、<code>Integer.MAX_VALUE</code></td><td>true / false / false</td><td>覆盖 int 最大可平方附近，防止溢出类错误。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Completion criterion：</strong>每个可随机 partition 至少生成 100 个测试；固定边界值全部必须出现；最后再看 statement/branch coverage 是否至少覆盖 true 和 false 两条路径。</p>
 
               <h4>whatSpeed(int temp) Random EP</h4>
               <p><strong>Spec：</strong>temp 分区 — OFF (0–50)、LOW (51–70)、HIGH (71–100)、ERROR (&lt;0 或 &gt;100)。</p>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>这个题和PV.exportPower是同一套模板。只是换了函数名和分区。依然要写分区表。每区分配合适的随机范围。每个范围循环50次。用spec里的分区定义做oracle。比如temp在51到70之间的。expected一定是LOW。不需要调用被测函数判断。完成标准也是每区50次命中。思路和PV一模一样。</p>
+              </div>
               <p><strong>测试方案：</strong></p>
               <div class="table-wrap">
                 <table>
@@ -841,7 +1051,11 @@ assertEquals(expected, isSquare(x));</code></pre>
             <section id="s2-ai" class="section">
               <h3>AI-Generated Tests（可能的新考点）</h3>
               <p><strong>触发条件：</strong>近年 AI 工具流行，教材可能新增 AI 辅助测试设计的内容。</p>
-
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>现在有AI工具。你可以把规格说明（spec）粘贴进去。让AI帮你生成测试用例。但AI不是万能的。它有三大好处和三大风险。好处是快、能识别数字阈值、能补JaCoCo漏掉的分支。风险是它可能读错spec、编造expected result、漏掉冷门边界值。考试时如果你要说AI。一定要补一句。所有AI生成的测试。都需要人工review。特别是expected result。必须对照spec逐条验证。</p>
+                <p><strong>注意——</strong>考试中如果问到AI testing。不要只说"AI好用"或"AI不可靠"。要列出具体的advantages和risks。再补上human review的检查清单。这符合CS608"测试需要独立oracle"的一贯立场。</p>
+              </div>
               <div class="table-wrap">
                 <table>
                   <thead><tr><th>方面</th><th>内容</th></tr></thead>
@@ -858,10 +1072,17 @@ assertEquals(expected, isSquare(x));</code></pre>
           <!-- ===== SECTION 3: 如果换考法 ===== -->
           <section id="s3" class="section">
             <h2>Section 3：如果换考法（50–69%）</h2>
-            <p>以下情况在 2025 Autumn 样本中出现过，如果出题人轮换考法，以下预测提供快速切换的答案框架。</p>
+            <p>以下情况在 2025 Autumn 出现过。出题人的套路是：同一个题型骨架，换一换 spec 里的函数名和参数。你不应该重新学一套东西——你应该认出它就是你练过的那个题型，然后套模板。</p>
+            <div class="answer-box">
+              <p><strong>宝宝级解释：</strong>想象你学会了做蛋炒饭。后来有人让你做虾仁炒饭、牛肉炒饭、素炒饭——你不需要从头学。你只需要把"蛋"换成"虾仁"，流程一模一样。CS608 的题也是这样：BVA 的模板学会了，Climate.determine 和 Braking.evaluate 只是参数名不同；JaCoCo 的模板学会了，SC（语句覆盖，Statement Coverage）和 BC（分支覆盖，Branch Coverage）只是红色和黄色的区别；random testing 的模板学会了，PV.exportPower 和 whatSpeed 只是 DT rule 的数量不同。</p>
+            </div>
 
             <section id="s3-braking" class="section">
               <h3>If Q1 changes to Braking.evaluate()（2025 Autumn 风格）</h3>
+              <div class="answer-box">
+                <h4>用人话讲就是：蛋炒饭变虾仁炒饭</h4>
+                <p>你已经学会Climate.determine的BVA模板了。Braking.evaluate只是换了个函数名。参数从temp/humidity换成了battLevel/bPressure。阈值从16/60换成了20/50。但核心操作一模一样。找spec里的数字阈值。画value line。为每个阈值取just below/on/above。按one fault assumption组合。写TCI表+Selected Values+Test Cases。expected result从spec的enum值里推。表格结构照抄Climate那道题的。只换数字。不换逻辑。</p>
+              </div>
               <p><strong>替换逻辑：</strong>同样的 BVA 结构，但 spec 换了对象。battLevel 和 bPressure 各有阈值。</p>
               <p><strong>快速适配步骤：</strong></p>
               <ol class="rung-list">
@@ -879,6 +1100,10 @@ assertEquals(expected, isSquare(x));</code></pre>
 
             <section id="s3-sc" class="section">
               <h3>If Q2 changes to Statement Coverage Only（2025 Autumn 风格）</h3>
+              <div class="answer-box">
+                <h4>用人话讲就是：蛋炒饭变素炒饭（更简单了）</h4>
+                <p>原版Q2要求你同时补黄色和红色。SC-only版本只要求你补红色。红色代表那行代码完全没跑过。你只需要找出所有红色行。为每行想一个输入。让程序走到那一行。不需要分析short-circuit。不需要区分bytecode层面的分支。这比原版Q2简单很多。但有一条不变。expected result仍然要从spec推导。不能省略。coverage不等于correctness（覆盖了不等于测对了）。</p>
+              </div>
               <p><strong>替换逻辑：</strong>题目只要求补红色 line（unexecuted statements），不要求补黄色 branch。</p>
               <p><strong>简化后的答题流程：</strong></p>
               <ol class="rung-list">
@@ -896,6 +1121,11 @@ assertEquals(expected, isSquare(x));</code></pre>
             <section id="s3-mtbf" class="section">
               <h3>If Q4 changes to MTBF Estimation（2025 Autumn Q4c 风格）</h3>
               <p><strong>替换逻辑：</strong>不考 PV.exportPower 的随机 test case 设计，而考用 random testing 估计 Mean Time Between Failures (MTBF) 并讨论风险管理。</p>
+              <div class="answer-box">
+                <h4>用人话讲就是</h4>
+                <p>MTBF就是"平均多久坏一次"。比如你随机测试一个系统。跑了100小时。坏了5次。那MTBF就是20小时。你要用随机测试来估算MTBF。随机生成符合用户真实使用习惯的输入。记录每次坏掉的时间间隔。然后算平均。MTBF越大说明系统越稳定。但测试投入不是无限的。你测到一定程度。再测下去花的钱比能发现的bug的价值还大。这时候就该停了。这就是投资-利润曲线告诉你的道理。边际收益递减。到某一点就该收手。</p>
+                <p><strong>注意——</strong>MTBF题不要求你列DT规则或写伪代码。它更偏概念和论述。重点是说清楚三点。MTBF怎么算。随机测试怎么帮我们估算MTBF。什么时候该停（投资-利润曲线的拐点）。</p>
+              </div>
 
               <h4>模型答案结构</h4>
               <p><strong>1. 用随机测试估计 MTBF：</strong></p>

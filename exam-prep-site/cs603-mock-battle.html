@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CS603 模拟战：题型预测与标准答案</title>
     <link rel="stylesheet" href="assets/styles.css">
+    <style>
+      td code, p code, .check-row code, .mechanic-explain code { white-space: nowrap; }
+    </style>
   </head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
@@ -51,6 +54,9 @@
             </ol>
             <div class="answer-box">
               <p><strong>阅卷人视角：</strong>CS603 阅卷看重结构清晰（分点写、标 (a)(b)(c)(d)），公式准确（量词、implication、temporal operators 不写错），解释到位（不只写"定义"还要写"为什么这个例子属于这个类别"）。本页所有 model answer 都按这个标准组织。</p>
+            </div>
+            <div class="answer-box">
+              <p><strong>2026-05-24 新增文件夹筛选：</strong><code>4-CS603/CS603</code> 里真正值得进入模拟考的是三类源材料：Otrio Dafny project（练对象状态、predicate、method contracts）、Spin-lab / elevator Promela（练 LTL、counterexample、atomic/fairness）、CA2 Z3 exercises（练 SMT-LIB、sat/model/push-pop）。编译产物 <code>bin/</code>、<code>obj/</code>、<code>pan.*</code>、压缩包和网页素材不作为复习主线。</p>
             </div>
           </section>
 
@@ -181,7 +187,7 @@
               <p><strong>Key:</strong> <code>every</code> → <code>∀</code> + <code>→</code>；<code>and</code> → <code>∧</code>。predicates: <code>Person(x)</code>, <code>Walking(x)</code>, <code>Talking(x)</code>。</p>
               <p><strong>Why ∀ with →?</strong> x 遍历所有事物，只有 Person(x) 为真时才需检查 Walking 和 Talking。不加 Person(x) 筛选，∀x (Walking(x) ∧ Talking(x)) 要求宇宙中一切都既走又说 — 假得离谱。</p>
             </div>
-            <div class="warning">
+            <div class="answer-box">
               <p><strong>致命口诀 (必背)：</strong>∀ 一定配 →（全称量词 + implication）；∃ 一定配 ∧（存在量词 + conjunction）。写反了整句话意思全错。∀x (Person(x) ∧ Walking(x)) → "所有东西都是人且都在走路"（假的）。∃x (Person(x) → Walking(x)) → 随手找一只猫不是人，左边 false，整句 true，表达不了"存在一个人在走路"。</p>
             </div>
 
@@ -254,9 +260,9 @@ while (i &lt; a.Length) {
                   <tr><th></th><th>Partial Correctness (部分正确性)</th><th>Total Correctness (完全正确性)</th></tr>
               </thead>
               <tbody>
-                <tr><td>Proves</td><td>If the program terminates, the result satisfies the postcondition.</td><td>The program ALWAYS terminates AND the result satisfies the postcondition.</td></tr>
-                <tr><td>Proof obligation</td><td>Invariant + 三步法 (establishment, preservation, exit use)</td><td>Invariant 三步法 + Variant (ranking function) 证明终止</td></tr>
-                <tr><td>What's missing</td><td>Termination proof — 循环可能跑 forever，partial correctness 不关心</td><td>Nothing missing — 完整保证</td></tr>
+                <tr><td>证明什么 (Proves)</td><td>[ZH] 如果程序终止，结果满足后置条件。If the program terminates, the result satisfies the postcondition.</td><td>[ZH] 程序一定终止，并且结果满足后置条件。The program ALWAYS terminates AND the result satisfies the postcondition.</td></tr>
+                <tr><td>证明义务 (Proof obligation)</td><td>Invariant + 三步法 (establishment, preservation, exit use)</td><td>Invariant 三步法 + Variant (ranking function) 证明终止</td></tr>
+                <tr><td>缺失什么 (What's missing)</td><td>Termination proof — 循环可能跑 forever，partial correctness 不关心</td><td>Nothing missing — 完整保证</td></tr>
                 <tr><td>Variant 要求</td><td>不需要</td><td>必须：non-negative (非负) + strictly decreasing each iteration (严格递减) + integer (基于良基序 well-founded ordering)</td></tr>
               </tbody>
             </table>
@@ -612,7 +618,7 @@ while (i &lt; a.Length) {
               <li><strong>Refinement proof obligation:</strong> 对每个 abstract event，存在一个对应的 concrete event 序列，其 net effect 在抽象观察层面等价</li>
             </ul>
             <div class="answer-box">
-              <p><strong>Simple coded example — Set refined to Array:</strong></p>
+              <p><strong>[ZH] 简单代码示例——集合精化为数组 (Simple coded example — Set refined to Array):</strong></p>
               <p>Abstract: <code>add(x)</code> — <code>contents := contents ∪ {x}</code></p>
               <p>Concrete: <code>addConcrete(x)</code> — <code>arr[size] := x; size := size + 1</code>，前提 <code>size &lt; arr.Length</code> (guard)</p>
               <p>Gluing invariant: <code>contents = set of arr[0..size)</code> — 保证 <code>addConcrete</code> 的效果等于 <code>add</code> 的效果（集合中多了一个元素 x）。</p>
@@ -745,13 +751,13 @@ while (i &lt; a.Length) {
 
             <h3>Model Answer — (a) Spin 验证 temporal properties 的流程 [7 marks]</h3>
             <ol class="rung-list">
-              <li><strong>Write Promela model.</strong> 用 Promela 语言描述系统：processes（进程）、channels（通道，用于进程通信）、variables（变量）。每个 process 是一段描述行为的代码。例如两个并发的进程交替执行、通过 channel 发消息。</li>
-              <li><strong>Specify LTL property.</strong> 把要验证的性质写成 LTL formula。例如 <code>G !(p1_critical && p2_critical)</code> 表示两个进程永远不会同时进入临界区。</li>
-              <li><strong>Build state space.</strong> Spin 穷举所有可能的交错执行 (interleavings)，构建完整的 state graph（Kripke structure）。每个状态 = 所有进程的 program counter + 所有变量的值。</li>
-              <li><strong>Negate LTL → Büchi automaton.</strong> 将 LTL formula 取反 (negation)，转换成 Büchi automaton — 一种接受无限字 (infinite words) 的有限状态自动机。取反的原理：如果原性质在所有路径上成立，那么取反后的自动机应该接受不到任何路径。</li>
-              <li><strong>Synchronous product.</strong> 计算 state graph × Büchi automaton 的同步积。积的每个状态 = (系统状态, 自动机状态)。如果积中存在 accepting cycle（可接受循环）→ 原性质被违反 → 继续找 counterexample。</li>
-              <li><strong>Counterexample output.</strong> Spin 输出一条从初始状态出发的有限路径 trace + 一个可无限重复的 cycle，展示了性质在哪个时刻被违反。你可以单步执行这个 trace 来 debug。</li>
-              <li><strong>Safety vs Fairness.</strong> Safety: 检查坏状态是否可达。Fairness: 只考虑所有 enabled process 最终都会被执行到的调度（排除 starvation 导致的假性 violation）。</li>
+              <li><strong>[ZH] 编写 Promela 模型. Write Promela model.</strong> 用 Promela 语言描述系统：processes（进程）、channels（通道，用于进程通信）、variables（变量）。每个 process 是一段描述行为的代码。例如两个并发的进程交替执行、通过 channel 发消息。</li>
+              <li><strong>[ZH] 指定 LTL 性质. Specify LTL property.</strong> 把要验证的性质写成 LTL formula。例如 <code>G !(p1_critical && p2_critical)</code> 表示两个进程永远不会同时进入临界区。</li>
+              <li><strong>[ZH] 构建状态空间. Build state space.</strong> Spin 穷举所有可能的交错执行 (interleavings)，构建完整的 state graph（Kripke structure）。每个状态 = 所有进程的 program counter + 所有变量的值。</li>
+              <li><strong>[ZH] 取反 LTL → Büchi 自动机. Negate LTL → Büchi automaton.</strong> 将 LTL formula 取反 (negation)，转换成 Büchi automaton — 一种接受无限字 (infinite words) 的有限状态自动机。取反的原理：如果原性质在所有路径上成立，那么取反后的自动机应该接受不到任何路径。</li>
+              <li><strong>[ZH] 同步积. Synchronous product.</strong> 计算 state graph × Büchi automaton 的同步积。积的每个状态 = (系统状态, 自动机状态)。如果积中存在 accepting cycle（可接受循环）→ 原性质被违反 → 继续找 counterexample。</li>
+              <li><strong>[ZH] 输出反例. Counterexample output.</strong> Spin 输出一条从初始状态出发的有限路径 trace + 一个可无限重复的 cycle，展示了性质在哪个时刻被违反。你可以单步执行这个 trace 来 debug。</li>
+              <li><strong>[ZH] 安全性 vs 公平性. Safety vs Fairness.</strong> Safety: 检查坏状态是否可达。Fairness: 只考虑所有 enabled process 最终都会被执行到的调度（排除 starvation 导致的假性 violation）。</li>
             </ol>
 
             <h3>Model Answer — (b) NuSMV vs Spin 差异 [6 marks]</h3>
@@ -762,11 +768,11 @@ while (i &lt; a.Length) {
               </thead>
               <tbody>
                 <tr><td>建模语言</td><td><strong>Promela</strong> — C-like process language，面向通信协议和异步并发</td><td><strong>SMV</strong> — module-based，面向同步有限状态机</td></tr>
-                <tr><td>State representation</td><td><strong>Explicit-state</strong> (显式状态) — 每个状态单独存储在内存中</td><td><strong>Symbolic (BDD-based)</strong> — 用 BDD (Binary Decision Diagrams) 压缩表示大量状态</td></tr>
+                <tr><td>[ZH] 状态表示 (State representation)</td><td><strong>Explicit-state</strong> (显式状态) — 每个状态单独存储在内存中</td><td><strong>Symbolic (BDD-based)</strong> — 用 BDD (Binary Decision Diagrams) 压缩表示大量状态</td></tr>
                 <tr><td>验证算法</td><td>Explicit-state model checking — 逐状态枚举 + DFS/BFS</td><td>Symbolic model checking — BDD 上的不动点计算 (fixpoint computation)</td></tr>
                 <tr><td>支持逻辑</td><td><strong>LTL only</strong></td><td><strong>LTL + CTL</strong> (Computation Tree Logic，含路径量词 A 和 E)</td></tr>
                 <tr><td>擅长场景</td><td>异步并发、通信协议、分布式算法</td><td>同步硬件电路、clock-driven 系统</td></tr>
-                <tr><td>State capacity</td><td>受内存限制（百万级状态）</td><td>BDD 压缩后可处理 10<sup>20</sup>+ 状态的硬件电路</td></tr>
+                <tr><td>[ZH] 状态容量 (State capacity)</td><td>受内存限制（百万级状态）</td><td>BDD 压缩后可处理 10<sup>20</sup>+ 状态的硬件电路</td></tr>
               </tbody>
             </table>
           </div>
@@ -829,7 +835,7 @@ while (i &lt; a.Length) {
           <!-- ===== Section 2: 很有可能 ===== -->
           <section id="section2" class="section">
             <h2>Section 2：很有可能（50–80% 命中率）</h2>
-            <p>以下变体在 2025 Autumn 考试中已经出现或极有可能出现。它们与 Section 1 题型框架完全相同，只是换了具体程序名或具体场景。掌握 Section 1 的模板后，这些应该能快速作答。</p>
+            <p>下面这些变体在 2025 Autumn 已经出现过。它们和 Section 1 是同一套骨架，只是换了程序名或场景——Find 换成 ComputeFib，BankAccount 换成 CopyArray。你不需要重学任何新东西。想象你学会了蛋炒饭，现在有人让你做虾仁炒饭——把蛋换成虾仁，流程一模一样。</p>
 
             <section class="section">
               <h3>Q1 Variant: ComputeFib(n) Hoare Proof</h3>
@@ -885,6 +891,59 @@ while (i &lt; n) {
             </section>
 
             <section class="section">
+              <h3>Q2 Variant: OtrioGame Dafny 规格设计（来自新增 CS603 文件夹）</h3>
+              <p><strong>为什么有用：</strong>新增的 <code>4-CS603/CS603</code> 文件夹里有一个 Otrio game Dafny 项目。它不像 past paper 那样直接给小题，但很适合准备“给一个对象/游戏系统，说明如何用 Dafny specification 验证核心逻辑”的题。</p>
+              <div class="bridge-box">
+                <h4>先降坡：看到游戏系统，先不要写代码</h4>
+                <p>这类题不是问你会不会玩 Otrio，而是问你能不能把规则变成 verification artefacts。先找 state，再找 invariant，再找每个 method 的 contract。</p>
+                <div class="bridge-grid">
+                  <div class="bridge-step">
+                    <strong>State</strong>
+                    <p>棋盘可抽象为 <code>board[27]</code>：3 行 × 3 列 × 3 个 size slot。颜色用整数表示：0 empty，1..4 是玩家颜色。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Invariant</strong>
+                    <p>所有 slot 都必须在合法颜色范围：<code>forall i :: 0 &lt;= i &lt; 27 ==> 0 &lt;= board[i] &lt;= 4</code>。remaining pieces 也要保持 0..3。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Precondition</strong>
+                    <p><code>CanMakeMove(r,c,s,color)</code>：坐标合法、slot 为空、玩家拥有该颜色、还有剩余棋子、游戏未结束。</p>
+                  </div>
+                  <div class="bridge-step">
+                    <strong>Postcondition</strong>
+                    <p><code>MakeMove</code> 后应保证目标 slot 被放入颜色、对应剩余数量减少、turn 切换、并且 class invariant 仍成立。</p>
+                  </div>
+                </div>
+              </div>
+              <p><strong>可交卷答案骨架：</strong></p>
+              <pre><code>predicate Valid()
+  reads this
+{
+  board != null && board.Length == 27 &&
+  forall i :: 0 &lt;= i &lt; 27 ==> 0 &lt;= board[i] &lt;= 4
+}
+
+predicate CanMakeMove(r:int, c:int, s:int, color:int)
+  reads this
+{
+  Valid() &&
+  0 &lt;= r &lt; 3 && 0 &lt;= c &lt; 3 && 0 &lt;= s &lt; 3 &&
+  board[r*9 + c*3 + s] == 0 &&
+  PlayerControlsColor(currentPlayer, color)
+}
+
+method MakeMove(r:int, c:int, s:int, color:int)
+  requires CanMakeMove(r,c,s,color)
+  modifies this, board
+  ensures board[r*9 + c*3 + s] == color
+  ensures Valid()</code></pre>
+              <p><strong>卷面分析：</strong>游戏题的核心不是把所有 GUI/输入都验证掉，而是说明你验证了 core logic：board bounds、move legality、piece placement、winner predicate。用户输入、显示格式、复杂 UI 可以说明为 runtime testing 或未验证部分。</p>
+              <div class="answer-box">
+                <p><strong>常见失分点：</strong>只写“use Dafny to verify the game”太空。必须把游戏规则翻成具体 predicate 和 ensures，例如 line win 可写成“存在某个 size，使同一行/列/对角线的三个 slot 都等于同一 color”；ring win 可写成“同一 cell 的 small/medium/large 三个 slot 都是同一 color”。</p>
+              </div>
+            </section>
+
+            <section class="section">
               <h3>Q3 Variant: CDCL vs DPLL — 为什么 DPLL 在某些公式上指数爆炸</h3>
               <p><strong>DPLL:</strong> Decide → BCP → 若冲突则时序回溯（chronological backtracking，只退一层）→ 尝试另一分支。没有 clause learning 机制。</p>
               <p><strong>为什么 DPLL 在某些公式上指数慢：</strong>考虑一个含大量对称冲突路径的公式。DPLL 每次回溯只退一层，相当于顺序试探每条死胡同。每次重新走到同一个冲突模式时，DPLL 无记忆 — 必须重新推理一遍相同的 BCP 链。导致搜索树呈指数级大小。</p>
@@ -910,15 +969,35 @@ while (i &lt; n) {
               </tbody>
             </table>
           </div>
-            <p><strong>CTL expressible but NOT LTL:</strong> <code>EG p</code> — "there exists a path where p always holds"。这在 LTL 中不可表达，因为 LTL 假定对所有路径量化。考试中常见问："Give an example expressible in CTL but not LTL" — 答案就是 <code>EG p</code> 或 <code>AG EF reset</code>（在所有路径上总能回到 reset 状态 — 这其实是可表达的，更标准的不可表达例子是 <code>AF AG p</code> 等。</p>
+            <p><strong>[ZH] CTL 可表达但 LTL 不可表达. CTL expressible but NOT LTL:</strong> <code>EG p</code> — "there exists a path where p always holds"。这在 LTL 中不可表达，因为 LTL 假定对所有路径量化。考试中常见问："Give an example expressible in CTL but not LTL" — 答案就是 <code>EG p</code> 或 <code>AG EF reset</code>（在所有路径上总能回到 reset 状态 — 这其实是可表达的，更标准的不可表达例子是 <code>AF AG p</code> 等。</p>
             <p><strong>简单不可表达例子：</strong><code>EG p</code> — "存在一条路径 p 始终成立" — LTL 中写不出对应的公式，因为 LTL 是 path formula，没有 path quantifier。</p>
           </section>
+
+            <section class="section">
+              <h3>Q4 Variant: Elevator / SPIN Lab — No Starvation, Atomic, Fairness</h3>
+              <p><strong>为什么有用：</strong>新增文件夹中的 <code>Spin-lab</code> 和 <code>CA2/elevator.pml</code> 很贴近 Q4：它们把 Promela model、LTL property、counterexample、atomic block、fairness 和 Event-B 映射放在同一个场景里。</p>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>题面对象</th><th>Promela / LTL 写法</th><th>卷面解释</th></tr></thead>
+                  <tbody>
+                    <tr><td>楼层 2 有请求后最终被服务</td><td><code>[] (request[2] -> <> !request[2])</code></td><td>这是 liveness / no-starvation：每次 request[2] 为真，未来某个状态必须被清掉。</td></tr>
+                    <tr><td>变量 n 只在 0 和 5 之间切换</td><td><code>[] (n==5 || n==0)</code></td><td>这是 safety：所有状态里 n 都不能离开集合 {0,5}。</td></tr>
+                    <tr><td>进程最终到达 end label</td><td><code>&lt;&gt; p@end</code></td><td>这是 eventuality。若写成 <code>[] p@end</code>，含义变成“从初始状态开始永远在 end”，通常立即失败。</td></tr>
+                    <tr><td>互斥临界区</td><td><code>[] (critical &lt;= 1)</code></td><td>这是 safety。注意不要误写成 <code>&lt;&gt; (critical &lt;= 1)</code>，后者只说“未来某次满足”，太弱。</td></tr>
+                    <tr><td>信号量永远合法</td><td><code>[] legal</code></td><td>若 <code>legal</code> 定义为 <code>sem &lt;= 2</code>，这是检查信号量不会超过容量。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Atomic 的卷面作用：</strong><code>atomic { ... }</code> 把 dispatcher 的“选择最近空闲电梯 + 设置 target + 清除 request”视为不可被其他进程插入的一个事务。去掉 atomic 后，SPIN 可能探索到 interleaving counterexample：另一个进程在中途改变 state/request，导致选择和赋值不再一致。</p>
+              <p><strong>Allow non-IDLE assignment 的风险：</strong>如果 dispatcher 可以把新请求分配给正在 MOVING 的电梯，旧 target 可能被覆盖，某些请求被清除但实际上没有被服务，no-starvation 或“requests get cleared when served”的业务性质就更容易被反例击穿。</p>
+              <p><strong>Event-B 映射写法：</strong>Context 放 <code>FLOORS</code>、<code>ELEVATORS</code>、常量 <code>N_FLOORS</code>；Machine 放变量 <code>current_floor</code>、<code>target</code>、<code>state</code>、<code>request</code>；Invariants 写 floor bounds、state ∈ {IDLE,MOVING}、target 合法；Events 写 <code>RequestFloor</code>、<code>AssignElevator</code>、<code>MoveElevator</code>、<code>ServeFloor</code>。Proof obligations 要证明每个 event 保持 invariants。</p>
+            </section>
           </section>
 
           <!-- ===== Section 3: 如果换考法 ===== -->
           <section id="section3" class="section">
             <h2>Section 3：如果换考法（30–50% 可能）</h2>
-            <p>以下三种替代题型虽不如 Section 1 高频，但在 2025 Autumn 和 Sample Paper 中都出现过片段。建议快速浏览，考场遇到时能立刻归类对症。</p>
+            <p>以下三种题型在 2025 Autumn 和 Sample Paper 中出现过片段。它们不是全新题型，而是把 Section 1 的能力用在不同载体上——比如把 Hoare 证明换成别的循环程序、把 CDCL 换成 Z3 实操、把 model checking 换成 runtime verification。先认出它套的是哪个模板，不要被新面孔吓到。</p>
 
             <section class="section">
               <h3>若 Q1(e) 换 Hoare problem</h3>
@@ -960,6 +1039,43 @@ if result == sat:
     m = s.model()       # Get model
     print(m[x], m[y])   # e.g. 1, 2</code></pre>
             <p><strong>SMT-LIB 语法基础：</strong><code>(assert (&gt; x 0))</code>；<code>(declare-const x Int)</code>；<code>(check-sat)</code>；<code>(get-model)</code>。返回 <code>sat</code> / <code>unsat</code> / <code>unknown</code>。</p>
+            <h4>新增 CS603/CA2 文件夹里的 Z3 小题怎么用</h4>
+            <p>CA2 里的 <code>z3_exercise*.smt2</code> 不像大题，但很适合准备“读 SMT-LIB，判断 sat/unsat，并解释 model”的短问。重点不是背语法，而是知道每条命令在 solver 交互中做什么。</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>材料模式</th><th>考场要点</th><th>可以直接写的解释</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><code>(check-sat)</code> + <code>(get-model)</code></td>
+                    <td>如果返回 <code>sat</code>，model 给出一组满足所有 assertions 的变量赋值。</td>
+                    <td>Model is a witness for satisfiability, not necessarily the only solution.</td>
+                  </tr>
+                  <tr>
+                    <td>De Morgan 等价式</td>
+                    <td>要证明等价，通常 assert 两边“不相等”再看是否 <code>unsat</code>。</td>
+                    <td>If the negation of equivalence is unsatisfiable, the two formulae are equivalent for all assignments.</td>
+                  </tr>
+                  <tr>
+                    <td><code>push</code> / <code>pop</code></td>
+                    <td>临时加入一组约束，检查后回退，不污染后面的题。</td>
+                    <td><code>push</code> creates a solver checkpoint; <code>pop</code> restores the previous assertion stack.</td>
+                  </tr>
+                  <tr>
+                    <td>线性方程组</td>
+                    <td>如 <code>x+y=10</code>、<code>x+2y=20</code>，先代数求解，再用 model 验证。</td>
+                    <td>For linear arithmetic, sat means there exists integer/real values satisfying all equations simultaneously.</td>
+                  </tr>
+                  <tr>
+                    <td>整数除法 / mod / rem</td>
+                    <td>注意 <code>div</code>、<code>mod</code>、<code>rem</code> 是背景理论运算，不是 uninterpreted function。</td>
+                    <td>SMT combines propositional solving with arithmetic theories, so arithmetic constraints are checked semantically.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="answer-box">
+              <p><strong>常见坑：</strong>SMT-LIB 里的 <code>pop</code> 必须有对应的 <code>push</code>；如果题面给的是片段，要先说明当前 solver stack 需要合法。考试里更重要的是解释 sat/model/unsat 的含义，不是机械抄命令。</p>
+            </div>
           </section>
 
             <section class="section">
@@ -971,10 +1087,10 @@ if result == sat:
                     <tr><th>问法</th><th>标准回答骨架</th><th>为什么</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>What is NN verification?</td><td>Checking whether a trained neural network satisfies a formal property for all inputs in a specified region.</td><td>它比 testing 强，因为不是抽样，而是覆盖整个 bounded input set。</td></tr>
-                    <tr><td>How can solver be used?</td><td>Encode input bounds, layer equations/activations, and the negation of the desired safety property.</td><td>把"是否有坏输入"变成 satisfiability problem。</td></tr>
-                    <tr><td>What does <code>sat</code> mean?</td><td>There exists an input satisfying the violation constraints.</td><td>model 是 concrete counterexample/adversarial input，property fails。</td></tr>
-                    <tr><td>What does <code>unsat</code> mean?</td><td>No violating input exists inside the encoded region.</td><td>因此 property holds for that region，但不要夸大到所有可能现实输入。</td></tr>
+                    <tr><td>[ZH] 什么是神经网络验证？<br>What is NN verification?</td><td>[ZH] 检查训练好的神经网络在指定区域内的所有输入是否满足形式化性质。<br>Checking whether a trained neural network satisfies a formal property for all inputs in a specified region.</td><td>它比 testing 强，因为不是抽样，而是覆盖整个 bounded input set。</td></tr>
+                    <tr><td>[ZH] 求解器如何使用？<br>How can solver be used?</td><td>[ZH] 编码输入范围、网络层的方程/激活函数，以及所需安全性质的否定。<br>Encode input bounds, layer equations/activations, and the negation of the desired safety property.</td><td>把"是否有坏输入"变成 satisfiability problem。</td></tr>
+                    <tr><td>[ZH] <code>sat</code> 意味着什么？<br>What does <code>sat</code> mean?</td><td>[ZH] 存在一个满足违反约束的输入。<br>There exists an input satisfying the violation constraints.</td><td>model 是 concrete counterexample/adversarial input，property fails。</td></tr>
+                    <tr><td>[ZH] <code>unsat</code> 意味着什么？<br>What does <code>unsat</code> mean?</td><td>[ZH] 在编码区域内不存在违反性质的输入。<br>No violating input exists inside the encoded region.</td><td>因此 property holds for that region，但不要夸大到所有可能现实输入。</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -989,13 +1105,13 @@ if result == sat:
                     <tr><th>方面</th><th>Model Checking (模型检查)</th><th>Runtime Verification (运行时验证)</th></tr>
               </thead>
               <tbody>
-                <tr><td>When</td><td><strong>Offline</strong> — 程序运行之前</td><td><strong>Online</strong> — 程序运行之中</td></tr>
-                <tr><td>Coverage</td><td><strong>Exhaustive</strong> — 检查所有可能路径</td><td><strong>Partial</strong> — 只监视实际执行的 one trace</td></tr>
-                <tr><td>Guarantee</td><td>Complete — 如果 MC passes，所有路径安全</td><td>No guarantee — 未观察到的路径可能不安全</td></tr>
-                <tr><td>Scalability</td><td>State explosion — 状态数随组件数指数增长</td><td>Lightweight — 随系统规模线性增长（只追一条 trace）</td></tr>
-                <tr><td>Use case</td><td>安全关键系统离线全验证（航空、医疗）</td><td>生产系统持续监控、异常检测、审计日志分析</td></tr>
-                <tr><td>Monitor</td><td>不需要</td><td>需要一个 monitor 组件：拦截事件、更新 monitor state、检查性质、报告 violation</td></tr>
-                <tr><td>Overhead</td><td>验证花费时间，但不影响运行时</td><td>运行时 overhead — monitor 消耗 CPU 和内存，需 trade-off</td></tr>
+                <tr><td>[ZH] 时机 (When)</td><td><strong>Offline</strong> — 程序运行之前</td><td><strong>Online</strong> — 程序运行之中</td></tr>
+                <tr><td>[ZH] 覆盖范围 (Coverage)</td><td><strong>Exhaustive</strong> — 检查所有可能路径</td><td><strong>Partial</strong> — 只监视实际执行的 one trace</td></tr>
+                <tr><td>[ZH] 保证 (Guarantee)</td><td>Complete — 如果 MC passes，所有路径安全</td><td>No guarantee — 未观察到的路径可能不安全</td></tr>
+                <tr><td>[ZH] 可扩展性 (Scalability)</td><td>State explosion — 状态数随组件数指数增长</td><td>Lightweight — 随系统规模线性增长（只追一条 trace）</td></tr>
+                <tr><td>[ZH] 使用场景 (Use case)</td><td>安全关键系统离线全验证（航空、医疗）</td><td>生产系统持续监控、异常检测、审计日志分析</td></tr>
+                <tr><td>[ZH] 监视器 (Monitor)</td><td>不需要</td><td>需要一个 monitor 组件：拦截事件、更新 monitor state、检查性质、报告 violation</td></tr>
+                <tr><td>[ZH] 开销 (Overhead)</td><td>验证花费时间，但不影响运行时</td><td>运行时 overhead — monitor 消耗 CPU 和内存，需 trade-off</td></tr>
               </tbody>
             </table>
           </div>
