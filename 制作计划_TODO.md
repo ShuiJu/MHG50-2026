@@ -733,3 +733,142 @@
   - Q1(b) 使用真正的五段 CFL pumping case analysis，区分 v/y 含 `#` 与只有 x 含 `#` 的情况。
   - Q6/Q7 同时覆盖 Sample A 的 overlapping subsets / multi-FA / hitting set，以及 Sample B 的 CARA clique / phone vertex cover / 3-SAT-to-clique。
   - Q7B 保留最新校正：不同 clause 的所有非互补 literal vertices 都要连边。
+
+### 2026-05-19 23:48 CS605 Q7B 代码绘图
+
+- 用户要求：检查最新页面，然后用 HTML 代码画出 Q7B 那张 3-SAT→clique 图。
+- 已在 `exam-prep-site/cs605-mock-battle.html` 的 Sample B Q7(a)/(b) 之间加入 inline SVG；后续已按用户要求替换为嵌入式交互组件：
+  - 示例公式：`(a∨b∨¬c) ∧ (¬a∨c∨b) ∧ (c∨¬b∨¬a)`，目标 `k=3`。
+  - 每列代表一个 clause，同列内部不画边。
+  - 灰线表示完整的 cross-clause non-complement edges。
+  - 红色虚线表示 complement conflicts，是 graph 中不应该存在的边。
+- 目的：用代码图替代只看照片，直观巩固“跨子句连线，相反不连线”的规则。
+
+### 2026-05-20 01:56 CS605 Q7B 交互图嵌入模拟考
+
+- 用户新增 `exam-prep-site/3sat-clique.html`，但明确要求：不要把它当作独立页面入口，而是把之前静态 SVG 换成这个交互。
+- 已更新 `exam-prep-site/cs605-mock-battle.html`：
+  - 删除指向 `3sat-clique.html` 的 hero/侧边栏/Q7B 外部入口。
+  - 用嵌入式交互组件替换之前的静态 SVG。
+  - 交互公式：`(~b∨~a∨~c) ∧ (a∨c∨~b) ∧ (~a∨b∨c) ∧ (b∨~a∨~c)`，目标 `k=4`。
+  - 点击任意 literal 后，在模拟考页内直接画出所有 valid cross-clause non-complement edges，并标出同 clause / complement 被拦截的节点。
+- `3sat-clique.html` 作为来源文件暂保留，但模拟考页不再把它作为独立练习入口。
+
+### 2026-05-20 02:24 CS605 每题 30 秒速懂演示板块
+
+- 用户要求：为每一题生成最快理解内容的可交互或纯演示板块，尤其 pumping 要自动跑完所有主要 case，30 秒内完成循环。
+- 已更新 `exam-prep-site/cs605-mock-battle.html`：
+  - 在 Q1-Q7 每个主问题区块开头加入 `fast-demo` 演示板块。
+  - Q1 演示覆盖 regular pumping 两题与 CFL pumping 两题：逐步展示 witness、被短尺锁住的位置、泵后违反的具体语言条件。
+  - Q2-Q7 演示分别覆盖 decidable/T-r 分流、HALT mapping reduction、T-r 排除法、后置触发 reduction、NP verifier、NP-complete reduction 证明顺序。
+  - 每个演示板块都自动循环高亮步骤，完整周期少于 30 秒。
+- 已更新 `exam-prep-site/assets/styles.css` 与 `exam-prep-site/assets/app.js`，新增通用 `fast-demo` 样式和循环高亮脚本，并在 CS605 模拟考页加载 `assets/app.js`。
+
+### 2026-05-20 02:47 CS605 双基调补全：is / not、O(n) / O(n²)
+
+- 用户要求：检查 Gemini 聊天记录，补上以前出现过“是 regular / 是 context-free”的题型；同时意识到每类题都有两种基调，例如 NP verifier 的 O(n)/O(n²)，regular 的 yes/no。
+- 已核对来源：
+  - `exam-prep-site/gemini.txt` 底部明确记录 2024 Summer Q1(a)(b) 是 regular、Q1(c) not regular。
+  - `gemini.txt` 早段记录 2024 Summer Q2(a) `u#v, u != v` 是 CFL，Q2(b) exactly one symbol different 不是 CFL。
+  - `gemini.txt` 早段记录 2023 Summer Q1(a) forward copy not CFL，Q1(b) reverse match is CFL。
+  - 本地 `2-CS605/2024-CS605-Summer.pdf` 与 `2-CS605/2023-CS605-Summer.pdf` 用 `pdftotext` 抽查题面确认。
+- 已更新 `exam-prep-site/cs605-mock-battle.html`：
+  - 首页新增“每类题两种基调”总表。
+  - Q1 30 秒速懂演示加入 `is regular` / `is CFL` 正向基调，提醒证明“是”时用 RE/DFA/NPDA，不用 pumping。
+  - Q1 新增旧卷补全：2024 Q1(a)(b) regular 的 RE 写法；2024 Q2(a) `u#v, u != v` 的 NPDA 思路；2024 Q2(b) exactly one symbol different 的 not CFL 对照；2023 Q1(b) reverse match `wi = wj^R` 的 NPDA 思路。
+  - Q4 新增 T-r / not T-r 双基调，以 2023 Summer empty TM language `E` 为 not T-r 对照。
+  - Q6 新增 verifier 时间复杂度表：QUARTER 单子集 O(m)/O(m²)、Y/Z O(m²)、multi-FA O(pn)、clique O(k²|E|)、vertex cover O(|E|k)。
+  - Q7 新增 Q6 in NP vs Q7 NP-complete 的双基调提醒。
+
+### 2026-05-20 03:05 CS605 演示从文字轮播升级为规则实验台
+
+- 用户反馈：上一版 `fast-demo` 只是给描述加特效，不如 3-SAT 连线演示有效。
+- 已处理：
+  - 在 CSS 中把旧 `fast-demo` 从可见学习流里隐藏，保留代码但不作为主体验。
+  - 新增 `mechanic-demo` / `scenario-demo` 组件：有按钮切换、自动轮换、对象状态、判定结果，不只是文字高亮。
+  - `assets/app.js` 新增通用 `[data-scenario-demo]` 控制器。
+  - Q1：加入 regular 正例、not regular pumping、CFL 正例、not CFL case split 的视觉实验台。
+  - Q2：加入 FA 有限图/emptiness、FA nonempty BFS、Java eventually recogniser 的流程实验台。
+  - Q3：加入 HALT→Exception21、HALT→TM nonempty 的伪装器实验台。
+  - Q4：加入 T-r / not T-r 两扇门实验台。
+  - Q5：加入后置触发实验台：target line 与 `b < mean(c)` 两种。
+  - Q6：加入 verifier 验收台，区分单子集 O(n)、双集合 O(n²)、FA word O(pn)、图证书 O(k²|E|)/O(|E|k)。
+  - Q7：加入 NP-complete 翻译器实验台，并保留后面的完整 Q7B 3-SAT clique 连线互动。
+
+### 2026-05-20 CS603 / CS608 模拟页规则板化
+
+- 用户反馈：把静态阅读型内容做成 9999 秒自动翻页是错误路线；这种内容应停留在当前板块，允许手动切换，而不是伪装成动态演示。
+- 已更新 `exam-prep-site/assets/app.js`：
+  - `fast-demo` 和 `scenario-demo` 默认不再自动翻页。
+  - 只有显式写入 `data-demo-autoplay="true"` 或 `data-scenario-autoplay="true"` 的组件才会自动播放。
+- 已清理 `exam-prep-site/cs605-mock-battle.html`：
+  - 删除之前用于拖慢自动播放的 `9999000` interval 属性。
+  - CS605 现有规则实验台保持手动切换，避免静态内容自己翻页。
+- 已改进 `exam-prep-site/cs603-mock-battle.html`：
+  - Q1 加入逻辑/Hoare/total correctness 静态规则板。
+  - Q2 加入 Dafny proof obligations / decreases / class invariant 规则板。
+  - Q3 加入 Event-B / refinement / CDCL / NN verification 规则板。
+  - Q4 加入 Spin / NuSMV / LTL 模板规则板。
+- 已改进 `exam-prep-site/cs608-mock-battle.html`：
+  - Q1 加入 BVA value line / one fault assumption / output coverage 规则板。
+  - Q2 加入 JaCoCo 颜色 / short-circuit / 三表结构规则板。
+  - Q3 加入 static vs instance / class context / state signatures 规则板。
+  - Q4 加入 DT oracle / random loop / random testing 三大问题规则板。
+- 后续原则：静态知识压缩使用“规则板/实验台”手动切换；只有能展示对象状态、连线、搜索路径、泵引理 case collapse 等真实状态变化的内容，才考虑做自动动态演示。
+
+### 2026-05-21 CS603 / CS608 模拟页降低学习坡度
+
+- 用户反馈：CS608 模拟页面题目和解释不够详细，学习曲线太陡；CS603 也需要同步改善。
+- 已更新 `exam-prep-site/assets/styles.css`：
+  - 新增 `bridge-box` / `bridge-grid` / `bridge-step` 样式，用作每题进入标准答案前的“先降坡”解释层。
+- 已更新 `exam-prep-site/cs608-mock-battle.html`：
+  - Q1 BVA：补充从题面数字到 value line、边界取值、expected result 推导的解释。
+  - Q2 JaCoCo：补充 yellow/red line、short-circuit、additional tests 三表结构的入门解释。
+  - Q3 Class context：补充 static / instance / state-based signatures 的区分和调用序列理由。
+  - Q4 Random testing：补充 DT rule、random range、oracle、completion criterion 的关系。
+- 已更新 `exam-prep-site/cs603-mock-battle.html`：
+  - Q1：把 predicate logic、formula classification、Hoare invariant、total correctness 拆成四个小技能。
+  - Q2：把 Dafny 的 `requires` / `ensures` / `invariant` / `decreases` 解释成 verifier 的 proof obligations。
+  - Q3：把 Event-B、refinement、FRET、CDCL 拆成建模层、连接层、需求层、求解层。
+  - Q4：把 Spin/LTL 统一到“模型 + 性质 + 反例”的最小心智模型，再进入工具差异和公式模板。
+- 同步清理：移除 CS603 / CS608 模拟页中的 `data-scenario-interval="9999000"`，静态规则板保持手动切换。
+
+### 2026-05-23 CS608 isSquare 随机测试再降坡
+
+- 用户要求：继续完善 CS608 模拟页，解释坡度至少要比给出的 isSquare 三大问题拆解更平缓。
+- 已更新 `exam-prep-site/cs608-mock-battle.html`：
+  - 在 `isSquare() Oracle + whatSpeed() Random EP` 区块加入更慢的“先降坡”解释：先把测试机器人会遇到的 data / oracle / completion 三个问题拆成人话。
+  - 新增三大问题的考场写法表：每一行包含翻车现场、英文满分句、对应修法。
+  - 新增 `isSquare()` 结构化随机测试计划：negative、zero、small squares、small non-squares、large boundary。
+  - 补充 oracle 解释：为什么 `sqrt` + 反查不是用被测函数测试自己，并提醒负数、0、整数溢出边界。
+- 已更新 `exam-prep-site/assets/app.js` 与 `exam-prep-site/assets/styles.css`：
+  - 新增手动触发的 `isSquare()` 随机测试模拟器。
+  - 模拟器展示全范围纯随机时 true path 命中率很低，用可见结果解释 Test Data Problem。
+  - 模拟器不自动运行翻页，只在用户点击“运行随机测试”时重新抽样。
+
+### 2026-05-24 CS603 新增文件夹筛选并补入模拟页
+
+- 用户要求：再度检查 CS603，查看 CS603 里新出现的文件夹是否对模拟考有帮助。
+- 已检查新增目录：`4-CS603/CS603`。
+- 判断：
+  - 有帮助：`OtrioGame.dfy` / `document.md` / `Assignment_description.md`，可用于 Q2 Dafny 对象状态、predicate、method contracts、verified vs non-verified properties。
+  - 有帮助：`Spin-lab` 与 `CA2/elevator*.pml`，可用于 Q4 Spin/LTL、no-starvation、atomic/fairness、counterexample、Event-B mapping。
+  - 有帮助：`CA2/z3_exercise*.smt2`，可用于 Q3 Z3/SMT-LIB 的 `check-sat`、`get-model`、`push/pop`、De Morgan equivalence、linear arithmetic。
+  - 不作为复习主线：`bin/`、`obj/`、`pan.*`、`.trail`、压缩包、Otrio 网页素材和 C# 编译产物。
+- 已更新 `exam-prep-site/cs603-mock-battle.html`：
+  - 顶部使用说明加入新增文件夹筛选结论。
+  - Section 2 新增 `Q2 Variant: OtrioGame Dafny 规格设计`。
+  - Section 2 新增 `Q4 Variant: Elevator / SPIN Lab — No Starvation, Atomic, Fairness`。
+  - Section 3 的 Z3 Exercises 增加来自 CA2 的 SMT-LIB 模式表和常见坑。
+
+### 2026-05-25 CS603 Q3/Q4 按 Gemini 聊天方式补坡
+
+- 用户要求：利用 `exam-prep-site/gemini.txt` 改善 CS603 页面；原聊天记录里 Q1/Q2 已经深入学习，但 Q3/Q4 仍偏总览，需要预判疑问并降低学习门槛。
+- 已检查 `gemini.txt`：
+  - Q1/Q2 有大量“为什么这样写”的细拆。
+  - Q3/Q4 从 “现在详细讲一遍后面的两题” 开始，主要是总览：Event-B / refinement / FRET / CDCL 与 Spin / NuSMV / state explosion / LTL。
+  - 缺口在于：学生最可能卡住的问题没有被逐条追问，例如 Event-B vs Dafny、proof obligation 是什么、FRET 是否等于 verifier、CDCL 为什么能证明 UNSAT、Spin 为什么查 negated property、possible 在 LTL/CTL 里怎么处理。
+- 已更新 `exam-prep-site/cs603-mock-battle.html`：
+  - Q3 新增 “Gemini 聊天补完：Q3 最可能发生的疑问” 表格，按“你可能会问 / 为什么会卡 / 先写结论 / 例子”拆 Event-B、PO、Data Refinement、FRET、CDCL、Z3/SMT。
+  - Q4 新增 “Gemini 聊天补完：Q4 最可能发生的疑问” 表格，拆 model checking vs testing、Spin 查反例、safety/liveness/fairness、possible 的 LTL/CTL 差异、公式方向、Spin vs NuSMV、state explosion。
+  - 保持这些内容在标准答案前，作为进入 model answer 的缓冲台阶，而不是替代标准答案。

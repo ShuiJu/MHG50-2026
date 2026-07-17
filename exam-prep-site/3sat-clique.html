@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>3-SAT 到 CLIQUE 归约可视化</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { font-size: 24px; color: #2c3e50; }
+        .instructions { font-size: 16px; color: #7f8c8d; margin-bottom: 20px; }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: #2980b9;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .back-link:hover,
+        .back-link:focus {
+            text-decoration: underline;
+        }
+        
+        #graph-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            display: inline-block;
+            padding: 20px;
+            position: relative;
+        }
+
+        #info-panel {
+            margin-top: 15px;
+            padding: 15px;
+            background: #e8f4f8;
+            border-left: 5px solid #3498db;
+            border-radius: 4px;
+            font-size: 16px;
+            min-height: 24px;
+            font-weight: bold;
+            color: #2980b9;
+        }
+
+        /* SVG 样式 */
+        .clause-box {
+            fill: #fafafa;
+            stroke: #bdc3c7;
+            stroke-width: 2;
+            stroke-dasharray: 5, 5;
+            rx: 15; /* 圆角 */
+        }
+        .clause-title {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #7f8c8d;
+        }
+        .edge {
+            stroke: #3498db;
+            stroke-width: 2.5;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        .node {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .node-circle {
+            fill: #ecf0f1;
+            stroke: #95a5a6;
+            stroke-width: 2;
+        }
+        .node-text {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #2c3e50;
+            text-anchor: middle;
+            dominant-baseline: central;
+            pointer-events: none; /* 让点击事件穿透到圆形上 */
+        }
+
+        /* 交互状态样式 */
+        .node:hover .node-circle { fill: #d5dbdb; }
+        
+        /* 选中的节点 (出发点) */
+        .node.active .node-circle {
+            fill: #f1c40f;
+            stroke: #f39c12;
+            stroke-width: 3;
+        }
+        .node.active .node-text { fill: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+
+        /* 匹配的节点 (目标点) */
+        .node.target .node-circle {
+            fill: #3498db;
+            stroke: #2980b9;
+        }
+        .node.target .node-text { fill: #fff; }
+    </style>
+</head>
+<body>
+
+    <h1>3-SAT 到 CLIQUE 建图规则演示</h1>
+    <a class="back-link" href="cs605-mock-battle.html#q7">返回 CS605 模拟考 Q7</a>
+    <div class="instructions">
+        公式: C = (~b ∨ ~a ∨ ~c) ∧ (a ∨ c ∨ ~b) ∧ (~a ∨ b ∨ c) ∧ (b ∨ ~a ∨ ~c)<br>
+        <strong>点击任意一个节点（文字）</strong>，查看根据归约法则，它能与哪些节点建立连线（成为好友）。
+    </div>
+
+    <div id="graph-container">
+        <svg id="svg-canvas" width="800" height="500"></svg>
+    </div>
+    
+    <div id="info-panel">请点击上方任意节点开始推演...</div>
+
+<script>
+// 1. 数据结构：定义 4 个子句和对应的节点
+const clausesData = [
+    { id: "C1", x: 200, y: 120, literals: ["~b", "~a", "~c"] },
+    { id: "C2", x: 600, y: 120, literals: ["a", "c", "~b"] },
+    { id: "C3", x: 200, y: 380, literals: ["~a", "b", "c"] },
+    { id: "C4", x: 600, y: 380, literals: ["b", "~a", "~c"] }
+];
+
+// 辅助函数：求一个文字的相反值（死对头）
+function getNegation(literal) {
+    return literal.startsWith("~") ? literal.substring(1) : "~" + literal;
+}
+
+// 2. 初始化画布元素
+const svg = document.getElementById('svg-canvas');
+const edgesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+const nodesGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+svg.appendChild(edgesGroup); // 线在底层
+svg.appendChild(nodesGroup); // 点在顶层
+
+let allNodes = [];
+
+// 3. 渲染图表
+function renderGraph() {
+    clausesData.forEach(clause => {
+        // 画“岛屿”（子句的虚线框）
+        const box = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        box.setAttribute("x", clause.x - 100);
+        box.setAttribute("y", clause.y - 80);
+        box.setAttribute("width", 200);
+        box.setAttribute("height", 160);
+        box.setAttribute("class", "clause-box");
+        nodesGroup.appendChild(box);
+
+        // 写上子句名称
+        const title = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        title.setAttribute("x", clause.x);
+        title.setAttribute("y", clause.y - 90);
+        title.setAttribute("class", "clause-title");
+        title.setAttribute("text-anchor", "middle");
+        title.textContent = "子句 " + clause.id;
+        nodesGroup.appendChild(title);
+
+        // 以中心点为基准，呈三角形分布画 3 个节点
+        const angles = [-Math.PI/2, Math.PI/6, 5*Math.PI/6]; // 上, 右下, 左下
+        const radius = 45;
+
+        clause.literals.forEach((lit, index) => {
+            const nx = clause.x + radius * Math.cos(angles[index]);
+            const ny = clause.y + radius * Math.sin(angles[index]);
+            
+            // 记录节点数据，方便后续计算
+            const nodeData = {
+                id: clause.id + "_" + index,
+                clauseId: clause.id,
+                literal: lit,
+                negation: getNegation(lit),
+                x: nx,
+                y: ny
+            };
+            allNodes.push(nodeData);
+
+            // 创建视觉节点(Group)
+            const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            g.setAttribute("class", "node");
+            g.setAttribute("transform", `translate(${nx}, ${ny})`);
+            g.dataset.id = nodeData.id;
+
+            // 画圆
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("r", 20);
+            circle.setAttribute("class", "node-circle");
+            
+            // 画文字
+            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("class", "node-text");
+            text.textContent = lit;
+
+            g.appendChild(circle);
+            g.appendChild(text);
+            
+            // 绑定点击事件
+            g.addEventListener("click", () => handleNodeClick(nodeData));
+            nodesGroup.appendChild(g);
+        });
+    });
+}
+
+// 4. 处理核心逻辑：点击节点连线
+function handleNodeClick(selectedNode) {
+    // 每次点击，先清空之前的连线和高亮状态
+    edgesGroup.innerHTML = '';
+    document.querySelectorAll('.node').forEach(el => {
+        el.classList.remove('active', 'target');
+    });
+
+    // 高亮当前选中的节点
+    const activeEl = document.querySelector(`g[data-id="${selectedNode.id}"]`);
+    activeEl.classList.add('active');
+
+    let validConnections = 0;
+    let skippedSameClause = 0;
+    let skippedContradiction = 0;
+
+    // 遍历所有节点，执行那“两条死规矩”
+    allNodes.forEach(targetNode => {
+        // 规矩1：不能是自己，且不能在同一个班级 (Clause)
+        if (targetNode.clauseId === selectedNode.clauseId) {
+            if (targetNode.id !== selectedNode.id) skippedSameClause++;
+            return; 
+        }
+        
+        // 规矩2：不能是死对头 (Complement)
+        if (targetNode.literal === selectedNode.negation) {
+            skippedContradiction++;
+            return; 
+        }
+
+        // 通过检查！建立连线
+        validConnections++;
+        
+        // 高亮目标节点
+        const targetEl = document.querySelector(`g[data-id="${targetNode.id}"]`);
+        targetEl.classList.add('target');
+
+        // 画线
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", selectedNode.x);
+        line.setAttribute("y1", selectedNode.y);
+        line.setAttribute("x2", targetNode.x);
+        line.setAttribute("y2", targetNode.y);
+        line.setAttribute("class", "edge");
+        edgesGroup.appendChild(line);
+    });
+
+    // 更新下方解说面板
+    const infoPanel = document.getElementById("info-panel");
+    infoPanel.innerHTML = `
+        选中了 ${selectedNode.clauseId} 的 <span style="color:#e67e22;">${selectedNode.literal}</span>。<br>
+        规则应用结果：成功连接了 ${validConnections} 个跨子句节点。<br>
+        <span style="color:#7f8c8d; font-weight:normal; font-size:14px;">
+        (拦截了 ${skippedSameClause} 个同子句节点，拦截了 ${skippedContradiction} 个互斥的死对头节点 '${selectedNode.negation}')
+        </span>
+    `;
+}
+
+// 启动渲染
+renderGraph();
+</script>
+</body>
+</html>
