@@ -15,7 +15,24 @@ window.REVISION_DEPTH = {
       ["Invariant / 不变量","执行会变化，但某条关系在关键位置始终保持。"],
       ["Verifier / 验证器","读取程序与规格，尝试用逻辑证明二者一致的工具。"],
       ["State / 状态","某一时刻全部相关变量的取值。"],
-      ["Counterexample / 反例","一条真正违反性质的输入或执行路径。"]
+      ["Counterexample / 反例","一条真正违反性质的输入或执行路径。"],
+      ["Hoare Triple","形式为 {P} C {Q} 的断言：若前置条件 P 成立且程序 C 终止，则后置条件 Q 成立。"],
+      ["Precondition / 前置条件","方法执行前必须满足的条件，用 requires 声明。"],
+      ["Postcondition / 后置条件","方法执行后承诺满足的条件，用 ensures 声明。"],
+      ["Partial Correctness","若程序终止，则结果正确；不保证终止。"],
+      ["Total Correctness","程序必定终止且结果正确。"],
+      ["Loop Invariant / 循环不变量","循环每次迭代前后都保持为真的条件，用于证明循环正确性。"],
+      ["Variant / 变体","用于证明终止的度量，每次循环迭代必须严格减小且非负。"],
+      ["Dafny","一种内置规格和自动验证的编程语言，支持 requires/ensures/invariant。"],
+      ["Event-B","基于集合论和事件逻辑的形式化建模方法，用于系统级规格和验证。"],
+      ["Model Checking / 模型检测","穷举有限状态系统的所有可达状态，检查是否满足时序性质。"],
+      ["LTL / 线性时序逻辑","用 G(总是)、F(最终)、X(下一)、U(直到) 描述路径性质的逻辑。"],
+      ["CTL / 计算树时序逻辑","显式带路径量词 A(所有路径) 和 E(存在路径) 的时序逻辑。"],
+      ["SAT / 可满足性","判断布尔公式是否存在使其为真的赋值。"],
+      ["SMT / 理论可满足性","在 SAT 基础上加入整数、数组等理论的可满足性检查。"],
+      ["FRET","用受限自然语言记录需求并生成形式化规格的工具。"],
+      ["Refinement / 精化","从抽象模型逐步增加细节，同时证明新模型模拟原模型。"],
+      ["Proof Obligation / 证明义务","工具自动生成的、需要证明的逻辑公式，用于验证规格被满足。"]
     ],
     learn: [
       {
@@ -97,7 +114,7 @@ window.REVISION_DEPTH = {
       intro:"CS605 最容易卡住的地方是符号太多。实际上，一门语言就是所有 yes-instance 的集合；机器只是判断一个输入是否属于这个集合。之后每种证明都在问：这类机器够不够、能不能保证停机、能不能有效地把一个难题翻译成另一个。",
       blocks:[{t:"先问输入是什么",p:"是字符串、自动机编码、图还是程序编码？先写清 instance。"}, {t:"再问 yes 的证据",p:"属于语言需要满足什么？机器怎样检查或证书怎样证明？"}, {t:"最后选择证明模板",p:"能力不够用 pumping；不可判定用 reduction；在 NP 用 verifier；NP-hard 用已知 NP-complete 问题归约。"}]
     },
-    glossary:[["Language","一组被判为 yes 的字符串或编码。"],["Decider","对每个输入都停机并给正确 yes/no 的 TM。"],["Recogniser","yes 必须最终接受；no 可以拒绝或永远运行。"],["Reduction","把 A 的实例有效翻译成 B 的实例并保持 yes/no。"],["Certificate","yes-instance 随附的短证据。"],["Polynomial time","运行步数由输入长度的某个多项式上界控制。"]],
+    glossary:[["Language","一组被判为 yes 的字符串或编码。"],["Decider","对每个输入都停机并给正确 yes/no 的 TM。"],["Recogniser","yes 必须最终接受；no 可以拒绝或永远运行。"],["Reduction","把 A 的实例有效翻译成 B 的实例并保持 yes/no。"],["Certificate","yes-instance 随附的短证据。"],["Polynomial time","运行步数由输入长度的某个多项式上界控制。"],["DFA / 确定有限自动机","每个状态对每个输入符号恰有一个转移的有限状态机。"],["NFA / 非确定有限自动机","可有多个转移或 ε-转移的有限自动机，与 DFA 等价。"],["PDA / 下推自动机","带栈的自动机，可识别上下文无关语言。"],["TM / 图灵机","有无限带和读写头的计算模型，可执行一般算法。"],["Regular Language / 正则语言","可由有限自动机识别的语言类。"],["Context-Free Language / 上下文无关语言","可由下推自动机或上下文无关文法描述的语言类。"],["Pumping Lemma","若语言属于某类，则足够长的字符串可被泵入；用于证明语言不属于该类。"],["HALT Problem / 停机问题","判断任意图灵机在给定输入上是否停机的问题，不可判定。"],["Mapping Reduction / 映射归约","把问题 A 的实例翻译成问题 B 的实例的可计算函数，保持 yes/no。"],["NP","yes 实例有多项式大小证书可被确定性多项式时间验证器检查的复杂性类。"],["NP-complete","既在 NP 中又是 NP-hard 的问题，是 NP 中最难的问题。"],["NP-hard","至少和 NP 中任何问题一样难的问题，不要求在 NP 中。"],["3-SAT","每个子句恰有三个文字的布尔可满足性问题，是经典的 NP-complete 问题。"],["CLIQUE","判断图中是否存在大小为 k 的完全子图的问题，是 NP-complete 的。"],["Dovetail / 交替模拟","同时模拟多个计算的方法：第 1 轮各跑 1 步，第 2 轮加入新任务并各跑更多步，避免单个任务卡住。"],["Verifier / 验证器","检查给定证书是否证明输入属于语言的算法。"]],
     learn:[
       {
         plain:"FA、PDA、TM 的核心差别是“可用记忆”。有限状态只记有限类别；栈能记任意深度但只从一端访问；图灵带能读写任意位置，足以表达一般算法。",
@@ -186,7 +203,7 @@ window.REVISION_DEPTH = {
       intro:"CS608 不是“多试几个输入”。每道设计题都要回答五件事：依据哪条规格、要覆盖什么、为什么选这个值、怎样调用、预期结果是什么。只要沿着这条链走，EP、Branch Coverage、class context 和随机测试只是覆盖目标不同。",
       blocks:[{t:"先读规格",p:"圈出输入范围、边界、条件组合、错误处理和所有可能输出。"}, {t:"再定义覆盖目标",p:"黑盒覆盖 partition/rule；白盒覆盖 statement/branch；对象测试还覆盖 pre-state。"}, {t:"最后做成表",p:"TCI、selected value、test case、expected result 和 coverage mapping 必须能互相追踪。"}]
     },
-    glossary:[["Test oracle","判断 actual result 是否正确的规则或机制。"],["TCI","Test Coverage Item，要被至少一个测试覆盖的抽象项目。"],["Partition","被认为行为相同的一组输入或输出。"],["Branch","一个 decision 的 true 或 false 出口。"],["Class context","连同对象构造、状态设置和观察一起测试方法。"],["MTBF","平均故障间隔；总运行时间除以观察到的故障数的估计。"]],
+    glossary:[["Test oracle","判断 actual result 是否正确的规则或机制。"],["TCI","Test Coverage Item，要被至少一个测试覆盖的抽象项目。"],["Partition","被认为行为相同的一组输入或输出。"],["Branch","一个 decision 的 true 或 false 出口。"],["Class context","连同对象构造、状态设置和观察一起测试方法。"],["MTBF","平均故障间隔；总运行时间除以观察到的故障数的估计。"],["EP / 等价类划分","假设同一 partition 内的值触发相同处理，因此选一个代表进行测试。"],["BVA / 边界值分析","测试边界及其相邻值的黑盒技术，关注边界内外行为。"],["Decision Table / 决策表","列出多个条件组合及其对应动作的表格，用于设计测试用例。"],["Statement Coverage / 语句覆盖","要求每条可执行语句至少被执行一次的覆盖标准。"],["Branch Coverage / 分支覆盖","要求每个判定的 true 和 false 出口都至少执行一次。"],["TestNG","Java 测试框架，支持注解如 @Test、@DataProvider 等。"],["Black-box Testing / 黑盒测试","基于规格而非代码内部结构的测试方法。"],["White-box Testing / 白盒测试","基于代码内部结构如分支、路径的测试方法。"],["Fault / 缺陷","代码中的错误，可能导致 error 和 failure。"],["Error / 错误","程序执行中的错误状态，由 fault 引起。"],["Failure / 失败","可观察到的程序错误行为，由 error 传播导致。"],["Test Case / 测试用例","包含输入、前置条件、调用序列和预期结果的完整测试规格。"],["Test Data / 测试数据","测试中使用的具体输入值。"],["Random Testing / 随机测试","使用随机生成的输入进行测试，需配合 oracle 判断正确性。"],["Operational Profile / 操作剖面","模拟真实使用场景的输入分布，用于随机测试和可靠性评估。"],["Value Line / 值域线","画出输入的自然范围和规格边界，帮助识别 partition。"]],
     learn:[
       {
         plain:"测试不是证明没有 bug，而是在有限预算下有系统地寻找故障并建立信心。穷举测试常因输入域相乘而爆炸，所以要用覆盖标准挑少量代表。",
@@ -265,7 +282,7 @@ window.REVISION_DEPTH = {
       intro:"CS616 看起来算法很多，但计算主线很稳定：在指定模数中表示数据、用密钥执行可逆或单向运算、最后验证安全目标。第一次学习先写清进制、模数和公式，再代数；不要在十六进制、十进制和不同 modulus 之间心算跳跃。",
       blocks:[{t:"统一表示",p:"每道题第一行写 hex/decimal、mod p/q/n/q² 和字符编码。"}, {t:"拆小运算",p:"逆元、快速幂、XOR、点加和多项式约简分别计算，每步保留余数。"}, {t:"回代验证",p:"恢复 key/root/signature 后代回公开公式，确认结果而不是只报数字。"}]
     },
-    glossary:[["Mod n","两个整数相差 n 的倍数时视为同一个余数类。"],["Inverse","a⁻¹ 满足 aa⁻¹≡1 mod n。"],["Nonce","只用一次的随机数；重复或可预测常泄漏密钥。"],["MAC","用共享密钥验证消息完整性与来源。"],["Public key","可公开的加密/验证参数；私钥用于解密/签名。"],["Ring","可做加减乘的代数集合；RLWE 中多项式还要按模多项式约简。"]],
+    glossary:[["Mod n","两个整数相差 n 的倍数时视为同一个余数类。"],["Inverse","a⁻¹ 满足 aa⁻¹≡1 mod n，只有与 n 互素的元素才有逆元。"],["Nonce","只用一次的随机数；重复或可预测常泄漏密钥。"],["MAC","用共享密钥验证消息完整性与来源。"],["Public key","可公开的加密/验证参数；私钥用于解密/签名。"],["Ring","可做加减乘的代数集合；RLWE 中多项式还要按模多项式约简。"],["Extended Euclid Algorithm / 扩展欧几里得算法","求 ax+ny=gcd(a,n) 的整数解 x,y 的算法；当 gcd=1 时，x 就是 a⁻¹ mod n。"],["Modular Exponentiation / 模幂运算","计算 a^e mod n，通常用 repeated squaring（快速平方）提高效率。"],["CRT / 中国剩余定理","将模不同素数的解组合成模其乘积的解的方法，常用于 RSA 和 Rabin。"],["AES / 高级加密标准","对称分组密码，固定 128-bit 分组，密钥 128/192/256 位。"],["RSA","基于大整数分解困难的公钥加密算法，私钥 d=e⁻¹ mod φ(n)。"],["Rabin Cryptosystem","基于模合数平方根困难的加密算法，解密等价于分解 n。"],["ECC / 椭圆曲线密码学","基于椭圆曲线上离散对数问题困难的密码系统，可用更短密钥达到同等安全。"],["ECDSA / 椭圆曲线数字签名算法","基于 ECC 的数字签名方案，验证时计算 w=s⁻¹ mod q 和点运算。"],["RLWE / 环上带误差学习","后量子密码的基础困难问题，在多项式环上构造加密方案。"],["Zero-Knowledge Proof / 零知识证明","证明者能让验证者相信某陈述为真，而不泄露任何额外信息。"],["Affine Cipher / 仿射密码","古典密码，加密 c≡am+b mod n，解密需要 a 的逆元。"],["ETM / Encrypt-then-MAC","先加密再对密文计算 MAC 的认证加密方式，比 E&M 和 MTE 更安全。"],["Quadratic Residue / 二次剩余","模 n 下存在平方根的数，即存在 x 使 x²≡a mod n。"],["Jacobi Symbol","Legendre 符号的推广，Jacobi=1 不保证是二次剩余。"],["GCD / 最大公约数","两个整数的最大公共因子，gcd(a,n)=1 表示 a 与 n 互素。"],["Repeated Squaring / 快速平方","计算大指数模幂的方法：连续平方并按指数二进制位相乘。"]],
     learn:[
       {
         plain:"模运算像时钟：结果只保留除以 modulus 的余数。密码学的大数字计算靠 gcd、逆元、平方-乘和 CRT 拆解。",
@@ -338,7 +355,7 @@ window.REVISION_DEPTH = {
       intro:"深度学习模型看起来巨大，但每层只做“输入乘权重、加偏置、经过函数”。训练就是比较预测与目标，再沿计算链反向调整参数。今年真题主要检查概念和尺寸/参数计算，所以先把每个数字来自哪里说清。",
       blocks:[{t:"看 shape",p:"每个 tensor 都写成高度×宽度×通道或样本×特征，先追踪尺寸。"}, {t:"数 parameters",p:"每个输出单元连接多少输入，再加几个 bias；不要把输出像素数量误当独立权重。"}, {t:"分数据职责",p:"training 学参数，validation 选超参数，test 只做最终评估。"}]
     },
-    glossary:[["Tensor","多维数字数组；图片常是 H×W×C。"],["Parameter","训练直接更新的 weight 和 bias。"],["Hyperparameter","训练前/过程中由人或搜索选的设置，如 learning rate。"],["Embedding","把对象表示成一个可比较、可供下游使用的向量。"],["Loss","一个标量，衡量预测与目标差多少。"],["Epoch","训练集被完整使用一遍。"]],
+    glossary:[["Tensor","多维数字数组；图片常是 H×W×C。"],["Parameter","训练直接更新的 weight 和 bias。"],["Hyperparameter","训练前/过程中由人或搜索选的设置，如 learning rate。"],["Embedding","把对象表示成一个可比较、可供下游使用的向量。"],["Loss","一个标量，衡量预测与目标差多少。"],["Epoch","训练集被完整使用一遍。"],["Neural Network / 神经网络","由多层神经元组成的计算图，通过学习参数进行预测。"],["Activation Function / 激活函数","引入非线性的函数，如 ReLU、sigmoid、softmax。"],["ReLU / 修正线性单元","激活函数 max(0,x)，正区间恒等，负区间输出 0。"],["Backpropagation / 反向传播","用链式法则从 loss 向前逐层求梯度的算法。"],["CNN / 卷积神经网络","用共享 filter 在空间滑动提取局部特征的网络，常用于图像。"],["Autoencoder / 自编码器","输入→encoder→latent→decoder→输出的网络，训练目标是重建输入。"],["Transformer","基于 self-attention 的架构，无 recurrence，需 positional encoding。"],["Attention / 注意力机制","用 query 和 key 的相似度加权混合 value 的机制。"],["Gradient Descent / 梯度下降","沿 loss 对参数的负梯度方向更新参数的优化方法。"],["Learning Rate / 学习率","控制每次参数更新步长的超参数。"],["Batch Size / 批大小","一次前向/反向传播使用的样本数。"],["Overfitting / 过拟合","模型在训练集上表现好但在新数据上泛化差。"],["Regularization / 正则化","防止过拟合的技术，如 L1/L2、dropout、data augmentation。"],["Validation Set / 验证集","用于选择超参数和 early stopping 的数据集，不用于训练参数。"],["Test Set / 测试集","最终评估模型性能的数据集，选择冻结后才使用。"],["Supervised Learning / 监督学习","有外部标签指导的学习方式。"],["Self-supervised Learning / 自监督学习","标签由数据自身构造的学习方式，如重建输入或预测遮盖部分。"],["Latent / 隐变量","encoder 输出的低维表示，也叫 embedding。"],["Loss Function / 损失函数","衡量预测与目标差距的函数，如 MSE、cross-entropy。"],["Optimizer / 优化器","执行参数更新的算法，如 SGD、Adam。"],["Normalizing Flow / 归一化流","由可逆层组成的生成模型，可精确计算 likelihood。"],["Invertible Layer / 可逆层","输入可从输出唯一恢复的层，存在逆函数。"]],
     learn:[
       {
         plain:"一个 neuron 先做加权和 z=w·x+b，再经过 activation。多层网络只是把这个操作反复组合。Loss 告诉模型错多少，backprop 用 chain rule 算每个参数应往哪个方向改。",
