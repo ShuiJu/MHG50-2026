@@ -2,7 +2,7 @@ window.REVISION_DATA = {
   cs603: {
     code:"CS603", name:"Rigorous Software Development", zh:"严格软件开发 / 形式化验证",
     paper:"../2pass/2026-CS603-Summer.pdf", meta:"3 小时；至少答 3 题；按最佳 3 题计分；4 题等值，每题 25 分。",
-    summary:"把自然语言需求变成逻辑性质，再用 Hoare Logic、Dafny、Event-B、模型检测和 LTL 证明程序或系统满足它。",
+    summary:"把'程序应该怎样做'写成不会产生歧义的精确公式，再证明程序确实这样做。涉及命题/谓词逻辑、霍尔逻辑、Dafny、Event-B、模型检查与时序逻辑——每个名词本页都有大白话解释。",
     focus:["逻辑与 Hoare Logic","Dafny 合约、循环与递归","Event-B / FRET / AI verification","Model Checking / Runtime / LTL"],
     currentCoverage:"2026 Q1：逻辑、严格软件过程、Hoare Logic、部分/总正确性；Q2：Dafny 类、数组反转、递归与 decreases；Q3：Event-B、AI verification、FRET、adversarial/property-driven training；Q4：软件/系统合约、Model Checking、Runtime Verification、LTL。",
     supplementalCoverage:"SAT/SMT/Z3、DPLL/CDCL、CTL、OCL、Spin 细节和更早的 refinement 变体保留为讲义基础或可能的问题领域，但今年真题没有给予它们与上述四组考点相同的直接信号。",
@@ -25,7 +25,7 @@ window.REVISION_DATA = {
   },
   cs605: {
     code:"CS605",name:"Mathematics and Theory of Computer Science",zh:"理论计算机科学",paper:"../2pass/2026-CS605-Summer.pdf",meta:"3 小时；7 题全部作答；每题 10 分；答案写在试卷模板上；可带一本无批注 Sipser。",
-    summary:"从有限自动机与 pumping lemma 走到可判定性、HALT mapping reduction、NP verifier 与 3-SAT→CLIQUE 归约。",
+    summary:"把'问题'看成一组被判为 yes 的字符串，研究什么机器能识别它、能否保证停机、能否把难题翻译成另一个。涉及自动机、pumping lemma、HALT 归约、NP 与 3-SAT→CLIQUE——每个名词本页都有大白话解释。",
     focus:["Regular/CFL pumping","Decidable/recognisable","HALT mapping reductions","NP / NP-complete"],
     currentCoverage:"2026 七题完整覆盖：非regular/非CFL pumping、decider/recogniser、HALT mapping reductions、recognisability、Java 行为不可判定、两类 in-NP 证明、3-SAT→CLIQUE NP-completeness。",
     supplementalCoverage:"FA/PDA/CFG、countability、Church–Turing thesis 和渐进分析是完成今年题目的必要地基；其他历年语言或 reduction 对象只作为迁移练习，不改变今年七题给出的结构。",
@@ -50,7 +50,7 @@ window.REVISION_DATA = {
   },
   cs608: {
     code:"CS608",name:"Software Testing",zh:"软件测试",paper:"../2pass/2026-CS608-Summer.pdf",meta:"3 小时；至少答 3 题；按最佳 3 题计分；4 题等值，每题 25 分；允许非编程计算器；封面所列公式表、统计表和字典均不允许/不提供；须采用课程示范的测试技术。",
-    summary:"从规格做 EP/DT/BVA 黑盒测试，从代码补 branch coverage，再扩展到 class context、TestNG、随机测试、MTBF 与风险投入。",
+    summary:"用尽可能少的测试系统地寻找故障并形成可交卷的覆盖证据链。涉及等价类划分、边界值、分支覆盖、对象上下文、随机测试、MTBF 与风险投入——每个名词本页都有大白话解释。",
     focus:["EP / value line / TCI","Branch coverage / TestNG","Class context","Random DT / MTBF / risk"],
     currentCoverage:"2026 Q1：穷举不可行、value line、EP 与完整测试表；Q2：Branch Coverage、TestNG、Agile；Q3：class-context EP；Q4：Random Decision Table、自动化、genRand、MTBF 与 risk investment。",
     supplementalCoverage:"BVA 是相邻黑盒技术，完整 DT 是 Q4 的基础；移动/网页、floating point、AI testing 等讲义内容保留为扩展领域，但今年真题没有把它们列为与 Q1–Q4 同等强度的直接考点。",
@@ -73,7 +73,7 @@ window.REVISION_DATA = {
   },
   cs616: {
     code:"CS616",name:"Practical Cryptography",zh:"实用密码学",paper:"../2pass/2026-CS616-January.pdf",meta:"3 小时；3 道大题全部作答；Q1=40 分，Q2=30 分，Q3=30 分；试卷附 4 页 data sheet。",
-    summary:"以模运算和数论为地基，掌握古典密码、AES/认证加密、RSA/Rabin/椭圆曲线签名，以及 RLWE 等后量子构造。",
+    summary:"用模运算（像时钟那样只留余数的算术）做加解密、签名和密钥协议。涉及数论地基、AES 与认证加密、RSA/Rabin、椭圆曲线、零知识证明和 RLWE 后量子——每个名词本页都有大白话解释。",
     focus:["模运算 / CRT / 平方根","对称密码 / AES / ETM","RSA / Rabin / ECC / ECDSA","ZK / RLWE / 后量子"],
     currentCoverage:"2026 Q1：ZK shift、Affine digraph、模平方根/CRT、ECC 点运算、RLWE；Q2：AES ARK、8-bit mode、ETM/CIA；Q3：RSA、Rabin 攻击、ECDSA 验证。",
     supplementalCoverage:"Hash、一般密钥协议、Paillier、Naor–Pinkas、ECIES 和更广的后量子背景仍有助于理解 data sheet 与课程体系，但今年真题的直接信号弱于 Q1–Q3 明列算法。",
@@ -95,7 +95,7 @@ window.REVISION_DATA = {
   },
   cs618: {
     code:"CS618",name:"Deep Learning for Software Engineers",zh:"深度学习（含 CS636 神经网络资料）",paper:"../2pass/2026-CS618-January.pdf",meta:"2 小时；3 题全部作答；三题等值，各 25 分（试卷总列示 75 分）。",
-    summary:"以神经元、loss 与 backprop 为起点，优先攻克今年卷的 autoencoder、CNN、伦理、可逆层与调参；Transformer、生成模型和图网络作为 CS636 扩展资料保留。",
+    summary:"今年卷只直接考神经网络基础：自编码器、CNN 与 VGG-16 参数计算、可逆层与调参、以及两个现实伦理例子。Transformer、GAN、扩散、图网络等留给 CS636 作扩展——每个名词本页都有大白话解释。",
     focus:["Self-supervision / Autoencoder","CNN 参数 / shape / ReLU","Ethics / invertible layers","Dataset / hyperparameter tuning"],
     currentCoverage:"2026 Q1：supervised/self-supervised 与 autoencoder 全链；Q2：VGG-16、CNN、卷积/池化/FC 参数和 ReLU；Q3：伦理、invertible layer/normalizing flow、parameter 与 hyperparameter optimization。",
     supplementalCoverage:"Transformer/attention、GNN、GAN、VAE、diffusion、ViT、CLIP、ImageBind 等来自 CS636 的完整课程资料，可用于拓展可能的问题领域，但今年 CS618 真题没有给出与 autoencoder/CNN/Q3 概念同等强的直接信号。",
