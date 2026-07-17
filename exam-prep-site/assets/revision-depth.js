@@ -21,13 +21,13 @@ window.REVISION_DEPTH = {
       {
         plain:"逻辑符号只是把“所有”“至少一个”“如果……那么……”写得没有歧义。先把每个符号读成完整中文，再做运算，不要直接盯着公式猜。",
         steps:["把 A(x) 看作一句带空格的句子，例如“x 是员工”。给定 x 后它才有真假。","∀x 表示范围内每一个 x；∃x 表示至少找到一个 x。量词只管理它后面的作用域。","p→q 只在 p 真而 q 假时为假；它不表示时间先后，而表示“满足 p 的情况不能违反 q”。","复杂公式从最内层括号向外读，并先把每个谓词写回自然语言。"],
-        example:{title:"量词位置为什么会改变意思",prompt:"比较 ∃x(A(x) ∧ ¬G(x)) 与 (∃x A(x)) ∧ ¬G(x)。",steps:["第一式中 x 同时出现在 A 与 G 中：要找到同一个既是 A 又不是 G 的对象。","第二式的 ∃x 只约束 A(x)；后面的 G(x) 中 x 没有被量词约束，是自由变量。","所以第二式不是“有一个 A 不是 G”，甚至可能不是一个封闭、可直接判真的命题。"],result:"量词的作用域必须用括号写清；考试解释差异时要说“是否是同一个对象”，不能只说符号不同。"},
+        example:{title:"2026 两条存在量词公式为什么不同",prompt:"比较 ∃x.(A(x) ∧ ¬(G(x) ∨ Y(x))) 与 ∃x.(A(x) → ¬(G(x) ∨ Y(x)))。",steps:["先按题面的 ∃x. 把整个 body 加括号；没有课程证据时，不把量词擅自截断在 A(x)，也不宣称后面的 x 是自由变量。","第一式要求找到同一个对象：它是 A，并且既不是 G 也不是 Y。","第二式只要求找到一个对象使 implication 为真；若该对象不是 A，前件为假，整条 implication 已经为真，所以它通常弱得多。","反例：domain={u,v}，A(u)=真、G(u)=真，A(v)=假。第一式为假；第二式可取 v，因此为真。"],result:"真正差别是量词 body 中 conjunction 与 implication 的真值条件；答案应把两式完全加括号后再比较。"},
         practice:{q:"“每个请求最终都有响应”可否写成 ∃x(Request(x)→Response(x))？",hint:"先看“每个”对应哪个量词，再看“最终”是否需要时间算子。",a:"不可以。“每个”需要 ∀；“最终”不是普通蕴含能表达的，进入 LTL 后应写 G(request→F response)。"}
       },
       {
         plain:"Hoare Logic 像检查一条流水线：入口满足 P，执行一小步后得到中间条件，再执行下一步，最终得到 Q。循环之所以难，只是因为同一段代码可能重复任意次，所以要找一句每轮都不坏的话。",
         steps:["先写目标 {P} C {Q}，确认 P 是执行前已知事实，Q 是执行后要保证的事实。","赋值 x:=E 用倒推：若之后想要 Q，就把 Q 中的 x 替换为 E，得到赋值前必须满足的条件。","顺序 C1;C2 先寻找中间断言 R，分别证明 {P}C1{R} 与 {R}C2{Q}。","while 用 invariant I：证明 P⇒I、I∧guard 执行 body 后仍为 I、I∧¬guard⇒Q；总正确性再加严格下降且非负的 variant。"],
-        example:{title:"数组复制循环的 invariant 从哪里来",prompt:"i 从 0 开始，每轮执行 b[i]:=a[i]; i:=i+1，目标是全部元素相同。",steps:["刚开始 i=0，还没复制任何元素，所以“0 到 i-1 已复制”为空命题，自动成立。","假设前 i 个已复制，执行 b[i]:=a[i] 后，前 i+1 个已复制。","同时保持 0≤i≤a.Length，确保访问合法。","退出条件是 i≥a.Length；结合 i≤a.Length 得 i=a.Length，于是“前 i 个”就是整个数组。"],result:"I ≜ 0≤i≤a.Length ∧ b.Length=a.Length ∧ ∀k(0≤k<i→b[k]=a[k])；variant 为 a.Length-i。"},
+        example:{title:"数组复制：把每条 Hoare 规则真正写出来",prompt:"b:=new int[n]; i:=0; while i<n { b[i]:=a[i]; i:=i+1 }，证明复制完成。",steps:["令 n=a.Length。[Allocation/Assignment] b:=new int[n] 建立 b.Length=n；对 i:=0 做 substitution，得到 I≜0≤i≤n ∧ b.Length=n ∧ ∀k(0≤k<i→b[k]=a[k])，其中 i=0 时全称范围为空。","[While-premise] 假设 I∧i<n，因此 0≤i<n，数组访问合法。","[Array assignment] b[i]:=a[i] 后，旧的 k<i 项未变且新位置 i 相等，所以得到 ∀k(0≤k<i+1→b[k]=a[k])。","[Assignment + Sequence] 对 i:=i+1 做 substitution，边界变成 0≤i≤n，前缀式重新写成 <i，故 body 保持 I。","[While + Consequence] 退出有 I∧¬(i<n)，由 i≤n 得 i=n，前缀性质即全部下标的后置条件。总正确性另证 n-i 在 guard 为真时非负且每轮减 1。"],result:"必须把 allocation、assignment substitution、sequence、while 和 consequence 逐一落到中间断言；只写 invariant 名称不能满足题面“rules and simplification steps”。"},
         practice:{q:"循环 i 从 0 每次加 2，直到 i≥n。能否用 n-i 作 variant？",hint:"variant 在循环继续时必须非负并严格下降。",a:"若 guard 是 i<n，n-i 在入口为正，每轮减少 2，因此可以；退出后可以变负并不影响，关键是每次进入循环时非负。"}
       },
       {
@@ -45,7 +45,7 @@ window.REVISION_DEPTH = {
       {
         plain:"模型检测不是抽几个例子，而是把有限状态系统的所有可能路径系统地展开。LTL 是用来描述“沿时间怎样变化”的语言：G 是一直，F 是最终，U 是保持到某事发生。",
         steps:["先定义原子命题，例如 red、stopped、safe；否则公式中的符号没有语义。","判断性质是 safety（坏事永不发生）还是 liveness（好事最终发生）。","Safety 常写 G¬bad；响应常写 G(trigger→F response)。","“p 保持直到 q”写 p U q；strong until 同时要求 q 最终发生。","Model checker 若失败会给完整反例路径；Runtime Verification 只检查实际运行时看到的那一条路径。"],
-        example:{title:"红灯停车",prompt:"检测到红灯后，车必须在路口前停下并保持停止直到绿灯。",steps:["原子命题：red、beforeIntersection、stopped、green。","检测是触发，所以外层用 G(red→...)。","先要求 eventually stopped∧beforeIntersection。","一旦停止，要保持 stopped 直到 green，可写 stopped U green；若题意要求绿灯最终到来，strong U 合适。"],result:"可组织为 G(red → F(beforeIntersection ∧ stopped ∧ (stopped U green)))，并在答案中解释所作时序假设。"},
+        example:{title:"红灯停车：为什么单写 eventually 不够",prompt:"检测到红灯后，车必须在路口前停下并保持停止直到绿灯。",steps:["定义 red、beforeIntersection、passedIntersection、stopped、green，并声明 beforeIntersection 一旦越线便不再为真。","只写 F(beforeIntersection∧stopped) 会允许车辆先越线、以后返回停车，因此必须约束停车前不能 passedIntersection。","可写 G((red∧¬green∧beforeIntersection) → (¬passedIntersection U (stopped∧beforeIntersection)))，要求最终在越线前停下。","再写 G((red∧stopped∧¬green) → (stopped W green))，表示绿灯前保持停车；若假设 green 最终必发生，可用 strong U 取代 W。"],result:"把“及时停下”和“停下后保持”拆成两条性质，并写清 green 是否保证最终发生；这样不会让一个过晚的 F 偷偷满足题意。"},
         practice:{q:"F(response) 为什么不能表达“每个 request 最终都有 response”？",hint:"它要求几次 response？有没有把 request 与 response 配对？",a:"F(response) 只要求整条路径未来至少出现一次 response；一次响应可以在所有请求之前。必须写 G(request→F response)。"}
       },
       {
@@ -59,17 +59,17 @@ window.REVISION_DEPTH = {
       {
         question:"Q1 由五部分组成：量词公式差异、真值表等价、三种 rigorous process 方法、数组复制的 Hoare Logic 验证，以及部分/总正确性的差别。",
         parts:[
-          {label:"(a)",ask:"解释两个量词公式为何不同。",steps:["给每个谓词一个中文含义，并为量词作用域加括号。","指出第一式要求同一个 x 同时满足 A 且不满足 G∨Y。","第二式若按 ∃x.A(x)→... 解析，蕴含在存在式外；若 x 在右侧自由，还要指出公式绑定不完整。","用一个只有两个对象的小反例说明两式可有不同真值。"],final:"结论必须落在量词作用域和“是否同一个对象”，不能只翻译符号。"},
-          {label:"(b)",ask:"用真值表证明等价。",steps:["列出 p、q 的四种组合。","分别计算 ¬p、p∨¬p、p∧q、(p∧q)→p。","p∨¬p 一列恒真；(p∧q)→p 也恒真，因为前件真时 p 必真。","最终两列逐行相同，因此逻辑等价。"],final:"完整表格加一句“最终列在所有 valuation 下相同”。"},
-          {label:"(c)",ask:"解释 Behaviour Driven Formal Model Development、Model Checking、Deductive Verification。",steps:["每项先给一句定义。","再指出验证的性质类型。","最后给一个工具或小例子：行为场景到模型、Spin 穷举状态、Dafny/Hoare 从规格演绎证明。"],final:"三项均用“定义—验证什么—例子”三句结构。"},
-          {label:"(d)(e)",ask:"验证复制循环并扩展到总正确性。",steps:["写 contract 的含义：非空引用、长度相同、对应元素相同。","提出 I：边界、长度、已复制前缀。","证明初始化 i=0；保持时先写 b[i]:=a[i] 再 i+1；退出得 i=n。","部分正确性只说若终止则 postcondition；总正确性加 variant n-i，并证进入循环时非负且每轮减 1。"],final:"用三项循环义务加 variant 构成一份完整可判分证明。"}
+          {label:"(a)",ask:"解释两个量词公式为何不同。",steps:["把题面写成 ∃x.(A(x)∧¬(G(x)∨Y(x))) 与 ∃x.(A(x)→¬(G(x)∨Y(x)))；按点号作用域读取，不无依据制造自由变量。","第一式要同一个 witness 同时为 A 且非 G/Y。","第二式的 witness 若不是 A，implication 已为真，因此比第一式弱。","反例：domain={u,v}；A(u),G(u) 真，A(v) 假。第一式假，第二式取 v 为真。"],final:"差别是存在量词 body 内 conjunction 与 implication 的满足条件。若教师指定不同 precedence，才按该约定另行加括号。"},
+          {label:"(b)",ask:"用真值表证明等价。",steps:["列标题 p | q | ¬p | p∨¬p | p∧q | (p∧q)→p。","T,T 行：F | T | T | T。","T,F 行：F | T | F | T。","F,T 行：T | T | F | T；F,F 行同样为 T | T | F | T。","两个目标最终列四行均为 T，因此在所有 valuations 下逻辑等价。"],final:"真实呈现四行和最终列，不能只说“二者都是 tautology”。"},
+          {label:"(c)",ask:"解释 Behaviour Driven Formal Model Development、Model Checking、Deductive Verification。",steps:["Behaviour Driven Formal Model Development：本课材料明确指 Event-B 系统级建模；以 variables/invariants/events 表达状态与行为，以 set theory/event logic 支持 abstraction/refinement，由 Rodin 证明安全义务。","Model Checking：建立有限状态模型并系统探索可达状态/路径；例如 Spin 检查 Promela 模型，失败给违反性质的路径。","Deductive Verification：从程序与 formal contract 生成 verification conditions，并以逻辑证明；例如 Dafny/Hoare 证明数组方法满足 ensures。"],final:"每项都按“定义—验证的性质—工具/例子”写；不要把第一项误写成普通 BDD 测试。"},
+          {label:"(d)(e)",ask:"验证复制循环并扩展到总正确性。",steps:["令 n=a.Length；解释 requires 非空引用，两个 ensures 分别是长度相等与逐元素相等。","[Allocation/Assignment] new array 建立 b.Length=n；i:=0 经 substitution 建立 I≜0≤i≤n∧b.Length=n∧∀k(0≤k<i→b[k]=a[k])。","[Array assignment] 在 I∧i<n 下，b[i]:=a[i] 把前缀扩大到 <i+1；[Assignment/Sequence] i:=i+1 后恢复 I。","[While/Consequence] 退出由 I∧i≥n 与 i≤n 得 i=n，推出全部元素相同。","partial correctness 只保证若终止则 post；total correctness 再以 n-i 为 variant，证明 guard 下非负且每轮严格减 1。"],final:"交付 allocation、assignment、sequence、while、consequence 的中间断言及 variant，才完整回应 8+4 分。"}
         ]
       },
       {
         question:"Q2 要你把同一套“规格—保持—终止”方法应用到类不变量、原地数组反转和递归序列。",
         parts:[
-          {label:"(a)",ask:"设计 Employee 并解释继承下的不变量。",steps:["定义 birthYear/currentYear 或 age，并明确 age 的计算前提。","class invariant 写 15<Age()<65。","constructor 的 ensures 建立对象合法；普通方法假设入口合法并在出口恢复。","Employee 继承 Person 时必须同时满足 Person 的 invariant；子类不能弱化父类已经承诺的后置条件。"],final:"代码之外必须解释 verifier 在 constructor、方法边界和继承处检查什么。"},
-          {label:"(b)",ask:"为 ReverseArray 写 contract、invariants 与 variant。",steps:["requires a!=null；modifies a。","ensures 长度不变，并对每个 i 写 a[i]==old(a[n-1-i])。","invariant 保存 i/j 边界、两端已反转、中间尚待处理。","variant 选 j-i 或 j-i+1，并证明每轮 i+1、j-1 后严格下降。"],final:"old 数组、两端已处理区和终止度量缺一不可。"},
+          {label:"(a)",ask:"设计 Employee 并解释继承下的不变量。",steps:["一种完整 Dafny-style 骨架：var age:int；predicate Valid() reads this {15<age<65}。","constructor(a:int) requires 15<a<65 ensures Valid() && age==a { age:=a; }；constructor 返回前必须建立 Valid。","method CalculateAge(currentYear:int,birthYear:int) returns (res:int) requires Valid() && currentYear>=birthYear ensures res==currentYear-birthYear ensures Valid() {res:=currentYear-birthYear;}；若题意要求更新字段，则还须要求并保证新 age 仍在范围。","若 Employee 继承/实现 Person 抽象，Employee 对象还必须满足 Person 的 Valid/contract；子类 method 不能破坏父类入口可用性和出口承诺。具体 extends/trait 语法按课程 Dafny 版本写。"],final:"卷面要同时有字段、Valid、constructor、calculate-age body/contracts，以及继承产生的两层 proof obligations；仅写原则不算 implement。"},
+          {label:"(b)",ask:"为 ReverseArray 写 contract、invariants 与 variant。",steps:["令 n=a.Length；requires a!=null；modifies a；ensures a.Length==old(a.Length) 且 ∀k(0≤k<n→a[k]==old(a[n-1-k]))。","边界/对称 invariant：0≤i≤j+1≤n 且 i+j=n-1。","左区：∀k(0≤k<i→a[k]==old(a[n-1-k]))；右区：∀k(j<k<n→a[k]==old(a[n-1-k]))。","未处理区：∀k(i≤k≤j→a[k]==old(a[k]))。它说明奇数长度退出时中央元素没有被错误改写；结合 i+j=n-1 可得中央元素正是自身镜像。","decreases j-i；guard i<j 时为正，每轮 i+1、j-1 后减少 2。分别检查初始化、swap 后保持和退出。"],final:"把四组 invariant 写成公式；“两端已处理、中间未处理”的口头描述不能替代题面要求的 annotations。"},
           {label:"(c)",ask:"为 AllEven 写 decreases、sequence 解释和 contract。",steps:["decreases |s|；递归参数 s[1..] 长度少 1。","sequence 是不可变值，slice 安全表达剩余输入并便于 old/等式推理。","ensures res 等价于所有合法下标元素为偶数。","说明空序列使全称命题为真，递归分支与定义一致。"],final:"用 iff 合约而非只写 res→allEven，才能完整刻画返回值。"}
         ]
       },
@@ -84,9 +84,9 @@ window.REVISION_DEPTH = {
       {
         question:"Q4 将合约层次、两种运行行为检查方式和四条自动驾驶 LTL 性质放在同一题中。",
         parts:[
-          {label:"(a)",ask:"区分软件合约与系统合约。",steps:["软件合约约束方法/类：requires、ensures、invariant。","系统合约跨组件并常含时间/交互性质。","软件例：withdraw requires amount≤balance；系统例：每个 request 最终 response。","给工具：Dafny 检软件合约，Spin/FRET/monitor 可支持系统性质。"],final:"差别要落在作用范围与时间行为，不只是工具名称。"},
+          {label:"(a)",ask:"区分软件合约与系统合约。",steps:["软件合约约束方法/类：requires、ensures、invariant；例：withdraw requires amount≤balance，ensures balance==old(balance)-amount。","系统合约跨组件并常含时间/交互；例：每个 request 最终都有 response。","选择一条工具链详细写：在 FRET 中用 FRETish 的 scope/condition/component/timing/response 记录系统 requirement。","FRET 可生成 CoCoSpec assume-guarantee contracts，把它们加入 Simulink component，再由 Kind2 model checker 检查；也可生成 Copilot runtime monitor。说明每个工具的角色，不把 editor、model checker、monitor 混为同一物。"],final:"差别落在作用范围与时间行为；工具部分形成“需求→合约→模型检查/监控→证据”的完整链，而非只列名称。"},
           {label:"(b)",ask:"比较 Model Checking 与 Runtime Verification。",steps:["Model Checking 构造/探索模型所有可达状态与路径。","失败给 counterexample；成功是在模型与假设范围内的全局结论。","Runtime Verification 把性质变成 monitor，只观察一次或若干实际 trace。","它适合部署期发现违反，但未观察到违反不证明所有未来路径安全。"],final:"一项是模型全空间，一项是实际轨迹；都配一个例子。"},
-          {label:"(c)",ask:"写四条汽车性质的 LTL。",steps:["先逐条定义 destinationReached、progress、emergency、resolved、red、stopped、green、sensorFail、safe、recovered。","i 可写 G(¬destinationReached→(progress U destinationReached))，并说明强 U 要求最终到达。","ii 写 G(emergency→(emergency U resolved)∧F¬emergency)。","iii 写 G(red→F(beforeIntersection∧stopped∧(stopped U green)))。","iv 写 G(sensorFail→F(safe∧(safe U recovered)))，另写 G monitorSensors 表示持续监控。"],final:"公式之后逐符号解释，并说明采用的原子命题和 strong-until 假设。"}
+          {label:"(c)",ask:"写四条汽车性质的 LTL。",steps:["先定义 destinationReached、progress、emergency、resolved、red、beforeIntersection、passedIntersection、stopped、green、sensorFail、safe、recovered，并说明 green/recovered 是否由环境保证最终发生。","i：G(¬destinationReached→(progress U destinationReached))；strong U 同时要求到达前持续 progress 且最终到达。","ii：G(emergency→((emergency U resolved)∧F¬emergency))；resolved 前保持 emergency，并最终退出。","iii 拆写：G((red∧¬green∧beforeIntersection)→(¬passedIntersection U (stopped∧beforeIntersection)))，再写 G((red∧stopped∧¬green)→(stopped W green))。若环境保证 green 最终发生，把 W 加强为 U。","iv：G monitorSensors，并写 G(sensorFail→(¬recovered U (safe∧(safe W recovered))))。这强迫 safe 在本次 recovery 前出现，并在不恢复时一直保持；若保证 recovered 最终发生，用 U 代 W。"],final:"公式后逐符号解释并写模型假设。单写 F(以后某次 stop/safe) 太弱，会允许先越线或先恢复。"}
         ]
       }
     ]
@@ -196,7 +196,7 @@ window.REVISION_DEPTH = {
       },
       {
         plain:"Equivalence Partitioning 假设同一 partition 内的值会触发相同处理，因此选一个代表。Value line 帮你先看清自然范围和规格边界，避免漏掉 error partition。",
-        steps:["为每个输入先画类型自然范围，再标规格允许范围和行为切换点。","给每个 input partition 编号；所有非法区也要独立编号并加 *。","为每个 output 建 output TCI。","选 representative 时先做一个全合法 base case，再一次改变一个条件。","填写 TC→TCI mapping，删除没有新增覆盖的重复测试。"],
+        steps:["为每个输入先画类型自然范围，再标规格允许范围和行为切换点。","给每个 input partition 编号；所有非法区也要独立编号并加 *。","为每个 output 建 output TCI。","normal TC 应尽量组合多个尚未覆盖的 normal TCI；error TC 则一次只含一个 input error TCI，避免 error hiding。","填写 TC→TCI mapping；如果两个 TC 的 TCI 覆盖集合完全相同，删除一个或明确说明它只是额外 robustness test。"],
         example:{title:"温度分类的 EP",prompt:"输入 int temp；<0 返回 COLD，0..30 OK，>30 HOT。",steps:["自然范围是整个 int；规格行为在 0、30 两处改变。","Partitions：P1 temp<0，P2 0≤temp≤30，P3 temp>30。","选 -1、15、31 为代表，而不是把每个边界周围值都塞进 EP。","Outputs COLD/OK/HOT 各应由至少一个 TC 覆盖。"],result:"若题目要求 BVA，才额外选 -1/0、30/31；不要混淆 EP 与 BVA 交付物。"},
         practice:{q:"Charging 的 battLevel=-1、dischargeRate=300 能否放在同一个 error TC？",hint:"一个 TC 同时破坏两个参数时，能确定哪个 error partition 被独立处理吗？",a:"不宜。应一次只让一个参数非法，另一个保持合法，从而独立覆盖并追踪每个 error partition。"}
       },
@@ -207,21 +207,21 @@ window.REVISION_DEPTH = {
         practice:{q:"100% statement coverage 是否保证 100% branch coverage？",hint:"一个 if 的 body 被执行过一次，else/false 是否一定走过？",a:"不保证。测试让条件 true 可执行 if body 并覆盖所有 statements，但 false branch 仍可能从未发生。"}
       },
       {
-        plain:"实例方法的结果可能写入对象字段而不直接 return。此时测试必须先建立对象状态，调用被测方法，再通过 accessor 观察结果；这就是 class context。",
-        steps:["列出 constructor、被测方法、每个 attribute 的 setter/getter。","把 parameter partition 与调用前 attribute state partition 一起组合。","每个 TC 写完整方法顺序，而非只写一个输入值。","对有返回值的每次调用写 expected；对 void 方法通过 getter 建 oracle。","测试间新建对象或重置状态，避免前一 TC 污染后一 TC。"],
+        plain:"实例方法的结果可能写入对象字段而不直接 return。此时测试必须先建立对象状态，调用被测方法，再通过 observer/getter 观察结果；这就是 class context。课程把 getters/setters 广义合称 accessor，但更精确地说 setter 是 mutator。",
+        steps:["列出 constructor、被测方法、每个 attribute 可用的 getter/observer 与 setter/mutator。","Shipping.isFree 是 freeShipping 的 getter；setPrime 是 primeCustomer 的 setter/mutator。primeCustomer 没有 getter，不能独立观察，但仍可由 setPrime 建立 decide 所需 pre-state。","把 parameter partition 与调用前 attribute state partition 一起组合。","每个 TC 写完整方法顺序以及每次调用的 expected；void 方法没有 return，最终状态通过 getter 建 oracle。","若目标状态既无 getter也无任何可见效果，应明确指出 testability/oracle 问题；测试间新建对象或重置状态。"],
         example:{title:"Shipping.decide 的调用链",prompt:"非Prime顾客订单 €120 应免费。",steps:["Shipping s=new Shipping() 建立默认 prime=false。","s.setPrime(false) 明确 pre-state。","s.decide(120) 修改 freeShipping。","actual=s.isFree() 观察状态。","assert actual==true，因为非Prime但 value>100。"],result:"Test case 表中应按这一顺序列出所有 calls，而不只是写 (false,120,true)。"},
         practice:{q:"decide() 返回 void，为什么仍可测试？",hint:"对象是否提供可观察结果的方法？",a:"可以。调用 decide 后用 isFree() 读取 freeShipping，并与 expected 比较；isFree 是 test oracle 的观察接口。"}
       },
       {
         plain:"随机测试不是随便生成数。先用 Decision Table 固定要覆盖的 rule，再只在该 rule 对应区间内随机；这样同时得到结构覆盖与多样数据。",
         steps:["为每条 rule 写 causes 的真值与 expected effect。","把数值 cause 翻译成随机区间，例如 lux<5000→0..4999。","boolean cause 直接固定 true/false，不随机到不可控。","循环生成时保存 seed、输入和失败日志，确保可复现。","MTBF 测试还需使用接近真实使用频率的 operational profile。"],
-        example:{title:"inclusive genRand",prompt:"生成 min 到 max（两端都含）的均匀 int。",steps:["区间元素数是 max-min+1。","random.nextInt(bound) 产生 0..bound-1。","令 bound=max-min+1。","最后加 min，得到 min..max。","先验证 max≥min，并注意 max-min+1 的整数溢出。"],result:"return min + random.nextInt(max-min+1)。"},
-        practice:{q:"要满足 lux≥5000，写 rand(5000..4999) 对吗？",hint:"下界是否小于上界？题目是否给出有效最大值？",a:"不对。应使用规格或测试设定的合法上界，例如 rand(5000..100000)，并说明上界来源；若完整 int 域，生成方法需避免溢出。"}
+        example:{title:"题面签名 int genRand(int max, int min)",prompt:"按题面参数顺序，生成 min 到 max（两端都含）的均匀 int。",steps:["先检查 max≥min；注意题面是 max 在前、min 在后。","区间元素数是 max-min+1。","random.nextInt(bound) 产生 0..bound-1。","令 bound=max-min+1，最后加 min，得到 min..max。","一般实现必须防 max-min+1 溢出；本题使用 0..4999 或 5000..Integer.MAX_VALUE 时，两个 bound 均为正 int。"],result:"int genRand(int max,int min){ if(max<min) throw new IllegalArgumentException(); return min+random.nextInt(max-min+1); }"},
+        practice:{q:"SolarPanel 要满足 lux≥5000，随机区间上界应写什么？",hint:"题面声明 lux 为 int，Decision Table 又把讨论域限定为 lux≥0。",a:"自然域可写 rand(5000..Integer.MAX_VALUE)。如果为了运行效率选有限 operational/test cap U，也可以写 rand(5000..U)，但必须声明 U 的来源，不能称它是题面规格边界。"}
       },
       {
         plain:"Agile 中测试贯穿每个迭代；白盒测试贴近实现，所以重构常迫使它更新。数值、AI、移动端等专题提供额外风险，但今年卷只直接抽取 Agile 解释。",
         steps:["在 backlog/refinement 阶段澄清 acceptance criteria。","开发中写 unit/component tests，CI 每次提交运行。","Sprint 内做集成、探索与回归，review 后继续监控。","黑盒测试依赖外部规格；实现重构但行为不变时通常仍有效。","白盒测试依赖内部 branch/path，结构改变后覆盖映射与测试可能要改。"],
-        example:{title:"风险投入曲线怎样解释",prompt:"为什么测试投入不是越高越好？",steps:["测试投入增加，发现/避免故障带来的预期收益先快速上升。","边际上越来越难找到新问题，收益曲线逐渐变平。","测试成本随投入持续增加。","净利润=避免损失的收益-测试成本，在两曲线边际差为零附近最大。"],result:"最优点不是零风险，而是新增一单位测试的预期收益等于新增成本。"},
+        example:{title:"课程风险图怎样解释",prompt:"为什么测试投入不是越高越好？",steps:["课程直接给出 Expected cost(risk)=Pr(failure)×cost(failure)。","增加 testing expenditure 通常会降低 failure probability 和 expected failure cost。","testing cost 随投入增加，expected failure cost 与 testing cost 相加得到 total cost。","最优投入位于 total cost 最低处；若收入固定，这等价于 profit 最高处。","avoided-loss benefit/net-profit 是从课程成本图推导的解释，不应冒充讲义原图标签。"],result:"最优点不是零风险，而是总成本最小；用边际语言表达时，是新增测试的预期风险降低等于新增测试成本。"},
         practice:{q:"方法内部从 if 改成 table lookup，但外部行为不变，哪类测试更可能无需修改？",hint:"哪类测试只依赖 specification？",a:"黑盒测试更可能无需修改；以旧 branch 为 TCI 的白盒测试需要重新分析覆盖结构。"}
       }
     ],
@@ -230,14 +230,14 @@ window.REVISION_DEPTH = {
         question:"Q1 先解释穷举不可行，再对 Charging.required 完成 value line、input/output partitions、TCI、代表值与无重复 EP 测试。",
         parts:[
           {label:"1(a)",ask:"解释 calc 的 exhaustive testing 不可行。",steps:["三个 int 各 2^32，short 为 2^16。","组合数为 2^112≈5.19×10^33。","即使每秒 10^9 次也需约 5.19×10^24 秒。","还未包括 expected result、测试启动和报告成本。"],final:"用输入域乘积和数量级得出穷举不可行。"},
-          {label:"1(b)",ask:"画 Charging 的范围并定义 partitions。",steps:["battLevel 自然 short 范围；规格合法 0..100，非法 <0、>100。","dischargeRate 自然 short；规格合法 0..255，非法 <0、>255。","合法组合内：FAST 当 batt<10 且 rate>50；SLOW 当 batt<50 且非FAST；NONE 其余。","Input TCIs 要能区分 batt 行为段与 rate 行为段；Output TCIs 为四个 enum。"],final:"两条 value line、输入表、输出表全部列 error partitions 并加 *。"},
-          {label:"1(c)",ask:"给最小、可追踪的 EP tests。",steps:["先选合法代表：FAST (9,51)→FAST。","SLOW 可选 (10,51) 或 (49,50)→SLOW。","NONE 选 (50,50)→NONE。","四个错误区各单独测试：(-1,合法)、(101,合法)、(合法,-1)、(合法,256)→PARAM_ERROR。","在 TCI 表写每个 TCI 被哪个 TC 覆盖；若两个 TC 覆盖集合完全重复，删除一个。"],final:"卷面至少包含 TCI、selected values、TC 三表及 output coverage。"}
+          {label:"1(b)",ask:"画 Charging 的范围并定义 partitions。",steps:["两参数的 Java short 自然范围都是 -32768..32767。","battLevel 输入 TCI：B1* -32768..-1，B2 0..9，B3 10..49，B4 50..100，B5* 101..32767。","dischargeRate 输入 TCI：R1* -32768..-1，R2 0..50，R3 51..255，R4* 256..32767。","Output TCIs：O1 NONE、O2 FAST_CHARGE、O3 SLOW_CHARGE、O4 PARAM_ERROR。","FAST 当 B2∧R3；SLOW 当 batt<50 且非FAST；NONE 是其余合法组合。"],final:"卷面应画两条从 -32768 到 32767 的 value line，并分别交付 input 与 output partition 表；四个 input error TCI 均加 *。"},
+          {label:"1(c)",ask:"给最小、可追踪的 EP tests。",steps:["T1 (9,51)→FAST_CHARGE，覆盖 B2/R3/O2。","T2 (10,51)→SLOW_CHARGE，新增 B3/O3；R3 是不可避免的重复覆盖。","T3 (50,50)→NONE，新增 B4/R2/O1。","T4 (-1,50)、T5 (101,50)、T6 (50,-1)、T7 (50,256) 均→PARAM_ERROR；每个 TC 只含一个 input error TCI，分别覆盖 B1*/B5*/R1*/R4*，O4 可重复并在表中标明。","完成每个 TCI→TC mapping；只有两个 TC 的完整覆盖集合相同时才删除一个，不能因某个 normal TCI 不可避免地重复就误删必要测试。"],final:"完整答案含 selected values、TCI、TC 三表，明确 expected enum、error 星号、output coverage 与 duplicate review。"}
         ]
       },
       {
         question:"Q2 从 JaCoCo 部分覆盖补 Filestore branch tests，再写 TestNG 结构并解释 Agile 中测试维护。",
         parts:[
-          {label:"2(a)",ask:"根据实际代码截图补 Branch Coverage。",steps:["把黄色行的每个 compound decision 拆成可观察的 T/F branch。","结合现有 EP tests 标出未走 branch。","由逻辑 enabled∧((¬exists∧¬overwrite)∨(exists∧overwrite)) 解输入。","为每个未走 branch 给 enabled/exists/overwrite 和 expected。","完成 TCI 表与 TC 表，并说明短路条件是否被求值。"],final:"由于试卷截图决定具体未走分支，作答时必须以图中的行号和现有覆盖为准，不能只抄通用四组合。"},
+          {label:"2(a)",ask:"根据实际代码截图补 Branch Coverage。",steps:["先把 2026 PDF 截图中的实际源码、28/32/33 行和 JaCoCo diamonds 可靠转录；yellow/red 只说明部分/未执行，不能单凭颜色猜 branch。","把每个 implementation decision（含短路产生的条件求值和可能的 null-else）编号，再结合已有 EP tests 标出确实未走的 branch。","规格 oracle 是 enabled∧((¬exists∧¬overwrite)∨(exists∧overwrite))；它只能计算 expected output，不能决定源码的 branch 数或执行顺序。","仅对截图可确认的 missed branch 写 line/branch ID、布尔约束、enabled/exists/overwrite 和 expected。","完成 TCI→TC mapping；如果当前资料提取不到截图代码，应明确写证据不足，不生成虚假的具体 branch 答案。"],final:"Q2(a) 没有脱离截图的唯一 branch 答案；规格真值式不是 branch map，最终答案必须可追溯到截图实现。"},
           {label:"2(b)",ask:"写 TestNG outline。",steps:["import org.testng.Assert 与 org.testng.annotations.Test。","定义 public test class。","每个 TC 用 @Test 方法，Arrange 三个 boolean。","Act：Boolean actual=Filestore.decideWrite(...);。","Assert.assertEquals(actual, expected);；可用 @DataProvider 合并表格。"],final:"annotation、class、method、call、expected assertion 五层结构必须出现。"},
           {label:"2(c)",ask:"画 Scrum 并解释白盒维护。",steps:["画 Product Backlog→Sprint Planning→Sprint/Development→Review→Retrospective→下一轮。","在 refinement/acceptance、开发单元测试、CI、集成与回归位置标 testing。","白盒测试和行/branch 强耦合，重构改变控制流会频繁更新。","黑盒测试来自稳定规格，内部实现变化而外部行为不变时可复用。"],final:"测试不是 Sprint 末尾单独阶段，而是整个循环中的活动。"}
         ]
@@ -246,15 +246,15 @@ window.REVISION_DEPTH = {
         question:"Q3 比较 Level 的静态方法测试与 class-context 测试，再为 Shipping.decide 交付完整 EP 设计。",
         parts:[
           {label:"3(a)",ask:"写两种调用顺序与 oracle 位置。",steps:["静态：actual=Level.checkLevel(x)→assert actual==expected。","class context：obj=new Level(x)→obj.isValid()→actual=obj.getResult()→assert。","checkLevel 直接 return；isValid 把结果写入字段，所以需 getter。","明确 constructor 建立 attribute l，getResult 负责观察 result。"],final:"用调用序列或时序图展示 actual 与 expected 在哪里比较。"},
-          {label:"3(b)",ask:"完成 Shipping class-context EP。",steps:["accessors：isFree 观察 freeShipping；setPrime 控制 primeCustomer；题面没有 value 字段，value 是 decide 参数。","value line：负数合法；≤100 与 >100 分区，100 不免费、101 免费（非Prime）。","pre-state prime=true/false；outputs free/not free。","核心 TCs：prime T+任意 value→free；prime F+101→free；prime F+100→not free；prime F+negative→not free/覆盖负数合法段。","每个 TC 写 new→setPrime→decide→isFree→expected，并补 TCI mapping。"],final:"不要把负 value 标 error；必须通过 isFree 建立 oracle。"}
+          {label:"3(b)",ask:"完成 Shipping class-context EP。",steps:["freeShipping 的 getter/observer 是 isFree；primeCustomer 的 setter/mutator 是 setPrime。课程可把二者广义列作 accessors，但 setPrime 不是 getter。primeCustomer 无 getter，无法独立读取，不过可由 setPrime 建立 pre-state。","value 是 decide 参数而非字段；仅按行为切换分为 V1 value≤100 与 V2 value>100。负数属于 V1，合法但不是第三个 EP。","State TCIs：P1 prime=true、P2 prime=false；Output TCIs：O1 free、O2 not-free。","T1：new→setPrime(true)[void]→decide(-1)[void]→isFree()[true]，覆盖 P1/V1/O1并显式证明负数合法。T2：new→setPrime(false)→decide(101)→isFree()[true]，覆盖 P2/V2/O1。T3：new→setPrime(false)→decide(100)→isFree()[false]，覆盖 P2/V1/O2。","不要再加入 prime=false,value=-1 作为 EP 必需 TC；它与 T3 的 P2/V1/O2 集完全重复，只能标成可选 robustness example。"],final:"最小 normal EP 设计为 3 个 TC；通过 isFree 建立 decide 的 oracle，并在表中列全 calls 与 expected return/void。"}
         ]
       },
       {
         question:"Q4 对 SolarPanel 的四条 Decision Table rules 做约束随机测试，写自动化与 inclusive generator，再解释 MTBF 和风险投资。",
         parts:[
-          {label:"4(a)",ask:"完成四条 Random DT tests。",steps:["Rule1 grid=true,lux<5000：lux rand(0..4999)，expected false。","Rule2 grid=true,lux≥5000：lux rand(5000..合法上界)，expected true。","Rule3 grid=false,lux<5000：rand(0..4999)，expected false。","Rule4 grid=false,lux≥5000：rand(5000..上界)，expected false。","表中每行写 rule、固定 boolean、随机 criteria、expected。"],final:"5000 属于 ≥5000 的 Rule2/4，不属于 <5000。"},
-          {label:"4(b)(c)",ask:"写自动化框架和 genRand。",steps:["为每条 rule 循环 N 次，生成 lux，调用 enable。","用 assertEquals(actual,expected)，失败记录 seed/rule/input。","genRand 检查 max≥min。","返回 min+random.nextInt(max-min+1)。"],final:"代码需包含 generator、循环、oracle/assert、日志或可复现 seed。"},
-          {label:"4(d)",ask:"解释 MTBF 与 risk investment。",steps:["按代表真实使用的 operational profile 长时间自动运行。","记录每次 failure 的时间和输入，并在修复/重置规则一致的前提下计算总运行时间/failure count。","用 risk=probability×impact 优先测试高风险功能。","画 avoided-loss benefit 上升后趋平、testing cost 上升、net profit 先升后降。","最优投入在净利润最高或边际收益等于边际成本处。"],final:"MTBF 估计依赖工作负载代表性；零 failure 不能直接声称无限 MTBF。"}
+          {label:"4(a)",ask:"完成四条 Random DT tests。",steps:["题面给 int lux 且把 DT 讨论域限定为 lux≥0，因此自然范围是 0..Integer.MAX_VALUE。","T1 Rule1：grid=true，lux=genRand(4999,0)，expected false。","T2 Rule2：grid=true，lux=genRand(Integer.MAX_VALUE,5000)，expected true。","T3 Rule3：grid=false，lux=genRand(4999,0)，expected false。","T4 Rule4：grid=false，lux=genRand(Integer.MAX_VALUE,5000)，expected false。若改用有限 cap U，必须声明 U 是 operational/test cap，不是题面规格上界。"],final:"5000 属于 ≥5000 的 Rule2/4；四行都要写 TCI、固定 grid、随机 criteria 与 expected。"},
+          {label:"4(b)(c)",ask:"写自动化框架和 genRand。",steps:["保存 seed 并创建 Random；为 T1–T4 各循环 N 次，固定 grid，按该 rule 调用 genRand，执行 SolarPanel.enable。","每次用 assertEquals(actual,expected)；失败记录 seed、rule、grid、lux，终止条件写固定 loops 或时长。","按题面原样写签名 int genRand(int max, int min)，先 if(max<min) 抛 IllegalArgumentException。","核心返回语句是 return min + random.nextInt(max-min+1)；一般实现需检查差值溢出，本题四个区间的 bound 均为正 int。"],final:"完整代码骨架必须同时出现 generator、四 rule 循环、oracle/assert、completion criterion 与可复现日志。"},
+          {label:"4(d)",ask:"解释 MTBF 与 risk investment。",steps:["按真实用户输入/操作频率构造具有统计代表性的 operational profile，长时间自动运行并保留 failure 的时间和输入。","只有在每次 failure 后按一致规则修复/重置、并以 operational uptime 计时的前提下，才用累计 uptime/failure count 作简化 MTBF 估计；同时报告总时长与 failure count。","零 failure 只给出删失观测，不能直接声称无限 MTBF。","课程风险图先画 Pr(failure) 随 testing expenditure 下降、expected failure cost=Pr(failure)×cost(failure) 下降、testing cost 上升，以及二者相加的 total cost。","最优投入在 total cost 最低处；若收入固定，这等价于 profit 最高。avoided-loss/net-profit 曲线只能标为从课程成本图推导。"],final:"结论必须同时交代工作负载代表性、恢复/计时假设、观测量，以及课程原图与利润推导之间的关系。"}
         ]
       }
     ]
@@ -281,13 +281,13 @@ window.REVISION_DEPTH = {
       },
       {
         plain:"AES 是固定 128-bit block 的置换；mode 决定怎样处理长消息或产生字节级 keystream。认证加密还要阻止攻击者修改 ciphertext 并观察解密差异。",
-        steps:["AddRoundKey 是逐 byte XOR，因此 roundKey=before XOR after。","CTR/OFB/CFB 可把 block cipher 输出变成流；明确 IV/counter 和取哪个 byte。","ETM 使用独立 Ke、Km：先 C=Enc(Ke,M)，再 T=MAC(Km,C)。","接收者必须先验证 T，失败立即丢弃，成功才 decrypt。","CIA：encryption 给 confidentiality，MAC 给 integrity/authenticity；availability 需其他机制。"],
+        steps:["AddRoundKey 是逐 byte XOR，因此 roundKey=before XOR after。","CTR/OFB/CFB 可把 block cipher 输出变成流；具体 mode 决定取 MSB/LSB、反馈什么，必须服从题面与讲义。","ETM 使用独立 Ke、Km：先 C=Enc(Ke,M)，再 T=MAC(Km,C)。","接收端先验证 T；invalid 永远只返回统一 null。为符合课程的 timing 防护，可让 valid/invalid 走等成本或 dummy decryption，但绝不在 invalid 时释放 plaintext。","CIA：encryption 给 confidentiality，MAC 给 integrity/authenticity；availability 需其他机制。"],
         example:{title:"单字节 stream 解密",prompt:"keystream byte=0xAD，cipher byte=0x20。",steps:["流模式中 C=P XOR K，所以 P=C XOR K。","0x20=0010 0000。","0xAD=1010 1101。","逐位 XOR 得 1000 1101=0x8D。"],result:"P=0x20 XOR 0xAD=0x8D；具体题必须按图说明 keystream byte 的选取。"},
-        practice:{q:"为什么 ETM 验证失败后不能仍尝试解密并返回不同错误？",hint:"攻击者能从错误差异学到什么？",a:"这会形成 decryption/padding oracle。先统一验证 MAC 并在失败时不解密、不泄露细节，可阻断 adaptive ciphertext 查询。"}
+        practice:{q:"为什么 ETM 验证失败后不能返回解密错误或 plaintext？",hint:"课程允许等成本解密，但允许使用结果吗？",a:"不同错误或 plaintext 会形成 oracle。课程为隐藏 timing 可执行等成本/dummy decryption，但 invalid tag 时必须丢弃结果并统一返回 null；只有 valid 才释放 plaintext。"}
       },
       {
         plain:"RSA 的私钥来自 φ(n) 上的逆元；Rabin 解密是开平方。Textbook Rabin 的危险在于：若解密 oracle 返回攻击者所提交平方的另一个根，两个根的差会暴露 n 的因子。",
-        steps:["RSA 先 factor n=pq，再 φ=(p-1)(q-1)，最后 d=e⁻¹ modφ。","验证 ed≡1 modφ，不要在 mod n 下求 inverse。","Rabin 对 c=R² modN 返回根 Y。若 Y≠±R modN，R 与 Y 是不同平方根。","计算 gcd(R-Y,N) 与 gcd(R+Y,N)，其中一个给非平凡因子。","防御使用 redundancy/CCA-secure padding、ciphertext validity check，不能裸用 textbook Rabin。"],
+        steps:["RSA 先 factor n=pq，再 φ=(p-1)(q-1)，最后 d=e⁻¹ modφ。","验证 ed≡1 modφ，不要在 mod n 下求 inverse。","Rabin 的 c=m² modN 在形式上像 RSA 的 e=2，但 2 与 φ(N) 不互素，不能作为普通 RSA 的合法 exponent；Rabin 解密有四根，必须额外消歧。","若 oracle 对 c=R² 返回 Y≠±R，则 gcd(R-Y,N) 或 gcd(R+Y,N) 给非平凡因子。","课程修复是在 QR_N 中选唯一 QR root，并发送 ⟨x² modN,lsb(x) XOR m⟩；通用实现还应使用 CCA-secure encoding，不能裸用 textbook Rabin。"],
         example:{title:"不同平方根为何泄漏因子",prompt:"R²≡Y² mod N。",steps:["移项得 R²-Y²≡0 modN。","因式分解：(R-Y)(R+Y) 是 N 的倍数。","当 Y 不是 ±R modN 时，N 的两个素因子通常分别整除两个因子。","gcd 能从其中抽出 p 或 q。"],result:"这不是暴力分解，而是利用 decryption oracle 暴露的不同根。"},
         practice:{q:"若 oracle 返回 Y=R，会得到因子吗？",hint:"gcd(R-Y,N)=gcd(0,N)。",a:"只得到 N；另一个 gcd 通常为 1 或 N，没有非平凡因子。攻击依赖返回不同于 ±R 的根。"}
       },
@@ -311,22 +311,22 @@ window.REVISION_DEPTH = {
           {label:"1(a)",ask:"用 R=333 击败固定 challenge 的 ZK shift。",steps:["Schnorr/shift 型检查为 g^R≡commitment·f(secret)^c modp；这里 c 永远为 1。","攻击者先选 response R=333。由 333=5×64+13 和题给 2^64 mod991=827，可算 2^333 mod991=904。","697⁻¹ mod991=691，因此反向选择 commitment=904×691 mod991=334。","发送 commitment=334；收到必然的 c=1 后回答 R=333。","验证端算 334×697 mod991=904，恰等于 2^333 mod991，所以接受；攻击者却没有证明能回答其他 challenge。"],final:"伪造 transcript 为 (commitment,c,response)=(334,1,333)；固定挑战破坏 soundness。"},
           {label:"1(b)",ask:"由 mail→uwex 恢复 Affine digraph key。",steps:["用 A=0 映射和 26x+y：ma=312，il=219，uw=542，ex=127，modulus=26²=676。","建立 542≡312a+b、127≡219a+b (mod676)。","相减得 415≡93a；题给 93⁻¹=189，所以 a≡415×189≡19 mod676。","回代 b≡542-19×312≡22 mod676。","验证 19×312+22≡542，19×219+22≡127。"],final:"Affine digraph private key 为 (a,b)=(19,22) mod676。"},
           {label:"1(c)(d)",ask:"求平方根和椭圆曲线点。",steps:["平方根：p=0x20b=523，n=0x45d81=286081，所以 q=547=0x223。题给 residues 给出 mod p 根 ±415，即 415/108；mod q 根 ±62，即 62/485。","用 p⁻¹ modq=433 和 x=a+p((b-a)433 modq) 组合四对根。","四个十进制根为 163068、118090、167991、123013；平方 mod286081 均回到题给 radicand 0x3817b。","ECC：b≡14²-25³-13×25≡8 mod37，所以曲线 y²=x³+13x+8。","doubling 得 λ=(3×25²+13)(28)⁻¹≡15，故 2P=(3,0)；3P=(25,23)=-P，4P=O。"],final:"平方根为四个 CRT 结果；ECC 的 Q=2P=(3,0)，P 的 order n=4。"},
-          {label:"1(e)",ask:"解密 RLWE 两字符。",steps:["ring 为 Rq=Z_83[y]/(y^8+1)，故 y^8=-1。","按 data sheet 把第一项视为 c_aux、第二项为 c_msg，计算 s·c_aux。","约简后 s·c_aux 的低到高系数为 [0,52,71,11,39,5,40,1]。","c_msg-s·c_aux mod83 得 [2,43,77,39,45,45,45,38]。","按靠近 0/83 与靠近 q/2 的阈值解码为 bits 01011111，即两个 hex characters 5F。"],final:"plaintext 为十六进制 5F（若再按 ASCII 解释，则是字符 underscore “_”）。"}
+          {label:"1(e)",ask:"解密 RLWE 两字符。",steps:["约定先置顶：ciphertext tuple 第一项是 c_aux、第二项是 c_msg；题面多项式按 y^7→y^0 显示。ring 为 Rq=Z_83[y]/(y^8+1)，故 y^8=-1。","计算 s·c_aux；约简后按 y^0→y^7 的系数为 [0,52,71,11,39,5,40,1]。","c_msg-s·c_aux mod83 按 y^0→y^7 得 [2,43,77,39,45,45,45,38]。","转回题面/课程的 y^7→y^0 顺序：[38,45,45,45,39,77,43,2]。","按 q/4 到 3q/4 解为 1 的课程阈值，得到 bits 11111010，即 hex FA。"],final:"plaintext 为两个十六进制字符 FA；不要把 y^0→y^7 数组直接当作从最高位到最低位的 bit string。"}
         ]
       },
       {
         question:"Q2 考 AES XOR、把 block cipher 工程成 8-bit stream，以及 ETM 抵抗 adaptive ciphertext 的结构。",
         parts:[
           {label:"2(a)",ask:"从 ARK 前后 state 求 round key。",steps:["把 before 对齐为 123456ff123456ff123456ff123456ff，after 为 a93456ff123456ff123456ff12345644。","ARK 是 S_after=S_before XOR K_round，所以 K=S_before XOR S_after。","首 byte：0x12 XOR 0xa9=0xbb；中间相同 bytes 全给 0x00；末 byte 0xff XOR0x44=0xbb。","拼成 16 bytes 并再 XOR 回去验证。"],final:"round key=bb0000000000000000000000000000bb。"},
-          {label:"2(b)",ask:"选择 mode 模拟 8-bit cipher并恢复 plaintext byte。",steps:["可用 OFB/CTR 让 AES 先产生 128-bit keystream，再逐 byte 使用。","选择题面对应的 keystream byte；给出的 Ek(IV) 末 byte 为 0xdf，C1=0x20。","解密 P1=C1 XOR K1=0x20 XOR0xdf。","00100000 XOR11011111=11111111。"],final:"在取末 byte 的图示约定下 plaintext=0xff；卷面必须画清 byte 选取，否则数值没有依据。"},
-          {label:"2(c)",ask:"完整解释 ETM。",steps:["ETM=Encrypt Then MAC。","发送：C=Enc_Ke(M;IV)，T=MAC_Km(IV||C)，发送 IV,C,T。","接收：先重算并常数时间比较 T；失败统一丢弃；成功后才 decrypt。","E&M 对 plaintext 做 MAC，若实现先 decrypt 才能验证，可能暴露 padding/格式错误 oracle。","ETM 满足 confidentiality 与 integrity/authenticity；不保证 availability。"],final:"独立 keys、先认证后解密、CIA 映射是三个主要得分点。"}
+          {label:"2(b)",ask:"选择课程指定的 8-bit CFB 并恢复 plaintext byte。",steps:["画 128-bit IV/register→AES encryption→S_8→XOR 的 CFB 图。","Day 3 讲义定义 S_8 取 E_k(IV) 的 most significant 8 bits；题给输出开头是 EA，因此 K1=0xEA。","解密 P1=C1 XOR K1=0x20 XOR0xEA。","00100000 XOR11101010=11001010。"],final:"plaintext byte=0xCA。最左 byte/MSB 约定来自课程 CFB 定义，不能改取末 byte DF。"},
+          {label:"2(c)",ask:"完整解释 ETM，并与 E&M/MTE 分开比较。",steps:["ETM=Encrypt Then MAC。发送：C=Enc_Ke(M;IV)，T=MAC_Km(IV||C)，发送 IV,C,T。","E&M 对 plaintext 产生 deterministic tag：攻击者可先查询 m0 的 tag，再在 IND-CPA challenge 中比较 tag，直接识别 m0/m1；这是它的主要课程反例。","MTE/decrypt-before-auth 是另一问题，可能暴露 padding/格式 oracle，不要与 E&M 的 deterministic-tag 泄漏混为一谈。","接收端先验证 tag；课程讲义要求 invalid/valid 路径保持相同可观察时间，可执行等成本或 dummy decryption，但 invalid 永远只返回统一 null，只有 valid 才释放 plaintext。","ETM 提供 confidentiality 与 integrity/authenticity，不自动保证 availability。"],final:"卷面要点：独立 Ke/Km、ciphertext MAC、E&M equality leak、MTE oracle、constant-work invalid path，以及 CIA 映射。"}
         ]
       },
       {
         question:"Q3 依次要求恢复 RSA d、利用 Rabin oracle 分解 N，以及按给定倍点验证 ECDSA。",
         parts:[
-          {label:"3(a)",ask:"恢复 RSA private key d。",steps:["790199209=27611×28619。","φ(n)=27610×28618=790142980。","求 564387843⁻¹ mod790142980；extended Euclid 给 d=7。","验证 564387843×7 mod790142980=1。"],final:"RSA private exponent d=7，因数为 27611、28619。"},
-          {label:"3(b)",ask:"完成 Rabin 攻击与防御。",steps:["R=23769451，提交 C=R² mod47479253=23004433。","oracle 返回另一根 Y=31423469。","gcd(|R-Y|,N)=gcd(7654018,47479253)=13523。","gcd(R+Y,N)=gcd(55192920,47479253)=3511；且 13523×3511=47479253。","攻击利用不同平方根；应使用带 redundancy/CCA security 的编码并拒绝非规范密文。"],final:"Rabin private factors 为 p=13523、q=3511（顺序可交换）。"},
+          {label:"3(a)",ask:"恢复 RSA private key d。",steps:["用 Fermat factorisation：ceil(sqrt(790199209))=28115。","28115²-790199209=504²，所以 p=28115-504=27611，q=28115+504=28619。","φ(n)=27610×28618=790142980。","求 564387843⁻¹ mod790142980；extended Euclid 给 d=7。","验证 564387843×7 mod790142980=1。"],final:"RSA private exponent d=7，因数为 27611、28619。"},
+          {label:"3(b)",ask:"讨论 Rabin 与 RSA 的关系，完成攻击并给课程版防御。",steps:["Rabin c=m² modN 在代数形式上像 RSA e=2；但标准 RSA 要求 gcd(e,φ(N))=1，而 Blum integer 的 φ(N) 为偶数，所以 e=2 不可逆。Rabin 解密有四个根，因此它不是普通 RSA 的合法参数特例。","R=23769451，提交 C=R² mod47479253=23004433；oracle 返回 Y=31423469。","gcd(|R-Y|,N)=13523，gcd(R+Y,N)=3511，且两者乘积为 N。","攻击利用 composite modulus 下的不同平方根。","课程防御：在 QR_N 中选择唯一 QR square root，密文使用 ⟨x² modN,lsb(x) XOR m⟩，解密只输出消息 bit，不向攻击者返回 root；通用系统再配合 CCA-secure encoding。"],final:"Rabin 形式类似 e=2，但不是标准 RSA 合法特例；私钥因数为 13523、3511。"},
           {label:"3(c)",ask:"验证 ECDSA signature (1,6)。",steps:["w=6⁻¹ mod7=6；h=22 mod7=1。","u1=1×6=6，u2=1×6=6 mod7。","在给定曲线上 6P=(13,15)，6Y=(1,14)；相加 X=(1,3)。","v=X_x mod7=1。","v=r=1，所以签名通过。"],final:"signature (r,s)=(1,6) valid。"}
         ]
       }
@@ -348,13 +348,13 @@ window.REVISION_DEPTH = {
       },
       {
         plain:"Autoencoder 自己制造训练目标：输入 x，同时要求输出重建 x。Encoder 把输入压成 latent/embedding，decoder 从它重建；因此最终输出维度必须回到输入维度 D。",
-        steps:["输入 x∈R^D 经过 encoder 得 z∈R^d。","z 是 embedding；d 通常小于 D 形成 bottleneck，但不是数学强制。","decoder 把 z 映射为 x-hat∈R^D。","loss 比较 x-hat 与 x，例如 MSE；不需要人工 class label。","训练后丢掉 decoder，encoder 可用于特征提取、聚类、可视化或异常检测。"],
+        steps:["输入 x∈R^D 经过 encoder 得 z∈R^d。","课程讲义的典型设计是 d<D，形成 bottleneck；答卷先写这一点。d≥D 的 overcomplete 架构是需额外约束的例外，不是今年题的主答案。","decoder 把 z 映射为 x-hat∈R^D。","课程主损失是 quadratic/MSE：L=(1/N)Σ||x-xhat||²；可加 λ||z||₁ 鼓励稀疏。BCE 只在合适的伯努利/归一化输出假设下补充。","训练后丢掉 decoder，encoder 可用于特征提取、聚类、可视化或异常检测。"],
         example:{title:"4维输入的压缩 autoencoder",prompt:"结构 4→2→4。",steps:["输入是四个数，因此 D=4。","encoder 输出两个数，embedding dimension d=2。","decoder 输出必须为四个数，才能逐维与输入比较。","MSE=(1/4)Σ_i(x_i-xhat_i)²。"],result:"embedding 是 2 维，最终 reconstruction 是 4 维；不要混淆两者。"},
-        practice:{q:"autoencoder 的 embedding 一定比输入维度小吗？",hint:"overcomplete autoencoder 是否存在？",a:"不一定。可使用 d≥D，但需 sparse、denoising 等约束防止简单学 identity；经典 bottleneck autoencoder 通常 d<D。"}
+        practice:{q:"今年卷问 embedding 相对 D 的维度，最稳的作答顺序是什么？",hint:"先写讲义典型设计，再写例外。",a:"先写经典 bottleneck autoencoder 取 d<D，以迫使网络学习压缩 representation；再补充这不是数学强制，d≥D 的 overcomplete 设计需要 sparsity、denoising 等约束防止只学 identity。"}
       },
       {
         plain:"CNN 的 filter 在整张图上共享，所以参数数量只取决于 filter 大小、输入通道和输出通道，不取决于图片宽高。Pooling 改尺寸但没有 learnable weights。",
-        steps:["一个 3×3 filter 跨越所有 Cin channels，因此有 3×3×Cin 个 weights。","每个输出 channel 对应一个独立 filter，再加一个 bias。","总参数=(kh×kw×Cin+1)×Cout。","same padding、stride1 保持 H/W；2×2 stride2 pooling 将 H/W 各减半，C 不变。","FC 层每个输出连接所有 n_in 输入：参数=(n_in+1)×n_out。"],
+        steps:["一个 3×3 filter 跨越所有 Cin channels，因此有 3×3×Cin 个 weights。","每个输出 channel 对应一个独立 filter，再加一个 bias。","总参数=(kh×kw×Cin+1)×Cout；H×W×Cout 是 activation/output elements，不是 learnable parameters。","same padding、stride1 保持 H/W；2×2 stride2 pooling 将 H/W 各减半，C 不变。","FC 层每个输出连接所有 n_in 输入：参数=(n_in+1)×n_out。"],
         example:{title:"VGG 第一层完整计算",prompt:"224×224×3，64 个 3×3 filters。",steps:["每个 filter 权重数 3×3×3=27。","每个 filter 加 1 bias，共 28 parameters。","64 filters：28×64=1,792。","same/stride1 后 output shape 224×224×64。","随后 2×2/stride2 pool 得 112×112×64。"],result:"1,792 parameters；卷积输出 224×224×64；池化输出 112×112×64。"},
         practice:{q:"为什么不把 224×224 乘进参数数目？",hint:"同一个 filter 在不同位置是否重复使用？",a:"卷积共享同一组 filter weights；不同空间位置产生不同 activation，但不是独立参数。"}
       },
@@ -366,13 +366,13 @@ window.REVISION_DEPTH = {
       },
       {
         plain:"模型选择必须防止 data leakage。Training data 用来更新 weights；validation data 用来比较 learning rate、层数等设置；test data 直到所有选择冻结后才使用。",
-        steps:["先划分 train/validation/test，预处理统计量只在 train 拟合。","对每组 hyperparameters 从 train 训练。","在 validation metric 上选择，并可 early stopping。","锁定结构与设置后进行最终训练方案。","只在最后一次或严格受控次数上报告 test performance。"],
-        example:{title:"选择 learning rate",prompt:"候选 0.1、0.01、0.001。",steps:["分别只用 training set 训练三个模型。","在同一 validation set 比较目标 metric。","选择 validation 最好的 0.01。","不能根据 test 结果改成 0.001；否则 test 已参与调参。"],result:"parameters 由 gradient optimizer 学，hyperparameters 由 validation/search 选择。"},
+        steps:["先划分 train/validation/test，预处理统计量只在 train 拟合。","对每组 hyperparameters 从 train 训练；weights/biases 用 backprop+SGD/Adam 优化。","在 validation metric 上选择 learning rate、batch size、层数、regularisation，并可 early stopping。","课程讲义称 test 用于 benchmark 已优化模型；严谨实践是在结构、设置和选择规则冻结后才看独立 test。","若根据 test 结果继续换模型或改设置，test 已参与选择；必须另留 final hold-out 才能报告无偏最终性能。"],
+        example:{title:"选择 learning rate",prompt:"候选 0.1、0.01、0.001。",steps:["分别只用 training set 训练三个模型。","在同一 validation set 比较目标 metric。","选择 validation 最好的 0.01 并冻结选择规则，再用 test benchmark。","若看 test 后改成 0.001，原 test 已参与选择，需另留 final hold-out。"],result:"train 学 parameters，validation 选 hyperparameters；test benchmark 冻结方案。用 test 做了选择，就另留 final hold-out。"},
         practice:{q:"反复查看 test accuracy 再改模型，有什么问题？",hint:"test 是否仍代表未见数据？",a:"造成 test leakage 和乐观偏差；模型选择已经针对 test 调整，它不再是独立最终评估。"}
       },
       {
-        plain:"Invertible layer 对每个输出都能唯一找回输入。Normalizing Flow 用一串可逆层把简单分布变成复杂数据分布，并利用 Jacobian 精确计算 density。今年只直接问可逆层及其使用场景。",
-        steps:["可逆要求 f 是一一对应，并存在 f^-1。","通常输入输出维度相同；压缩 4→2 丢信息，一般不可逆。","Flow 从简单 z 分布经过可逆 f 得 x；反向可把 x 映回 z。","change-of-variables 用 |det J| 修正体积变化，得到 exact likelihood。","VAE/GAN/diffusion 是扩展对照，不要当作全部使用可逆层。"],
+        plain:"Invertible layer 对每个输出都能唯一找回输入。Normalizing Flow 用一串可逆层把简单分布变成复杂数据分布；只有映射可逆、可微且 Jacobian determinant 可高效计算时，才可用 change of variables 高效求 exact likelihood。今年只直接问可逆层及其使用场景。",
+        steps:["可逆要求 f 是一一对应，并存在 f^-1。","flow 中通常输入输出维度相同；压缩 4→2 丢信息，一般不可逆。","Flow 从简单 z 分布经过可逆 f 得 x；反向可把 x 映回 z。","在可逆、可微且 Jacobian determinant tractable 的条件下，change-of-variables 用 |det J| 修正体积变化，得到 exact likelihood。","VAE/GAN/diffusion 是扩展对照；不能说任何可逆网络都能高效 exact likelihood，也不要说这些模型全部使用可逆层。"],
         example:{title:"线性层何时可逆",prompt:"y=Wx+b。",steps:["平移 b 可通过 y-b 消去。","关键是 W 是否方阵且 det(W)≠0。","若可逆，x=W^-1(y-b)。","若 W 把高维压到低维，多个 x 会映到同一 y，无法唯一恢复。"],result:"可逆线性层需要非奇异方阵 W。"},
         practice:{q:"普通 bottleneck autoencoder 的 encoder 通常可逆吗？",hint:"D 维压到 d<D。",a:"通常不可逆。降维必然丢失某些信息；decoder 学近似重建，不是严格数学逆函数。"}
       },
@@ -389,7 +389,7 @@ window.REVISION_DEPTH = {
         parts:[
           {label:"1(a)",ask:"比较 supervised 与 self-supervised learning。",steps:["共同点：都有输入、目标、loss、gradient optimization，并学习 parameters。","supervised 的目标来自人工/外部 label，例如 image class。","self-supervised 的目标由数据自身构造，例如重建输入或预测被遮盖部分。","self-supervised 常先学 general representation，再用于下游任务。"],final:"不要说 self-supervised“没有 target”；它没有人工标签，但有由数据构造的训练目标。"},
           {label:"1(b)(c)",ask:"定义 autoencoder 并说明输出维度。",steps:["encoder z=f(x)，decoder xhat=g(z)。","训练目标是让 xhat 接近 x。","若 x∈R^D，重建需逐维与 x 比较，所以 xhat∈R^D。","latent z 的维度 d 是另一件事，通常 d<D。"],final:"最终输出维度 D；embedding 维度 d 不要写成输出维度。"},
-          {label:"1(d)(e)",ask:"解释 embedding 与 loss。",steps:["embedding space 是 encoder 输出 z 所在空间，相近向量可表示相似数据特征。","典型 bottleneck d<D，但 overcomplete 也可能存在。","连续像素常用 MSE；适合伯努利/归一化输出时可用 BCE。","还可加入 sparsity、KL 或 regularisation，需说明目的。"],final:"loss 必须与输出分布/任务匹配，并明确 reconstruction target 是输入本身。"},
+          {label:"1(d)(e)",ask:"解释 embedding 与 loss。",steps:["embedding space 是 encoder 输出 z 所在空间，相近向量可表示相似数据特征。","先按课程讲义写典型 bottleneck d<D；再说明 overcomplete d≥D 是需约束的例外。","课程主答案：quadratic/MSE reconstruction loss，L=(1/N)Σ||x-xhat||²。","按讲义可加 λ||z||₁ sparsity regularisation；BCE 只在伯努利/合适归一化输出假设下补充，KL 不是普通 autoencoder 的必需项。"],final:"先写 MSE 公式和 L1 sparsity；明确 reconstruction target 是输入本身，再有条件地补充其他 loss。"},
           {label:"1(f)",ask:"训练后怎样使用 encoder。",steps:["丢弃 decoder，只计算 z=encoder(x)。","z 可作为低维 feature。","用于 classification 前端、clustering、visualisation、retrieval 或 anomaly detection。","下游可冻结 encoder 或 fine-tune。"],final:"至少给两个具体用途并解释为什么 embedding 比原始高维输入方便。"}
         ]
       },
@@ -397,7 +397,7 @@ window.REVISION_DEPTH = {
         question:"Q2 围绕 VGG-16 图，要求 CNN 定义、卷积/池化/FC 计算和 ReLU 公式。",
         parts:[
           {label:"2(a)",ask:"CNN 是什么，Convolutional 的含义是什么。",steps:["CNN=Convolutional Neural Network。","卷积层用小 filter 在空间位置滑动。","同一 filter weights 在所有位置共享，提取局部模式。","共享带来参数效率和对平移的等变响应。"],final:"展开 acronym 后解释 local receptive field 与 weight sharing。"},
-          {label:"2(b)",ask:"首卷积层参数数。",steps:["一个 filter 覆盖 3×3×3=27 inputs。","每个 filter 加 1 bias，得 28。","64 filters：28×64=1,792。","stride/padding 改输出位置数量，不改变 filter 参数数。"],final:"1,792 learnable parameters。"},
+          {label:"2(b)",ask:"首卷积层参数数。",steps:["一个 filter 覆盖 3×3×3=27 inputs。","每个 filter 加 1 bias，得 28。","64 filters：28×64=1,792。","stride/padding 改 output positions，不改变共享 filter 参数数；224×224×64 是 activations 数量，不是 parameters。"],final:"1,792 learnable parameters；不要乘空间位置数。"},
           {label:"2(c)",ask:"max pool 输出 shape。",steps:["输入 224×224×64。","2×2 filter、stride2 在每个方向取不重叠窗口。","高度 224/2=112，宽度同样 112。","pooling 对每个 channel 独立，通道仍 64。"],final:"112×112×64，且 pooling 没有 learnable parameters。"},
           {label:"2(d)",ask:"首 FC 层参数数。",steps:["flatten size=7×7×512=25,088。","每个输出 unit 有 25,088 weights+1 bias。","共有 4,096 outputs。","(25,088+1)×4,096=102,764,544。"],final:"102,764,544 learnable parameters。"},
           {label:"2(e)",ask:"解释 ReLU。",steps:["公式 ReLU(x)=max(0,x)。","x>0 输出 x；x≤0 输出 0。","它引入非线性且正区间梯度简单。","可简述负区间可能出现 dead units。"],final:"给公式、分段含义和在网络中的作用。"}
@@ -406,9 +406,9 @@ window.REVISION_DEPTH = {
       {
         question:"Q3 要求两个伦理案例、可逆层及其网络场景，以及正确的数据集/算法分工来优化参数和超参数。",
         parts:[
-          {label:"3(a)",ask:"给两个现实伦理问题。",steps:["例1偏差：招聘/信贷历史标签导致群体 TPR/FPR 差异；写 stakeholder、伤害、audit 与缓解。","例2隐私：医疗数据或模型记忆泄露；写未经同意使用、重识别/攻击和访问控制、最小化、隐私技术。","每例都要是完整因果链，不只列名词。"],final:"两例各用“场景—机制—伤害—缓解”，才能匹配 10 分。"},
-          {label:"3(b)(c)",ask:"解释 invertible layer 及使用它的网络。",steps:["定义：对每个 y=f(x) 存在唯一 x=f^-1(y)。","通常维度保持且 Jacobian 非奇异/可处理。","Normalizing Flow 由可逆层 composition 构成。","可双向 sampling/inference，并通过 change-of-variables 精确 likelihood。"],final:"点名 normalizing flows；不要声称普通 ReLU、pooling 或 bottleneck encoder 可逆。"},
-          {label:"3(d)",ask:"怎样找最佳 parameters 与 hyperparameters。",steps:["training set 通过 backprop+SGD/Adam 学 weights/biases。","validation set 比较 architecture、learning rate、batch size、regularisation 等。","搜索可用 grid、random、Bayesian optimization；数据少可 cross-validation。","test set 在所有选择冻结后做最终无偏评估。","预处理与 early stopping 也必须只基于 train/validation。"],final:"parameters—train—gradient optimizer；hyperparameters—validation—search；test—final report。"}
+          {label:"3(a)",ask:"给两个现实伦理问题。",steps:["例1人脸/情绪识别：有偏训练数据导致群体误识别差异，可能影响被监控者、公民权利或公平审判；按群体 audit 并限制高风险部署。","例2抓取数据：未经同意收集的私人/可重识别或受版权保护内容进入训练集；做 consent/licence/data audit、最小化数据并提供治理与申诉。","也可用训练/推理耗电、耗水和 carbon footprint 作完整案例，但必须写受影响者、可测量伤害与缓解。","每例都写场景—机制—受影响者—伤害—测量—缓解，不只列名词。"],final:"两例各写完整因果链；本地 Ethics 讲义直接支持偏差、隐私、版权和环境影响。"},
+          {label:"3(b)(c)",ask:"解释 invertible layer 及使用它的网络。",steps:["定义：对每个 y=f(x) 存在唯一 x=f^-1(y)。","flow 中通常维度保持；用于 density 的映射还需可微且 Jacobian determinant 可处理。","Normalizing Flow 由可逆层 composition 构成。","满足这些条件时可双向 sampling/inference，并通过 change-of-variables 计算 exact likelihood。"],final:"点名 normalizing flows及条件；不要声称任意可逆网络都能高效 exact likelihood，也不要称普通 ReLU、pooling 或 bottleneck encoder 可逆。"},
+          {label:"3(d)",ask:"怎样找最佳 parameters 与 hyperparameters。",steps:["training set 通过 backprop+SGD/Adam 学 weights/biases。","validation set 比较 architecture、learning rate、batch size、regularisation，并用于 early stopping。","搜索可用 grid、random、Bayesian optimization；这些是合理例子，考场核心是 validation+search，数据少可 cross-validation。","按课程讲义，test set 用于 benchmark 已优化、已冻结的模型；严谨 final evaluation 也遵循这一冻结原则。","若看 test 后继续换模型或改设置，test 已参与选择，必须另留独立 final hold-out；预处理统计量只从 train 拟合。"],final:"parameters—train—gradient optimizer；hyperparameters—validation—search；test—冻结后 benchmark；test 若参与选择则另留 hold-out。"}
         ]
       }
     ]
