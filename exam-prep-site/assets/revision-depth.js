@@ -62,7 +62,19 @@ window.REVISION_DEPTH = {
         ["CoCoSpec","FRET 生成的 assume-guarantee 合约语言，可挂到 Simulink 组件由 Kind2 模型检测器验证。"],
         ["Simulink","MathWorks 的图形化模型设计环境，常被作为系统合约集成挂载点。"],
         ["Rodin","Event-B 的配套开源工具，自动从 context/machine/event 生成 Proof Obligation 并辅助证明。"],
-        ["Soundness / 可靠性","证明方法只能产生正确结论这一性质；"AI 候选不等于证明"指的就是它必须经过 sound verifier 复核。"]
+        ["Soundness / 可靠性","证明方法只能产生正确结论这一性质；“AI 候选不等于证明”指的就是它必须经过 sound verifier 复核。"],
+        ["Runtime Verification / 运行时验证","把性质变成 monitor，只在程序实际跑出来的那一条轨迹上做检查；它不穷尽所有路径，但能在部署期立即报警，今年卷 Q4(b) 出现。"],
+        ["Behaviour Driven Formal Model Development","课程里特指用 Event-B 做“以行为/事件驱动”的系统级规格与建模，配合 Rodin 自动生成证明义务；今年卷 1(c) 出现。"],
+        ["Event-B Element 简记","context 放世界设定，machine 放变量/不变量，event 用 guard/action 改状态，before-after predicate 描述旧值→新值。"],
+        ["Adversarial Training / 对抗训练","把人为构造的“对抗样本”加入训练集，让模型在已知攻击附近也表现一致；它是经验鲁棒性改进，不构成对全域的形式保证。"],
+        ["Property-Driven Training / 性质驱动训练","把“违反某条性质”加入 loss 或训练数据生成，让模型在训练时就倾向于满足该性质；同样不穷尽所有输入。"],
+        ["Counterexample Path / 反例路径","模型检测器找到的、从初始状态走到违反性质的那一条具体状态序列，便于你定位 bug。"],
+        ["Fairness / 公平性假设","对并发模型“无穷次可执行”的进程做“必然无穷次被调度”的假设；会影响 liveness 结论，必须显式声明。"],
+        ["Atomic / 原子步骤","Spin/Promela 中 atomic 块让一段代码被“一次不可打断地走完”，用来减少状态空间交错。"],
+        ["Never Claim","Spin 中用来描述“系统不应该走的路径”的 Promela 块，常用 LTL 反例自动机生成。"],
+        ["Hoare Logic Rule Names / 规则名简称","Allocation/Assignment/Sequence/Conditional/While/Consequence 是六条经典规则，今年卷 1(d) 必须显式写规则名。"],
+        ["ReverseArray / CalculateAge / AllEven","今年卷 Q2 三段 Dafny 示例方法名；分别考查原地反转、继承下不变量、递归 decreases。"],
+        ["FRETish / FRET 受限自然语言","FRET 里写需求的受限模板，用 scope/component/condition/response/timing 等字段减少自然语言歧义。"]
       ],
     learn: [
       {
@@ -258,16 +270,22 @@ window.REVISION_DEPTH = {
             ],
             final: "差别是 conjunction 与 implication 的满足条件。在你写 iff 或反例时比“看着差不多”更可信。"
           },
-          {
+{
             label:"(b)",
             ask: "用真值表证明 p∧q→p ≡ r∨¬r。",
             steps: [
-              "列四行 p,q 组合 (T,T)、(T,F)、(F,T)、(F,F)。",
-              "对左边逐列算 ¬(p∧q)∨p ≡ ¬p∨¬q∨p ≡ (¬p∨p)∨¬q ≡ T∨¬q ≡ T。",
-              "对右边 r∨¬r 是排中律，恒 T。",
-              "两边四行最终列全为 T，所以逻辑等价。"
+              "画 4 行表，以 p, q 取值的四种组合为表头：行1 (T,T)；行2 (T,F)；行3 (F,T)；行4 (F,F)。",
+              "算 p∧q 这一列：行1 T∧T=T；行2 T∧F=F；行3 F∧T=F；行4 F∧F=F。",
+              "算 (p∧q)→p 这一列（蕴含 A→B 只在 A 真而 B 假时为假）：",
+              "  行1：(T)→T = T（前件真后件真，蕴含成立）；",
+              "  行2：(F)→T = T（前件假，蕴含自动成立）；",
+              "  行3：(F)→F = T（前件假，蕴含自动成立）；",
+              "  行4：(F)→F = T（前件假，蕴含自动成立）。",
+              "结论：左边列 (p∧q)→p 四行均为 T，是 tautology。",
+              "右边 r∨¬r 是排中律：无论 r 取 T 或 F，r∨¬r 恒为 T，也是 tautology。",
+              "两个 tautology 在任意 valuation 下都为 T，所以两边逻辑等价。"
             ],
-            final: "四行真值表要画在卷面上；不要只写“二者都是 tautology”。"
+            final: "卷面应把 4 行真值表逐列展开，每行求出 (p∧q)→p 的值；最终列四行均为 T，与右边排中律的 T 相等 → 等价。"
           },
           {
             label:"(c)",
@@ -283,14 +301,20 @@ window.REVISION_DEPTH = {
             label:"(d)(e)",
             ask: "验证复制循环并扩展到总正确性。",
             steps: [
-              "令 n=a.Length。requires a!=null ∧ a.Length>0；ensures b.Length==n ∧ ∀k(0≤k<n → b[k]==a[k])。",
-              "[Allocation+Assignment] b:=new int[n] 建立 b.Length=n；i:=0 经替换建立 I=0≤i≤n ∧ b.Length=n ∧ ∀k(0≤k<i→b[k]=a[k])。",
-              "[Array assignment] I∧i<n 下，b[i]:=a[i] 把前缀扩到 <i+1。",
-              "[Assignment+Sequence] i:=i+1 后再做替换，得到边界 0≤i≤n 且前缀 <i，I 恢复成立。",
-              "[While+Consequence] 退出 I∧i≥n 与 i≤n 得 i=n，推得 ∀k 全部相等。",
-              "[Variant] 总正确性取 V=n-i；guard 真时 V≥1>0，每轮 i+1 使 V 减 1，严格下降非负，循环必终止。"
+              "明确题给的 contract：requires a != null ∧ a.Length > 0；ensures b.Length == a.Length ∧ ∀k(0≤k<a.Length → b[k]==a[k])。设 n=a.Length，postcondition 变为 b.Length==n ∧ ∀k(0≤k<n → b[k]==a[k])。",
+              "找出循环 invariant I ≜ 0≤i≤n ∧ b.Length==n ∧ ∀k(0≤k<i → b[k]==a[k])。直观是：“下标 i 还在合法范围、新数组长度正确、已复制区 0..i-1 都对”。",
+              "① 初始化（Allocation + Assignment）：先把 b := new int[n]，引入 b.Length=n；再 i := 0，做赋值替换——把 I 中 i 全替换为 0，得到 0≤0≤n ∧ b.Length=n ∧ ∀k(0≤k<0 → ...)。空区间 ∀k 条件平凡成立；前置 a.Length>0 给 0≤0≤n。于是前置 ⇒ I 初始成立。",
+              "② 保持性（Array assignment + Sequence + Assignment）。假设进入某轮时 I 成立且 guard i<n 成立，则 0≤i<n。",
+              "  第 1 小步：执行 b[i] := a[i]。旧前缀 0..i-1 都未动；新位置 i 写为 a[i]，所以得到 ∀k(0≤k<i+1 → b[k]==a[k])。",
+              "  第 2 小步：执行 i := i+1。对刚得到的条件做赋值替换：把 i 整体替换为 i+1 — 边界变 0≤i+1≤n 即 0≤i≤n；前缀写成 <i+1 即 <i（与替换后的 i 对齐）。得到的新条件恰好等于 I。所以一圈后 I 仍成立。",
+              "③ 退出（While + Consequence）。退出条件 I ∧ ¬(i<n)，即 0≤i≤n ∧ i≥n，得 i=n。代回 I 的前缀条件 ∀k(0≤k<n → b[k]==a[k])，与 postcondition 一致。",
+              "(e) 总正确性在 partial 之上加终止证明。",
+              "  选 Variant V ≡ n − i。在 guard 为真时 i<n，所以 V = n−i ≥ 1 ≥ 0；非负成立。",
+              "  跑一圈 i 变 i+1，新 V' = n−(i+1) = V−1；严格递减成立。",
+              "  因 V 是非负整数且每圈严格减 1，必在某圈降至 0，届时 i=n，guard 假，循环终止。",
+              "  终止时部分正确性已证，故总正确性成立。"
             ],
-            final: "完整交付 Allocation、Assignment、Sequence、While、Consequence 五条规则的中间断言，并写出 variant；才完整回应 8+4 分。"
+            final: "完整交付 Allocation、Assignment、Array assignment、Sequence、While、Consequence 的中间断言加上 variant n−i；才完整回应 8+4 分。"
           }
         ]
       },
@@ -456,16 +480,16 @@ window.REVISION_DEPTH = {
       ["Product Construction / 乘积构造","把两个状态机组合成新状态机，新状态是原状态的笛卡尔积。"],
       ["Counterexample / 反例","一条能让性质失败的输入/路径。"],
       ["Polynomial Reduction / 多项式归约","要求 translation 函数本身在多项式时间内可计算。"],
-      ["Clique / 团","图中一组两两相连的顶点；k-clique 问题就是"能否找到 k 个这样的顶点"。"],
+      ["Clique / 团","图中一组两两相连的顶点；k-clique 问题就是“能否找到 k 个这样的顶点”。"],
       ["Vertex Cover / 顶点覆盖","图中一组顶点，使每条边至少有一个端点在该组中；典型 NP 完全问题之一。"],
-      ["Church-Turing Thesis / 丘奇-图灵论题","任何可被"合理算法"计算的函数都能被图灵机计算的假设；不是定理而是工作假设。"],
+      ["Church-Turing Thesis / 丘奇-图灵论题","任何可被“合理算法”计算的函数都能被图灵机计算的假设；不是定理而是工作假设。"],
       ["Rice's Theorem / 莱斯定理","任何 TM 语言的非平凡语义性质都不可判定。"],
-      ["Countability / 可数性","一个集合能与自然数子集一一对应就称为可数；不可数集比可数集"更大"。"],
+      ["Countability / 可数性","一个集合能与自然数子集一一对应就称为可数；不可数集比可数集“更大”。"],
       ["Encoding / 编码","把图灵机、自动机、Java 程序等表示成可输入给图灵机的字符串。"],
-      ["Non-deterministic / 非确定","允许同时走多条分支的"猜测"型计算；NFA 与 nondeterministic TM 都是例子。"],
+      ["Non-deterministic / 非确定","允许同时走多条分支的“猜测”型计算；NFA 与 nondeterministic TM 都是例子。"],
       ["Co-Turing-recognisable / 余可识别","一个语言的补是 Turing-recognisable 时，它本身称为 co-Turing-recognisable。"],
       ["P versus NP / P 与 NP","P = 多项式时间可判定；NP = 多项式时间可验证；二者是否相等仍是开放问题。"],
-      ["Non-Polynomial / 非多项式","不在任何多项式时间上界内的运行时间；常被误以为"NP" 含义，注意区分。"],
+      ["Non-Polynomial / 非多项式","不在任何多项式时间上界内的运行时间；常被误以为“NP” 含义，注意区分。"],
       ["Computability / 可计算性","研究哪些问题有可解算法、哪些没有；CS605 的核心主题之一。"],
       ["Sample_A / Sample_B","2026 的两份样卷，用来补冲同类练习；不替代今年真题确定题型与范围。"]
     ],
@@ -641,13 +665,14 @@ window.REVISION_DEPTH = {
             label:"1(a)",
             ask: "证明 L1A={0^m<0^n : n>2m≥0} 非 regular。",
             steps: [
-              "假设 L1A regular，取 pumping length p。",
-              "选 w=0^p<0^(2p+1)，它满足 2p+1>2p。",
-              "任意分割 w=xyz 满足 |xy|≤p、|y|>0；因此 y=0^t，1≤t≤p，完全位于左块。",
-              "取 i=2，得到左块长度 p+t，右块仍 2p+1。",
-              "要求 2p+1>2(p+t)，但右侧至少 2p+2，不成立，矛盾。"
+              "假设 L1A 是 regular。由 pumping lemma，存在 pumping length p：任何 w∈L1A 且 |w|≥p，都能切成 w=xyz 满足 |xy|≤p、|y|>0，且 ∀i≥0：xy^iz∈L1A。",
+              "选 w = 0^p < 0^(2p+1)。先确认 w∈L1A：左块 p 个 0，右块 2p+1 个 0；要求 n>2m 即 2p+1 > 2p，成立（多 1）。所以 w∈L1A。",
+              "对手任选 w=xyz 满足 |xy|≤p, |y|>0。由于 w 前 p 个字符全是左块 0，x 和 y 都只能落在左块中——也就是说 y = 0^t，其中 1≤t≤p。",
+              "取 i=2 进行 pumping：xy²z = x y y z。左块从 p 个 0 变成 p+t 个 0（多 pump 了一份 y 长度的 t 个 0）；右块仍是 2p+1 个 0（没动）。",
+              "pump 后的串写为 0^(p+t) < 0^(2p+1)。要它仍在 L1A，需满足 2p+1 > 2(p+t)。展开：右边 = 2p+2t；因 t≥1，右边 ≥ 2p+2 > 2p+1 = 左边。不等式不成立。",
+              "矛盾来自：pumping lemma 保证 pump 后应在 L1A，但我们证出它不在。故假设错误，L1A 不是 regular。"
             ],
-            final: "所以 L1A 不是 regular。"
+            final: "L1A 不是 regular。关键节奏：先选落在边界的 w 再覆盖所有合法分割，最后用 pump i=2 让数量关系翻车。"
           },
           {
             label:"1(b)",
@@ -726,14 +751,24 @@ window.REVISION_DEPTH = {
             label:"Q5",
             ask: "证明 Java 行为语言不可判定。",
             steps: [
-              "假设目标语言 L5 decidable。",
-              "F 输入 ⟨M,w⟩，输出 Java 程序 J 的文本。",
-              "J 初始化 int a=0, b=0；随后模拟 M(w)；模拟若返回则执行 a++; b++;。",
-              "F 只写代码不运行模拟，所以 F 总停机。",
-              "M(w) 停机 iff J 最终 increment 两变量 iff ⟨J⟩∈L5。",
-              "L5 decider 可解 HALT，矛盾。"
+              "目标语言 L5 = {⟨J⟩ : J 是一段 Java 程序，运行后初始化 >1 个整数变量，并且后来每个变量都至少 increment 一次}。要证 L5 不可判定。",
+              "用 HALT 归约。HALT = {⟨M,w⟩ : M 是 TM、M 在 w 上停机}，已知不可判定。",
+              "反证假设：存在 L5 的 decider D5。基于它我们设计一个能 decider HALT 的函数 H，便与 HALT 不可判定矛盾。",
+              "构造 reduction 函数 F：输入 ⟨M,w⟩，F 只做“写程序文本”这一件事——直接把 M 的描述与 w 嵌进 Java 程序 J 的源代码。F 本身完全不运行 M(w)，所以无论 M(w) 是否停机，F 都会有限步内输出 J 的字符串。",
+              "J 的源代码骨架（写到卷面上）：",
+              "  public static void main(String[] args) {",
+              "      int a = 0, b = 0;             // 初始化两个 int（满足 >1 个整数变量）",
+              "      simulate(M, w);               // 嵌入的 M(w) 模拟",
+              "      a++; b++;                      // 只有 simulate 返回后才执行",
+              "  }",
+              "证明 iff 双向：",
+              "  ⟹ 若 ⟨M,w⟩∈HALT（M(w) 停机）：J 跑到 simulate 时会返回，接着执行 a++ 与 b++，两变量都至少 increment 一次，⟨J⟩∈L5。",
+              "  ⟸ 若 ⟨J⟩∈L5：J 必须让 a、b 都至少 increment 一次；唯一能执行到 a++/b++ 这两行的路径是 simulate 返回，所以 M(w) 必停机，⟨M,w⟩∈HALT。",
+              "于是 ⟨M,w⟩∈HALT iff ⟨J⟩=F(⟨M,w⟩)∈L5。",
+              "现在写 H(⟨M,w⟩)：调 F 把它变成 ⟨J⟩，再调假设的 D5(⟨J⟩)；返回 D5 的结果。由 iff，H 正确判定 HALT。",
+              "但 HALT 已知不可判定，所以 D5 不存在，L5 undecidable。"
             ],
-            final: "因此 L5 undecidable；若选择补语言，要同步调整 iff 与模板。"
+            final: "L5 不可判定。关键节奏：① F 只写代码不运行；② M(w) 是否停机被嵌入 J 运行时；③ 双向 iff；④ 反证套 D5 用于解 HALT。"
           }
         ]
       },
@@ -859,7 +894,10 @@ window.REVISION_DEPTH = {
       ["IllegalArgumentException","Java 标准库里表示参数非法的 RuntimeException；genRand 在 max<min 时用它报错。"],
       ["JaCoCo","Java 代码覆盖率工具，它的截图用绿/黄/红分别表示已执行、部分执行、未执行。"],
       ["Coverage / 覆盖率","被测试实际触达的代码或规格项目比例。"],
-      ["Boolean Short-circuit / 布尔短路","Java && 与 || 在能确定结果时不再求值右边的求值规则；会影响 branch coverage。"]
+      ["Boolean Short-circuit / 布尔短路","Java && 与 || 在能确定结果时不再求值右边的求值规则；会影响 branch coverage。"],
+      ["RuntimeException / 运行时异常","Java 一类在运行期间抛出的非受检异常；课程用作“非法输入”的返回方式之一，IllegalArgumentException 是其子类。"],
+      ["Test Class / 测试类","用来装 @Test 方法的 Java 类；课程解决方案常以 TestXxx 形式命名。"],
+      ["Coverage Tool / 覆盖率工具","用来观察哪些行/分支被实际执行的程序；JaCoCo 是 Java 的代表。"]
     ],
     learn: [
       {
@@ -1032,12 +1070,17 @@ window.REVISION_DEPTH = {
             label:"1(a)",
             ask: "解释 calc 的 exhaustive testing 不可行。",
             steps: [
-              "三个 int 各 2^32，short 为 2^16。",
-              "组合数 = 2^112 ≈ 5.19×10^33。",
-              "每秒 10^9 次也需约 5.19×10^24 秒。",
-              "还未包括 expected result、测试启动和报告成本。"
+              "方法签名：long calc(int a, int b, int c, short d)，共 4 个参数。",
+              "每个 Java int 是 32 位，取值数 = 2^32 ≈ 4.29×10^9。三个 int 共 (2^32)^3 = 2^96 种组合。",
+              "Java short 是 16 位，取值数 = 2^16 = 65,536。",
+              "四参数的总组合 = (2^32)^3 × 2^16 = 2^(96+16) = 2^112。",
+              "把 2^112 换算成十进制数量级：log10(2^112) = 112 × log10(2) ≈ 112 × 0.30103 = 33.715。所以 2^112 ≈ 10^33.715 ≈ 5.19 × 10^33。",
+              "假设每秒能跑 10^9 个测试（已远超普通机器能力）：需要 5.19×10^33 / 10^9 = 5.19×10^24 秒。",
+              "换算成年：5.19×10^24 / (365×24×3600) ≈ 5.19×10^24 / 3.15×10^7 ≈ 1.65×10^17 年。宇宙年龄才约 1.38×10^10 年，所以远超宇宙寿命。",
+              "还需考虑：对每个组合要算 expected result、跑测试、收集报告、维护环境——总成本远超纯执行。",
+              "结论：因输入域乘积爆炸，穷举测试在物理上不可行。"
             ],
-            final: "用输入域乘积和数量级得出穷举不可行。"
+            final: "用输入域乘积和数量级得出穷举不可行。关键中间值：2^112 ≈ 5.19×10^33 个组合，每秒 10^9 次仍需约 5.19×10^24 秒 ≈ 1.65×10^17 年。"
           },
           {
             label:"1(b)",
@@ -1225,7 +1268,38 @@ window.REVISION_DEPTH = {
       ["Blum Integer","n=pq 且 p、q 都是模 4 余 3 的素数，常用于 Rabin 密码。"],
       ["Scalar Multiplication / 标量乘","nP = P + P + … + P（n 次）；椭圆曲线密码的核心运算。"],
       ["Point Order / 点阶","最小 n>0 使 nP=O（无穷远点）。"],
-      ["Jacobian Determinant","可逆映射的体积变换因子；normalizing flow 用它算 likelihood。"]
+      ["Jacobian Determinant","可逆映射的体积变换因子；normalizing flow 用它算 likelihood。"],
+      ["Legendre Symbol / 勒让德符号","判一个数 a 是否是素数 p 的二次剩余：(a/p)≡a^((p-1)/2) mod p，取 +1 表示是剩余，−1 表示不是。"],
+      ["Jacobi Symbol / 雅可比符号","Legendre 符号推广到合数模 n=pq…：(a/n)=(a/p)(a/q)…；Jacobi=1 不等于一定可开平方。"],
+      ["Quadratic Residue / QR","模 n 下存在平方根的数，即存在 x 使 x²≡a mod n。"],
+      ["AddRoundKey","AES 一轮中“当前 state 与 round key 逐字节 XOR”的步骤；因为 XOR 自反，key=S_before⊕S_after。"],
+      ["SubBytes","AES 一轮中按 S-box 对每个字节做非线性替换的步骤。"],
+      ["ShiftRows","AES 一轮中把每行字节循环移位的步骤。"],
+      ["MixColumns","AES 一轮中把 4 字节列看作 GF(2^8) 上多项式并乘固定矩阵的步骤。"],
+      ["Round Key / 轮密钥","AES 每轮 XOR 用的子密钥；由主密钥经 Key Schedule 派生。"],
+      ["IND-CPA / 选择明文攻击下的不可区分性","对手可任意问加密 oracle 两次 m0、m1，挑战 cipher 在二者上必须无法分辨；加密方案的“基本保密”标准。"],
+      ["CCA-secure / 选择密文攻击安全","对手还能问解密 oracle 时仍无法学到明文信息的更强安全标准。"],
+      ["Encryption / Encryption (Enc)","用密钥把明文变成密文的操作。"],
+      ["Decryption / Decryption (Dec)","用密钥把密文还原为明文的操作。"],
+      ["Euler's Theorem / 欧拉定理","若 gcd(a,n)=1 则 a^φ(n)≡1 mod n；RSA 求逆元的理论基础。"],
+      ["Fermat Factorisation / 费马分解法","当 n=pq 且 p、q 接近时，找 x²−n=y² 让 n=(x−y)(x+y) 来分解；今年卷用此分解 790199209。"],
+      ["Fermat's Little Theorem","a^(p-1)≡1 mod p (对素数 p)；用来降大指数。"],
+      ["Garner's Formula","CRT 的高效恢复形式：x=a+p((b−a)·p⁻¹ mod q) 把 x≡a mod p、x≡b mod q 合成模 pq 的解。"],
+      ["Hash Function / 散列函数","把任意长输入压成定长摘要的单向函数；要求抗 preimage/second-preimage/collision。"],
+      ["Schnorr Protocol","一种 Σ 型零知识证明，用 g^r、随机 challenge、g^s r 三步证明知道 secret；今年题就是它的 shift 变体。"],
+      ["Naor-Pinkas","一种基于离散对数的密钥恢复/OT 协议，年内不直接考，仅在 data sheet 出现参考。"],
+      ["Paillier","基于合数 n 在 Z_n² 上构造的同态加密方案，data sheet 收录但今年不直接考。"],
+      ["Blum Prime","模 4 余 3 的素数，常用于 Rabin 密码以保证开平方根的统一算法。"],
+      ["Textbook Rabin / 教材版 Rabin","不加 padding 的草稿 Rabin 实例，安全上易被“提交 R² 套不同根再 gcd”分解 N，不能直接用。"],
+      ["S-box / 替换盒","AES 一张固定查找表，给定一个 8-bit 输入返回非线性 8-bit 输出；是 SubBytes 步骤的数据来源。"],
+      ["Round / 轮","AES 反复执行的几个固定步骤的合称；128-bit 主密钥的 AES 共重复 10 轮。"],
+      ["Key Schedule / 密钥编排","把主密钥扩展为每一轮 round key 的算法。"],
+      ["Cipher Block / 分组","加密时一次性处理的一段定长数据；AES 是 128-bit 分组。"],
+      ["Block Cipher Mode / 分组密码模式","决定把块加密器用到比块长的消息上时的反馈、IV 与 keystream 形式；常见 CTR/OFB/CFB/ECB。"],
+      ["Basic RLWE / 基本 RLWE 加密","data sheet 给的形式 c_aux=a·r+e_aux、c_msg=t·r+e_msg+m；解密 m=dec(c_msg−s·c_aux)。"],
+      ["Survivalguide / 速查讲义","课程把数论、群论等要点压成几张纸的 PDF，是考场可参考的速查表。"],
+      ["Lsb / 最低有效位","一个二进制数的最后一位；Textbook Rabin 的修复版用 lsb(x) XOR m 作冗余位消歧 square root。"],
+      ["Rabin Private Key / Rabin 私钥","Rabin 系统的私钥就是 N 的因子 p、q；解密时分别模 p 与模 q 开平方根，再用 CRT 组合。"]
     ],
     learn: [
       {
@@ -1394,51 +1468,83 @@ window.REVISION_DEPTH = {
           {
             label:"1(a)",
             ask: "用 R=333 击败固定 challenge 的 ZK shift。",
-            steps: [
-              "Schnorr/shift 型检查 g^R ≡ commitment · f(secret)^c mod p；这里 c 永远 1。",
-              "攻击者先选 R=333。由 333 = 5×64+13 及题给 2^64 mod 991 = 827，算 2^333 mod 991 = 904。",
-              "697⁻¹ mod 991 = 691，所以反向选 commitment = 904×691 mod 991 = 334。",
-              "发 commitment=334；收到 c=1 时答 R=333。",
-              "验 334×697 mod 991 = 904 = 2^333 mod 991，通过；但攻击者并没证明能答其他 challenge。"
+steps: [
+              "Schnorr/shift 型检查 g^R ≡ commitment · f(secret)^c mod p；本题 c 恒为 1，验证等式即 2^R ≡ commitment · 697 (mod 991)。",
+              "攻击者先选 R=333。把 R 拆成二进制位写小步：333 = 5×64 + 13，所以 2^333 = (2^64)^5 · 2^13 mod 991。",
+              "代入题给 2^64 mod 991 = 827：先算 2^13 mod 991 = 8192 mod 991；991×8 = 7928；8192 − 7928 = 264。",
+              "算 827^2 mod 991 = 683929 mod 991：991×689 = 682799；683929 − 682799 = 1130；1130 − 991 = 139。",
+              "算 827^4 ≡ 139^2 mod 991 = 19321 mod 991：991×19 = 18829；19321 − 18829 = 492。",
+              "算 827^5 ≡ 492·827 mod 991 = 406884 mod 991：991×410 = 406310；406884 − 406310 = 574。",
+              "于是 2^333 ≡ 574·264 mod 991 = 151536 mod 991：991×152 = 150632；151536 − 150632 = 904 ✓ 所以 2^R mod 991 = 904。",
+              "由 2^R ≡ commitment · 697 (mod 991) 得 commitment = 2^R · 697⁻¹ mod 991 = 904 · 697⁻¹ mod 991。",
+              "用扩展 Euclid 求 697⁻¹ mod 991：991 = 1·697 + 294；697 = 2·294 + 109；294 = 2·109 + 76；109 = 1·76 + 33；76 = 2·33 + 10；33 = 3·10 + 3；10 = 3·3 + 1。反代整理得 1 = 211·991 − 300·697，所以 697⁻¹ ≡ −300 ≡ 691 (mod 991)。",
+              "验算 697·691 = 481627；991×486 = 481626；481627 − 481626 = 1 ✓ 所以 697⁻¹ mod 991 = 691。",
+              "commitment = 904 · 691 mod 991 = 624664 mod 991：991×630 = 624330；624664 − 624330 = 334。所以发送 commitment = 334。",
+              "攻击者发 (commitment=334, R=333)；收到固定的 c=1 时回答 R=333。",
+              "验证端验算：commitment · 697 mod 991 = 334·697 mod 991 = 232798 mod 991；991×234 = 231894；232798 − 231894 = 904 = 2^333 mod 991 ✓ 通过。",
+              "但攻击者从未展示有能力回答其他 challenge——固定挑战破坏 soundness。"
             ],
-            final: "伪造 transcript = (334, 1, 333)；固定挑战破坏了 soundness。"
+            final: "伪造 transcript = (commitment=334, challenge=1, response=333)；固定挑战让攻击者能在 commitment 之前就准备好 R，再反算 commitment 让等式成立，破坏 soundness。"
           },
           {
             label:"1(b)",
             ask: "由 mail→uwex 恢复 Affine digraph key。",
             steps: [
-              "用 A=0 映射和 26x+y：ma=312，il=219，uw=542，ex=127；modulus=26²=676。",
-              "列出 542 ≡ 312a+b、127 ≡ 219a+b (mod 676)。",
-              "两式相减 415 ≡ 93a；题给 93⁻¹=189，所以 a ≡ 415×189 ≡ 19 mod 676。",
-              "回代 b ≡ 542 − 19×312 ≡ 22 mod 676。",
-              "验证 19×312+22 ≡ 542，19×219+22 ≡ 127。"
+              "先把双字母映射到 0..675：26·x + y。代入：ma = 26·12 + 0 = 312；il = 26·8 + 11 = 219；uw = 26·20 + 22 = 542；ex = 26·4 + 23 = 127。模数 n² = 26² = 676。",
+              "已知 ma→uw、il→ex，列出方程：542 ≡ 312a + b (mod 676)；127 ≡ 219a + b (mod 676)。",
+              "两式相减消 b：542 − 127 ≡ (312 − 219)a，即 415 ≡ 93a (mod 676)。",
+              "题给 93⁻¹ ≡ 189 (mod 676)，所以 a ≡ 415·189 mod 676。算乘积：415·189 = 78435；991 不属于；77892 写错了，真正 415·189 = ? 算：415·189 = 415·(200 − 11) = 83000 − 4565 = 78435；78435 / 676 = 116 (116·676 = 78316)；78435 − 78316 = 119……先把 676 列出：676·100 = 67600；78435 mod 676：先 78435 ÷ 676 ≈ 116；676·116 = 78416；78435 − 78416 = 19；所以 a ≡ 19 mod 676。",
+              "回代 b：b ≡ 542 − 19·312 (mod 676)。算 19·312 = 5928；542 − 5928 = −5386；−5386 mod 676：676·7 = 4732；−5386 + 8·676 = −5386 + 5408 = 22；所以 b ≡ 22 mod 676。",
+              "验证：19·312 + 22 = 5928 + 22 = 5950；5950 mod 676：676·8 = 5408；5950 − 5408 = 542 = uw ✓",
+              "验证：19·219 + 22 = 4161 + 22 = 4183；4183 mod 676：676·6 = 4056；4183 − 4056 = 127 = ex ✓"
             ],
-            final: "Affine digraph private key 为 (a, b) = (19, 22) mod 676。"
+            final: "Affine digraph private key (a, b) = (19, 22) mod 676。"
           },
           {
             label:"1(c)(d)",
             ask: "求平方根和椭圆曲线点。",
             steps: [
-              "平方根：p=0x20b=523，n=0x45d81=286081，所以 q=547=0x223。",
-              "题给 residues 给出 mod p 根 ±415 即 415/108；mod q 根 ±62 即 62/485。",
-              "用 p⁻¹ mod q=433 和 x = a + p((b−a)·433 mod q) 组合四对根。",
-              "四个十进制根为 163068、118090、167991、123013；平方 mod 286081 均回到题给 radicand 0x3817b。",
-              "ECC：b ≡ 14²−25³−13×25 ≡ 8 mod 37，所以曲线是 y²=x³+13x+8。",
-              "doubling λ=(3×25²+13)(28)⁻¹ ≡ 4（分子 3×25²+13≡1 mod 37，2y=28，28⁻¹≡4，故 λ≡1·4≡4）；2P=(3, 0)；3P=2P+P=(25, 23)=−P；4P=3P+P=O。"
+              "(c) 平方根。先把 hex 转 dec：p=0x20b = 2·256 + 0·16 + 11 = 523；n=0x45d81 = 4·65536+5·4096+13·256+8·16+1 = 262144+20480+3328+128+1 = 286081。",
+              "算 q=n/p：286081÷523。先估 523×500=261500；286081−261500=24581；523×47=24581 ✓ 所以 q=547（hex 0x223）。",
+              "题给 residues：mod p 根 ±415 即 415 与 523−415=108；mod q 根 ±62 即 62 与 547−62=485。",
+              "算 Garner 需要的 p⁻¹ mod q。用扩展 Euclid：547=1·523+24；523=21·24+19；24=1·19+5；19=3·5+4；5=1·4+1。反代：1=5−4=5−(19−3·5)=4·5−19=4·(24−19)−19=4·24−5·19=4·24−5·(523−21·24)=109·24−5·523=109·(547−523)−5·523=109·547−114·523。所以 523⁻¹ ≡ −114 ≡ 547−114 = 433 mod 547 ✓",
+              "Garner 公式 x = a + p·((b−a)·433 mod 547)。四个根逐一算：",
+              "根 (a_p=415, a_q=62)：u = (62−415)·433 mod 547 = (−353)·433 mod 547。先算 −353 mod 547 = 194；194·433 = 84002；84002 mod 547：547×153 = 83691；84002−83691 = 311。x = 415+523×311 = 415+162653 = 163068。",
+              "根 (a_p=415, a_q=485)：u = (485−415)·433 mod 547 = 70·433 = 30310 mod 547；547×55 = 30085；30310−30085 = 225。x = 415+523×225 = 415+117675 = 118090。",
+              "根 (a_p=108, a_q=62)：u = (62−108)·433 mod 547 = (−46)·433 mod 547。先算 −46 mod 547 = 501；501·433 = 216933 mod 547；547×396 = 216612；216933−216612 = 321。x = 108+523×321 = 108+167883 = 167991。",
+              "根 (a_p=108, a_q=485)：u = (485−108)·433 mod 547 = 377·433 = 163241 mod 547；547×298 = 163006；163241−163006 = 235。x = 108+523×235 = 108+122905 = 123013。",
+              "验算每个 x² mod 286081 = radicand 0x3817b = 229755：163068²、118090²、167991²、123013² 四个 mod 286081 均得 229755 ✓",
+              "(d) ECC。先求曲线参数 b：把 P=(25,14) 代入 y²=x³+13x+b mod 37，得 b = y²−x³−13x mod 37。",
+              "算 14² = 196；25³ = 15625；13·25 = 325。196−15625−325 = −15754。−15754 mod 37：15754÷37 = 425 余 15754−425×37 = 15754−15725 = 29；−15754 mod 37 = −29 mod 37 = 37−29 = 8。所以 b = 8 ✓ 曲线 y² = x³+13x+8 mod 37。",
+              "算 2P（point doubling）。λ = (3x_P²+a)/(2y_P) mod p。分子 3·25²+13 = 3·625+13 = 1875+13 = 1888；1888 mod 37：37×51 = 1887；1888−1887 = 1。分母 2·14 = 28。",
+              "求 28⁻¹ mod 37：Euclid 37=1·28+9；28=3·9+1。反代 1=28−3·9=28−3·(37−28)=4·28−3·37。所以 28⁻¹ ≡ 4 mod 37。",
+              "λ = 1·4 mod 37 = 4。x_{2P}=λ²−2x_P = 16−50 = −34 mod 37 = 3。y_{2P}=λ(x_P−x_{2P})−y_P = 4·(25−3)−14 = 4·22−14 = 88−14 = 74；74 mod 37 = 0。所以 2P = (3, 0)。",
+              "算 3P = 2P+P（不同点加法）。λ = (y_P−y_{2P})/(x_P−x_{2P}) = (14−0)/(25−3) = 14/22 mod 37。",
+              "求 22⁻¹ mod 37：Euclid 37=1·22+15；22=1·15+7；15=2·7+1。反代 1=15−2·7=15−2·(22−15)=3·15−2·22=3·(37−22)−2·22=3·37−5·22。所以 22⁻¹ ≡ −5 ≡ 32 mod 37。",
+              "λ = 14·32 mod 37 = 448 mod 37：37×12 = 444；448−444 = 4。所以 λ = 4。",
+              "x_{3P}=λ²−x_{2P}−x_P = 16−3−25 = −12 mod 37 = 25。y_{3P}=λ(x_{2P}−x_{3P})−y_{2P} = 4·(3−25)−0 = 4·(−22) = −88 mod 37：88÷37 = 2 余 14；−88 mod 37 = −14 mod 37 = 23。所以 3P = (25, 23)。",
+              "注意 −P = (25, 37−14) = (25, 23) = 3P ✓ 所以 3P = −P。",
+              "4P = 3P+P = −P+P = O（无穷远点）。所以 P 的阶 n = 4（最小正整数使 nP=O；2P≠O，3P≠O，4P=O）。"
             ],
-            final: "平方根为四个 CRT 结果；ECC Q=2P=(3,0)，P 的 order n=4。"
+            final: "(c) 4 个 CRT 根：163068、118090、167991、123013，全部平方 mod 286081 = 229755 ✓。(d) Q=2P=(3,0)，P 的 order n=4。"
           },
           {
             label:"1(e)",
             ask: "解密 RLWE 两字符。",
             steps: [
-              "约定先置顶：ciphertext tuple 第一项 c_aux、第二项 c_msg；题面多项式按 y^7→y^0 显示。ring R_q = Z_83[y]/(y^8+1)，故 y^8=−1。",
-              "算 s·c_aux；约简后按 y^0→y^7 系数 [0, 52, 71, 11, 39, 5, 40, 1]。",
-              "c_msg − s·c_aux mod 83 按 y^0→y^7：[2, 43, 77, 39, 45, 45, 45, 38]。",
-              "按题面 y^7→y^0 顺序：[38, 45, 45, 45, 39, 77, 43, 2]。",
-              "按 q/4 到 3q/4 解为 1 的阈值，得 bits 11111010，即 hex FA。"
+              "约定先置顶：ciphertext tuple 第一项是 c_aux、第二项是 c_msg。ring R_q = Z_83[y]/(y^8+1)，故 y^8 = −1。",
+              "先把 c_aux 和 c_msg 的系数按题面 y^7→y^0 顺序抄下来，再倒序成 y^0→y^7 便于卷积：c_aux = [57, 18, 62, 48, 30, 57, 55, 74]；c_msg = [2, 12, 65, 50, 1, 50, 2, 39]。",
+              "s = y^7 + 2y，按 y^0→y^7 也写成系数 [0, 2, 0, 0, 0, 0, 0, 1]。",
+              "算 s·c_aux = 2y·c_aux + y^7·c_aux。先算 2y·c_aux：把 c_aux 整体右移 1 位并乘 2；y^8 = −1 让超出 y^7 的项折回：y^0 系数 = −2·c_aux[y^7] = −2·74 = −148；y^1 = 2·57 = 114；y^2 = 2·18 = 36；y^3 = 2·62 = 124；y^4 = 2·48 = 96；y^5 = 2·30 = 60；y^6 = 2·57 = 114；y^7 = 2·55 = 110。",
+              "再算 y^7·c_aux：把 c_aux 右移 7 位；超过 y^7 的项也折回为负：y^0 = −c_aux[y^1] = −18；y^1 = −c_aux[y^2] = −62；y^2 = −c_aux[y^3] = −48；y^3 = −c_aux[y^4] = −30；y^4 = −c_aux[y^5] = −57；y^5 = −c_aux[y^6] = −55；y^6 = −c_aux[y^7] = −74；y^7 = c_aux[y^0] = 57。",
+              "两项相加逐系数 mod 83：y^0 = (−148)+(−18) = −166 mod 83 = −166+2·83 = 0；y^1 = 114+(−62) = 52；y^2 = 36+(−48) = −12 mod 83 = 71；y^3 = 124+(−30) = 94 mod 83 = 11；y^4 = 96+(−57) = 39；y^5 = 60+(−55) = 5；y^6 = 114+(−74) = 40；y^7 = 110+57 = 167 mod 83 = 167−2·83 = 1。所以 s·c_aux = [0, 52, 71, 11, 39, 5, 40, 1]。",
+              "算 c_msg − s·c_aux 逐系数 mod 83：y^0 = 2−0 = 2；y^1 = 12−52 = −40 mod 83 = 43；y^2 = 65−71 = −6 mod 83 = 77；y^3 = 50−11 = 39；y^4 = 1−39 = −38 mod 83 = 45；y^5 = 50−5 = 45；y^6 = 2−40 = −38 mod 83 = 45；y^7 = 39−1 = 38。结果 [2, 43, 77, 39, 45, 45, 45, 38]。",
+              "转回题面 y^7→y^0 顺序倒着读：[38, 45, 45, 45, 39, 77, 43, 2]。",
+              "阈值解码：q=83，q/4 ≈ 21，3q/4 ≈ 62。系数落在 [21, 62] 区间 → bit 1，否则 → bit 0。",
+              "逐位判：38→1（在 21..62 内）、45→1、45→1、45→1、39→1、77→0（>62）、43→1、2→0（<21）。得 bits = 11111010。",
+              "转 hex：11111010 = 128+64+32+16+8+2 = 250 = 0xFA。"
             ],
-            final: "plaintext 为两个十六进制字符 FA；不要把 y^0→y^7 数组直接当成从最高位到最低位的 bit string。"
+            final: "plaintext 为两个十六进制字符 FA。关键易错：题面用 y^7→y^0 显示系数，而 bit string 要按 y^7→y^0 顺序读，不能直接拿 y^0→y^7 数组当 bits。"
           }
         ]
       },
@@ -1449,10 +1555,16 @@ window.REVISION_DEPTH = {
             label:"2(a)",
             ask: "从 ARK 前后 state 求 round key。",
             steps: [
-              "把 before 对齐为 123456ff 123456ff 123456ff 123456ff，after 为 a93456ff 123456ff 123456ff 12345644。",
-              "ARK 是 S_after = S_before XOR K_round，所以 K = S_before XOR S_after。",
-              "首 byte：0x12 XOR 0xa9 = 0xbb；中间相同全给 0x00；末 byte 0xff XOR 0x44 = 0xbb。",
-              "拼 16 bytes 并再 XOR 回去验证。"
+              "把 before 对齐为 16 bytes：12 34 56 ff 12 34 56 ff 12 34 56 ff 12 34 56 ff。after 为：a9 34 56 ff 12 34 56 ff 12 34 56 ff 12 34 56 44。",
+              "ARK 公式 S_after = S_before XOR K_round，所以 K = S_before XOR S_after。逐 byte 算：",
+              "byte[0]: 0x12 XOR 0xa9。先写二进制：0x12 = 0001 0010，0xa9 = 1010 1001；逐位 XOR = 1011 1011 = 0xbb。",
+              "byte[1]: 0x34 XOR 0x34 = 0x00（相同）。",
+              "byte[2]: 0x56 XOR 0x56 = 0x00（相同）。",
+              "byte[3]: 0xff XOR 0xff = 0x00（相同）。",
+              "byte[4..14]: 全部相同，XOR 全出 0x00。",
+              "byte[15]: 0xff XOR 0x44。0xff = 1111 1111，0x44 = 0100 0100；逐位 XOR = 1011 1011 = 0xbb。",
+              "拼回 16 bytes：bb 00 00 00 00 00 00 00 00 00 00 00 00 00 00 bb，即 bb0000000000000000000000000000bb。",
+              "验证：再把 key XOR S_after：0xbb XOR 0xa9 = 0x12 ✓；0x00 XOR 0x34 = 0x34 ✓；末 byte 0xbb XOR 0x44 = 0xff ✓。回到 S_before。"
             ],
             final: "round key = bb0000000000000000000000000000bb。"
           },
@@ -1461,11 +1573,12 @@ window.REVISION_DEPTH = {
             ask: "选课程指定的 8-bit CFB 并恢复 plaintext byte。",
             steps: [
               "画 128-bit IV/register→AES encryption→S_8→XOR 的 CFB 图。",
-              "Day 3 讲义定义 S_8 取 E_k(IV) 的最高有效 8 bits；题给输出开头 EA，所以 K1=0xEA。",
-              "解密 P1 = C1 XOR K1 = 0x20 XOR 0xEA。",
-              "00100000 XOR 11101010 = 11001010。"
+              "Day 3 讲义定义 S_8 取 E_k(IV) 的最高有效 8 bits（MSB）。题给 E_k(IV) 输出开头是 EA，所以取 K1 = 0xEA = 1110 1010。",
+              "题给 C1 = 0x20 = 0010 0000。",
+              "流模式解密公式 P1 = C1 XOR K1。逐位算：0010 0000 XOR 1110 1010 = 1100 1010。把 1100 1010 转回 hex：C = 12, A = 10 → 0xCA。",
+              "注意：课程定义 S_8 取 MSB（首 byte），所以 K1 = 0xEA 不是末 byte 0xDF。如果取末 byte，会得到 0x20 XOR 0xDF = 0xFF，答案是错的。"
             ],
-            final: "plaintext byte = 0xCA。MSB 约定来自课程 CFB 定义，不要改成末 byte DF。"
+            final: "plaintext byte = 0xCA。关键约定：S_8 取 E_k(IV) 的 MSB 8 bits（首 byte），不能改成末 byte DF。"
           },
           {
             label:"2(c)",
@@ -1488,37 +1601,51 @@ window.REVISION_DEPTH = {
             label:"3(a)",
             ask: "恢复 RSA private key d。",
             steps: [
-              "用 Fermat factorisation：ceil(sqrt(790199209)) = 28115。",
-              "28115² − 790199209 = 504²，所以 p=28115−504=27611，q=28115+504=28619。",
-              "φ(n) = 27610×28618 = 790142980。",
-              "求 564387843⁻¹ mod 790142980；extended Euclid 给 d=7。",
-              "验证 564387843×7 mod 790142980 = 1。"
+              "用 Fermat factorisation 分解 n=790199209。先估 s = ceil(√n) = 28111（28111² = 28111×28111：先 28000²=784000000；2×28000×111=6216000；111²=12321；合 784000000+6216000+12321 = 790228321 > n；但 28110² = 790172100 < n；所以 ceil(√n) = 28111）。",
+              "从 s=28111 开始逐个试：算 s²−n 是否为完全平方。28111²−n = 790228321−790199209 = 29112；√29112 ≈ 170.6，不整。",
+              "s=28112：28112² = 28111²+2×28111+1 = 790228321+56223 = 790284544；减 n = 85335；√85335 ≈ 292.1，不整。",
+              "s=28113：28113² = 28112²+2×28112+1 = 790284544+56225 = 790340769；减 n = 141560；√141560 ≈ 376.2，不整。",
+              "s=28114：28114² = 28113²+56227 = 790340769+56227 = 790396996；减 n = 197787；√197787 ≈ 444.7，不整。",
+              "s=28115：28115² = 28114²+56229 = 790396996+56229 = 790453225；减 n = 254016；√254016 = 504 ✓ 完全平方！",
+              "所以 p = s−t = 28115−504 = 27611；q = s+t = 28115+504 = 28619。",
+              "算 φ(n) = (p−1)(q−1) = 27610×28618。先算 27610×28000 = 773080000；27610×618 = 27610×600+27610×18 = 16566000+496980 = 17062980；合 773080000+17062980 = 790142980。所以 φ = 790142980。",
+              "求 d = e⁻¹ mod φ = 564387843⁻¹ mod 790142980。验证 d=7：564387843×7 = 3950714901。3950714901 mod 790142980：790142980×5 = 3950714900；3950714901−3950714900 = 1 ✓ 所以 d = 7。"
             ],
-            final: "RSA private exponent d=7；因数为 27611、28619。"
+            final: "RSA private exponent d=7；n 的因数为 p=27611、q=28619。"
           },
           {
             label:"3(b)",
             ask: "讨论 Rabin 与 RSA 关系，完成攻击并给课程版防御。",
             steps: [
-              "Rabin c=m² mod N 形式像 RSA e=2；但标准 RSA 要求 gcd(e, φ(N))=1，而 Blum integer 的 φ(N) 为偶数，所以 e=2 不可逆。Rabin 解密有 4 个根，因此它不是普通 RSA 的合法参数特例。",
-              "R=23769451，提交 C=R² mod 47479253 = 23004433；oracle 返回 Y=31423469。",
-              "gcd(|R−Y|, N) = 13523；gcd(R+Y, N) = 3511；两者乘积为 N。",
-              "攻击利用 composite modulus 下的不同平方根。",
-              "课程防御：在 QR_N 选唯一 QR square root，密文 ⟨x² mod N, lsb(x) XOR m⟩，解密只输出消息 bit；通用系统再配 CCA-secure encoding。"
+              "i) Rabin c=m² mod N 形式像 RSA e=2；但标准 RSA 要求 gcd(e, φ(N))=1，而 Blum integer 的 φ(N) 为偶数，所以 e=2 不可逆。Rabin 解密有 4 个根，因此它不是普通 RSA 的合法参数特例。",
+              "ii) 攻击者选 R=23769451，先算 C = R² mod N = 23769451² mod 47479253。23769451² 太大不必全展开——用计算器算 23769451² mod 47479253 = 23004433。攻击者把 C = 23004433 提交给 Rabin oracle。",
+              "oracle 返回 Y = 31423469（C 的一个平方根，且 Y ≠ ±R mod N）。",
+              "算 gcd(|R−Y|, N)：R − Y = 23769451 − 31423469 = −7654018；取绝对值 |R−Y| = 7654018。用 Euclid 算 gcd(7654018, 47479253)：47479253 = 6×7654018 + 1554845；7654018 = 4×1554845 + 1432198；1554845 = 1×1432198 + 122647；……（逐余直到 0）最终 gcd = 13523。这就是 N 的一个素因子 p。",
+              "算 gcd(R+Y, N)：R + Y = 23769451 + 31423469 = 55192920。Euclid：55192920 mod 47479253 = 7713667；47479253 = 6×7713667 + 3068951；……最终 gcd = 3511。这就是 N 的另一个素因子 q。",
+              "验证 13523 × 3511 = ?：先 13523×3000 = 40569000；13523×500 = 6761500；13523×11 = 148753；合 40569000+6761500+148753 = 47478253。差 1000——重算 13523 × 3511 = 13523×3500 + 13523×11 = 47330500 + 148753 = 47479253 = N ✓",
+              "iii) 攻击利用 composite modulus 下的不同平方根：R² ≡ Y² mod N，但 Y ≠ ±R mod N，说明 (R−Y)(R+Y) = N 的倍数但不整除 N，所以 gcd 能从 R±Y 中各自抽出 N 的一个因子。",
+              "课程防御：在 QR_N 选唯一 QR square root，密文用 ⟨x² mod N, lsb(x) XOR m⟩ 编码冗余位消歧，解密只返消息 bit 不返 root；通用系统加 CCA-secure padding。"
             ],
-            final: "Rabin 形式像 e=2，但不是合法 RSA 特例；私钥因数为 13523、3511。"
+            final: "Rabin 形式像 e=2，但不是合法 RSA 特例；用 R²→不同根 Y 的 gcd 可分解 N，得 p=13523、q=3511。"
           },
           {
             label:"3(c)",
             ask: "验证 ECDSA signature (1, 6)。",
             steps: [
-              "w=6⁻¹ mod 7 = 6；h = 22 mod 7 = 1。",
-              "u1=1×6=6，u2=1×6=6 mod 7。",
-              "给定曲线上 6P=(13, 15)，6Y=(1, 14)；相加 X=(1, 3)。",
-              "v = X_x mod 7 = 1。",
-              "v=r=1，签名通过。"
+              "先算 h = H(M) mod q = 22 mod 7。22÷7 = 3 余 1，所以 h = 1。",
+              "算 w = s⁻¹ mod q = 6⁻¹ mod 7。验证 6×6=36=5×7+1，余 1 ✓ 所以 w = 6。",
+              "算 u1 = h·w mod q = 1×6 mod 7 = 6。",
+              "算 u2 = r·w mod q = 1×6 mod 7 = 6。",
+              "题给 6P = (13, 2) 修正：题目给 5P=(4,6)、P=(13,2)，所以 6P = 5P+P。算加法：λ=(6−2)/(4−13) mod 17 = 4/(−9) mod 17。−9 mod 17 = 8；8⁻¹ mod 17：17=2×8+1，反代 1=17−2×8，8⁻¹=−2≈15。λ = 4×15 mod 17 = 60 mod 17 = 60−3×17 = 9。x_3 = 9²−4−13 = 81−17 = 64 mod 17 = 64−3×17 = 13。y_3 = 9×(4−13)−6 = 9×(−9)−6 = −87 mod 17 = −87+6×17 = −87+102 = 15。所以 6P = (13, 15) ✓",
+              "题给 6Y = (1, 14)。验算 3Y=(4,11)，6Y = 3Y+3Y=(4,11)+(4,11) doubling：λ=(3×4²+5)/(2×11) mod 17 = (48+5)/22 = 53/22 mod 17。先算 53 mod 17 = 53−3×17 = 2；22 mod 17 = 5；所以 λ = 2/5 mod 17。5⁻¹ mod 17：17=3×5+2；5=2×2+1；反代 1=5−2×2=5−2×(17−3×5)=7×5−2×17，5⁻¹=7。λ=2×7 mod 17=14。x_3=14²−2×4=196−8=188 mod 17=188−11×17=188−187=1。y_3=14×(4−1)−11=42−11=31 mod 17=31−17=14。6Y=(1,14) ✓",
+              "算 X = u1·P + u2·Y = 6P + 6Y = (13,15)+(1,14)。不同点加法：λ=(14−15)/(1−13) mod 17 = (−1)/(−12) mod 17。",
+              "先把 −1 mod 17 = 16；−12 mod 17 = 5。λ = 16/5 mod 17 = 16·5⁻¹ mod 17。用上面已算 5⁻¹ mod 17 = 7。λ = 16×7 mod 17 = 112 mod 17：17×6=102；112−102=10。所以 λ=10。",
+              "x_X = λ²−x₁−x₂ = 100−13−1 = 86 mod 17：17×5=85；86−85=1。所以 x_X = 1。",
+              "y_X = λ·(x₁−x_X)−y₁ = 10×(13−1)−15 = 10×12−15 = 120−15 = 105 mod 17：17×6=102；105−102=3。所以 y_X = 3。X = (1, 3)。",
+              "算 v = x_X mod q = 1 mod 7 = 1。",
+              "比较 v 与 r：v = 1 = r ✓ 签名有效。"
             ],
-            final: "signature (r, s)=(1, 6) 有效。"
+            final: "signature (r, s) = (1, 6) 有效。全过程核心公式：v = (u1P + u2Y)_x mod q，再与 r 比较。"
           }
         ]
       }
@@ -1599,7 +1726,45 @@ window.REVISION_DEPTH = {
       ["GNN / 图神经网络","节点每层聚合邻居特征再更新，用于 node 分类、link 预测。"],
       ["XAI / Explainable AI","提供 feature attribution/局部解释；解释 ≠ 因果或公平证明。"],
       ["Stakeholder / 受影响者","伦理讨论中受某系统影响的群体。"],
-      ["Audit / 审计","按某 metric/群体检查模型偏差、单调性等。"]
+      ["Audit / 审计","按某 metric/群体检查模型偏差、单调性等。"],
+      ["SGD / Stochastic Gradient Descent","每次只用一个或几个样本算梯度并更新参数的优化算法。"],
+      ["Adam","带一阶/二阶动量自适应学习率的优化器，深度学习里最常用。"],
+      ["Contrastive Learning / 对比学习","拉近相似样本、推开不相似样本的自监督表示学习目标。"],
+      ["ViT / Vision Transformer","把图像切成 token 序列交给 Transformer 处理的视觉模型；属 CS636 扩展。"],
+      ["CLIP","OpenAI 的图文对比学习模型，把图像与文本对齐到共同 embedding 空间。"],
+      ["ImageBind","Meta 的多模态对齐模型，把图像、文本、音频、深度等绑到同一 embedding 空间。"],
+      ["Stable Diffusion / 稳定扩散","在 latent 空间用 UNet 去噪迭代生成图像的扩散模型；属 CS636 扩展。"],
+      ["DGL","Deep Graph Library，GNN 的 Python 框架。"],
+      ["Node Classification / 节点分类","GNN 的下游任务之一，给图中节点打标签。"],
+      ["Link Prediction / 链接预测","GNN 的下游任务之一，预测图中两点是否应有连边。"],
+      ["VGG-16","经典 16 层 CNN，由 13 个卷积 + 3 个全连接组成；今年卷的卷 2 围绕它。"],
+      ["Filter Size / 卷积核尺寸","卷积核的高×宽，VGG 全部用 3×3。"],
+      ["Stride / 步长","卷积或池化每次移动多少位置；VGG 卷积 stride1、池化 stride2。"],
+      ["Same Padding / 同尺寸填充","在输入周围补 0 使 stride1 卷积后 H、W 不变。"],
+      ["Cross-Validation / 交叉验证","数据少时把训练集分成 K 份轮流当 validation，更稳定选超参数。"],
+      ["Early Stopping / 提前终止","在 validation 性能不再提升时停止训练以防过拟合。"],
+      ["Fine-tune / 微调","在已训练模型权重基础上再训练，常用于下游任务。"],
+      ["Freeze / 冻结","保留某层权重不更新，常用于迁移学习。"],
+      ["Self-supervision / 自监督","标签由数据自身构造（如遮盖/重建）的机器学习方式；区别于 supervised 有外部人工标签。"],
+      ["U-Net / UNet","一种 Encoder-Decoder 形状、带 skip connection 的 CNN 架构；扩散模型里用它做去噪网络。"],
+      ["Skip Connection / 跳连","把浅层特征直接接到深层，绕过中间层；残差连接是其一种，U-Net 也用它把 encoder 特征传给 decoder。"],
+      ["OpenAI / Meta","两家分别开发了 CLIP 和 ImageBind 的公司；本课只作背景，不考公司细节。"],
+      ["Dataset / 数据集","用于训练、验证或测试的样本集合；本课区分 train/validation/test。"],
+      ["Library / 框架库","实现深度学习中“建模+训练”通用功能的软件，如 TensorFlow、PyTorch、Keras。"],
+      ["Activation Function Family","常见激活函数：ReLU=max(0,x)、sigmoid=1/(1+e^-x)、softmax 把向量归一为分布。"],
+      ["Loss Function Family","常见 loss：MSE 用于回归、cross-entropy 用于分类、reconstruction MSE 用于自编码器。"],
+      ["Batch/Layer Normalisation","对每个 mini-batch 内或每个特征通道做归一，让训练更稳定、学习率可调大。"],
+      ["Attention / 注意力","核心机制：用 query 与所有 key 算相似度，加权混合对应 value，得到每个 token 的上下文表示。"],
+      ["Multi-Head Self-Attention","把 Q/K/V 投影到多个子空间各做 self-attention 再 concat，让模型在不同子空间学不同关系。"],
+      ["Transformer Code-Example","CS636 课件名；展示只靠 self-attention 的 seq2seq 编码块；今年卷不直接考。"],
+      ["Residual Connection / 残差连接","y=F(x)+x 形式的快捷连接，让深层网络梯度回传通畅、训练更易，配合 LayerNorm 进入 Transformer。"],
+      ["Positional Encoding / 位置编码","因为 attention 本身对位置无感，要在输入 token 向量上加上正弦/余弦或可学习位置向量来表示顺序。"],
+      ["Graphs / 图","节点+边的数据结构；GNN 在其上做邻居聚合。"],
+      ["GNN / 图神经网络","每层把每个节点的邻居特征聚合后更新；下游用于 node/link 分类。"],
+      ["Generative Model / 生成模型","能从学习分布中采样新样本的模型；扩散、VAE、GAN、Normalizing Flow 是其四类。"],
+      ["Diffusion / 扩散模型","先把数据逐步加噪成纯噪声、再训练一个去噪网络反向“沙里淘金”地恢复数据。"],
+      ["Stable Diffusion / 稳定扩散","把扩散模型的去噪放在压缩 latent 空间做的版本，文字→图像生成常用。"],
+      ["Contrastive Learning","把相似样本拉近、不相似样本推开以学 representation 的自监督目标。"]
     ],
     learn: [
       {
@@ -1794,12 +1959,13 @@ window.REVISION_DEPTH = {
             label:"1(a)",
             ask: "比较 supervised 与 self-supervised learning。",
             steps: [
-              "共同点：都有输入、目标、loss、gradient optimization，并学习 parameters。",
-              "supervised 目标来自人工/外部 label，例如 image class。",
-              "self-supervised 目标由数据自身构造，例如重建输入或预测遮盖部分。",
-              "self-supervised 常先学 general representation 再用于下游任务。"
+              "先看共同点：两者都是机器学习方法，都要(a) 给模型喂输入、(b) 有一个目标 (target)、(c) 用 loss 函数衡量预测与目标的差距、(d) 通过梯度优化 (gradient descent/Adam) 更新 parameters。区别只在于“目标”从哪里来。",
+              "Supervised learning 的 target 来自人工/外部 label。例：给一张图，人提前打标签“这是猫”；模型学的是输入→标签的映射。",
+              "Self-supervised learning 的 target 由数据自身构造，不需要人打标签。例：① 把图片遮住一块，让模型预测被遮部分；② 把句子挖一个词，让模型预测那个词；③ 让 autoencoder 重建整张输入图。",
+              "再看差异：supervised 学到的通常就是最终任务（如直接分类）；self-supervised 常先只学 general representation（怎么把数据编码成有用向量），再把这个 encoder 拿去做下游任务（分类、检测、检索等）。",
+              "容易踩的坑：不要说 self-supervised“没有 target”——它有 target，只不过 target 是从数据自己生成的（如重建原图、预测遮盖部分），而不是人给的标签。它依然要用 loss + 梯度更新参数。"
             ],
-            final: "不要说 self-supervised“没有 target”；它没有人工标签，但有由数据构造的训练目标。"
+            final: "Supervised = 人给标签；self-supervised = 从数据自己造目标。两者都仍有 target、loss、gradient optimization；差别只在 label 来源与学到的 representation 的用途。"
           },
           {
             label:"1(b)(c)",
@@ -1843,23 +2009,26 @@ window.REVISION_DEPTH = {
             label:"2(a)",
             ask: "CNN 是什么，Convolutional 的含义是什么。",
             steps: [
-              "CNN = Convolutional Neural Network。",
-              "卷积层用小 filter 在空间位置滑动。",
-              "同一 filter weights 在所有位置共享，提取局部模式。",
-              "共享带来参数效率和对平移的等变响应。"
+              "CNN 全名 Convolutional Neural Network，中文“卷积神经网络”。先解释“Convolutional(卷积)”这一词：它借用了信号处理里“用一个滤波器扫信号”的概念。",
+              "具体动作：拿一个很小的权重块（filter，比如 3×3）从图像左上角开始，固定步长 stride（VGG 用 1）一格一格往右、往下扫。每停一个位置，就把 filter 的 9 个权重和覆盖的 9 个像素做对应相乘再求和，输出一个数填到 feature map 对应位置。",
+              "关键性质 1 — weight sharing（权重共享）：filter 滑过整张图，用的是同一组权重，不每个位置换新的。这意味着模型把“在图像任意位置都能识别某种局部模式”当成一个统一技能。",
+              "关键性质 2 — local receptive field（局部感受野）：每个输出位置只看周围 3×3 这一小块，不看整张图；多层叠加后才逐步组合出更大范围的语义。",
+              "带来两个好处：① 参数效率高——一个 3×3 filter 才 9 个 weight，扫遍 224×224 像素也只贡献 9 个参数，远少于全连接层；② 平移等变 (translation equivariance) ——猫在左上或右下，filter 在对应位置都能给出强响应。",
+              "把这两点连到本题：VGG-16 全部用 3×3、stride 1、same padding 的 conv layer，正是因为上面这两条好处让深网络在合理参数下能学到空间结构。"
             ],
-            final: "展开 acronym 后解释 local receptive field 与 weight sharing。"
+            final: "CNN = Convolutional Neural Network。展开 acronym 后解释两个关键概念：local receptive field（每输出只看小邻域）与 weight sharing（同一 filter 在所有位置共享）；两者共同带来参数效率和平移等变。"
           },
           {
             label:"2(b)",
             ask: "首卷积层参数数。",
             steps: [
-              "一个 filter 覆盖 3×3×3 = 27 inputs。",
-              "每个 filter 加 1 bias，得 28 parameters。",
-              "64 filters：28×64 = 1,792。",
-              "stride/padding 改 output positions，不改共享 filter 参数数；224×224×64 是 activations 数。"
+              "公式：(filter_h × filter_w × C_in + 1 bias) × C_out。先算一个 filter 的权重数：3×3 = 9 个空间位置，每个位置覆盖 3 个输入 channel（R/G/B），所以 9×3 = 27 个 weights。",
+              "每个 filter 加 1 个 bias：27 + 1 = 28 parameters per filter。",
+              "共 64 个 filter（C_out = 64）：28 × 64 = ?。先算 28×60 = 1680；28×4 = 112；合 1680+112 = 1,792。",
+              "注意 224×224×64 是 output activation 数（每个空间位置的输出是一个数字），不是参数。同一 filter 在所有 224×224 位置共享，所以参数与空间尺寸无关。",
+              "验证思路：如果参数数取决于 H×W，那把 224 改成 448 参数就会翻倍，这意味着每个新像素都需要新的 weight——这与“filter 在图像上滑动共享”的定义矛盾。"
             ],
-            final: "1,792 learnable parameters；不要乘空间位置数。"
+            final: "1,792 learnable parameters。关键区分：filter weights 被所有空间位置共享，参数数只取决于 filter 大小、C_in、C_out，不取决于 H×W。"
           },
           {
             label:"2(c)",
@@ -1876,23 +2045,29 @@ window.REVISION_DEPTH = {
             label:"2(d)",
             ask: "首 FC 层参数数。",
             steps: [
-              "flatten size = 7×7×512 = 25,088。",
-              "每输出 unit 有 25,088 weights + 1 bias。",
-              "共 4,096 outputs。",
-              "(25,088 + 1) × 4,096 = 102,764,544。"
+              "公式：(n_in + 1) × n_out。先算 flatten 后的输入维度 n_in = 7×7×512。",
+              "算 7×7 = 49；49×512 = ?。先 50×512 = 25600；减 1×512 = 512；25600−512 = 25,088。所以 n_in = 25,088。",
+              "每输出 unit 有 25,088 个 weights + 1 个 bias = 25,089 个参数。",
+              "共 4,096 个输出 unit（n_out = 4096）。",
+              "算 25,089 × 4,096 = ?。先拆 4096 = 4000 + 96。25,089×4000 = 100,356,000；25,089×96 = 25,089×100 − 25,089×4 = 2,508,900 − 100,356 = 2,408,544。合 100,356,000 + 2,408,544 = 102,764,544。",
+              "验证量级：约 1 亿参数，这对 VGG-16 的第一个 FC 层来说是合理的。"
             ],
-            final: "102,764,544 learnable parameters。"
+            final: "102,764,544 learnable parameters。公式 (n_in + 1) × n_out；含 bias。"
           },
           {
             label:"2(e)",
             ask: "解释 ReLU。",
             steps: [
-              "公式 ReLU(x) = max(0, x)。",
-              "x > 0 输出 x；x ≤ 0 输出 0。",
-              "引入非线性，正区间梯度为 1。",
-              "可简述负区间可能出现 dead units。"
+              "名字展开：ReLU = Rectified Linear Unit，中文“修正线性单元”。它是 VGG-16 每个卷积层和每个全连接层后面接的 activation function。",
+              "数学公式：ReLU(x) = max(0, x)。这就是一个分段函数，把负的部分“整流”掉，所以叫 rectified。",
+              "分两段读：① 当 x > 0 时输出 x（原样透传）；② 当 x ≤ 0 时输出 0（截断为常数 0）。",
+              "举两个最小例子：ReLU(2) = max(0, 2) = 2；ReLU(−3) = max(0, −3) = 0。",
+              "为什么需要它：如果在卷积后只有线性加权求和再加 bias，再接下一层卷积……无论堆多深，整网仍是输入的线性函数（多层线性=一层线性）。引入 ReLU 这种非线性让网络能拟合曲线、识别复杂模式。",
+              "梯度（导数）也很简单：x>0 时 ReLU'(x)=1；x≤0 时 ReLU'(x)=0。这使正区间的 backprop 直接透传而不衰减，缓解深层网络的梯度消失问题。",
+              "副作用：负区间梯度恒 0 可能导致“dead ReLU”——某些 unit 一旦被推到负区域就再也不更新，输出恒 0。常见缓解手段：合适的初始化、较小学习率、或用 Leaky ReLU / PReLU 等变体。",
+              "VGG-16 选用 ReLU 是因为它的非线性够强、计算只需一次比较、梯度形式简单、训练稳定。"
             ],
-            final: "给公式、分段含义和在网络中的作用。"
+            final: "公式 ReLU(x)=max(0,x)；分段含义：正透传，负截零；作用是引入非线性让深层网络有意义，并因梯度简单而训练稳定。要提一句 dead units 的副作用以显示完整理解。"
           }
         ]
       },
