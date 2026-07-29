@@ -270,7 +270,7 @@
   ];
   randomCode.steps = [
     "创建 Random random=new Random(2026L)。同一个 seed 会产生同一串值。",
-    "实现 inclusive generator。先检查 max≥min，再返回 min+random.nextInt(max−min+1)。",
+    "实现本题使用的 inclusive generator。先检查 max≥min，并确认区间宽度 max−min+1 是正 int，再返回 min+random.nextInt(max−min+1)。本题的 0..4999 与 5000..Integer.MAX_VALUE 都满足；通用实现还必须用 long 或专门 API 防止宽度溢出。",
     "运行 R1 三次。日志保存 rule、grid、lux、expected、actual 和结果。",
     "继续使用同一个 Random 对象运行 R2 三次。不要在每次循环中重新设置 seed。",
     "运行 R3 三次。grid 固定为 false，lux 仍限制在 0..4999。",

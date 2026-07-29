@@ -2043,13 +2043,13 @@ steps: [
             label:"1(a)",
             ask: "比较 supervised 与 self-supervised learning。",
             steps: [
-              "两种方法都给模型输入和目标。两种方法都用 loss 衡量预测误差。两种方法都用 gradient descent 或 Adam 更新 parameters。主要差别是目标的来源。",
+              "两种方法都给模型输入并用训练目标计算 loss，再通过 gradient descent 或 Adam 更新 parameters。最先要写清的差别是监督信号来源：supervised 的 target 来自外部标注，self-supervised 的 target 由未标注数据本身构造；它们常用的预训练任务、数据规模和下游使用方式也可能不同。",
               "Supervised learning 的 target 来自人工/外部 label。例：给一张图，人提前打标签“这是猫”；模型学的是输入→标签的映射。",
               "Self-supervised learning 的 target 由数据自身构造，不需要人打标签。例：① 把图片遮住一块，让模型预测被遮部分；② 把句子挖一个词，让模型预测那个词；③ 让 autoencoder 重建整张输入图。",
               "再看差异：supervised 学到的通常就是最终任务（如直接分类）；self-supervised 常先只学 general representation（怎么把数据编码成有用向量），再把这个 encoder 拿去做下游任务（分类、检测、检索等）。",
               "Self-supervised learning 仍有 target。系统从数据生成 target，例如原输入或被遮盖部分。它仍使用 loss 和梯度更新 parameter。"
             ],
-            final: "Supervised = 人给标签；self-supervised = 从数据自己造目标。两者都仍有 target、loss、gradient optimization；差别只在 label 来源与学到的 representation 的用途。"
+            final: "Supervised 的监督信号来自人工或外部标签；self-supervised 从数据本身构造监督信号。两者都仍有 target、loss 和梯度优化，但训练任务与下游使用方式也可能不同，不能说二者“只有标签来源不同”。"
           },
           {
             label:"1(b)(c)",
@@ -2150,11 +2150,11 @@ steps: [
               "分两段读：① 当 x > 0 时输出 x（原样透传）；② 当 x ≤ 0 时输出 0（截断为常数 0）。",
               "举两个最小例子：ReLU(2) = max(0, 2) = 2；ReLU(−3) = max(0, −3) = 0。",
               "为什么需要它：如果在卷积后只有线性加权求和再加 bias，再接下一层卷积……无论堆多深，整网仍是输入的线性函数（多层线性=一层线性）。引入 ReLU 这种非线性让网络能拟合曲线、识别复杂模式。",
-              "梯度（导数）也很简单：x>0 时 ReLU'(x)=1；x≤0 时 ReLU'(x)=0。这使正区间的 backprop 直接透传而不衰减，缓解深层网络的梯度消失问题。",
+              "梯度要分三种情况：x>0 时 ReLU'(x)=1；x<0 时 ReLU'(x)=0；x=0 时数学上不可导。深度学习实现必须为 x=0 选一个反传约定，常见实现取 0。正区间导数为 1，不像 sigmoid 的饱和区那样继续缩小梯度，但这不保证整网永远没有梯度消失。",
               "副作用：负区间梯度恒 0 可能导致“dead ReLU”——某些 unit 一旦被推到负区域就再也不更新，输出恒 0。常见缓解手段：合适的初始化、较小学习率、或用 Leaky ReLU / PReLU 等变体。",
               "VGG-16 选用 ReLU 是因为它的非线性够强、计算只需一次比较、梯度形式简单、训练稳定。"
             ],
-            final: "公式 ReLU(x)=max(0,x)；分段含义：正透传，负截零；作用是引入非线性让深层网络有意义，并因梯度简单而训练稳定。要提一句 dead units 的副作用以显示完整理解。"
+            final: "公式 ReLU(x)=max(0,x)：正值透传，负值截为 0。导数在 x>0 为 1、x<0 为 0，在 x=0 数学上不存在；实现通常约定反传值为 0。它引入非线性，但负区间可能产生 dead ReLU。"
           }
         ]
       },
