@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 455" role="img" aria-labelledby="title desc">
+  <title id="title">CS605 2026 Q7(b) 的 3-SAT 到 CLIQUE 输出图</title>
+  <desc id="desc">四列分别是四个子句，每列三个 literal occurrence。跨列且不互补的点连边。蓝色标出一个大小为四的 clique。</desc>
+  <rect width="800" height="455" rx="20" fill="#f8fafc"/>
+  <g fill="none" stroke="#cbd5e1" stroke-width="1.25" opacity=".72">
+    <!-- C1 to C2: all cross-clause pairs except ¬c to c -->
+    <path d="M100 100L300 100 M100 100L300 220 M100 100L300 340
+             M100 220L300 100 M100 220L300 220 M100 220L300 340
+             M100 340L300 100 M100 340L300 220"/>
+    <!-- C1 to C3: omit ¬a to a -->
+    <path d="M100 100L500 220 M100 100L500 340
+             M100 220L500 100 M100 220L500 220 M100 220L500 340
+             M100 340L500 100 M100 340L500 220 M100 340L500 340"/>
+    <!-- C1 to C4: omit ¬a to a and b to ¬b -->
+    <path d="M100 100L700 220 M100 100L700 340
+             M100 220L700 100 M100 220L700 340
+             M100 340L700 100 M100 340L700 220 M100 340L700 340"/>
+    <!-- C2 to C3: omit ¬a to a and c to ¬c -->
+    <path d="M300 100L500 220 M300 100L500 340
+             M300 220L500 100 M300 220L500 220 M300 220L500 340
+             M300 340L500 100 M300 340L500 220"/>
+    <!-- C2 to C4: omit ¬a to a, b to ¬b and c to ¬c -->
+    <path d="M300 100L700 220 M300 100L700 340
+             M300 220L700 100 M300 220L700 340
+             M300 340L700 100 M300 340L700 220"/>
+    <!-- C3 to C4: omit b to ¬b -->
+    <path d="M500 100L700 100 M500 100L700 220 M500 100L700 340
+             M500 220L700 100 M500 220L700 340
+             M500 340L700 100 M500 340L700 220 M500 340L700 340"/>
+  </g>
+  <g fill="none" stroke="#2563eb" stroke-width="5" opacity=".92">
+    <path d="M100 100L300 100 M100 100L500 220 M100 100L700 340
+             M300 100L500 220 M300 100L700 340 M500 220L700 340"/>
+  </g>
+  <g font-family="system-ui, sans-serif" text-anchor="middle">
+    <g font-size="15" font-weight="700" fill="#334155">
+      <text x="100" y="42">C1: ¬a ∨ b ∨ ¬c</text>
+      <text x="300" y="42">C2: ¬a ∨ b ∨ c</text>
+      <text x="500" y="42">C3: a ∨ b ∨ ¬c</text>
+      <text x="700" y="42">C4: a ∨ ¬b ∨ ¬c</text>
+    </g>
+    <g font-size="18" font-weight="700">
+      <g fill="#dbeafe" stroke="#2563eb" stroke-width="4">
+        <circle cx="100" cy="100" r="28"/><circle cx="300" cy="100" r="28"/>
+        <circle cx="500" cy="220" r="28"/><circle cx="700" cy="340" r="28"/>
+      </g>
+      <g fill="#fff" stroke="#64748b" stroke-width="2">
+        <circle cx="100" cy="220" r="25"/><circle cx="100" cy="340" r="25"/>
+        <circle cx="300" cy="220" r="25"/><circle cx="300" cy="340" r="25"/>
+        <circle cx="500" cy="100" r="25"/><circle cx="500" cy="340" r="25"/>
+        <circle cx="700" cy="100" r="25"/><circle cx="700" cy="220" r="25"/>
+      </g>
+      <g fill="#0f172a">
+        <text x="100" y="106">¬a</text><text x="100" y="226">b</text><text x="100" y="346">¬c</text>
+        <text x="300" y="106">¬a</text><text x="300" y="226">b</text><text x="300" y="346">c</text>
+        <text x="500" y="106">a</text><text x="500" y="226">b</text><text x="500" y="346">¬c</text>
+        <text x="700" y="106">a</text><text x="700" y="226">¬b</text><text x="700" y="346">¬c</text>
+      </g>
+    </g>
+    <text x="400" y="405" font-size="16" font-weight="700" fill="#1d4ed8">蓝色四点两两相连，因此构成 k=4 clique</text>
+    <text x="400" y="432" font-size="14" fill="#475569">蓝点对应赋值 a=false、b=true、c=false；同列与互补 literal 之间没有边</text>
+  </g>
+</svg>
