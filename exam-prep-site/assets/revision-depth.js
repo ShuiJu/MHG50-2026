@@ -105,7 +105,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "把“每个请求最终都有响应”翻译成形式公式，可以用 ∃x(Request(x)→Response(x)) 吗？",
           hint: "“每个”对应哪个量词？“最终”需要时间逻辑，但这里先问量词选择是否正确。",
-          a: "不可以。“每个”对应 ∀ 不是 ∃；写成 ∃x(...) 是“至少有一个请求 → 一个响应”，显然不是题意。即便只谈量词层，正确形式应含 ∀；若进入 LTL，则要进一步写 G(req→F resp)。"
+          a: "不可以。符号 ∃ 的意思是“至少存在一个”，所以 ∃x(Request(x)→Response(x)) 最多只谈到某一个 x，无法约束其余请求。题目说“每个请求”，必须让规则覆盖所有请求，因此量词应使用 ∀。再考虑时间顺序时，还要表达“请求出现以后，响应会在将来出现”，所以 LTL 写成 G(req→F resp)：G 表示每个时刻都检查；F 表示从该时刻向后最终会出现响应。"
         }
       },
       {
@@ -136,7 +136,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "循环里 i 从 0 每次加 2，guard 是 i<n。能用 n-i 作 variant 证明终止吗？",
           hint: "variant 在 guard 真时必须非负且每轮严格递减。",
-          a: "可以。入口 i=0<n，所以 V=n>0；每轮 i 加 2，V 减 2，仍严格下降；非负也成立（退出后允许变负不影响，关键是 guard 为真时非负）。"
+          a: "可以令 V=n−i。只在循环条件 i<n 为真时检查它：此时 n−i>0，所以 V 是非负整数。执行一轮后 i 变成 i+2，新值 V'=n−(i+2)=(n−i)−2=V−2，因此每轮严格减少 2。非负整数不可能无限次严格下降，所以循环最终会退出。退出后的 V 即使变成负数也不破坏证明，因为那时循环条件已经为假，不会再执行下一轮。"
         }
       },
       {
@@ -165,7 +165,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "ReverseArray 只写 ensures a.Length==old(a.Length) 为何远远不够？",
           hint: "一个根本不交换元素的方法是否也满足它？",
-          a: "满足。长度不变没有描述反转结果。还需要 ∀k(0≤k<n → a[k]==old(a[n-1-k]))，必要时还要声明 modifies a 的 frame。"
+          a: "一个什么都不做的方法也会保持数组长度，所以只写长度不变无法证明数组真的反转了。还要逐个位置说明结果：对每个合法下标 k，结束后的 a[k] 必须等于调用方法之前的 a[n−1−k]。公式中的 old(...) 表示“方法开始前的值”。如果使用 Dafny，还要写 modifies a，明确允许本方法修改数组 a；这条“允许修改哪些对象”的边界规则叫 frame。"
         }
       },
       {
@@ -193,7 +193,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "如果 Enter 没有 count<CAP guard 会怎样？",
           hint: "试 count=10。",
-          a: "count=10 时仍可进入变成 11，违反不变量；对应的 invariant-preservation PO 无法证明，Rodin 会指出反例条件。"
+          a: "不变量 count≤CAP 表示人数任何时候都不能超过容量。若删掉 Enter 的条件 count<CAP，那么在 count=10、CAP=10 时事件仍能执行，执行 count:=count+1 后得到 count'=11，于是 11≤10 为假。Rodin 会自动要求你证明“事件执行后不变量仍成立”；这项待证明任务叫 invariant-preservation proof obligation，简称 PO。这里它无法通过，原因就是上述 count=10 的具体反例。"
         }
       },
       {
@@ -221,7 +221,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "F(response) 为什么不能表达“每个 request 最终都有 response”？",
           hint: "它要求几次 response？有把 request 和 response 配对吗？",
-          a: "F(response) 只要求整条路径未来至少出现一次 response；一次响应可能根本不在任何请求之后。必须写 G(req→F resp) 才配对。"
+          a: "F(response) 只说“从现在往后的某个时刻，至少出现一次 response”。它没有提到 request，也不会在每次新请求出现时重新产生一项义务。例如系统先给过一次 response，后来收到许多 request 后再也不回答，F(response) 仍可能已经被那次旧响应满足。G(req→F resp) 才表示：在每一个时刻都检查；只要该时刻出现 request，就要求从这个时刻向后最终出现 response。"
         }
       },
       {
@@ -250,7 +250,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "对抗训练让某网络在所有已知攻击上都通过，是否等于已被形式验证？",
           hint: "已知攻击集合 = 所有允许的扰动集合吗？",
-          a: "不等。对抗训练只覆盖采样过的攻击；形式保证还需对明确定义的扰动集合证明“对所有输入”性质成立。"
+          a: "不等。对抗训练实际做的是生成一批攻击样本，再让网络在这些样本上训练或测试；全部通过只能说明“目前尝试过的攻击没有成功”。还可能存在没有生成到的输入或扰动。形式验证则先明确允许的全部扰动范围，例如每个像素最多改变 ε，再证明这个范围内的每一个输入都保持指定性质。区别在量词：已知攻击通过是有限次实验，形式保证要求覆盖定义范围内的所有情况。"
         }
       }
     ],
@@ -550,8 +550,8 @@ window.REVISION_DEPTH = {
         },
         practice: {
           q: "为什么不能写“令 y=第一个 0”就结束？",
-          hint: "lemma 中谁选分割？",
-          a: "为反证非 regular，你必须击败所有满足条件的分割。只指定一个 y 只说明某个分割会失败，不能排除另一个分割刚好使 lemma 成立。"
+          hint: "Pumping lemma 的顺序是：你选择长字符串，但“对方”可以选择任何满足条件的 x、y、z 分割。你的论证是否覆盖了对方的每一种选择？",
+          a: "不能只写“令 y 是第一个 0”。Pumping lemma 要求：如果语言是 regular，那么对足够长的字符串，至少存在一种合法分割 xyz，使 y 可以重复任意次后仍留在语言中。做反证时，你先选择字符串；随后必须允许对方选择任意满足 |xy|≤p、|y|>0 的分割。你要证明无论对方把 y 选成前 p 个位置中的哪一段，取某个重复次数都会离开语言。只击败一种自己指定的 y，仍可能留下另一种可行分割，因此反证没有完成。"
         }
       },
       {
@@ -577,7 +577,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "若一个语言和它的补语言都 recognisable，为什么它 decidable？",
           hint: "并行运行两个 recogniser。",
-          a: "对输入 x 交错运行 R_L(x) 与 R_comp(x)。x 必属于其中一边，对应 recogniser 最终 accept；按谁接受输出 accept/reject，因此总会停机。"
+          a: "准备两个程序：R_L 只保证语言成员最终会被接受；R_comp 只保证补语言成员最终会被接受。不能先把其中一个一直跑到底，因为它遇到非成员时可能永远不停。正确方法是轮流各执行一步：R_L 跑一步，再让 R_comp 跑一步，如此反复。任意输入 x 要么属于 L，要么属于补语言，所以两个程序中必有一个最终接受。若 R_L 先接受就回答“属于 L”；若 R_comp 先接受就回答“不属于 L”。因此这个组合程序对每个输入都会停机，它就是 decider。"
         }
       },
       {
@@ -605,7 +605,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "为什么 F 不能先运行 M(w)，停机后再输出 N？",
           hint: "当 M(w) 不停机时，f 是否仍是 total computable function？",
-          a: "不能。Mapping reduction 的 f 必须对每个输入都停机并输出目标实例；若 F 等待 M(w)，在 no 实例上永不返回，f 不是 total，不构成合法 mapping reduction。"
+          a: "不能。Mapping reduction 要求先用一个转换程序 f，把原问题的每个输入都变成目标问题的一个有限实例；无论原答案是 yes 还是 no，转换程序本身都必须停机。若 f 先运行 M(w) 并等待结果，那么当 M(w) 永不停机时，f 也永远不给出目标实例。这样你并没有完成“把输入转换过去”，所以它不是合法归约。正确构造通常把 M 和 w 的描述写进一台新机器 N，而不是在构造 N 的过程中真的等待 M(w) 结束。"
         }
       },
       {
@@ -632,7 +632,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "“枚举所有 k 顶点子集直到找到 clique”能证明 in NP 吗？",
           hint: "NP verifier 是否需要搜索证书？",
-          a: "不能。枚举是指数搜索，不是多项式 verifier。in NP 让证书作为额外输入；verifier 只检查给定子集，不参与搜索。"
+          a: "不能用这句话证明属于 NP，因为它描述的是“自己把所有候选都找一遍”，候选数可能是指数级。NP 的检查方式不同：另一个人直接交给你一个候选 k 顶点集合，这个候选叫 certificate（证书）；verifier 只需检查集合确有 k 个不同顶点，并检查每一对顶点之间都有边。它不负责寻找这组顶点。检查至多查看 k(k−1)/2 对，因此是多项式时间。"
         }
       },
       {
@@ -658,8 +658,8 @@ window.REVISION_DEPTH = {
         },
         practice: {
           q: "为什么同一 clause 的两个顶点不能连边？",
-          hint: "k 个 assay 大小的 clique 应怎样分配选择？",
-          a: "不连边强迫 clique 至多从每个 clause 选一个点；要达到 k=clause 数就恰好每个 clause 选一个 literal。"
+          hint: "大小为 k 的 clique 应当从 k 个 clause 中怎样分配选择？如果同一 clause 内可以互连，会不会从一条 clause 选两个点而漏掉另一条？",
+          a: "构造的目标是让大小为 k 的 clique 代表“每个 clause 选择一个为真的 literal”。因此同一 clause 的三个顶点之间不能连边：clique 要求所选顶点两两相连，所以它至多能从每个 clause 选一个。图中共有 k 个 clause，而目标 clique 也恰好需要 k 个顶点；既然每个 clause 最多贡献一个，要凑满 k 个就只能每个 clause 恰好贡献一个。这样图上的选择才与原公式的每条 clause 一一对应。"
         }
       }
     ],
@@ -952,7 +952,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "一个 boolean 参数加一个 byte 参数共有多少输入组合？",
           hint: "boolean 2 个，byte 256 个。",
-          a: "2×256=512。是否可穷举还要看单次执行和 oracle 成本，但数量本身可控。"
+          a: "boolean 有 true、false 两种取值；byte 有 0..255 共 256 种取值。每个 boolean 值都可与 256 个 byte 值组合，所以总数是 2×256=512。能否实际穷举还要看每条测试运行多久，以及怎样算出正确 expected output；这条“根据输入决定期望结果”的判断规则常叫 test oracle。即使输入只有 512 组，若每次执行或判断结果非常昂贵，穷举仍可能不划算。"
         }
       },
       {
@@ -980,7 +980,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "Charging 的 battLevel=-1、dischargeRate=300 能放在同一个 error TC 吗？",
           hint: "一个 TC 同时破坏两参数时能确定哪个 error partition 被独立处理吗？",
-          a: "不宜。一次只让一个参数非法，另一个保持合法，从而独立覆盖并追踪每个 error partition。"
+          a: "不宜把两个非法值放在同一条测试里。若结果是 PARAM_ERROR，你无法判断程序究竟正确识别了 battLevel<0、正确识别了 dischargeRate>255，还是只检查了其中一个条件。应拆成两条：例如 T1=(-1,50)，只让 battLevel 非法；T2=(50,300)，只让 dischargeRate 非法。另一参数保持合法后，每次失败就能明确对应一个非法输入区间；这个被单独检查的区间就是 error partition。"
         }
       },
       {
@@ -1006,7 +1006,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "100% statement coverage 是否保证 100% branch coverage？",
           hint: "一个 if body 被执行一次，else/false 是否一定走过？",
-          a: "不保证。测试让条件 true 可覆盖 if body 的全部 statements，但 false branch 可能从未发生。"
+          a: "不保证。假设代码是 if (x>0) { y=1; }，后面没有 else。只用 x=1 测试时，赋值语句 y=1 已执行，因此可能达到 100% statement coverage；但条件 x>0 的 false 结果从未出现。Branch coverage 要求同一个判断的 true 和 false 两条出口都至少走一次，所以还需要例如 x=0 的测试。由此可见，执行过每条语句不等于走过每个判断结果。"
         }
       },
       {
@@ -1033,7 +1033,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "decide() 返回 void，为什么仍可测？",
           hint: "对象是否提供可观察结果的方法？",
-          a: "可以。调用 decide 后用 isFree() 读 freeShipping 并与 expected 比较；isFree 是 test oracle 的观察接口。"
+          a: "可以测试。void 只表示 decide() 不直接返回数值，不表示它没有效果。先设置输入并调用 decide()，再调用 isFree() 读取对象内部产生的 freeShipping 状态，最后把读到的 true/false 与题目规则算出的 expected 值比较。这里“根据什么判断测试通过或失败”的规则叫 test oracle；本题的 oracle 就是“isFree() 的实际结果必须等于 expected”。"
         }
       },
       {
@@ -1060,7 +1060,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "SolarPanel 要满足 lux≥5000，随机区间上界应写什么？",
           hint: "题面声明 lux 为 int，DT 又把讨论域限定为 lux≥0。",
-          a: "自然域可写 rand(5000..Integer.MAX_VALUE)。若为了运行效率选有限 operational/test cap U，也可写 rand(5000..U)，但必须声明 U 的来源，不能称它是题面规格边界。"
+          a: "按题面，lux 是非负 int，因此满足 lux≥5000 的完整输入区间是 5000..Integer.MAX_VALUE。若真实测试不想随机到非常大的数，可以人为规定一个较小上限 U，例如 100000，再从 5000..U 抽样。这个 U 只是为了让测试容易运行而加的测试上限，不是规格说“lux 最大只能到 U”。答案必须把这两个范围分开写，避免把测试方便性误当成系统要求。"
         }
       },
       {
@@ -1087,7 +1087,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "方法内部从 if 改成 table lookup 但外部行为不变，哪类测试更可能不用改？",
           hint: "哪类测试只依赖 specification？",
-          a: "黑盒测试更可能不需改；以旧 branch 为 TCI 的白盒测试需重新分析覆盖结构。"
+          a: "黑盒测试更可能保持不变，因为它只检查“给定输入时，公开输出是否符合规格”；只要外部行为没变，原来的输入和 expected output 仍然有效。白盒测试会把某条语句、某个 if 的 true/false 分支等内部结构当作覆盖目标，这种目标常缩写为 TCI（test coverage item）。把 if 改成 table lookup 后，旧分支已经不存在，所以必须根据新代码重新确定覆盖目标；即使某些具体测试数据仍能使用，也不能原封不动声称它们覆盖了旧分支。"
         }
       }
     ],
@@ -1401,7 +1401,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "6 在 mod 26 下有逆元吗？",
           hint: "计算 gcd(6,26)。",
-          a: "没有；gcd=2≠1。只有与 modulus 互素的元素才有乘法逆元。"
+          a: "没有。先算 gcd(6,26)=2。若 6 有模 26 逆元 x，就应满足 6x≡1 (mod 26)，也就是 6x−26k=1。但左边的 6x 和 26k 都是偶数，两者之差仍是偶数，不可能等于奇数 1。因此逆元不存在。一般规则是：只有 gcd(a,n)=1，也就是 a 与模数 n 互素时，a 才有模 n 乘法逆元。"
         }
       },
       {
@@ -1478,9 +1478,9 @@ window.REVISION_DEPTH = {
           result: "这不是暴力分解，而是利用 decryption oracle 返回的不同根。"
         },
         practice: {
-          q: "若 oracle 返回 Y=R，能得因子吗？",
-          hint: "gcd(R−Y, N)=gcd(0, N)。",
-          a: "只得到 N；另一 gcd 通常为 1 或 N，没有非平凡因子。攻击依赖返回不同于 ±R 的根。"
+          q: "攻击者把 C=R² mod N 交给解密服务；如果服务原样返回平方根 Y=R，还能用 gcd 得到 N 的因子吗？",
+          hint: "分别把 Y=R 代入 gcd(R−Y,N) 和 gcd(R+Y,N)。攻击需要的是介于 1 与 N 之间的因子。",
+          a: "不能。第一项 R−Y=R−R=0，所以 gcd(R−Y,N)=gcd(0,N)=N；这只是整个模数，不是新的因子。第二项变成 gcd(2R,N)。在通常选择 gcd(R,N)=1 且 N 为奇数时，它等于 1；即使在特殊输入下得到 N，也仍不是非平凡因子。只有服务返回另一个平方根，并且 Y 既不同余于 R、也不同余于 −R (mod N) 时，R−Y 或 R+Y 才可能只含 N 的一个素因子，从而让 gcd 落在 1 与 N 之间。这里的 oracle 指攻击者可以提交自己构造的密文、并取得其某个平方根的解密服务。"
         }
       },
       {
@@ -1507,7 +1507,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "为什么 ECDSA 比较的是 X 的 x 坐标 mod q？",
           hint: "签名生成 r 的公式是什么？",
-          a: "签名时 r = (kP)_x mod q，所以验证重构对应点后必须用同样映射比较。"
+          a: "签名者先选一次性随机数 k，计算曲线点 kP，再把这个点的 x 坐标对 q 取模，得到签名中的 r：r=(kP)_x mod q。验证者不知道 k，无法直接重算 kP；它根据消息、签名和公钥构造另一个点 X。若签名正确，代数关系保证 X 正好等于签名时的 kP。因此验证端必须执行与签名端相同的最后一步：取 X 的 x 坐标并计算 v=X_x mod q，再比较 v 是否等于 r。比较完整 x 坐标会错，因为签名中保存的 r 本来就已经对 q 取过模。"
         }
       },
       {
@@ -1533,7 +1533,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "在同一 ring 中 y^16 等于什么？",
           hint: "(y^8)^2。",
-          a: "y^16=(y^8)^2≡(−1)^2≡1 (mod y^8+1)。不能把所有高次项都直接删掉。"
+          a: "这个多项式环规定 y⁸+1≡0，所以先把 1 移到右边，得到 y⁸≡−1 (mod y⁸+1)。现在 y¹⁶=(y⁸)²；把 y⁸ 替换为 −1，得到 y¹⁶≡(−1)²≡1 (mod y⁸+1)。这里不是看到次数大于 8 就把整项删除，而是每出现一个 y⁸，就按照关系 y⁸≡−1 进行替换。"
         }
       }
     ],
@@ -1705,7 +1705,11 @@ steps: [
               "计算 gcd(R+Y,N)，其中 R+Y=55192920。完整 Euclid 表的最后非零余数是 3511。",
               "验证 13523 × 3511 = ?：先 13523×3000 = 40569000；13523×500 = 6761500；13523×11 = 148753；合 40569000+6761500+148753 = 47478253。差 1000——重算 13523 × 3511 = 13523×3500 + 13523×11 = 47330500 + 148753 = 47479253 = N ✓",
               "iii) 攻击使用 composite modulus 下的不同平方根。由 R²≡Y² (mod N)，可得 N 整除 (R−Y)(R+Y)。若 Y≢R (mod N) 且 Y≢−R (mod N)，计算 gcd(R−Y,N) 或 gcd(R+Y,N) 可以得到非平凡因子。",
-              "课程防御：QR_N 是模 N 的平方集合；在其中按规则选唯一 QR square root。密文用 ⟨x² mod N,lsb(x) XOR m⟩，第二项帮助从根恢复消息 bit；解密 oracle 只返消息、不返 root。通用系统还要 CCA-secure padding。"
+              "先说明防御要解决什么：普通 Rabin 密文 C 有四个平方根。如果解密服务把任选的根 Y 交给外部，攻击者就能拿 Y 与自己知道的 R 比较并通过 gcd 分解 N。因此服务不能暴露平方根。",
+              "定义 QR_N：它是所有“在模 N 下能够写成某个数的平方”的余数集合。对 Blum integer，若把 x 限定在 QR_N 中，平方映射在这个集合内有一个按规则确定的根；接收端不必从四个根中随意挑一个交给外部。",
+              "课程构造把一个消息 bit m 加密成二元组 ⟨c₁,c₂⟩。先选符合规则的 x，计算 c₁=x² mod N；再计算 c₂=lsb(x) XOR m。lsb(x) 是 x 的最低有效位，也就是 x 的奇偶位。",
+              "接收端利用私钥从 c₁ 恢复规则指定的 x，再算 m=lsb(x) XOR c₂，因为同一个 bit 与 lsb(x) 做两次 XOR 会恢复原值。对外只返回消息 bit m，不返回 x，也不返回四个平方根中的任何一个。",
+              "更一般的系统还要抵抗攻击者反复修改密文并观察不同结果。卷面写 CCA-secure transform/padding 时要解释：它给密文加入完整性和格式保护，使篡改后的密文统一失败，攻击者不能把解密接口当作逐步试探明文或内部根的问答工具。"
             ],
             final: "Rabin 形式像 e=2，但不是合法 RSA 特例；用 R²→不同根 Y 的 gcd 可分解 N，得 p=13523、q=3511。"
           },
@@ -1900,7 +1904,7 @@ steps: [
         practice: {
           q: "今年卷问 embedding 相对 D 的维度，最稳的作答顺序？",
           hint: "先写讲义典型设计，再写例外。",
-          a: "课程的主要设计使用 d<D。encoder 把输入映射为较低维表示。d≥D 的设计也存在，但必须加入 sparsity 或 denoising 等限制。否则模型可能只学习 identity mapping。"
+          a: "先写课程的典型答案 d<D：输入 x 有 D 个数，encoder 把它压成只有 d 个数的 z，因此中间表示比输入维度低。然后再说明例外：也可以设计 d≥D，但此时网络有足够空间把每个输入数字原样抄到输出，完全不必学习有用结构；这种“输入什么就复制什么”的结果叫 identity mapping。为了阻止简单抄写，需要额外限制。例如 sparsity 要求同一时刻只有少量隐藏单元活跃；denoising 则先破坏输入，再要求模型恢复干净版本。"
         }
       },
       {
@@ -1928,7 +1932,7 @@ steps: [
         practice: {
           q: "为什么不把 224×224 乘进参数数目？",
           hint: "同一 filter 在不同位置是否被重复使用？",
-          a: "因为同一组 3×3×3 weights 被从左上到右下反复使用。224×224 只决定它会产生多少个 output activation，不会给每一个位置发一套新 weights。相反，FC 层才是每条连接各有独立 weight。"
+          a: "一张 3×3 filter 在 RGB 图像上只需要 3×3×3=27 个 weight；它从左上移动到右下时，反复使用的仍是这同一组 27 个数，并不会在每个位置重新创建参数。224×224 表示 filter 要在多少个位置产生计算结果，所以它影响输出数值的数量。每个位置算出的一个结果叫 activation。参数是在训练中被保存和更新的旋钮，activation 是把某个输入送入网络后临时算出的结果，两者不能相乘混算。全连接层 FC 不做这种空间共享，因此它的每条连接通常才有独立 weight。"
         }
       },
       {
@@ -1954,8 +1958,8 @@ steps: [
         },
         practice: {
           q: "为什么要除以 √dk？",
-          hint: "维度变大时点积方差怎样改变？",
-          a: "d_k 个乘积相加后，score 的典型大小随维度增加。若直接把大 score 输入 softmax，最大输出会接近 1。其余输出会接近 0。这是 softmax 饱和。饱和会减小梯度。除以 √d_k 可控制 score 的大小。"
+          hint: "先看 score=q·k：它把 d_k 对数字的乘积相加。相加项变多后，score 的典型绝对值会怎样？softmax 收到一个远大于其它值的 score 时会输出什么？",
+          a: "attention score 是点积 q·k，也就是把 d_k 个乘积相加。若每一项的尺度相近，相加项越多，score 的波动通常越大；典型尺度大约随 √d_k 增长。把这些过大的正负数直接送入 softmax，最大的那一项会得到接近 1 的概率，其余项接近 0。此时稍微改变 score，输出几乎不动，训练用的梯度会很小；这叫 softmax 饱和。先计算 (q·k)/√d_k，正好抵消随维度增长的典型尺度，让 softmax 的输入维持在较温和的范围，模型才较容易学习应把注意力分给谁。"
         }
       },
       {
@@ -1981,7 +1985,7 @@ steps: [
         practice: {
           q: "反复查看 test accuracy 再改模型，有什么问题？",
           hint: "test 是否还代表未见数据？",
-          a: "这是 test leakage：你虽然没有把 test 样本拿去更新 weight，却把它的分数当作了模型选择线索。于是模型/流程间接迎合这份 test，分数会偏乐观；它不再代表未知未来数据。"
+          a: "问题不在于是否直接用 test 样本更新 weight，而在于你看过 test 分数后据此决定下一次怎么改。每看一次分数并保留表现更好的方案，就从 test 集合取得了一条选择线索；反复进行后，模型和整个开发流程会逐渐迎合这份固定 test。最后报告的分数会比面对真正新数据时更好看。这种测试信息进入模型选择过程的现象叫 test leakage。正确分工是用 validation set 调参和选择模型，把 test set 留到所有决定完成后只做最终评估。"
         }
       },
       {
@@ -2035,7 +2039,7 @@ steps: [
         practice: {
           q: "“删除姓名就没有隐私风险”对吗？",
           hint: "其他特征能否重新识别个人？",
-          a: "不对。位置、年龄、时间、行为等组合常可重新识别一个人；模型还可能记住训练中的罕见内容。合理回答要同时写数据最小化、用途/访问控制、来源与同意审计、隐私风险评估，必要时使用合适的隐私保护方法。"
+          a: "不对。删除姓名只去掉了一个直接标识符。位置、年龄、工作时间和罕见行为组合在一起，仍可能只对应现实中的一个人；模型也可能记住训练资料里的罕见句子或记录。实际防护要逐项回答：是否能少收一些字段；这些数据只允许用于什么目的；哪些人或系统能访问；数据从哪里来、当事人是否同意这种用途；发布结果前能否通过组合特征重新认出个人。根据风险还可加入聚合、删除罕见组合、差分隐私等措施，而不是把“删姓名”当成任务结束。"
         }
       }
     ],
@@ -2183,11 +2187,14 @@ steps: [
             steps: [
               "先给定义：一层 y=f(x) 可逆，当且仅当拿到每一个输出 y 都能找到唯一的 x=f⁻¹(y)。‘能训练 decoder 大概还原’不够；必须是数学上的唯一反推。",
               "用反例说明你理解：ReLU(−1)=ReLU(−2)=0，拿到 0 不知道原来是 −1 还是 −2，所以普通 ReLU 不可逆；max pooling、降维 bottleneck 也会丢信息。",
-              "点名本题网络：Normalizing Flow。它把 x=f(z) 看成多层可逆变换的组合，z 来自简单分布；反向 x→z 也能做，所以既可 sampling，也可评估数据对应的 latent。",
-              "若题目追问 why/use：用于 density 的 flow 还要求映射可微、通常维度相同，且 Jacobian determinant 可高效算。change of variables 用 determinant 补偿空间拉伸，才给 exact likelihood。",
-              "考场收束句：‘Normalizing flows compose invertible, differentiable transformations with tractable Jacobian determinants; this permits bidirectional mapping and exact likelihood by change of variables.’"
+              "点名本题网络：Normalizing Flow。它先从容易生成的简单分布取得 z，例如标准正态分布，再通过一连串可逆层 x=f(z) 把 z 变成看起来像真实数据的 x。",
+              "可逆性让同一模型能走两个方向。生成数据时走 z→x；评估一条现有数据 x 时走 x→z=f⁻¹(x)，找到它在简单分布中对应的位置。若两个不同 x 会落到同一个 z，就无法唯一倒推，也无法正确计算每个 x 的密度。",
+              "映射会拉伸或压缩空间，所以不能直接把 z 处的概率密度原样当成 x 处的密度。先看一维例子 x=2z：长度为 1 的 z 区间被拉成长度为 2 的 x 区间，同一份概率摊在两倍长度上，x 处密度应变成原来的一半。",
+              "多维时用 Jacobian 矩阵记录每个输出坐标对每个输入坐标的局部变化率；它的 determinant（行列式）给出局部体积被放大多少倍。要求 determinant 能高效计算，是因为训练和评估每条数据都要使用这个修正量。",
+              "令 z=f⁻¹(x)，change-of-variables 公式写成 log p_X(x)=log p_Z(z)−log|det J_f(z)|。第一项是在简单分布中查 z 有多常见；第二项扣除 f 对附近空间的拉伸。若空间被放大，单位体积内分到的概率就减少。",
+              "Exact likelihood 的意思是：给定具体数据 x，模型能用上述公式直接算出明确的概率密度，而不是只靠采样结果猜测它有多可能。考试结论应写成：normalizing flow 使用同维、可微、可逆且行列式可高效计算的变换，因此既能双向映射，也能逐点计算数据密度。"
             ],
-            final: "可逆=每个 y 唯一倒回 x=f⁻¹(y)。本题答案是 normalizing flow；要做 exact likelihood 还需可微、通常同维、Jacobian determinant 可高效算。ReLU、pooling、bottleneck encoder 一般不可逆。"
+            final: "可逆表示每个输出都能唯一倒回输入。本题网络是 normalizing flow：从简单 z 生成 x，也能从 x 唯一倒回 z；Jacobian 行列式衡量局部空间被拉伸或压缩多少，change-of-variables 用它修正概率密度，因此模型可以直接计算每条数据的 likelihood。ReLU、pooling 和降维 bottleneck 会把多个输入合并成同一输出，通常不可逆。"
           },
           {
             label:"3(d)",

@@ -48,11 +48,11 @@
     ["输出", "O4", "PARAM_ERROR", "任一参数超出规格合法范围", "—", "output TCI"]
   ];
   q1b.steps = [
-    "先写两个参数的完整 Java short 自然域。自然域是 −32768..32767，不是规格合法区。",
+    "先说明 TCI 是 test coverage item，即测试集必须至少覆盖一次的输入区间、输出结果或代码条件。然后写两个参数的完整 Java short 自然域 −32768..32767；自然域表示类型能够接收什么，不等于规格允许什么。",
     "沿 battLevel 的切换点 −1|0、9|10、49|50、100|101 切成 B1* 到 B5*。",
     "沿 dischargeRate 的切换点 −1|0、50|51、255|256 切成 R1* 到 R4*。",
-    "给四种输出编号 O1 到 O4。输出也是 TCI，因为测试必须检查返回值。",
-    "给每个输入 TCI 选一个具体值。边界值能同时检查区间归属和严格不等号。",
+    "给四种输出编号 O1 到 O4。测试不能只把输入送进去，还必须确认程序能产生 NONE、FAST_CHARGE、SLOW_CHARGE 和 PARAM_ERROR 四种规定结果，因此每种输出也列为一个必须覆盖的 TCI。",
+    "给每个输入区间选一个真正会送给程序的具体值。优先选切换点两侧的边界值，例如 9 与 10；这样既能确认数值落入正确区间，也能检查 <10 这种严格不等号有没有把端点放错。",
     "逐行检查区间。输入区间不能重叠，合并后必须覆盖完整 short 自然域。"
   ];
   q1b.states = [
@@ -233,10 +233,10 @@
   ];
   randomRules.steps = [
     "固定完整四列规则。两种 grid 状态和两个 lux 区间产生 R1 到 R4。",
-    "处理 R1。固定 grid=true，只从 0..4999 生成 lux，oracle 固定为 false。",
-    "处理 R2。固定 grid=true，只从 5000..Integer.MAX_VALUE 生成 lux，oracle 固定为 true。",
-    "处理 R3。固定 grid=false，只从 0..4999 生成 lux，oracle 固定为 false。",
-    "处理 R4。固定 grid=false，只从 5000..Integer.MAX_VALUE 生成 lux，oracle 固定为 false。",
+    "处理 R1。固定 grid=true，只从 0..4999 生成 lux。根据规则表，这一行每次调用都应返回 false；这个事先算出的 expected=false 就是本行判断测试成败的 oracle。",
+    "处理 R2。固定 grid=true，只从 5000..Integer.MAX_VALUE 生成 lux。规则表说明 grid 已连接且光照达到 5000 时应返回 true，因此每个随机输入都与 expected=true 比较。",
+    "处理 R3。固定 grid=false，只从 0..4999 生成 lux。无论抽到区间内哪个值，未连接电网都应返回 false，因此 expected=false。",
+    "处理 R4。固定 grid=false，只从 5000..Integer.MAX_VALUE 生成 lux。高光照不能弥补 grid=false，所以这一行仍以 expected=false 判断测试结果。",
     "另跑固定边界 4999 和 5000。随机抽样不能保证命中切换点。"
   ];
   randomRules.states = randomRules.steps.map((_, index) =>
@@ -410,7 +410,7 @@ public class FilestoreTest {
     "object 测试调用 new Level(x)。构造器建立 obj，并把 x 保存到对象状态。",
     "object 测试调用 obj.isValid()。它读取 input，写 result，并返回 void。",
     "object 测试调用 obj.getResult()。getter 读取 result，并把 y 返回给 actual。",
-    "object 测试比较 actual 与 expected。oracle 在 getter 之后执行。"
+    "最后比较 actual 与 expected，二者相等才通过。这里 oracle 不是另一个方法名，而是“怎样判断结果正确”的规则。因为 isValid() 返回 void，必须先用 getResult() 取得可观察的 actual，比较才能发生；所以判断步骤位于 getter 之后。"
   ];
   levelCalls.states = levelCalls.steps.map((_, index) =>
     state(

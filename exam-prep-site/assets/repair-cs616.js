@@ -855,7 +855,7 @@
     classicalAndZk.practice = {
       q: "为什么 verifier 不能在 prover 发送 commitment 前公布 challenge？",
       hint: "比较诚实顺序和两个伪造例题的计算顺序。",
-      a: "攻击者知道 challenge 后，可以先选 response，再从验证等式反算 commitment。随机 challenge 必须在 commitment 后产生。这样，prover 在固定第一条消息时还不知道要回答哪个分支。"
+      a: "正常顺序是 prover 先发送 commitment，把本轮选择固定下来；verifier 随后才随机给 challenge；prover 必须根据这个事先不知道的问题回答。若 challenge 提前公布，攻击者就能倒着做：先挑一个容易计算的 response，再把已知 challenge 和 response 代入验证等式，反算出刚好能通过的 commitment。整个过程不需要秘密 witness。把 challenge 放在 commitment 之后，正是为了阻止攻击者根据题目反造第一条消息。"
     };
   }
 
