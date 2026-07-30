@@ -776,19 +776,19 @@
 
     const smallZkOperations = [
       "先写 verifier 检查的式子 2ᴿ≡t×3ᶜ (mod 11)。本题永远给 c=1，所以实际检查变成 2ᴿ≡3t (mod 11)。",
-      "固定 challenge 的漏洞是攻击者在发送 t 前已经知道 c=1。于是攻击者可以反过来做：先随便选一个好算的 response，例如 R=4，再配出能让等式成立的 t。",
-      "计算等式左边：2⁴=16=1×11+5，所以 2⁴≡5 (mod 11)。原验证式是 2⁴≡3t (mod 11)；把左边的 2⁴ 换成刚算出的余数 5，得到 5≡3t (mod 11)。",
-      "步骤 3 已得到 5≡3t (mod 11)。同余关系可以交换左右两边，所以把它改写为 3t≡5 (mod 11)。现在要消掉 t 前面的 3，需要先求 3⁻¹ mod 11。",
+      "固定 challenge 的漏洞是攻击者在发送 t 前已经知道 c=1。于是攻击者可以反过来做：先任选一个好算的 response，再配出能让等式成立的 t。这里选最容易手算的 R=2；它没有特殊密码学含义，只是让 2ᴿ 不必做模幂约简。",
+      "计算等式左边：2²=4，所以 2²≡4 (mod 11)。原验证式是 2²≡3t (mod 11)；把左边的 2² 换成刚算出的 4，得到 4≡3t (mod 11)。",
+      "步骤 3 已得到 4≡3t (mod 11)。同余关系可以交换左右两边，所以把它改写为 3t≡4 (mod 11)。现在要消掉 t 前面的 3，需要先求 3⁻¹ mod 11。",
       "按照 PDF 的系数表写两条初始化行。第一行是模数行 r=11、d=0；第二行是待求逆数行 r=3、d=1。d 表示当前余数中 3 的系数。",
       "做第一次 Euclid 除法。11÷3 的商是 3、余数是 2，所以 11=3×3+2。",
       "做第二次 Euclid 除法。3÷2 的商是 1、余数是 1，所以 3=1×2+1。",
       "最后一行的余数是 1，所以 gcd(3,11)=1。读取同一行的 d=4：这一行表示 1=(−1)×11+4×3。对两边取 mod 11，(−1)×11 的余数为 0，于是 1≡4×3 (mod 11)，所以 3⁻¹≡4 (mod 11)。",
       "乘回检查逆元：3×4=12=1×11+1，余数确实是 1。",
-      "回到 3t≡5 (mod 11)，在左右两边都乘 4：4×3t≡4×5 (mod 11)。",
-      "左边按乘法结合律写成 (4×3)t。因为 4×3≡1 (mod 11)，所以左边化为 t；右边是 20。因此 t≡20 (mod 11)。",
-      "把 20 除以 11：20=1×11+9，所以 20≡9 (mod 11)。最终得到 t≡9 (mod 11)，取标准代表元 t=9。",
-      "按消息顺序写 transcript：先发送 t=9；verifier 发送固定的 c=1；攻击者回答 R=4。完整记录是 (t,c,R)=(9,1,4)。",
-      "验算左右两边：2⁴ mod 11=5；9×3¹=27 mod 11=5。两边相同，所以 verifier 接受。",
+      "回到 3t≡4 (mod 11)，在左右两边都乘 4：4×3t≡4×4 (mod 11)。",
+      "左边按乘法结合律写成 (4×3)t。因为 4×3≡1 (mod 11)，所以左边化为 t；右边是 16。因此 t≡16 (mod 11)。",
+      "把 16 除以 11：16=1×11+5，所以 16≡5 (mod 11)。最终得到 t≡5 (mod 11)，取标准代表元 t=5。",
+      "按消息顺序写 transcript：先发送 t=5；verifier 发送固定的 c=1；攻击者回答 R=2。完整记录是 (t,c,R)=(5,1,2)。",
+      "验算左右两边：2²=4，所以 2²≡4 (mod 11)；5×3¹=15=1×11+4，所以 5×3¹≡4 (mod 11)。两边余数都是 4，因此 verifier 接受。",
       "最后解释为什么这不构成知识证明：整套计算从未使用秘密 witness x。攻击者只针对提前知道的 c=1 配出一条等式，不能回答另一个随机 challenge。"
     ];
     const inv3mod11 = {
@@ -821,8 +821,8 @@
       target: "构造 commitment、challenge 和 response，并逐项验证等式。",
       steps: smallZkOperations,
       states: smallZkStates,
-      result: "伪造 transcript 是 (commitment=9, challenge=1, response=4)。",
-      check: "2⁴ mod 11=5。9×3 mod 11=5。验证通过，但计算没有使用 witness。"
+      result: "伪造 transcript 是 (commitment=5, challenge=1, response=2)。",
+      check: "2²≡4 (mod 11)。5×3≡4 (mod 11)。验证通过，但计算没有使用 witness。"
     };
 
     const realZkOperations = [
@@ -832,7 +832,10 @@
       "得到第五次幂并合并：827⁵≡492×827≡574 (mod 991)，其中 492×827=406884=410×991+574。于是 2³³³≡574×264≡904 (mod 991)，其中 574×264=151536=152×991+904。",
       "前四步得到 2³³³≡904 (mod 991)。代回验证式 2ᴿ≡697t (mod 991)，明确得到 904≡697t (mod 991)。要单独留下 t，下一步完整计算 697⁻¹ mod 991。",
       ...eeaSteps(inv697),
-      "两边乘逆元：t≡904×691≡334 (mod 991)，其中 904×691=624664=630×991+334。因此 commitment 的标准代表元是 t=334。",
+      "回到步骤 5 得到的 904≡697t (mod 991)。现在已经算出 697⁻¹≡691 (mod 991)，所以接下来要在同余式左右两边同时乘 691。",
+      "把“两边同时乘 691”完整写出来：904×691≡(697t)×691 (mod 991)。右边利用乘法交换律和结合律改写为 (697×691)t。",
+      "步骤 16 已验证 697×691≡1 (mod 991)，所以 (697×691)t≡1t≡t (mod 991)。因此上一行变成 904×691≡t (mod 991)，交换左右两边可写成 t≡904×691 (mod 991)。",
+      "计算右边：904×691=624664=630×991+334，所以 904×691≡334 (mod 991)。代回上一行得到 t≡334 (mod 991)，取标准代表元 t=334。",
       "写出完整 transcript，而不是只写两个散落数字：(commitment,challenge,response)=(334,1,333)。",
       "最后验算 verifier 的等式。左边 2³³³≡904 (mod 991)；右边 334×697≡904 (mod 991)，因为 334×697=232798=234×991+904。两边余数相同，验证通过。",
       "安全结论单独写一句：攻击者没有使用 witness，只因 challenge 在 commitment 前已经可预测，才能先选 R 再反算 t；因此固定 challenge 破坏 soundness。"
@@ -1094,6 +1097,33 @@
     ecdsaLearning.result = "v=1，与 r=1 相等，所以签名 (1,6) 有效。";
     ecdsaLearning.check = "最终点 X=(1,3) 在曲线上；v=Xₓ mod 7=1；并且所有用到的逆元都已乘回检查。";
     delete ecdsaLearning.ledger;
+  }
+
+  /* The exam and learning versions must show the same algebraic handoff.
+     Computing the inverse is not yet the act of multiplying both sides by it. */
+  if (zkPart && Array.isArray(zkPart.steps)) {
+    zkPart.steps[7] = "前七步得到 2³³³≡904 (mod 991)。代回验证式 2ᴿ≡commitment×697 (mod 991)，得到 904≡commitment×697 (mod 991)。要单独留下 commitment，下一步先完整计算 697⁻¹ mod 991。";
+    zkPart.states = (zkPart.states || []).filter(state => state.after !== 8);
+
+    const directCommitmentIndex = zkPart.steps.findIndex(step =>
+      String(step).includes("commitment = 904 · 691 mod 991")
+    );
+    if (directCommitmentIndex >= 0) {
+      const replacedAfter = directCommitmentIndex + 1;
+      zkPart.steps.splice(
+        directCommitmentIndex,
+        1,
+        "回到 904≡commitment×697 (mod 991)。现在已经算出 697⁻¹≡691 (mod 991)，所以在同余式左右两边同时乘 691。",
+        "把“两边同时乘 691”完整写出来：904×691≡(commitment×697)×691 (mod 991)。右边利用乘法交换律和结合律改写为 commitment×(697×691)。",
+        "乘回检查已经证明 697×691≡1 (mod 991)，所以 commitment×(697×691)≡commitment×1≡commitment (mod 991)。因此得到 904×691≡commitment (mod 991)。",
+        "计算左边：904×691=624664=630×991+334，所以 904×691≡334 (mod 991)。代回上一行得到 334≡commitment (mod 991)，交换左右两边可写成 commitment≡334 (mod 991)，取标准代表元 commitment=334。"
+      );
+      zkPart.states = (zkPart.states || []).map(state =>
+        state.after >= replacedAfter
+          ? Object.assign({}, state, {after: state.after + 3})
+          : state
+      );
+    }
   }
 
   const zkTerms = [
