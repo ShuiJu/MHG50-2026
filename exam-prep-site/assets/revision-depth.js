@@ -1298,8 +1298,8 @@ window.REVISION_DEPTH = {
       ["Affine Digraph / 仿射双字母密码","对两位字符组做仿射，组合数常为 26²=676。"],
       ["ETM / Encrypt-then-MAC","先加密再对密文计算 MAC 的认证加密方式，比 E&M 和 MTE 安全。"],
       ["E&M / Encrypt-and-MAC","对明文同时加密和 MAC，常见漏洞是 deterministic tag 泄漏相同明文。"],
-      ["MTE / MAC-then-Encrypt","先 MAC 再加密，常被 padding oracle 攻击。"],
-      ["CCA / 选择密文攻击","攻击者可解密任意密文并观察结果；要求加密方案对 adaptive 密文鲁棒。"],
+      ["MTE / MAC-then-Encrypt","先对明文计算 MAC，再把明文和 tag 一起加密。如果接收端先解密，并让攻击者看见“padding 是否正确”等不同结果，攻击者就能反复修改密文并从这些结果逐步推断明文。"],
+      ["CCA / 选择密文攻击","攻击者可以自己构造许多密文交给系统处理，再根据系统的返回结果选择下一份密文继续试探。安全方案不能让这些试探泄漏目标明文。"],
       ["Quadratic Residue / 二次剩余","模 n 下存在 x 使 x²≡a (mod n)，则 a 是二次剩余。"],
       ["Jacobi Symbol","Legendre 符号的推广；Jacobi=1 不能单独保证是二次剩余。"],
       ["Legendre Symbol","判断模素数 p 的二次剩余：a^((p−1)/2) mod p 为 +1 表示剩余，−1 不剩余。"],
@@ -1435,8 +1435,8 @@ window.REVISION_DEPTH = {
         steps: [
           "AddRoundKey 是逐 byte XOR，所以 roundKey = before XOR after。",
           "CTR/OFB/CFB 可把 block cipher 输出变成流；具体 mode 决定取 MSB/LSB、反馈什么，必须依课程讲义。本题的 CFB 用 S_8，S_8 是输出最左边（最高有效）的 8 bits，即 hex 串的首 byte。",
-          "ETM 用独立 Ke、Km：先 C=Enc(Ke, M)，再 T=MAC(Km, C)。",
-          "接收端重算并比较 T；invalid 永远只返回统一 null。为符合课程 timing 防护，可让 valid/invalid 走等成本或 dummy decryption，但 invalid 时绝不释放 plaintext；“做了 dummy decrypt”不等于“可以交还 dummy plaintext”。",
+          "ETM 使用两个互不相同的密钥：Ke 只负责加密，Km 只负责 MAC。发送端先算 C=Enc(Ke,M;IV)，再算 T=MAC(Km,IV||C)；符号 || 表示把 IV 和密文 C 前后拼接起来。",
+          "接收端先用收到的 IV 和密文重新计算 tag，再与收到的 tag 比较。若两者不同，说明数据被改过或 tag 是伪造的：此时对外只返回一种统一的失败结果，不解释失败发生在哪一步，也不返回任何解密字节。只有 tag 相同时，接收端才把明文交给调用者。实现还要避免“失败特别快、成功特别慢”这种可观察的时间差；必要时可以在内部做等量的无用计算来拉平耗时，但这些内部计算的结果必须丢弃。",
           "CIA：encryption 给 confidentiality；MAC 给 integrity/authenticity；availability 需其它机制（如冗余/速率限制）。"
         ],
         example: {
@@ -1451,9 +1451,9 @@ window.REVISION_DEPTH = {
           result: "P = 0x8D；具体题必须按图说明 keystream byte 取哪个字节。"
         },
         practice: {
-          q: "为什么 ETM 验证失败后不能返回解密错误或 plaintext？",
-          hint: "不同错误/plaintext 会形成什么类型的 oracle？",
-          a: "会形成 oracle（padding/timing 类）。课程为隐藏 timing 可执行等成本/dummy decryption，但 invalid tag 时必须丢弃结果并统一返回 null；只有 valid 才释放 plaintext。"
+          q: "攻击者篡改一个密文字节后，为什么服务器不能告诉他“MAC 错误”“padding 错误”，也不能返回任何解密出的明文字节？",
+          hint: "设想攻击者把同一份密文改成许多版本并反复提交。如果服务器对不同版本给出不同错误、不同明文或明显不同的响应时间，攻击者每次能多知道什么？",
+          a: "攻击者虽然没有密钥，却可以反复修改密文并观察服务器的反应。例如，版本 A 返回“MAC 错误”，版本 B 返回“padding 错误”，这就告诉攻击者：版本 B 已经通过了某些内部检查，解密后的末尾字节可能具有合法 padding。攻击者继续一次只改一个字节，就能把这些“是/否”线索拼起来，逐步推断原明文。这样的服务器叫 oracle：攻击者提交自己选择的密文，服务器的返回内容或耗时替攻击者回答了关于秘密数据的问题。ETM 的正确处理顺序是：先验证 tag；tag 无效时，不把解密结果、padding 状态或具体失败原因交给外部，只返回完全相同的失败结果；tag 有效时才解密并返回 plaintext。若实现为了隐藏运行时间而在失败路径做等量的 dummy work，那只是内部耗时防护；dummy 产生的任何内容仍必须丢弃，不能返回给攻击者。"
         }
       },
       {
@@ -1666,11 +1666,11 @@ steps: [
             steps: [
               "ETM = Encrypt Then MAC。发送：C=Enc_Ke(M;IV)，T=MAC_Km(IV||C)，发送 IV, C, T。",
               "E&M 的 equality leak 用一个两消息游戏就能看见：攻击者选不同 m0,m1，并预先得到 m0 的 deterministic plaintext tag。challenge 返回 m_b 的 tag；若它等于已存的 m0 tag，就猜 b=0，否则猜 b=1。故 tag 本身已经泄漏哪条明文被选中。",
-              "MTE/decrypt-before-auth 是另一问题，可能暴露 padding/格式 oracle，不要与 E&M 的 deterministic-tag 泄漏混。",
-              "接收端用 Km 重算 MAC(Km,IV||C) 并比较 tag；课程要求 invalid/valid 路径的可观察时间尽量相同，所以实现可做等成本或 dummy decrypt。但 invalid 永远只返回统一 null；valid 才释放真正 plaintext。",
+              "MTE 或任何“先解密、后验证”的实现会先处理攻击者修改过的密文。如果系统分别返回“padding 错误”“格式错误”或其它不同结果，攻击者就能一次只改一个字节并反复试探，从返回差异逐步推断明文。这里的 oracle 就是这个被攻击者当作问答工具的服务器。",
+              "ETM 接收端先用 Km 重新计算 MAC(Km,IV||C)，再与收到的 tag 比较。tag 不同就停止：对外始终返回同一种失败结果，不返回明文，也不说明是 padding、格式还是 MAC 出错。tag 相同才使用 Ke 解密并交出明文。实现还要避免明显的成功/失败耗时差；若课程答案提到 dummy decrypt，它只表示在内部做无用计算来拉平时间，计算结果必须丢弃。",
               "ETM 给 confidentiality 与 integrity/authenticity；不自动保证 availability。"
             ],
-            final: "卷面要点：独立 Ke/Km、ciphertext MAC、E&M equality leak、MTE oracle、constant-work invalid path、CIA 映射。"
+            final: "卷面要点：Ke 与 Km 分开；MAC 覆盖 IV||C；E&M 的固定 tag 会泄漏相同明文；先解密后验证会让不同错误成为攻击者的试探工具；ETM 对所有无效 tag 只给同一种失败结果，只有 tag 有效才返回明文；成功与失败的可观察耗时也不能泄漏内部路径。"
           }
         ]
       },
