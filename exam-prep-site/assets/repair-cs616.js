@@ -58,31 +58,6 @@
         spec.label + "：填入 Step " + (index + 1)
       ));
     });
-    const lastAfter = startAfter + spec.lines.length;
-    states.push(eeaState(
-      spec,
-      lastAfter + 1,
-      spec.lines.length,
-      spec.lines.length - 1,
-      spec.label + "：从余数 1 的同行读取 d",
-      "最后一行的余数是 1。同行的 d=" + spec.coefficient + " 满足 " + spec.value + "d≡1 (mod " + spec.modulus + ")。"
-    ));
-    states.push(eeaState(
-      spec,
-      lastAfter + 2,
-      spec.lines.length,
-      spec.lines.length - 1,
-      spec.label + "：把 d 化为标准余数",
-      spec.coefficient + " mod " + spec.modulus + "=" + spec.inverse + "。表不变，只把最后一行的 d 解释为模逆元。"
-    ));
-    states.push(eeaState(
-      spec,
-      lastAfter + 3,
-      spec.lines.length,
-      spec.lines.length - 1,
-      spec.label + "：乘回检查",
-      spec.check
-    ));
     return states;
   }
 
@@ -807,14 +782,7 @@
       "按照 PDF 的系数表写两条初始化行。第一行是模数行 r=11、d=0；第二行是待求逆数行 r=3、d=1。d 表示当前余数中 3 的系数。",
       "做第一次 Euclid 除法。11÷3 的商是 3、余数是 2，所以 11=3×3+2。",
       "做第二次 Euclid 除法。3÷2 的商是 1、余数是 1，所以 3=1×2+1。",
-      "下一次会得到 2=2×1+0。最后一个非零余数是 1，因此 gcd(3,11)=1，3 的模 11 逆元存在。",
-      "从产生余数 1 的等式 3=1×2+1 开始。把 1 单独留在等号左边，得到 1=3−1×2。",
-      "第一次除法 11=3×3+2 可以改写成 2=11−3×3。下一步要用这个式子替换上一行中的 2。",
-      "执行替换：1=3−1×(11−3×3)。这一行只是把 2 换成与它相等的 11−3×3。",
-      "展开括号：1=3−11+3×3。负号必须同时作用到括号中的两项。",
-      "合并两个含 3 的项：3+3×3=4×3，所以 1=4×3−11。",
-      "把最后一行写成 Bézout 形式：1=4×3+(−1)×11。这里 3 的整数系数是 4。",
-      "对等式取 mod 11。项 (−1)×11 除以 11 的余数为 0，所以 1≡4×3 (mod 11)。因此 3⁻¹≡4 (mod 11)。",
+      "最后一行的余数是 1，所以 gcd(3,11)=1。读取同一行的 d=4：这一行表示 1=(−1)×11+4×3。对两边取 mod 11，(−1)×11 的余数为 0，于是 1≡4×3 (mod 11)，所以 3⁻¹≡4 (mod 11)。",
       "乘回检查逆元：3×4=12=1×11+1，余数确实是 1。",
       "回到 3t≡5 (mod 11)，在左右两边都乘 4：4×3t≡4×5 (mod 11)。",
       "左边按乘法结合律写成 (4×3)t。因为 4×3≡1 (mod 11)，所以左边化为 t；右边是 20。因此 t≡20 (mod 11)。",
@@ -844,15 +812,6 @@
       }),
       Object.assign(eeaState(inv3mod11, 7, 2, 1, "3⁻¹ mod 11：填入 Step 2"), {
         operation: "用 r=3,d=1 与 r=2,d=−3 计算 q=1、r=1、d=4。"
-      }),
-      Object.assign(eeaState(inv3mod11, 8, 2, 1, "3⁻¹ mod 11：确认 gcd=1"), {
-        operation: "最后非零余数是 1，因此逆元存在；余数 1 同行的 d 是 4。"
-      }),
-      Object.assign(eeaState(inv3mod11, 15, 2, 1, "3⁻¹ mod 11：从余数 1 的同行读取逆元"), {
-        operation: "反代得到同一个 Bézout 系数 4；现在把最后一行 d=4 解释为 3 的模 11 逆元。"
-      }),
-      Object.assign(eeaState(inv3mod11, 16, 2, 1, "3⁻¹ mod 11：乘回检查"), {
-        operation: "计算 3×4=12=1×11+1，确认候选逆元乘回后的余数为 1。"
       })
     ];
     const smallZk = {
