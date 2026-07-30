@@ -804,6 +804,7 @@
       "固定 challenge 的漏洞是攻击者在发送 t 前已经知道 c=1。于是攻击者可以反过来做：先随便选一个好算的 response，例如 R=4，再配出能让等式成立的 t。",
       "计算等式左边：2⁴=16=1×11+5，所以左边余数是 5。现在只需让右边 3t 的余数也等于 5。",
       "因此当前要解的是 3t≡5 (mod 11)。要消掉 t 前面的 3，需要先求 3⁻¹ mod 11。",
+      "按照 PDF 的系数表写两条初始化行。第一行是模数行 r=11、d=0；第二行是待求逆数行 r=3、d=1。d 表示当前余数中 3 的系数。",
       "做第一次 Euclid 除法。11÷3 的商是 3、余数是 2，所以 11=3×3+2。",
       "做第二次 Euclid 除法。3÷2 的商是 1、余数是 1，所以 3=1×2+1。",
       "下一次会得到 2=2×1+0。最后一个非零余数是 1，因此 gcd(3,11)=1，3 的模 11 逆元存在。",
@@ -822,12 +823,45 @@
       "验算左右两边：2⁴ mod 11=5；9×3¹=27 mod 11=5。两边相同，所以 verifier 接受。",
       "最后解释为什么这不构成知识证明：整套计算从未使用秘密 witness x。攻击者只针对提前知道的 c=1 配出一条等式，不能回答另一个随机 challenge。"
     ];
+    const inv3mod11 = {
+      label: "3⁻¹ mod 11",
+      modulus: 11,
+      value: 3,
+      coefficient: "4",
+      inverse: "4",
+      check: "3×4=12=1×11+1，所以余数是 1。",
+      lines: [
+        {left: 11, right: 3, q: 3, r: 2, d: "−3", dCalc: "0−3×1"},
+        {left: 3, right: 2, q: 1, r: 1, d: "4", dCalc: "1−1×(−3)"}
+      ]
+    };
+    const smallZkStates = [
+      Object.assign(eeaState(inv3mod11, 5, 0, -1, "3⁻¹ mod 11：写入两条初始化行"), {
+        operation: "只填写 r=11,d=0 与 r=3,d=1；两条计算行暂时保留为待计算。"
+      }),
+      Object.assign(eeaState(inv3mod11, 6, 1, 0, "3⁻¹ mod 11：填入 Step 1"), {
+        operation: "用初始化两行计算 q=3、r=2、d=−3；Step 2 仍保持待计算。"
+      }),
+      Object.assign(eeaState(inv3mod11, 7, 2, 1, "3⁻¹ mod 11：填入 Step 2"), {
+        operation: "用 r=3,d=1 与 r=2,d=−3 计算 q=1、r=1、d=4。"
+      }),
+      Object.assign(eeaState(inv3mod11, 8, 2, 1, "3⁻¹ mod 11：确认 gcd=1"), {
+        operation: "最后非零余数是 1，因此逆元存在；余数 1 同行的 d 是 4。"
+      }),
+      Object.assign(eeaState(inv3mod11, 15, 2, 1, "3⁻¹ mod 11：从余数 1 的同行读取逆元"), {
+        operation: "反代得到同一个 Bézout 系数 4；现在把最后一行 d=4 解释为 3 的模 11 逆元。"
+      }),
+      Object.assign(eeaState(inv3mod11, 16, 2, 1, "3⁻¹ mod 11：乘回检查"), {
+        operation: "计算 3×4=12=1×11+1，确认候选逆元乘回后的余数为 1。"
+      })
+    ];
     const smallZk = {
       title: "小模数例题：固定 challenge=1 时反算 commitment",
       prompt: "模数为 11。公开值 y=3，底数 g=2。verifier 永远发送 c=1。构造一条能通过的 transcript。",
       given: "验证等式为 2ᴿ≡t×3ᶜ (mod 11)。攻击者可以自由选择 response R。",
       target: "构造 commitment、challenge 和 response，并逐项验证等式。",
       steps: smallZkOperations,
+      states: smallZkStates,
       result: "伪造 transcript 是 (commitment=9, challenge=1, response=4)。",
       check: "2⁴ mod 11=5。9×3 mod 11=5。验证通过，但计算没有使用 witness。"
     };
