@@ -453,7 +453,7 @@
       {
         after: 13,
         title: "Garner 四根固定工作表：先写四组输入",
-        caption: "每组都按差值、归一、乘逆元、取余数 u、计算 x 的顺序填写。未计算的格保留为待计算。",
+        caption: "固定使用 x=a_p+523u。代入 x≡a_q (mod 547) 得 523u≡a_q−a_p (mod 547)，所以差值必须按 a_q−a_p 填写。每组再依次归一、乘逆元、取余数 u、计算 x；未计算的格保留为待计算。",
         headers,
         rows: garnerRows(0, -1)
       },
