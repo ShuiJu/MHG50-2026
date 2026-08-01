@@ -169,7 +169,7 @@ window.REVISION_DEPTH = {
         }
       },
       {
-        plain: "Event-B 在编码前建立系统模型。context 声明集合、常量和公理。machine 声明变量和不变量。event 使用 guard 和 action 改变状态。Rodin 根据模型生成 Proof Obligation。Event-B 是形式建模和证明方法，不是 BDD 测试方法。",
+        plain: "Event-B 在编码前建立系统模型。context 声明集合、常量和公理。machine 声明变量和不变量。event 使用 guard 和 action 改变状态。Rodin 根据模型生成 Proof Obligation（PO）。PO 是模型必须通过的证明任务，例如证明每个 event 执行后仍满足 invariant。",
         steps: [
           "在 context 里放不会被事件改变的东西：常量、类型集合、公理。",
           "在 machine 里声明变量，并写 invariant（每个可达状态都要满足的规则）。",
@@ -228,7 +228,7 @@ window.REVISION_DEPTH = {
         plain: "AI 可以生成候选规格、不变量和测试。候选内容不是证明。SAT、SMT 和 Z3 检查约束是否有满足解。验证流程必须用独立的求解器检查 AI 输出。",
         steps: [
           "SAT 只处理布尔变量（AND/OR/NOT）；SMT 在布尔骨架上加入整数、数组、未解释函数等理论；Z3 是常见的 SMT solver。",
-          "DPLL/CDCL 是 SAT solver 的核心算法：传播、决策、冲突分析与学习。",
+          "DPLL 是 Davis–Putnam–Logemann–Loveland 搜索。它先传播已被强制的布尔值，再选择一个未定变量并尝试 true 或 false。若某个分支产生矛盾，算法回退并尝试另一分支。CDCL 是 Conflict-Driven Clause Learning。它分析矛盾的原因，加入一条新 clause，避免以后重复进入同一种冲突。",
           "常见编码方式：把“存在违反规格的执行”编码成一个约束，丢给 SMT；返回 unsat 则没有反例，证明成立；返回 sat 则返回那一个反例。",
           "AI 在验证链里的两个机会：① 快速生成候选规格/不变量/证明辅助；② 搜索反例或语义解释。",
           "两个挑战：① 幻觉，模型可能给出“看着像但其实不对的”公式；② 数据分布外的行为、不可解释、过度自信。",
@@ -237,7 +237,7 @@ window.REVISION_DEPTH = {
         ],
         example: {
           title: "AI 生成循环不变量时如何保持可信",
-          prompt: "LLM 建议 invariant i≤n。能直接宣布循环正确吗？",
+          prompt: "大型语言模型（LLM）建议 invariant i≤n。能直接宣布循环正确吗？",
           steps: [
             "先查初始化：能推出 i≤n 在入口成立吗？若不能，则直接拒。",
             "再查保持性：跑一圈 body 后 i≤n 还成立吗？",
@@ -506,7 +506,7 @@ window.REVISION_DEPTH = {
           "FA 从左到右读输入，当前 state 就是它对历史的全部记忆。状态数固定，所以记不了无限增长的计数。",
           "PDA 的栈像茶叶罐，只能从开口取/放。要识别 0^n1^n，拿每个 0 放一个标记、每个 1 取一个标记。",
           "TM 能在带上来回移动和改写，几乎等价于“能跑普通程序的设备”。",
-          "DFA 与 NFA 能识别的语言类相同（都识别 regular language）；PDA 与 CFG 都描述 CFL；TM 描述递归可枚举语言，但里面有不可判定的。",
+          "DFA 和 NFA 都识别 regular language。CFG 是 context-free grammar（上下文无关文法），它生成 CFL（context-free language）。PDA 的栈能力正好对应 CFL。TM 能识别更大的 Turing-recognisable 语言类，但其中存在不可判定问题。",
           "机器能力越强，可描述语言越多，但关于这台机器本身的问题（如“这台机器是否停机”）反而变得更难、更可能不可判定。"
         ],
         example: {
@@ -577,7 +577,7 @@ window.REVISION_DEPTH = {
         practice: {
           q: "若一个语言和它的补语言都 recognisable，为什么它 decidable？",
           hint: "并行运行两个 recogniser。",
-          a: "准备两个程序：R_L 只保证语言成员最终会被接受；R_comp 只保证补语言成员最终会被接受。不能先把其中一个一直跑到底，因为它遇到非成员时可能永远不停。正确方法是轮流各执行一步：R_L 跑一步，再让 R_comp 跑一步，如此反复。任意输入 x 要么属于 L，要么属于补语言，所以两个程序中必有一个最终接受。若 R_L 先接受就回答“属于 L”；若 R_comp 先接受就回答“不属于 L”。因此这个组合程序对每个输入都会停机，它就是 decider。"
+          a: "设 R_L 是语言 L 的 recogniser。L 的成员最终会被 R_L 接受，但非成员可能让它永远运行。再设 R_comp 是补语言的 recogniser。不能先让其中一个程序一直运行，因为它可能遇到非成员而永远不停。正确方法是让两个程序交替各执行一步。任意输入 x 要么属于 L，要么属于补语言，所以两个 recogniser 中必有一个最终接受。若 R_L 先接受，程序回答“x 属于 L”。若 R_comp 先接受，程序回答“x 不属于 L”。因此组合程序对每个输入都会停止，它是 L 的 decider。"
         }
       },
       {
@@ -587,7 +587,7 @@ window.REVISION_DEPTH = {
           "F 接 A 实例，只负责构造 B 实例的字符串；F 本身必须对所有输入停机。",
           "把未知计算放进构造出的新机器 N 的运行过程里，不要放进 F 自己。",
           "分别证明 yes→yes 和 yes←yes 两个方向，得到 x∈A iff f(x)∈B。",
-          "用归谬：若 B 有 decider D_B，则可写 D_A(x)=D_B(f(x))，能 decider A；与 A 已知不可判定矛盾。",
+          "用归谬。假设目标语言 B 有 decider，并把它命名为 D_B。为源语言 A 构造程序 D_A：输入 x 后先算 f(x)，再返回 D_B(f(x)) 的答案。Reduction 的 iff 条件保证 D_A 能正确判定 A。这与 A 已知不可判定矛盾。",
           "若想证 B 的补不可判定，把 iff 改为 x∈A iff f(x)∈complement(B)；其余步骤完全相同。"
         ],
         example: {
@@ -1059,7 +1059,7 @@ window.REVISION_DEPTH = {
         },
         practice: {
           q: "SolarPanel 要满足 lux≥5000，随机区间上界应写什么？",
-          hint: "题面声明 lux 为 int，DT 又把讨论域限定为 lux≥0。",
+          hint: "题面声明 lux 是整数。Decision table（DT）又把讨论域限定为 lux≥0。先求两个条件允许集合的交集。",
           a: "按题面，lux 是非负 int，因此满足 lux≥5000 的完整输入区间是 5000..Integer.MAX_VALUE。若真实测试不想随机到非常大的数，可以人为规定一个较小上限 U，例如 100000，再从 5000..U 抽样。这个 U 只是为了让测试容易运行而加的测试上限，不是规格说“lux 最大只能到 U”。答案必须把这两个范围分开写，避免把测试方便性误当成系统要求。"
         }
       },
@@ -1288,6 +1288,10 @@ window.REVISION_DEPTH = {
       ["Mode of Operation / 操作模式","决定如何把 block cipher 用到比块长的消息上，例如 CTR、OFB、CFB。"],
       ["Keystream / 密钥流","流密码里与明文逐字节 XOR 的伪随机字节序列。"],
       ["IV / 初始向量","让相同密钥加密不同密文出不同结果的随机值；CTR 模式通常发出 IV。"],
+      ["XOR / 异或","两个 bit 相同得 0，不同得 1。同一数值 XOR 两次会抵消：X XOR K XOR K=X。"],
+      ["MSB / 最高有效位","二进制数最左边的 bit。MSB 8 bits 是十六进制串最左边的一个 byte。"],
+      ["Authentication Tag / 认证标签","MAC 根据密钥和受保护数据算出的固定长度结果。接收端重新计算并比较它。"],
+      ["Oracle / 可试探接口","攻击者反复提交自选输入，并从返回内容、错误类型或耗时得到有关秘密的线索。"],
       ["RSA","基于大整数分解困难的公钥加密；n=pq，φ=(p−1)(q−1)，d=e⁻¹ mod φ。"],
       ["Rabin Cryptosystem","基于模合数平方根困难的加密；解密等价于分解 n，有 4 个根需消歧。"],
       ["ECC / 椭圆曲线密码学","基于椭圆曲线上离散对数问题困难的密码系统，可用更短密钥达同等安全。"],
@@ -1892,7 +1896,7 @@ steps: [
           "本课首先使用 bottleneck d<D。latent vector 的维度少于输入维度。overcomplete autoencoder 使用 d≥D。它需要 sparsity 或 denoising 等限制，以减少学习 identity mapping 的风险。",
           "decoder 再把 z 变为 x̂∈R^D。这里帽子 x̂ 读作“x-hat”，表示模型对 x 的猜测/重建，不是一个新的真实标签。D 对 D 才能做第 1 格减第 1 格、第 2 格减第 2 格。",
           "课程主损失是 reconstruction MSE：L_recon=(1/N)Σ_n||x_n−x̂_n||²。Σ_n 是把 N 个训练样本的错误加起来；||…||² 是同一条样本内每个格子差值平方后相加。平方避免正误差和负误差互相抵消，也更重罚大错。",
-          "可选 L_total=L_recon+λ||z||₁。||z||₁ 是 z 各分量绝对值之和；λ 是你手动设的强度。加它是为了鼓励多数 latent 单元安静（稀疏），并非说普通 autoencoder 必须有 KL。",
+          "可选 L_total=L_recon+λ||z||₁。||z||₁ 是 z 各分量绝对值之和。λ 是手动设置的权重。这个 L1 项鼓励更多 latent 分量接近 0。KL divergence 用来衡量两个概率分布的差异。普通 autoencoder 没有要求 latent distribution 接近某个 prior，因此不默认加入 KL。",
           "训练结束后常把 decoder 暂时拿掉：只算 z=encoder(x)。z 比原始输入短小又包含训练学到的模式，可作分类特征、聚类坐标、可视化坐标或异常分数的输入。"
         ],
         example: {
@@ -2002,7 +2006,7 @@ steps: [
           "方向一（生成）：先从简单分布采 z，例如 z∼N(0,I)，再 x=f(z) 造出样本。方向二（评估）：给真实 x，倒算 z=f⁻¹(x)，看看它在简单分布下有多合理。",
           "change of variables 不要死背：一个映射把小区域拉宽时，同样的概率质量要铺到更大面积，密度就要变小；压窄时密度变大。Jacobian J 记录局部拉伸，|det J| 记录体积倍率。",
           "因此 log p_X(x)=log p_Z(f⁻¹(x))−log|det J_f(f⁻¹(x))|。‘exact likelihood’ 这句必须带条件：f 可逆、可微，而且 determinant 能高效算；不是任意可逆神经网络都便宜。",
-          "VAE、GAN、diffusion 都是生成模型扩展，但训练目标不同：VAE 用 ELBO，GAN 分辨真假，diffusion 学去噪；不要仅因它们会生成就把它们写成 normalizing flow。"
+          "VAE、GAN 和 diffusion 都能生成样本，但它们的训练目标不同。VAE 最大化 Evidence Lower Bound（ELBO）。ELBO 同时奖励重建，并限制 latent distribution 接近指定 prior。GAN 训练 generator 欺骗 discriminator。Diffusion 学习逐步去除人工噪声。它们都不是 normalizing flow 的别名。"
         ],
         example: {
           title: "线性层何时可逆",
@@ -2037,7 +2041,7 @@ steps: [
             "场景/受影响者：公司用模型筛简历，候选人尤其是过去录取率较低的群体会被系统影响。",
             "机制：模型把历史招聘决定当 label；若历史中存在结构性偏见，训练会把相关代理特征当成‘好员工’信号。",
             "伤害：能力相近的候选人可能因群体关联而被系统性低估，失去面试机会；公司也会错过人才。",
-            "测量：按群体报告选择率、TPR/FPR，检查训练资料覆盖和特征是否是受保护属性的代理；不是只报告一个总 accuracy。",
+            "先定义实际正例为真正适合进入下一轮的候选人。TPR=true positives/actual positives，表示实际正例中有多少被模型选中。FPR=false positives/actual negatives，表示实际负例中有多少被模型错误选中。按群体分别报告选择率、TPR 和 FPR，再检查训练资料覆盖与代理特征。一个总 accuracy 会隐藏群体差异。",
             "缓解：审计和重整数据/标签，限制高风险特征，使用公平约束或阈值复核，保留人工审查和申诉，并持续监控。"
           ],
           result: "完整伦理答案含场景、机制、伤害、测量、缓解五部分。"
@@ -2085,7 +2089,7 @@ steps: [
               "先按本课主线答维度：经典 bottleneck 取 d<D。原因不是数学规定，而是格子更少会迫使 encoder 选择什么信息要保留。题目问典型结构时，这一句要放在最前面。",
               "loss 先逐字拆开：x_n 是第 n 个输入，x̂_n 是它的重建；x_n−x̂_n 是误差；||…||² 是同一样本内各维误差平方和；Σ_n 把 N 个样本加起来；1/N 取平均。",
               "所以最稳课程公式是 L_recon=(1/N)Σ_n||x_n−x̂_n||²。最小例：x=(2,0)，x̂=(1,2)，平方误差=(2−1)²+(0−2)²=1+4=5；若按维度平均则是 5/2。只要说明你采用的平均约定即可。",
-              "可再写 L_total=L_recon+λ||z||₁：λ 是人为设置的权衡强度，L1 项让很多 z 分量接近 0（sparsity）。这贴合讲义；BCE 只在明确的伯努利/归一化输出建模下再提，KL 不是普通 autoencoder 默认必需项。"
+              "可再写 L_total=L_recon+λ||z||₁。λ 是人为设置的权重。L1 项让更多 z 分量接近 0。Binary Cross-Entropy（BCE）适合把每个输出解释为伯努利概率的模型。KL divergence 衡量两个概率分布的差异。普通 autoencoder 没有默认的伯努利输出或 latent prior，因此 BCE 和 KL 都不是必需项。"
             ],
             final: "Embedding 是 encoder 的中间 z 空间；今年先写典型 d<D。loss 主答案是 L_recon=(1/N)Σ||x−x̂||²，可加 λ||z||₁ 促 sparsity；重建 target 永远是输入 x 本身。"
           },
@@ -2181,7 +2185,7 @@ steps: [
             steps: [
               "先在草稿上写六个小标题：场景、机制、受影响者、伤害、测量、缓解。每个案例填一小句，最后再连成段；这比想到什么写什么可靠。",
               "案例 1（人脸/情绪识别）：场景是公共场所或招聘中的自动识别。机制是训练数据对某些群体覆盖少/标注差，或部署把不确定分数当确定结论。受影响者是被识别者，尤其误差较高的群体。伤害是误报、错误盘查、机会被拒和隐私/权利损失。",
-              "案例 1 的测量/缓解：按群体统计 false-positive、false-negative、TPR/FPR，审计数据覆盖；设置人工复核和申诉，限制高风险用途，持续监控，而不是只说‘去 bias’。",
+              "案例 1 的测量先定义实际正例和实际负例。TPR=true positives/actual positives，表示实际正例中被正确选中的比例。FPR=false positives/actual negatives，表示实际负例中被错误选中的比例。按群体分别统计 TPR 和 FPR，并审计数据覆盖。缓解措施包括人工复核、申诉、用途限制和持续监控。",
               "案例 2（web-scraped training data）：场景是从网页/平台抓资料训练模型。机制是资料可能没有同意、含私人或可重新识别内容、带 licence/copyright 限制。受影响者是原作者、数据主体和后来被模型输出其内容的人。伤害是隐私泄露、版权/报酬损失和敏感资料暴露。",
               "案例 2 的测量/缓解：做 source/consent/licence audit，数据最小化和用途限制，保护访问与删除/申诉流程，并在发布前测试 memorisation/泄露风险。也可把耗电、耗水、碳足迹写成第三个完整案例。"
             ],

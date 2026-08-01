@@ -360,6 +360,102 @@
     ];
   }
 
+  const symmetricUnit = course.learn[2];
+  const cfbPart = course.exam[1].parts[1];
+  const etmPart = course.exam[1].parts[2];
+  if (symmetricUnit && aesPart && cfbPart && etmPart) {
+    function copyStates(states) {
+      return (states || []).map((state) => Object.assign({}, state, {
+        headers: (state.headers || []).slice(),
+        rows: (state.rows || []).map((row) => Array.isArray(row) ? row.slice() : Object.assign({}, row))
+      }));
+    }
+
+    symmetricUnit.plain = "本单元包含三条独立路线。AES 题处理 16-byte state。CFB 题把 AES 输出的一部分当作 keystream。ETM 题先保护密文的完整性，再决定是否向外释放明文。三条路线都使用 XOR 或 AES，但不能混用各自的公式。";
+    symmetricUnit.choice = "题目给 ARK 前后 state 时，逐格 XOR 恢复 round key。题目要求把 AES 变成 8-bit cipher 时，使用课程的 8-bit CFB。题目提到 adaptive ciphertext、ETM、E&M 或 CIA 时，画发送端和接收端的数据流。";
+    symmetricUnit.flow = [
+      "认识 bit、byte、block 与 state",
+      "用 XOR 恢复 AddRoundKey",
+      "画出 8-bit CFB 的 register",
+      "取 AES 输出的 MSB byte",
+      "用 XOR 恢复 plaintext byte",
+      "写出 ETM 的两个密钥",
+      "先检查 tag 再释放 plaintext",
+      "用攻击者观察解释 E&M 与 oracle",
+      "判断 CIA 三项"
+    ];
+    symmetricUnit.steps = [
+      "一个 bit 只能是 0 或 1。八个 bit 组成一个 byte。AES 每次输入和输出 128 bit，也就是 16 byte。AES state 是这 16 个 byte 的 4×4 写法。",
+      "AES-128 中的 128 指 block size 和本题使用的 key size。AES 的 block size 固定为 128 bit。AES-192 和 AES-256 只改变 key size，不改变 block size。",
+      "AddRoundKey 对相同位置的两个 byte 做 XOR。设操作前是 S_before，轮密钥是 K，操作后是 S_after。完整关系是 S_after=S_before XOR K。",
+      "XOR 同一数值两次会抵消。因为 K XOR K=0，所以 S_after XOR K=S_before。也可以把原式两边 XOR S_before，得到 K=S_before XOR S_after。",
+      "Mode of operation 规定怎样多次使用 block cipher。ECB、CBC、CFB、OFB 和 CTR 的输入、反馈和错误传播不同。名称相近不表示数据流相同。",
+      "8-bit CFB 维护一个 128-bit register。第一轮把 IV 放进 register。AES 加密整个 register，然后 S_8 选输出的最高有效 8 bits。最高有效 byte 是十六进制串最左边的 byte。",
+      "CFB 加密计算 C_i=P_i XOR S_i。CFB 解密计算 P_i=C_i XOR S_i。解密仍调用 AES encryption，因为双方都需要生成相同的 S_i，而不是反向计算 register。",
+      "完成一个 8-bit segment 后，register 左移 8 bit。系统把当前 ciphertext byte C_i 放进 register 的空位。CFB 反馈 ciphertext，不反馈刚恢复的 plaintext。",
+      "Encryption 只隐藏内容。攻击者仍可能修改 ciphertext。若系统解密攻击者提交的修改版本，并让返回结果暴露内部状态，攻击者就能把系统当作 oracle。",
+      "ETM 是 Encrypt Then MAC。KeyGen 产生两个独立密钥 Ke 和 Km。Ke 只用于 encryption。Km 只用于 MAC。两个用途不能共用同一密钥。",
+      "发送端先计算 C=Enc_Ke(M;IV)。然后计算 T=MAC_Km(IV||C)。符号 || 表示拼接。发送端传送 IV、C 和 T。MAC 必须覆盖会影响解密的 IV 和 ciphertext。",
+      "接收端先根据收到的 IV 和 C 重新计算 T'=MAC_Km(IV||C)。接收端比较 T' 与收到的 T。只有两者相同，接收端才可以向调用者返回 plaintext。",
+      "无效 tag 的外部结果必须相同。系统不能返回 padding error、format error、部分 plaintext 或其它内部信息。课程讲义还要求避免明显的时间差。实现可执行等成本的 dummy decryption，但必须丢弃 dummy 结果。",
+      "E&M 同时计算 C=Enc_Ke(M) 和 T=MAC_Km(M)。MAC 通常是确定性的。相同 plaintext 会得到相同 tag，因此攻击者可以用 tag 判断挑战中加密了哪条已知 plaintext。",
+      "MTE 先计算 plaintext 的 MAC，再加密 plaintext 和 tag。若接收端先解密，并对 padding、格式和 MAC 返回不同结果，攻击者可逐字节修改 ciphertext。每次返回的差异都会提供一个新的明文线索。",
+      "CIA 中，confidentiality 表示未授权者不能读取内容。Integrity 表示修改可被发现。Availability 表示授权用户能在需要时使用系统。ETM 提供 confidentiality、integrity 和 authenticity，但不自动阻止拒绝服务。"
+    ];
+
+    symmetricUnit.example = {
+      title: "2026 Q2(b)：用 8-bit CFB 恢复一个 plaintext byte",
+      prompt: cfbPart.ask,
+      given: "E_k(IV)=EA DD EE EF FF AA AA AB BB BB BB CC CC CC DD DF，收到 C₁=0x20。课程定义 S_8 取 AES 输出的最高有效 8 bits。",
+      target: "画出第一轮数据流，选出正确的 keystream byte，并逐位 XOR 得到 P₁。",
+      steps: cfbPart.steps.slice(),
+      states: copyStates(cfbPart.states),
+      result: cfbPart.final,
+      check: "重新计算 P₁ XOR 0xEA=0xCA XOR 0xEA=0x20，结果等于收到的 C₁。"
+    };
+
+    const addRoundKeyExample = {
+      title: "2026 Q2(a)：从 ARK 前后 state 恢复完整 round key",
+      prompt: aesPart.ask,
+      given: "题目给出 AddRoundKey 前后的 16-byte AES state。AES state 按列优先装入 4×4 矩阵。",
+      target: "对 16 个位置逐格执行 Before XOR After，并按列优先读回 round key。",
+      steps: aesPart.steps.slice(),
+      states: copyStates(aesPart.states),
+      result: aesPart.final,
+      check: "对 16 个位置执行 After XOR Key。每一格都必须恢复对应的 Before byte。"
+    };
+    const etmExample = {
+      title: "2026 Q2(c)：ETM、E&M、oracle 与 CIA",
+      prompt: etmPart.ask,
+      given: "公司要抵抗 adaptive ciphertext attack。卷面必须给出 ETM 名称、发送端、接收端、与 E&M 的比较，以及 CIA 判断。",
+      target: "写出每个变量的来源，并从攻击者能观察到的信息解释安全差异。",
+      steps: etmPart.steps.slice(),
+      result: etmPart.final,
+      check: "答案必须出现独立密钥 Ke/Km、MAC 覆盖 IV||C、无效 tag 不释放 plaintext、E&M 的 deterministic tag 泄漏，以及 CIA 的 C 和 I。"
+    };
+    const feedbackExample = {
+      title: "CFB 第二轮为什么反馈 ciphertext",
+      prompt: "第一轮 keystream byte 是 0x9A，收到 C₁=0x50。求 P₁，并说明 register 下一步放入哪个 byte。",
+      given: "CFB 解密式是 P₁=C₁ XOR S₁。CFB 的两端都能取得同一个 ciphertext byte C₁。",
+      target: "恢复 plaintext，并区分 plaintext 输出与 ciphertext feedback。",
+      steps: [
+        "写出当前解密式 P₁=C₁ XOR S₁。代入 C₁=0x50 和 S₁=0x9A，得到 P₁=0x50 XOR 0x9A。",
+        "把两个 byte 写成二进制：0x50=0101 0000，0x9A=1001 1010。",
+        "逐位 XOR：0101 0000 XOR 1001 1010=1100 1010。因此 P₁=0xCA。",
+        "接收端把 P₁=0xCA 交给上层。这个动作不是 feedback。CFB 把收到的 C₁=0x50 放入 register。",
+        "发送端也产生 C₁=0x50。双方反馈同一个 byte，因此下一轮 register 保持相同。若接收端反馈 P₁，双方的 register 会不同步。"
+      ],
+      result: "P₁=0xCA。下一轮反馈 C₁=0x50。",
+      check: "0xCA XOR 0x9A=0x50，所以重新加密可恢复原 ciphertext。"
+    };
+    symmetricUnit.extraExamples = [addRoundKeyExample, etmExample, feedbackExample];
+    symmetricUnit.practice = {
+      q: "为什么 E&M 即使使用安全的 encryption，也可能让攻击者分辨挑战 plaintext？",
+      hint: "先向系统提交 m₀，并保存确定性的 MAC_Km(m₀)。再观察挑战 ciphertext 附带的 tag。",
+      a: "攻击者先选不同的 m₀ 和 m₁。攻击者在挑战前取得 t₀=MAC_Km(m₀)。挑战系统随机选择 b，并返回 Enc_Ke(m_b) 和 t*=MAC_Km(m_b)。如果 t*=t₀，攻击者知道 m_b=m₀，因此猜 b=0。如果两个 tag 不同，攻击者猜 b=1。攻击者不需要破解 ciphertext。确定性的 plaintext tag 已经泄漏了明文相等关系。ETM 改为认证 ciphertext。在题目假设的带 IV、IND-CPA-secure encryption 下，同一 plaintext 的新加密会产生新的 ciphertext，因此旧 plaintext tag 不能与挑战 tag 直接比较。"
+    };
+  }
+
   const rlwePart = course.exam[0].parts[3];
   if (rlwePart) {
     const shift2 = [

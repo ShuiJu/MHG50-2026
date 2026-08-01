@@ -616,7 +616,7 @@
     ],
     steps: [
       "建立 product state (q,parity)。示例 FA 有 q₀、q₁，字母表 {a}，q₀ 是唯一接受状态。",
-      "初始化 queue 和 visited。两者先只含 (q₀,E)。",
+      "BFS 是 breadth-first search（广度优先搜索）。queue 保存已经发现、但尚未展开的状态。visited 保存已经发现的状态，防止重复搜索。初始化时，两者都只含 (q₀,E)。",
       "第 1 轮取出 (q₀,E)。沿 a 边到 q₁，并把 parity 从 E 翻成 O。",
       "第 2 轮取出 (q₁,O)。沿 a 边回到 (q₀,E)。该状态已访问，所以不重复入队。",
       "queue 为空后结束。visited 中没有接受状态配 O，所以示例 FA 不接受奇长度串。"
@@ -629,7 +629,7 @@
       "检查 queue 为空，再扫描是否访问过任何 (q_accept,O)。"
     ],
     given: "具体演示：Q={q₀,q₁}，Σ={a}，δ(q₀,a)=q₁，δ(q₁,a)=q₀，初态和唯一接受态都是 q₀。",
-    target: "逐轮显示 BFS 怎样更新 queue 和 visited，再说明通用 decider 的接受条件。",
+    target: "逐轮显示广度优先搜索怎样更新 queue 和 visited，再说明通用 decider 的接受条件。",
     result: "示例只访问 (q₀,E) 和 (q₁,O)。通用算法若访问到任一 (q_accept,O) 就 reject；queue 清空仍未发现则 accept。",
     check: "一个 product state 只在首次发现时入队。有限图最多有 2|Q| 个状态，所以 BFS 必定结束。"
   };
@@ -650,7 +650,7 @@
     ...productGraphConfig,
     steps: [
       "把 M 的每个状态 q 复制成 (q,E) 和 (q,O)。读真实输入符号时翻转 E/O；ε 边不翻转。",
-      "用 (q₀,E) 初始化 queue 和 visited。表中的两状态 FA 用来展示真实的队列操作。",
+      "使用 breadth-first search（BFS，广度优先搜索）。queue 保存已发现但尚未展开的状态。visited 保存所有已发现状态，防止重复搜索。把 (q₀,E) 同时加入 queue 和 visited。",
       "第 1 轮弹出 (q₀,E)。沿 a 边生成 (q₁,O)，首次发现所以加入 queue 和 visited。",
       "第 2 轮弹出 (q₁,O)。后继 (q₀,E) 已访问，所以不重复入队。",
       "queue 清空时检查结果。通用算法发现 (q_accept,O) 就 reject，否则 accept。"
