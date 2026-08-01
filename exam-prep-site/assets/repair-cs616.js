@@ -715,6 +715,31 @@
     delete eccExample.ledger;
   }
 
+  let orderShortcut = findExample(4, "ECC 点阶捷径：看到 y=0 后怎样停止");
+  if (!orderShortcut) {
+    orderShortcut = {};
+    course.learn[4].extraExamples = course.learn[4].extraExamples || [];
+    course.learn[4].extraExamples.push(orderShortcut);
+  }
+  Object.assign(orderShortcut, {
+    title: "ECC 点阶捷径：看到 y=0 后怎样停止",
+    prompt: "怎样利用 kP=(x,0) 判断点阶？如果候选阶是 20，是否必须依次计算 P 到 20P？",
+    given: "曲线定义在奇素数域 F_p 上。O 表示无穷远点，ord(P) 表示使 nP=O 的最小正整数 n。",
+    target: "会使用 y=0 捷径、double-and-add 和候选阶的质因数检查。",
+    steps: [
+      "先写点的负元公式：−(x,y)=(x,−y mod p)。当 y=0 时，−(x,0)=(x,0)，所以这个非无穷远点等于自己的负元。",
+      "若 kP=(x,0)，令 Q=kP。因为 Q=−Q，所以 Q+Q=Q+(−Q)=O。把 Q 换回 kP，得到 kP+kP=2kP=O。",
+      "如果是按 P、2P、… 顺序检查，并且 kP 是第一次出现 y=0、此前也没有出现 O，那么没有更小的正倍数能结束循环，因此 ord(P)=2k。例：第一次在 3P 得到 y=0，就有 ord(P)=6。",
+      "如果没有逐项确认“第一次”，结论只能先写 2kP=O，再排除更小的候选。看到 10P=(x,0) 可推出 20P=O，但点阶仍可能是 4；因为阶为 4 时 10P=(10 mod 4)P=2P，而 2P 也可能是 y=0 的点。",
+      "计算 20P 不要连续加 20 次。连续倍点得到 2P、4P、8P、16P，再计算 20P=16P+4P。这是 double-and-add；它减少的是计算某个倍数所需的点运算。",
+      "若题目已经告诉我们 20P=O，或者已知点阶一定整除 20，那么 20 的不同质因数是 2 和 5。要证明阶恰好为 20，只需再检查 (20/2)P=10P≠O 和 (20/5)P=4P≠O。",
+      "为什么只检查 10P 和 4P：任何真因子阶都至少缺少 20 的一个质因子幂。若 10P≠O，阶不能把 20 中的一个因子 2 去掉；若 4P≠O，阶不能把因子 5 去掉。两项都不能去掉，所以必须保留完整的 20。",
+      "如果既不知道群大小，也没有候选阶，小型考试题仍可能需要逐步生成倍点；但每一步都应复用倍点结果，并在遇到 O 或 y=0 时立即停止。已知群大小 #E(F_p) 时，则先利用 ord(P) 整除 #E(F_p)，再按其质因数缩小候选。"
+    ],
+    result: "顺序检查时首次出现 kP=(x,0)，可得 ord(P)=2k；已知候选 N 时，用 double-and-add 算倍点，并用 NP=O 与所有 (N/q)P≠O（q 为 N 的不同质因数）确认精确阶。",
+    check: "候选 20 的最短证据是 20P=O、10P≠O、4P≠O。只有 10P=(x,0) 还不够，因为它只保证 20P=O。"
+  });
+
   const classicalAndZk = course.learn[1];
   if (classicalAndZk) {
     classicalAndZk.plain = "本单元有两部分。第一部分恢复 affine digraph 密钥。第二部分分析零知识协议。两部分不共享公式。先学完 affine，再开始零知识协议。";

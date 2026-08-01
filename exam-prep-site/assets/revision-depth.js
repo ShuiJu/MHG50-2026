@@ -1306,6 +1306,8 @@ window.REVISION_DEPTH = {
       ["Blum Integer","n=pq 且 p、q 都是模 4 余 3 的素数，常用于 Rabin 密码。"],
       ["Scalar Multiplication / 标量乘","nP = P + P + … + P（n 次）；椭圆曲线密码的核心运算。"],
       ["Point Order / 点阶","最小 n>0 使 nP=O（无穷远点）。"],
+      ["Point Negation / 点的负元","在模 p 的短 Weierstrass 曲线上，−(x,y)=(x,−y mod p)；点与其负元相加得到 O。"],
+      ["Double-and-add / 倍点加法","用连续倍点得到 2P、4P、8P、…，再按标量的二进制拆分相加；计算 nP 不必真的连续加 P 共 n 次。"],
       ["Jacobian Determinant","可逆映射的体积变换因子；normalizing flow 用它算 likelihood。"],
       ["Legendre Symbol / 勒让德符号","判一个数 a 是否是素数 p 的二次剩余：(a/p)≡a^((p−1)/2) (mod p)，取 +1 表示是剩余，−1 表示不是。"],
       ["Jacobi Symbol / 雅可比符号","Legendre 符号推广到合数模 n=pq…：(a/n)=(a/p)(a/q)…；Jacobi=1 不等于一定可开平方。"],
@@ -1484,12 +1486,16 @@ window.REVISION_DEPTH = {
         }
       },
       {
-        plain: "椭圆曲线点满足曲线方程。点加法用经过 P 和 Q 的直线计算第三个交点，然后对 x 轴反射。P=Q 时使用切线。有限域中的除法使用模逆。每个坐标计算都取 mod p。",
+        plain: "椭圆曲线点满足曲线方程。点加法用经过 P 和 Q 的直线计算第三个交点，然后对 x 轴反射。P=Q 时使用切线。有限域中的除法使用模逆。每个坐标计算都取 mod p。点的负元是 −(x,y)=(x,−y mod p)；这个规则可以在倍点结果的 y 坐标为 0 时直接确定点阶。",
         steps: [
           "先检查点在曲线上；未知 b 用 b≡y²−x³−ax (mod p)。",
           "所有坐标和逆元都在 mod p 下计算。P≠Q 时 λ≡(y2−y1)(x2−x1)⁻¹ (mod p)；P=Q 时 λ≡(3x²+a)(2y)⁻¹ (mod p)。",
           "x3 = λ² − x1 − x2；y3 = λ(x1 − x3) − y1；全部 mod p。",
-          "重复加得 nP；第一次到无穷远点 O 的 n 是点的阶（order）。",
+          "点的负元是 −(x,y)=(x,−y mod p)，并且 Q+(−Q)=O。若某个非零倍点 kP=(x,0)，则 −(kP)=kP，所以 2kP=O。",
+          "若按 P、2P、3P、… 顺序检查，而且第一次在 kP 遇到 y=0，同时此前也没有遇到 O，那么 ord(P)=2k。这里的“第一次”不能省略；若没有逐项检查，只能先断定 2kP=O。",
+          "计算指定的大倍数时使用 double-and-add。先连续倍点得到 2P、4P、8P、16P、…，再按二进制拆分相加。例如 20P=16P+4P，不需要顺序算到 20P。",
+          "若已知 NP=O，要证明 ord(P)=N，只需对 N 的每个不同质因数 q 检查 (N/q)P≠O。例如 N=20 时检查 20P=O、10P≠O、4P≠O，即可确定 ord(P)=20。",
+          "若只知道 10P=(x,0)，可以立即得到 20P=O，但还不能单凭这一点断言阶为 20；例如阶为 4 时，10P=2P 也可能是 y=0 的二阶点。还要利用候选范围并检查 4P 等更小候选。",
           "ECDSA 验证在 mod q 下算 w, u1, u2 再做曲线点运算，最后比较 x mod q 与 r。"
         ],
         example: {
